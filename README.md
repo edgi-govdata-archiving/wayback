@@ -4,7 +4,7 @@ CLI tools &amp; data management protocols for interacting with Page Freezer.
 See [the versionista outputter repo](https://github.com/edgi-govdata-archiving/versionista-outputter) and the [version tracking ui](https://github.com/edgi-govdata-archiving/version-tracking-ui) repos for earlier work that has some overlap/similar goals. 
 
 ## Motivation
-We are currently receiving moderate-sized archives (10 ^2 Gb/week) from our partners at [PageFreezer](http://pagefreezer.com). In principle, these arechives are a gold mine of information -- but we need tools to analyze them. Those tools need to be able to execute a diff operation against large numbers of pages, and to filter out the vast bulk of changes in order to identify the important ones.
+We are currently receiving moderate-sized archives of government web pages (10 ^2 Gb/week) from our partners at [PageFreezer](http://pagefreezer.com). In principle, these arechives are a gold mine of information -- but we need tools to analyze them. Those tools need to be able to execute a diff operation against large numbers of pages, and to filter out the vast bulk of changes in order to identify the important ones.
 
 ## Getting Involved
 We need your help! Please read through the rest of this document and see what you can help with!  We have not yet settled on a language for our work, though we imagine python and ruby are the most likely candidates. 
