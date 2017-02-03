@@ -2,9 +2,15 @@
 
 Pagefreezer provides a simple diff API that allows coparisons of file versions; results are returned as JSON in a straightforward way. At present only single-page comparisons are possible; we should determine whether it's worthwhile to use the service as currently constructed. 
 
+## Access Token
+
+To test this service, you'll need our access token, which we can't share in github. If you need it before the event, get in touch with @titaniumbones. 
+
 ## The Compare Service
 
-This is the only service currently available; it allows comparison between two URL's or 2 html blobs (but not one of each). 
+This is the only service currently available; it allows comparison between two URL's or 2 html blobs (but not one of each). It's available here over `POST` only:
+
+`https://api1.pagefreezer.com/utils/v1/diff/compare`
 
 ### Parameters
 
@@ -36,7 +42,7 @@ url2="<h1>bad news</h1>" \
 
 curl -v -H "Accept: application/json" \
         -H "Content-Type: application/json" \
-        -H "x-api-key: SP949Hsfdm2z9rYbnb9mC588hO2uV3Nna2pcy1cj" \
+        -H "x-api-key: "KEYHERE" \
         -X POST -d @./input.json \
         https://api1.pagefreezer.com/v1/api/utils/diff/compare
 ```
