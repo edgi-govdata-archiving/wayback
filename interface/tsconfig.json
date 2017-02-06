@@ -1,0 +1,15 @@
+{
+  "files": [
+    "src/scripts/Pagefreezer.ts",
+    "src/scripts/main.ts"
+  ],
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "sourceMap": true,
+    "noImplicitAny": true
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
