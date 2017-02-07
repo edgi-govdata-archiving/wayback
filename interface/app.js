@@ -42,8 +42,8 @@ app.get('/diff?', function(req, res) {
     if(as != null && as == "view") {
         //render a view
         res.render('main.html', {
-            'oldUrl' : oldUrl,
-            'newUrl' : newUrl
+            oldUrl : oldUrl,
+            newUrl : newUrl
         });
     } else {
 

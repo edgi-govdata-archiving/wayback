@@ -15,8 +15,8 @@ $(document).ready(function () {
     $('#submitButton').click(function () {
         toggleProgressbar(true);
         Pagefreezer_1.Pagefreezer.diffPages($('#url1').val(), $('#url2').val(), function (data, status) {
-            console.log(data);
             $('#pageView').html(data.result.output.html);
+            $('#pageView link[rel=stylesheet]').remove();
             toggleProgressbar(false);
         });
     });

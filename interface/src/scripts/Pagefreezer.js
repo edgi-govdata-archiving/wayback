@@ -30,9 +30,9 @@ var Pagefreezer = (function () {
             headers: { "x-api-key": "SP949Hsfdm2z9rYbnb9mC588hO2uV3Nna2pcy1cj" }
         });
     };
-    Pagefreezer.DIFF_API_URL = "/diff";
-    Pagefreezer.API_KEY = "SP949Hsfdm2z9rYbnb9mC588hO2uV3Nna2pcy1cj";
     return Pagefreezer;
 }());
+Pagefreezer.DIFF_API_URL = "/diff";
+Pagefreezer.API_KEY = "SP949Hsfdm2z9rYbnb9mC588hO2uV3Nna2pcy1cj";
 exports.Pagefreezer = Pagefreezer;
 //# sourceMappingURL=Pagefreezer.js.map
