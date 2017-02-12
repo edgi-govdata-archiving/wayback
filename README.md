@@ -4,7 +4,7 @@ CLI tools &amp; data management protocols for interacting with Page Freezer.
 See [the versionista outputter repo](https://github.com/edgi-govdata-archiving/versionista-outputter) and the [version tracking ui](https://github.com/edgi-govdata-archiving/version-tracking-ui) repos for earlier work that has some overlap/similar goals. 
 
 ## Motivation
-We are currently receiving moderate-sized archives of government web pages (10 ^2 Gb/week) from our partners at [PageFreezer](http://pagefreezer.com). In principle, these arechives are a gold mine of information -- but we need tools to analyze them. Those tools need to be able to execute a diff operation against large numbers of pages, and to filter out the vast bulk of changes in order to identify the important ones.
+We are currently receiving moderate-sized archives of government web pages (10 ^2 Gb/week) from our partners at [PageFreezer](http://pagefreezer.com). In principle, these archives are a gold mine of information -- but we need tools to analyze them. Those tools need to be able to execute a diff operation against large numbers of pages, and to filter out the vast bulk of changes in order to identify the important ones.
 
 ## Getting Involved
 We need your help! Please read through the rest of this document and see what you can help with!  We have not yet settled on a language for our work, though we imagine python and ruby are the most likely candidates. 
@@ -66,7 +66,7 @@ The vast majority of web page changes are of limited interest to us, and so we n
 * Many domains update their "Last Updated" date at random. Again, cutting these out would help.
 * Many pages contain user-invisible changes which, for now at least, are not interesting to us
 
-[The archives directory of this repo](./archives) contains a number of examples. Filenames starting with `falsepos-` are paradigmatic cases for filter design. Filenames starging with `truepos` areexamples of changes we actually care about.  Obviously filters will need to be tested against real datasets at some point; we hope to make those available soon. 
+[The archives directory of this repo](./archives) contains a number of examples. Filenames starting with `falsepos-` are paradigmatic cases for filter design. Filenames starting with `truepos` are examples of changes we actually care about. Obviously filters will need to be tested against real datasets at some point. We hope to make those available soon.
 
 Current materials:
 * [versionista-outputter](https://github.com/edgi-govdata-archiving/versionista-outputter)
