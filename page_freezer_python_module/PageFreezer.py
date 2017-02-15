@@ -1,4 +1,4 @@
-mport requests
+import requests
 import json
 import pandas as pd
 
@@ -51,4 +51,3 @@ class PageFreezer:
         from IPython.display import display, HTML
         for pair in diff_pairs:
             display(HTML(pair[1]))
-
