@@ -1,5 +1,7 @@
-# page-freezer-cli
-CLI tools &amp; data management protocols for interacting with Page Freezer.
+# web-monitoring-processing
+
+works with web-monitoring-db and web-monitoring-ui to support the next web
+monitoring workflow
 
 See [the versionista outputter repo](https://github.com/edgi-govdata-archiving/versionista-outputter) and the [version tracking ui](https://github.com/edgi-govdata-archiving/version-tracking-ui) repos for earlier work that has some overlap/similar goals. 
 
