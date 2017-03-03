@@ -7,7 +7,7 @@
 * This repo, web-monitoring-processing, populates a database of processed diffs
   to be served by the Rails app.
 
-## Overview of the task
+## Overview of this repo's task
 
 1. Ingest a cache of captured HTML files, representing a Page as a series of
    Snapshots through time.
@@ -17,6 +17,18 @@
    app in web-monitoring-db.
 4. Receive Annotations from the Rails app and incorporate these in future
    prioritization.
+
+## Sub-projects
+
+See the GH issues for details but here's a quick overview.
+
+* Settle on a database schema, shared by the Rails app in web-monitoring-db.
+* Analyze changes *within* a page and treat them separately instead of bluntly
+  analyzing a whole page as an atomic unit.
+* Apply text processing / ML to identify interesting changes and assign a
+  numerical priority.
+* Use information entered by volunteers to develop a smarter semantic differ
+  (preferrably with the same inputs and outputs as PageFreezer's API).
 
 ## Development status
 
