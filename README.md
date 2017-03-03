@@ -1,13 +1,9 @@
 # web-monitoring-processing
 
-## Architecture of the web-monitoring project
+This is a component of the
+[web-monitoring project](https://github.com/edgi-govdata-archiving/web-monitoring).
 
-* [web-monitoring-db](https://github.com/edgi-govdata-archiving/web-monitoring-db), a Rails app (in development) for serving diffs and collecting human-entered annotations
-* [web-monitoring-ui](https://github.com/edgi-govdata-archiving/web-monitoring-ui), font-end code that will communicate with the Rails app via JSON
-* This repo, web-monitoring-processing, populates a database of processed diffs
-  to be served by the Rails app.
-
-## Overview of this repo's task
+## Overview of this component's task
 
 1. Ingest a cache of captured HTML files, representing a Page as a series of
    Snapshots through time.
