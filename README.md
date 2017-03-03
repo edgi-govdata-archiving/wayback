@@ -22,7 +22,13 @@
 
 See the GH issues for details but here's a quick overview.
 
-* Settle on a database schema, shared by the Rails app in web-monitoring-db.
+* Refine the database schema for Pages, Snapshots, and Diffs, to be shared with
+  the Rails app in web-monitoring-db.
+* Build a tool for downloading captured HTML from Verisionista and registering
+  Snapshots.
+* Do the same for the Internet Archive.
+* Build a tool for parsing HTML dumps from PageFreezer and registering
+  Snapshots.
 * Analyze changes *within* a page and treat them separately instead of bluntly
   analyzing a whole page as an atomic unit.
 * Apply text processing / ML to identify interesting changes and assign a

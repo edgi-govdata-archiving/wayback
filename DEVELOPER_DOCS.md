@@ -11,20 +11,22 @@ An admin provides some initial data to the server:
   and a time of capture, along with the location of the captured HTML in
   storage.
 
-In the background, the server processes new Snapshots:
+In the background, the backend processes new Snapshots:
 
-* The server requests a diff from PageFreezer (or some similar API) between the
+* The backend requests a diff from PageFreezer (or some similar API) between the
   Snapshot and some ancestor Snapshot of the same Page. (It could be the oldest,
   or the most recent, or any between --- no assumptions are built in.)
-* The server stashes PageFreezer's response along with a hash of the diff, which
+* The backend stashes PageFreezer's response along with a hash of the diff, which
   can be used to identify unique diff and related identical ones.
 * Then, each unique diff is assigned a priority. To start, this prority may
   simply be 1 (probably interesting) or 0 (probably not interesting).
 
 When a user shows up:
 
-* User specifies any domain allocation preferences.
-* User requests the "next" diff to evaluate.
+* User logs into the Rails app. Their identity may be associated with a certain
+  subdomain or area of expertise, as designated by an admin.
+* User requests the "next" diffs to evaluate and get a table of the
+  highest-priority diffs in their area.
 * Server determines the highest priority diff that needs human inspection and
   redirects user to ``/diff/<DIFF_HASH>``. This is a permanent link that can be
   shared or revisited later.
