@@ -1,4 +1,4 @@
-# Developer Documentaiton
+# Developer Documentation
 
 ## Story
 

@@ -8,7 +8,7 @@ This is a component of the
 1. Ingest a cache of captured HTML files, representing a Page as a series of
    Snapshots through time.
 2. Compare Snapshots of the same Page by sending requests to PageFreezer (or
-   some other service). Store the respones (Diffs).
+   some other service). Store the responses (Diffs).
 3. Assign Priorities to the Diffs and provide the prioritized Diffs to the Rails
    app in web-monitoring-db.
 4. Receive Annotations from the Rails app and incorporate these in future
@@ -20,7 +20,7 @@ See the GH issues for details but here's a quick overview.
 
 * Refine the database schema for Pages, Snapshots, and Diffs, to be shared with
   the Rails app in web-monitoring-db.
-* Build a tool for downloading captured HTML from Verisionista and registering
+* Build a tool for downloading captured HTML from Versionista and registering
   Snapshots.
 * Do the same for the Internet Archive.
 * Build a tool for parsing HTML dumps from PageFreezer and registering
@@ -38,7 +38,7 @@ This repo contains:
 
 * [Example HTML](https://github.com/edgi-govdata-archiving/web-monitoring-processing/tree/master/archives) providing useful test cases.
 * A draft [database schema](https://github.com/edgi-govdata-archiving/web-monitoring-processing/blob/master/web_monitoring/db.py#L30) with a Python API, demonstrated in [a Jupyter notebook](https://github.com/edgi-govdata-archiving/web-monitoring-processing/blob/master/backend-demo.ipynb).
-  This targets PageFrezer, whereas web-monitoring-db targets Versionista. The
+  This targets PageFreezer, whereas web-monitoring-db targets Versionista. The
   goal is to store both and provide a common interface to Diffs.
 * A [Python API to PageFreezer integrating with
   pandas](https://github.com/edgi-govdata-archiving/web-monitoring-processing/tree/master/page_freezer_python_module)
