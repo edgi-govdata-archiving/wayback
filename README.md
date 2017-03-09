@@ -1,7 +1,6 @@
 # web-monitoring-processing
 
-This is a component of the
-[web-monitoring project](https://github.com/edgi-govdata-archiving/web-monitoring).
+A component of the EDGI [Web Monitoring Project](https://github.com/edgi-govdata-archiving/web-monitoring).
 
 ## Overview of this component's task
 
