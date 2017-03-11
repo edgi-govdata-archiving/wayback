@@ -79,7 +79,7 @@ ANNOTATIONS_COLUMNS = (
     sqlalchemy.Column('uuid', sqlalchemy.Text, primary_key=True),
     sqlalchemy.Column('change_uuid', sqlalchemy.Text),
     sqlalchemy.Column('annotation', sqlalchemy.types.JSON),
-    sqlalchemy.Column('author', sqlalchemy.types.JSON),
+    sqlalchemy.Column('author', sqlalchemy.Text),
     sqlalchemy.Column('created_at', sqlalchemy.DateTime,
                       default=datetime.datetime.utcnow),
     sqlalchemy.Column('updated_at', sqlalchemy.DateTime,
