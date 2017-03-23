@@ -45,3 +45,7 @@ This repo contains:
   notebook](https://github.com/edgi-govdata-archiving/web-monitoring-processing/blob/master/page_freezer_python_module/PageFreezer.ipynb).
 * An experiment with the [newspaper
   module](https://github.com/edgi-govdata-archiving/web-monitoring-processing/tree/master/get_article_text).
+
+## Contribute
+
+To contribute to this repository, please refer [DEVELOPER_DOCS.md](https://github.com/edgi-govdata-archiving/web-monitoring-processing/blob/master/DEVELOPER_DOCS.md)
