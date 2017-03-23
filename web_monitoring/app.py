@@ -14,7 +14,7 @@ import pymongo
 SQL_DB_URI = 'sqlite3://'
 MONGO_DB_URI = 'mongodb://localhost:27017/'
 MONGO_DB_NAME = 'page_freezer_v1'
-engine = sqlalcehmy.create_engine(SQL_DB_URI)
+engine = sqlalchemy.create_engine(SQL_DB_URI)
 client = pymongo.MongoClient(MONGO_URI)
 
 results = Results(client[MONGO_DB_NAME])
