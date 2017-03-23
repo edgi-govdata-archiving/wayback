@@ -1,2 +1,3 @@
+## On running the command - `pip install -r requirements.txt` following packages will be installed using pip
 requests
-sqlalchmey
+sqlalchemy
