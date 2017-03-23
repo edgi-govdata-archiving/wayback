@@ -30,7 +30,7 @@ When a user shows up:
 * Server determines the highest priority diff that needs human inspection and
   redirects user to ``/diff/<DIFF_HASH>``. This is a permanent link that can be
   shared or revisited later.
-* The page at ``/diff/<DIFF_HASH>`` displays viral statistics about the diff,
+* The page at ``/diff/<DIFF_HASH>`` displays vital statistics about the diff,
   gleaned from PageFreezer's result object, including text-only changes and
   source changes.
 * Meanwhile, a visual diff is loaded asynchronously on the client side.
@@ -51,8 +51,11 @@ When a user shows up:
 * A server written in Python using the Tornado framework.
 * A frontend using TypeScript, JQuery, and Bootstrap.
 
-## Development Install
+### Pre-requisite for Development
+PostgreSQL is downloaded and installed.
++ For latest version refer - [PostgreSQL.org](https://www.postgresql.org/)
 
+## Development Install
 Create a new postgresql user and database.
 ```
 createuser web_monitoring --pwprompt  # Enter a password.
