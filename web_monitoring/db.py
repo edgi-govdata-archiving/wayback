@@ -434,18 +434,22 @@ def diff_version(version_uuid, versions, diffs, source_type,
                  source_metadata)
 
 
-#class WebVersioningException(Exception):
+class WebVersioningException(Exception):
+    pass
     # All exceptions raised by this package inherit from this.
     #...
 
 
-#class PageFreezerError(WebVersioningException):
+class PageFreezerError(WebVersioningException):
+    pass
     #...
 
 
-#class NoAncestor(WebVersioningException):
+class NoAncestor(WebVersioningException):
+    pass
     #...
 
 
-#class EmptyWorkQueue(WebVersioningException):
+class EmptyWorkQueue(WebVersioningException):
+    pass
     #...
