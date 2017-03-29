@@ -7,7 +7,8 @@ Quick and dirty module for accessing Page Freezer api. Convenience methods for g
 ```python
 import PageFreezer
 
-pf = PageFreezer(url_old, url_new, api_key='')
+pf = PageFreezer(url_old, url_new, api_key='') #api_key is the PageFreezer API key to be taken from Developers/Owners 
+#without the API key value set, one gets "Key Error
 pf.dataframe
 pf.to_csv('results.csv')
 pf.full_html_changes()
