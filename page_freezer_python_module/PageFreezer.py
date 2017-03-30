@@ -40,8 +40,8 @@ class PageFreezer:
 
     def full_html_changes(self):
         from IPython.display import display, HTML
-        display(HTML(a['output']['html']))
-        return a['output']['html']
+        display(HTML(self.query_result['output']['html']))
+        return self.query_result['output']['html']
 
     def to_csv(self, filename):
         self.dataframe.to_csv(filename)
