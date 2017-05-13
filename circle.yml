@@ -1,0 +1,15 @@
+machine:
+  python:
+    version: 3.6.1
+
+dependencies:
+  pre:
+    - pip install -r test-requirements.txt
+
+  override:
+    - python setup.py install
+
+test:
+  override:
+    - coverage run run_tests.py -v tests/
+    - coverage report -m
