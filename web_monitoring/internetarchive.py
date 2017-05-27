@@ -14,9 +14,18 @@ Other potentially useful links:
 """
 
 from datetime import datetime
+import json
+import os
 import re
 import requests
 
+
+# mutable singleton for stashing web-monitoring-db url, potentially other stuff
+settings = {}
+# At import time, grab settings from env if possible. User can always override.
+settings['db_url'] = os.environ.get('WEB_MONITORING_DB_URL')
+settings['db_url'] = os.environ.get('WEB_MONITORING_DB_EMAIL')
+settings['db_url'] = os.environ.get('WEB_MONITORING_DB_PASSWORD')
 
 
 class WebMonitoringException(Exception):
@@ -33,6 +42,8 @@ DATE_FMT = '%a, %d %b %Y %H:%M:%S %Z'
 DATE_URL_FMT = '%Y%m%d%H%M%S'
 URL_CHUNK_PATTERN = re.compile('\<(.*)\>')
 DATETIME_CHUNK_PATTERN = re.compile(' datetime="(.*)",')
+
+WEB_MONITORING_IMPORT_API = '{db_url}/api/v0/imports'
 
 
 def list_versions(url):
@@ -105,3 +116,62 @@ def list_versions(url):
 
             dt = datetime.strptime(dt_str, DATE_FMT)
             yield dt, uri
+
+
+def format_version(*, url, dt, uri, version_hash, title, agency, site):
+    """
+    Format version info in preparation for submitting it to web-monitoring-db.
+
+    Parameters
+    ----------
+    url : string
+        page URL
+    dt : datetime.datetime
+        capture time
+    uri : string
+        URI of version
+    version_hash : string
+        sha256 hash of version content
+    title : string
+        primer metadata (likely to change in the future)
+    agency : string
+        primer metadata (likely to change in the future)
+    site : string
+        primer metadata (likely to change in the future)
+
+    Returns
+    -------
+    version : dict
+        properly formatted for as JSON blob for web-monitoring-db
+    """
+    # Existing documentation of import API is in this PR:
+    # https://github.com/edgi-govdata-archiving/web-monitoring-db/pull/32
+    return dict(
+         page_url=url,
+         page_title=title,
+         site_agency=agency,
+         site_name=site,
+         capture_time=dt.isoformat(),
+         uri=uri,
+         version_hash=version_hash,
+         source_type='internet_archive',
+         source_metadata={}  # TODO Use CDX API to get additional metadata.
+    )
+
+
+def import_into_db(versions):
+    """
+    Submit versions for importing into web-monitoring-db.
+
+    Parameters
+    ----------
+    versions : iterable
+        iterable of dicts from :func:`format_version`
+    """
+    # Existing documentation of import API is in this PR:
+    # https://github.com/edgi-govdata-archiving/web-monitoring-db/pull/32
+    url = WEB_MONITORING_IMPORT_API.format(db_url=settings['db_url'])
+    return requests.post(url,
+                         auth=(settings['db_email'], settings['db_password']),
+                         headers={'Content-Type': 'application/x-json-stream'},
+                         data='\n'.join(map(json.dumps, versions)))
