@@ -79,3 +79,22 @@ def get_file_metadata(cabinet_id, archive_id, page_key):
 def get_file(cabinet_id, archive_id, page_key):
     res = _command_file(cabinet_id, archive_id, page_key, 'file')
     return res.content  # intentionally un-decoded bytes
+
+
+def import_into_db(versions):
+    """
+    Submit versions for importing into web-monitoring-db.
+
+    Parameters
+    ----------
+    versions : iterable
+        iterable of dicts from :func:`format_version`
+    """
+    # TODO Refactor this into a module shared with internetarchive.py.
+    # Existing documentation of import API is in this PR:
+    # https://github.com/edgi-govdata-archiving/web-monitoring-db/pull/32
+    url = WEB_MONITORING_IMPORT_API.format(db_url=settings['db_url'])
+    return requests.post(url,
+                         auth=(settings['db_email'], settings['db_password']),
+                         headers={'Content-Type': 'application/x-json-stream'},
+                         data='\n'.join(map(json.dumps, versions)))
