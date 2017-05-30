@@ -8,8 +8,8 @@ import requests
 settings = {}
 # At import time, grab settings from env if possible. User can always override.
 settings['db_url'] = os.environ.get('WEB_MONITORING_DB_URL')
-settings['db_url'] = os.environ.get('WEB_MONITORING_DB_EMAIL')
-settings['db_url'] = os.environ.get('WEB_MONITORING_DB_PASSWORD')
+settings['db_email'] = os.environ.get('WEB_MONITORING_DB_EMAIL')
+settings['db_password'] = os.environ.get('WEB_MONITORING_DB_PASSWORD')
 
 WEB_MONITORING_IMPORT_API = '{db_url}/api/v0/imports'
 
