@@ -7,6 +7,7 @@ import io
 import requests
 from tqdm import tqdm
 from web_monitoring import internetarchive as ia
+from web_monitoring import pf_edgi as pf
 from web_monitoring import db
 
 

@@ -5,6 +5,7 @@
 # Fails loudly (with exceptions) if REST API reports bad status.
 
 import requests
+from tqdm import tqdm
 
 
 BASE = 'https://edgi.pagefreezer.com/'
@@ -121,3 +122,49 @@ def format_version(*, url, dt, uri, version_hash, title, agency, site,
          source_type='page_freezer',
          source_metadata=metadata
     )
+
+
+def page_to_version(url, cabinet_id, archive_id, page_key, *,
+                    agency, site):
+    """
+    Obtain URI, timestamp, metadata, hash, and title and return a Version.
+    """
+    uri = pf.file_command_uri(cabinet_id, archive_id, page_key, 'file')
+    dt = datetime.fromtimestamp(archive_id)
+    metadata = pf.get_file_metadata(cabinet_id, archive_id, page_key)
+    content = pf.get_file(cabinet_id, archive_id, page_key)
+    version_hash = hashlib.sha256(content).digest()
+    title = extract_title(content)
+    version = format_version(url=url, dt=dt, uri=uri,
+                             version_hash=version_hash, title=title,
+                             agency=agency, site=site,
+                             metadata=metadata)
+    return version
+
+
+def archive_to_versions(cabinet_id, archive_id, *, agency, site):
+    pf.load_archive(cabinet_id, archive_id)
+    results = pf.search_achive(cabinet_id, archive_id)['founds']
+    for result in results:
+        yield page_to_version(result['url'], cabinet_id, archive_id,
+                              result['key'], agency=agency, site=site)
+    pf.unload_archive(cabinet_id, archive_id)
+
+
+def unique_urls(cabinets):
+    return set([entry['url']
+                for cabinet in cabinets.values()
+                for entry in cabinet])
+
+
+class Context:
+    "A context for caching the cabinets and archives."
+    def __init__(self, disable=None):
+        self.cabinets = list_cabinets()
+        # Wrap self.cabinets in a progress bar.
+        pbar = tqdm(self.cabinets, disable=disable, desc='Loading archives')
+        self.archives = {cab: list_archives(cab) for cab in pbar}
+
+    @property
+    def urls(self):
+        return unique_urls(self.cabinets)
