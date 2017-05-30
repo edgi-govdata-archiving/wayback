@@ -3,4 +3,6 @@ import setuptools
 
 
 setup(name='web_monitoring',
-      packages=['web_monitoring'])
+      packages=['web_monitoring'],
+      scripts=['scripts/wm'],
+     )
