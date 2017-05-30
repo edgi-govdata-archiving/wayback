@@ -155,7 +155,7 @@ def timestamped_uri_to_version(dt, uri, *, url, site, agency):
     """
     res = requests.get(uri)
     assert res.ok
-    version_hash = hashlib.sha256(res.content).digest()
+    version_hash = hashlib.sha256(res.content).hexdigest()
     title = utils.extract_title(res.content)
     return format_version(url=url, dt=dt, uri=uri,
                           version_hash=version_hash, title=title,

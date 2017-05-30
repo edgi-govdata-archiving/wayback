@@ -135,7 +135,7 @@ def page_to_version(url, cabinet_id, archive_id, page_key, *,
     dt = datetime.fromtimestamp(archive_id)
     metadata = get_file_metadata(cabinet_id, archive_id, page_key)
     content = get_file(cabinet_id, archive_id, page_key)
-    version_hash = hashlib.sha256(content).digest()
+    version_hash = hashlib.sha256(content).hexdigest()
     title = utils.extract_title(content)
     version = format_version(url=url, dt=dt, uri=uri,
                              version_hash=version_hash, title=title,
