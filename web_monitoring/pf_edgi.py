@@ -81,20 +81,42 @@ def get_file(cabinet_id, archive_id, page_key):
     return res.content  # intentionally un-decoded bytes
 
 
-def import_into_db(versions):
+def format_version(*, url, dt, uri, version_hash, title, agency, site):
     """
-    Submit versions for importing into web-monitoring-db.
+    Format version info in preparation for submitting it to web-monitoring-db.
 
     Parameters
     ----------
-    versions : iterable
-        iterable of dicts from :func:`format_version`
+    url : string
+        page URL
+    dt : datetime.datetime
+        capture time
+    uri : string
+        URI of version
+    version_hash : string
+        sha256 hash of version content
+    title : string
+        primer metadata (likely to change in the future)
+    agency : string
+        primer metadata (likely to change in the future)
+    site : string
+        primer metadata (likely to change in the future)
+
+    Returns
+    -------
+    version : dict
+        properly formatted for as JSON blob for web-monitoring-db
     """
-    # TODO Refactor this into a module shared with internetarchive.py.
     # Existing documentation of import API is in this PR:
     # https://github.com/edgi-govdata-archiving/web-monitoring-db/pull/32
-    url = WEB_MONITORING_IMPORT_API.format(db_url=settings['db_url'])
-    return requests.post(url,
-                         auth=(settings['db_email'], settings['db_password']),
-                         headers={'Content-Type': 'application/x-json-stream'},
-                         data='\n'.join(map(json.dumps, versions)))
+    return dict(
+         page_url=url,
+         page_title=title,
+         site_agency=agency,
+         site_name=site,
+         capture_time=dt.isoformat(),
+         uri=uri,
+         version_hash=version_hash,
+         source_type='page_freezer',
+         source_metadata={}
+    )
