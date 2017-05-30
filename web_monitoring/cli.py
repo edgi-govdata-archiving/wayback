@@ -25,7 +25,9 @@ def import_ia(url, agency, site):
                                                 agency=agency)
         formatted_versions.append(version)
     print('posting to db....')
-    db.post_to_db(formatted_versions)
+    res = db.post_versions(formatted_versions)
+    assert res.ok
+    print(res.json())
 
 
 def import_pf_archive(cabinet_id, archive_id, *, agency, site):
@@ -35,7 +37,9 @@ def import_pf_archive(cabinet_id, archive_id, *, agency, site):
                         desc='formatting versions'):
         formatted_versions.append(version)
     print('posting to db....')
-    db.post_to_db(formatted_versions)
+    res = db.post_versions(formatted_versions)
+    assert res.ok
+    print(res.json())
 
 
 def main():
