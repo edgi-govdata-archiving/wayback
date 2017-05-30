@@ -81,7 +81,8 @@ def get_file(cabinet_id, archive_id, page_key):
     return res.content  # intentionally un-decoded bytes
 
 
-def format_version(*, url, dt, uri, version_hash, title, agency, site):
+def format_version(*, url, dt, uri, version_hash, title, agency, site,
+                   metadata):
     """
     Format version info in preparation for submitting it to web-monitoring-db.
 
@@ -118,5 +119,5 @@ def format_version(*, url, dt, uri, version_hash, title, agency, site):
          uri=uri,
          version_hash=version_hash,
          source_type='page_freezer',
-         source_metadata={}
+         source_metadata=metadata
     )
