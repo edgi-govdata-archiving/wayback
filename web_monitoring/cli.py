@@ -16,6 +16,13 @@ from web_monitoring import db
 # better to use the underlying library code.
 
 
+def _extract_title(content_bytes):
+    "Return content of <title> tag as string."
+    content_as_file = io.StringIO(content.decode(errors='ignore'))
+    title = lxml.html.parse(content_as_file).find(".//title").text
+    return title
+
+
 def import_ia(url, agency, site):
     print('obtaining versions list from Internet Archive...')
     versions = ia.list_versions(url)
@@ -24,9 +31,8 @@ def import_ia(url, agency, site):
     for dt, uri in tqdm(versions, desc='formatting versions'):
         res = requests.get(uri)
         assert res.ok
-        version_hash = hashlib.sha256(res.content)
-        content_as_file = io.StringIO(res.content.decode(errors='ignore'))
-        title = lxml.html.parse(content_as_file).find(".//title").text
+        version_hash = hashlib.sha256(res.content).digest()
+        title = _extract_title(res.content)
         v = ia.format_version(url=url, dt=dt, uri=uri,
                               version_hash=version_hash, title=title,
                               agency=agency, site=site)
