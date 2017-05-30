@@ -132,7 +132,7 @@ def page_to_version(url, cabinet_id, archive_id, page_key, *,
     Obtain URI, timestamp, metadata, hash, and title and return a Version.
     """
     uri = file_command_uri(cabinet_id, archive_id, page_key, 'file')
-    dt = datetime.fromtimestamp(archive_id)
+    dt = datetime.fromtimestamp(int(archive_id))
     metadata = get_file_metadata(cabinet_id, archive_id, page_key)
     content = get_file(cabinet_id, archive_id, page_key)
     version_hash = hashlib.sha256(content).hexdigest()
@@ -146,7 +146,7 @@ def page_to_version(url, cabinet_id, archive_id, page_key, *,
 
 def archive_to_versions(cabinet_id, archive_id, *, agency, site):
     load_archive(cabinet_id, archive_id)
-    results = search_archive(cabinet_id, archive_id)['founds']
+    results = search_archive(cabinet_id, archive_id, '')['founds']
     for result in results:
         yield page_to_version(result['url'], cabinet_id, archive_id,
                               result['key'], agency=agency, site=site)
