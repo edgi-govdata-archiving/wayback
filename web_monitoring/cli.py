@@ -2,9 +2,6 @@
 # See scripts/ directory for associated executable(s). All of the interesting
 # functionality is implemented in this module to make it easier to test.
 from docopt import docopt
-import hashlib
-import io
-import requests
 from tqdm import tqdm
 from web_monitoring import internetarchive as ia
 from web_monitoring import pf_edgi as pf
@@ -22,16 +19,19 @@ def import_ia(url, agency, site):
     # Collect all the results and POST them as a unit (rather than streaming).
     formatted_versions = []
     for dt, uri in tqdm(versions, desc='formatting versions'):
-        version = ia.timestamped_uri_to_version(dt, uri)
+        version = ia.timestamped_uri_to_version(dt, uri,
+                                                url=url,
+                                                site=site,
+                                                agency=agency)
         formatted_versions.append(version)
     print('posting to db....')
     db.post_to_db(formatted_versions)
 
 
-def import_pf_archive(cabinet_id, archive_id, *, argency, site):
+def import_pf_archive(cabinet_id, archive_id, *, agency, site):
     formatted_versions = []
-    for version in tqdm(archive_to_versions(cabinet_id, archive_id,
-                                            agency=agency, site=site),
+    for version in tqdm(pf.archive_to_versions(cabinet_id, archive_id,
+                                               agency=agency, site=site),
                         desc='formatting versions'):
         formatted_versions.append(version)
     print('posting to db....')

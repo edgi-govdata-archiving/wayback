@@ -14,8 +14,10 @@ Other potentially useful links:
 """
 
 from datetime import datetime
+import hashlib
 import re
 import requests
+from web_monitoring import utils
 
 
 class WebMonitoringException(Exception):
@@ -147,14 +149,14 @@ def format_version(*, url, dt, uri, version_hash, title, agency, site):
     )
 
 
-def timestamped_uri_to_version(dt, uri):
+def timestamped_uri_to_version(dt, uri, *, url, site, agency):
     """
     Obtain hash and title and return a Version.
     """
     res = requests.get(uri)
     assert res.ok
     version_hash = hashlib.sha256(res.content).digest()
-    title = extract_title(res.content)
+    title = utils.extract_title(res.content)
     return format_version(url=url, dt=dt, uri=uri,
                           version_hash=version_hash, title=title,
                           agency=agency, site=site)

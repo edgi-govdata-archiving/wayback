@@ -3,9 +3,11 @@
 
 # Provides low-level, stateless Python functions wrapping the REST API.
 # Fails loudly (with exceptions) if REST API reports bad status.
-
+from datetime import datetime
+import hashlib
 import requests
 from tqdm import tqdm
+from web_monitoring import utils
 
 
 BASE = 'https://edgi.pagefreezer.com/'
@@ -129,12 +131,12 @@ def page_to_version(url, cabinet_id, archive_id, page_key, *,
     """
     Obtain URI, timestamp, metadata, hash, and title and return a Version.
     """
-    uri = pf.file_command_uri(cabinet_id, archive_id, page_key, 'file')
+    uri = file_command_uri(cabinet_id, archive_id, page_key, 'file')
     dt = datetime.fromtimestamp(archive_id)
-    metadata = pf.get_file_metadata(cabinet_id, archive_id, page_key)
-    content = pf.get_file(cabinet_id, archive_id, page_key)
+    metadata = get_file_metadata(cabinet_id, archive_id, page_key)
+    content = get_file(cabinet_id, archive_id, page_key)
     version_hash = hashlib.sha256(content).digest()
-    title = extract_title(content)
+    title = utils.extract_title(content)
     version = format_version(url=url, dt=dt, uri=uri,
                              version_hash=version_hash, title=title,
                              agency=agency, site=site,
@@ -143,12 +145,12 @@ def page_to_version(url, cabinet_id, archive_id, page_key, *,
 
 
 def archive_to_versions(cabinet_id, archive_id, *, agency, site):
-    pf.load_archive(cabinet_id, archive_id)
-    results = pf.search_achive(cabinet_id, archive_id)['founds']
+    load_archive(cabinet_id, archive_id)
+    results = search_archive(cabinet_id, archive_id)['founds']
     for result in results:
         yield page_to_version(result['url'], cabinet_id, archive_id,
                               result['key'], agency=agency, site=site)
-    pf.unload_archive(cabinet_id, archive_id)
+    unload_archive(cabinet_id, archive_id)
 
 
 def unique_urls(cabinets):
