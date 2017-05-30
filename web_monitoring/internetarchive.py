@@ -145,3 +145,16 @@ def format_version(*, url, dt, uri, version_hash, title, agency, site):
          source_type='internet_archive',
          source_metadata={}  # TODO Use CDX API to get additional metadata.
     )
+
+
+def timestamped_uri_to_version(dt, uri):
+    """
+    Obtain hash and title and return a Version.
+    """
+    res = requests.get(uri)
+    assert res.ok
+    version_hash = hashlib.sha256(res.content).digest()
+    title = extract_title(res.content)
+    return format_version(url=url, dt=dt, uri=uri,
+                          version_hash=version_hash, title=title,
+                          agency=agency, site=site)

@@ -22,14 +22,18 @@ def import_ia(url, agency, site):
     # Collect all the results and POST them as a unit (rather than streaming).
     formatted_versions = []
     for dt, uri in tqdm(versions, desc='formatting versions'):
-        res = requests.get(uri)
-        assert res.ok
-        version_hash = hashlib.sha256(res.content).digest()
-        title = extract_title(res.content)
-        v = ia.format_version(url=url, dt=dt, uri=uri,
-                              version_hash=version_hash, title=title,
-                              agency=agency, site=site)
-        formatted_versions.append(v)
+        version = ia.timestamped_uri_to_version(dt, uri)
+        formatted_versions.append(version)
+    print('posting to db....')
+    db.post_to_db(formatted_versions)
+
+
+def import_pf_archive(cabinet_id, archive_id, *, argency, site):
+    formatted_versions = []
+    for version in tqdm(archive_to_versions(cabinet_id, archive_id,
+                                            agency=agency, site=site),
+                        desc='formatting versions'):
+        formatted_versions.append(version)
     print('posting to db....')
     db.post_to_db(formatted_versions)
 
@@ -39,7 +43,7 @@ def main():
 
     Usage:
     wm import ia <url> --site <site> --agency <agency>
-    wm import pf <url>
+    wm import pf <cabinet_id> <archive_id> --site <site> --agency <agency>
 
     Options:
     -h --help     Show this screen.
@@ -52,3 +56,8 @@ def main():
             import_ia(url=arguments['<url>'],
                       agency=arguments['<agency>'],
                       site=arguments['<site>'])
+        elif arguments['pf']:
+            import_pf_archive(cabinet_id=arguments['<cabinet_id>'],
+                              archive_id=arguments['<archive_id>'],
+                              agency=arguments['<agency>'],
+                              site=arguments['<site>'])
