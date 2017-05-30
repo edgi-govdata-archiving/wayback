@@ -1,6 +1,6 @@
 # Command Line Interface
-# All the functionality is implemented in this module. See scripts/ for
-# executables.
+# See scripts/ directory for associated executable(s). All of the interesting
+# functionality is implemented in this module to make it easier to test.
 from docopt import docopt
 import hashlib
 import io
