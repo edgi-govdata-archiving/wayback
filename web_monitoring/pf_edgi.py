@@ -58,18 +58,16 @@ def search_archive(cabinet_id, archive_id, query):
     return content['result']
 
 
-def _command_file(cabinet_id, archive_id, page_key, command):
+def file_command_uri(cabinet_id, archive_id, page_key, command):
     # called by get_file_metadata, get_file
-    url = (f'{BASE}/master/api/services/storage/archive/{cabinet_id}/'
-           f'{archive_id}/{page_key}/{command}')
-    res = requests.get(url)
-    assert res.ok  # server is OK
-    # Return raw Response because 'metadata' is JSON but 'file' is not.
-    return res
+    return (f'{BASE}/master/api/services/storage/archive/{cabinet_id}/'
+            f'{archive_id}/{page_key}/{command}')
 
 
 def get_file_metadata(cabinet_id, archive_id, page_key):
-    res = _command_file(cabinet_id, archive_id, page_key, 'meta')
+    uri = file_command_uri(cabinet_id, archive_id, page_key, 'meta')
+    res = requests.get(uri)
+    assert res.ok  # server is OK
     content = res.json()
     assert content['status'] == 'ok'  # business logic is OK
     assert content['result']['status'] == 'ok'
@@ -77,7 +75,9 @@ def get_file_metadata(cabinet_id, archive_id, page_key):
 
 
 def get_file(cabinet_id, archive_id, page_key):
-    res = _command_file(cabinet_id, archive_id, page_key, 'file')
+    uri = file_command_uri(cabinet_id, archive_id, page_key, 'file')
+    res = requests.get(uri)
+    assert res.ok  # server is OK
     return res.content  # intentionally un-decoded bytes
 
 
