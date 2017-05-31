@@ -135,7 +135,20 @@ def page_to_version(url, cabinet_id, archive_id, page_key, *,
     metadata = get_file_metadata(cabinet_id, archive_id, page_key)
     content = get_file(cabinet_id, archive_id, page_key)
     version_hash = utils.hash_content(content)
-    title = utils.extract_title(content)
+
+    # Sniff whether this is text and, if so, what the encoding is.
+    # PF provides its own 'ContentType' key, mapped to a string,
+    # not to be confused with 'Content-Type' in the Header, mapped to a list.
+    content_type = metadata['file']['ContentType']
+    is_text = content_type.startswith('text/html')
+    if is_text:
+        if 'charset=' in content_type:
+            _, encoding = content_type.split('charset=')
+        else:
+            enconding = 'utf-8'  # best effort
+        title = utils.extract_title(content, encoding)
+    else:
+        title = ''
     version = format_version(url=url, dt=dt, uri=uri,
                              version_hash=version_hash, title=title,
                              agency=agency, site=site,
