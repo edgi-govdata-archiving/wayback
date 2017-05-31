@@ -168,7 +168,10 @@ def archive_to_versions(cabinet_id, archive_id, *, agency, site):
     unload_archive(cabinet_id, archive_id)
 
 
-def unique_urls(cabinets):
+def unique_subdomains(cabinets):
+    """
+    A convenience function for producing a flat list of cabinet subdomains.
+    """
     return set([entry['url']
                 for cabinet in cabinets.values()
                 for entry in cabinet])
