@@ -1,3 +1,4 @@
+import hashlib
 import io
 import lxml.html
 
@@ -13,3 +14,8 @@ def extract_title(content_bytes):
         return ''
     else:
         return title.text
+
+
+def hash_content(content_bytes):
+    "Create a version_hash for the content of a snapshot."
+    return hashlib.sha256(content_bytes).hexdigest()

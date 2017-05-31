@@ -14,7 +14,6 @@ Other potentially useful links:
 """
 
 from datetime import datetime
-import hashlib
 import re
 import requests
 from web_monitoring import utils
@@ -155,7 +154,7 @@ def timestamped_uri_to_version(dt, uri, *, url, site, agency):
     """
     res = requests.get(uri)
     assert res.ok
-    version_hash = hashlib.sha256(res.content).hexdigest()
+    version_hash = utils.hash_content(res.content)
     title = utils.extract_title(res.content)
     return format_version(url=url, dt=dt, uri=uri,
                           version_hash=version_hash, title=title,
