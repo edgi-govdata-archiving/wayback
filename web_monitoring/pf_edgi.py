@@ -157,6 +157,9 @@ def page_to_version(url, cabinet_id, archive_id, page_key, *,
 
 
 def archive_to_versions(cabinet_id, archive_id, *, agency, site):
+    """
+    Yield formatted Versions for every page in a PF archive.
+    """
     load_archive(cabinet_id, archive_id)
     results = search_archive(cabinet_id, archive_id, '')['founds']
     for result in results:
