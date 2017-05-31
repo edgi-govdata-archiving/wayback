@@ -156,18 +156,3 @@ def unique_urls(cabinets):
     return set([entry['url']
                 for cabinet in cabinets.values()
                 for entry in cabinet])
-
-
-class Context:
-    "A context for caching the cabinets and archives."
-    # NOTE: This is experimental. It may be changed or removed entirely in the
-    # future.
-    def __init__(self, disable=None):
-        self.cabinets = list_cabinets()
-        # Wrap self.cabinets in a progress bar.
-        pbar = tqdm(self.cabinets, disable=disable, desc='Loading archives')
-        self.archives = {cab: list_archives(cab) for cab in pbar}
-
-    @property
-    def urls(self):
-        return unique_urls(self.cabinets)
