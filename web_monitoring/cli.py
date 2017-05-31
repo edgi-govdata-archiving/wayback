@@ -18,7 +18,7 @@ def import_ia(url, agency, site):
     versions = ia.list_versions(url)
     # Collect all the results and POST them as a unit (rather than streaming).
     formatted_versions = []
-    for dt, uri in tqdm(versions, desc='formatting', unit='versions'):
+    for dt, uri in tqdm(versions, desc='formatting', unit=' versions'):
         version = ia.timestamped_uri_to_version(dt, uri,
                                                 url=url,
                                                 site=site,
@@ -34,7 +34,7 @@ def import_pf_archive(cabinet_id, archive_id, *, agency, site):
     formatted_versions = []
     for version in tqdm(pf.archive_to_versions(cabinet_id, archive_id,
                                                agency=agency, site=site),
-                        desc='formatting', unit='versions'):
+                        desc='formatting', unit=' versions'):
         formatted_versions.append(version)
     print('posting to db....')
     res = db.post_versions(formatted_versions)

@@ -73,5 +73,11 @@ Legacy projects that may be revisited:
     ```sh
     source .env
     ```
-4. See module comments and docstrings for more usage information. There is
-   currently no published documentation.
+4. See module comments and docstrings for more usage information. Also see the
+   command line tool ``wm``, which is installed with the package. For help, use
+
+   ```sh
+   wm --help
+   ```
+
+   There is not yet any published documentation.

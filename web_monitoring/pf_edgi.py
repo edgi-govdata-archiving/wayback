@@ -160,6 +160,8 @@ def unique_urls(cabinets):
 
 class Context:
     "A context for caching the cabinets and archives."
+    # NOTE: This is experimental. It may be changed or removed entirely in the
+    # future.
     def __init__(self, disable=None):
         self.cabinets = list_cabinets()
         # Wrap self.cabinets in a progress bar.

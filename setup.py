@@ -4,11 +4,7 @@ import setuptools
 import sys
 
 
-python_version = sys.version_info
-if python_version[0] < 3:
-    raise RuntimeError("Python version is {}. Requires 3.6 or greater."
-                       "".format(sys.version_info))
-elif python_version[0] == 3 and python_version[1] < 6:
+if sys.version_info < (3, 6):
     raise RuntimeError("Python version is {}. Requires 3.6 or greater."
                        "".format(sys.version_info))
 
