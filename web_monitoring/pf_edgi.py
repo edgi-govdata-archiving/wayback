@@ -145,7 +145,7 @@ def page_to_version(url, cabinet_id, archive_id, page_key, *,
         if 'charset=' in content_type:
             _, encoding = content_type.split('charset=')
         else:
-            enconding = 'utf-8'  # best effort
+            encoding = 'utf-8'  # best effort
         title = utils.extract_title(content, encoding)
     else:
         title = ''
