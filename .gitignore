@@ -97,3 +97,5 @@ archives/.idea/
 web_monitoring.egg-info/*
 __pycache__/
 .ipynb_checkpoints/
+
+.env
