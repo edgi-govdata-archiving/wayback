@@ -16,6 +16,7 @@ Other potentially useful links:
 from datetime import datetime
 import re
 import requests
+from web_monitoring import utils
 
 
 class WebMonitoringException(Exception):
@@ -126,3 +127,56 @@ def list_versions(lines):
 
             dt = datetime.strptime(dt_str, DATE_FMT)
             yield dt, uri
+
+def format_version(*, url, dt, uri, version_hash, title, agency, site):
+    """
+    Format version info in preparation for submitting it to web-monitoring-db.
+
+    Parameters
+    ----------
+    url : string
+        page URL
+    dt : datetime.datetime
+        capture time
+    uri : string
+        URI of version
+    version_hash : string
+        sha256 hash of version content
+    title : string
+        primer metadata (likely to change in the future)
+    agency : string
+        primer metadata (likely to change in the future)
+    site : string
+        primer metadata (likely to change in the future)
+
+    Returns
+    -------
+    version : dict
+        properly formatted for as JSON blob for web-monitoring-db
+    """
+    # Existing documentation of import API is in this PR:
+    # https://github.com/edgi-govdata-archiving/web-monitoring-db/pull/32
+    return dict(
+         page_url=url,
+         page_title=title,
+         site_agency=agency,
+         site_name=site,
+         capture_time=dt.isoformat(),
+         uri=uri,
+         version_hash=version_hash,
+         source_type='internet_archive',
+         source_metadata={}  # TODO Use CDX API to get additional metadata.
+    )
+
+
+def timestamped_uri_to_version(dt, uri, *, url, site, agency):
+    """
+    Obtain hash and title and return a Version.
+    """
+    res = requests.get(uri)
+    assert res.ok
+    version_hash = utils.hash_content(res.content)
+    title = utils.extract_title(res.content)
+    return format_version(url=url, dt=dt, uri=uri,
+                          version_hash=version_hash, title=title,
+                          agency=agency, site=site)            
