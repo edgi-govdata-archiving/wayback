@@ -179,4 +179,5 @@ def timestamped_uri_to_version(dt, uri, *, url, site, agency):
     title = utils.extract_title(res.content)
     return format_version(url=url, dt=dt, uri=uri,
                           version_hash=version_hash, title=title,
-                          agency=agency, site=site)            
+                          agency=agency, site=site)
+

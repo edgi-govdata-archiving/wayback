@@ -1,6 +1,6 @@
-# On running the command
-#
-# pip install -r requirements.txt
-#
-# the following packages will be installed using pip.
+docopt
+lxml
+pandas
 requests
+toolz
+tqdm

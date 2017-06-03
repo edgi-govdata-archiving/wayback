@@ -1,2 +1,4 @@
 flask
 newspaper3k
+gunicorn
+gevent
