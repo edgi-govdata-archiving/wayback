@@ -1,13 +1,5 @@
 # web-monitoring-processing
 
----
-:information_source: **Welcome Mozilla Global Sprinters!** :wave: :tada: :confetti_ball:  
-
-We're excited to work with you! We've moved our Sprint-specific intro material [into a HackPad](https://hackmd.io/AwFgHMoGwGYLQEYBGUBMcTAIYjlhCuAxkWAKaEhlRZJhA===#) -- please check it out in its new location!
-
-
----
-
 A component of the EDGI [Web Monitoring Project](https://github.com/edgi-govdata-archiving/web-monitoring).
 
 ## Overview of this component's tasks
