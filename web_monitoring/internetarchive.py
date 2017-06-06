@@ -16,8 +16,7 @@ Other potentially useful links:
 from datetime import datetime
 import re
 import requests
-from web_monitoring import utils
-
+import utils
 
 class WebMonitoringException(Exception):
     # All exceptions raised directly by this package inherit from this.
@@ -34,7 +33,8 @@ DATE_URL_FMT = '%Y%m%d%H%M%S'
 URL_CHUNK_PATTERN = re.compile('\<(.*)\>')
 DATETIME_CHUNK_PATTERN = re.compile(' datetime="(.*)",')
 
-def get_versions(url):
+
+def list_versions(url):
     """
     Yield (version_datetime, version_uri) for all versions of a url.
 
@@ -45,7 +45,7 @@ def get_versions(url):
     Examples
     --------
     Grab the datetime and URL of the version nasa.gov snapshot.
-    >>> pairs = get_versions('nasa.gov')
+    >>> pairs = list_versions('nasa.gov')
     >>> dt, url = next(pairs)
     >>> dt
     datetime.datetime(1996, 12, 31, 23, 58, 47)
@@ -63,39 +63,19 @@ def get_versions(url):
     # Request a list of the 'mementos' (what we call 'versions') for a url.
     # It may be paginated. If so, the final line in the repsonse is a link to
     # the next page.
-
     
+
     first_page_url = TIMEMAP_URL_TEMPLATE.format(url)
     res = requests.get(first_page_url)
     lines = res.iter_lines()
-
-    exists = check_exists(lines)
-
-    if exists:
-        pairs = list_versions(lines)      
-        return pairs
-    else:
-        # Raises error if archived versions of the url don't exist
-        raise ValueError('Internet archive does not have archived versions of {}'.format(url))
-
-
-def check_exists(lines):    
-    """
-    Check if Internet Archive has archived versions of a url.
-    """
 
     try:
         # The first three lines contain no information we need.
         for _ in range(3):
             next(lines)
-
     except StopIteration:
-        return False
-
-    return True
-
-    
-def list_versions(lines):
+        # Raises error if archived versions of the url don't exist
+        raise ValueError('Internet archive does not have archived versions of {}'.format(url))            
 
     while True:
 
