@@ -6,7 +6,7 @@
 from datetime import datetime
 import requests
 from tqdm import tqdm
-from web_monitoring import utils
+import utils
 
 
 BASE = 'https://edgi.pagefreezer.com/'
