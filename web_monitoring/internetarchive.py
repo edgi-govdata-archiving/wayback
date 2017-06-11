@@ -67,6 +67,7 @@ def list_versions(url):
     first_page_url = TIMEMAP_URL_TEMPLATE.format(url)
     res = requests.get(first_page_url)
     lines = res.iter_lines()
+    first_pass = True
 
     while True:
         # Continue requesting pages of responses until the last page.
@@ -75,8 +76,14 @@ def list_versions(url):
             for _ in range(3):
                 next(lines)
         except StopIteration:
-            # There are no more pages left to parse.
-            break
+            if first_pass:
+                # Raises error if archived versions of the url don't exist
+                raise ValueError("Internet archive does not have archived "
+                                 "versions of {}".format(url))
+            else:
+                # There are no more pages left to parse.
+                break
+        first_pass = False
         for line in lines:
             # Lines are made up semicolon-separated chunks:
             # b'<http://web.archive.org/web/19961231235847/http://www.nasa.gov:80/>; rel="memento"; datetime="Tue, 31 Dec 1996 23:58:47 GMT",'
