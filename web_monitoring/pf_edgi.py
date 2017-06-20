@@ -6,8 +6,9 @@
 from datetime import datetime
 import requests
 from tqdm import tqdm
-import utils
-
+"""from web_monitoring""" 
+from web_monitoring import utils
+from urllib.parse import urlparse
 
 BASE = 'https://edgi.pagefreezer.com/'
 
@@ -19,6 +20,17 @@ def list_cabinets():
     content = res.json()
     assert content['status'] == 'ok'  # business logic is OK
     return content['cabinets']
+
+def get_cabinetID(url):
+    cabinets = list_cabinets()
+    cabinetID = ''
+    for key,value in cabinets.items():
+        for dictionary in value:
+            if(str(urlparse(dictionary['url']).scheme + '://' + urlparse(dictionary['url']).netloc) == url):
+                cabinetID = dictionary['name']                
+
+    assert cabinetID != ''
+    return cabinetID
 
 
 def list_archives(cabinet_id):
