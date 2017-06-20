@@ -5,12 +5,16 @@ import web_monitoring.pf_edgi as wp
 cabinet = 'J_004232364409_3994fe0dd66ddd779'
 archive = 1494957042
 page_key = '6cd06af38650d4243b3c5da03bce8dca0df653b3062e2e642e502e89905e4f0a'
+test_url = 'http://www.space.commerce.gov'
 # 'page_key' just means file ID -- this is *not* a sensitive key
 
 def test_list_cabinets():
     cabinets = wp.list_cabinets()
     assert cabinet in cabinets
 
+def test_get_cabinetID():
+    cabinetID = wp.get_cabinetID(test_url)
+    assert cabinetID in wp.list_cabinets()
 
 def test_list_archives():
     archives = wp.list_archives(cabinet)
