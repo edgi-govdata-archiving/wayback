@@ -34,6 +34,24 @@ DATE_URL_FMT = '%Y%m%d%H%M%S'
 URL_CHUNK_PATTERN = re.compile('\<(.*)\>')
 DATETIME_CHUNK_PATTERN = re.compile(' datetime="(.*)",')
 
+def check_exists(lines):    
+    """
+    Check if Internet Archive has archived versions of a url.
+    """
+
+
+    try:
+        # The first three lines contain no information we need.
+        for _ in range(3):
+            next(lines)
+            
+
+    except StopIteration:
+        print("Internet archive does not have archived versions of this url.")
+        return False
+
+    return True
+
 
 def list_versions(url):
     """
@@ -166,3 +184,40 @@ def timestamped_uri_to_version(dt, uri, *, url, site, agency):
     return format_version(url=url, dt=dt, uri=uri,
                           version_hash=version_hash, title=title,
                           agency=agency, site=site)
+    
+    exists = check_exists(lines)
+    if exists:
+
+        while True:
+
+            for line in lines:
+                # Lines are made up semicolon-separated chunks:
+                # b'<http://web.archive.org/web/19961231235847/http://www.nasa.gov:80/>; rel="memento"; datetime="Tue, 31 Dec 1996 23:58:47 GMT",'
+
+                # Split by semicolon. Fail with an informative error if there are
+                # not exactly three chunks.
+                try:
+                    url_chunk, rel_chunk, dt_chunk = line.decode().split(';')
+                except ValueError:
+                    raise UnexpectedResponseFormat(line.decode())
+
+                if 'timemap' in rel_chunk:
+                    # This line is a link to the next page of mementos.
+                    next_page_url, = URL_CHUNK_PATTERN.match(url_chunk).groups()
+                    res = requests.get(next_page_url)
+                    lines = res.iter_lines()
+                    break
+
+                # Extract the URL and the datetime from the surrounding characters.
+                # Again, fail with an informative error.
+                try:
+                    uri, = URL_CHUNK_PATTERN.match(url_chunk).groups()
+                    dt_str, = DATETIME_CHUNK_PATTERN.match(dt_chunk).groups()
+                except AttributeError:
+                    raise UnexpectedResponseFormat(line.decode())
+
+                dt = datetime.strptime(dt_str, DATE_FMT)
+                yield dt, uri
+    else:
+        yield None,None
+>>>>>>> Added exception handling for IA which checks if archive exists before listing
