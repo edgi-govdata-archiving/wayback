@@ -184,7 +184,7 @@ def timestamped_uri_to_version(dt, uri, *, url, site, agency):
     return format_version(url=url, dt=dt, uri=uri,
                           version_hash=version_hash, title=title,
                           agency=agency, site=site)
-    
+
     exists = check_exists(lines)
     if exists:
 
@@ -220,4 +220,3 @@ def timestamped_uri_to_version(dt, uri, *, url, site, agency):
                 yield dt, uri
     else:
         yield None,None
->>>>>>> Added exception handling for IA which checks if archive exists before listing
