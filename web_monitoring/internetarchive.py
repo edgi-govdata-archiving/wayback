@@ -16,7 +16,8 @@ Other potentially useful links:
 from datetime import datetime
 import re
 import requests
-import utils
+from web_monitoring import utils
+
 
 class WebMonitoringException(Exception):
     # All exceptions raised directly by this package inherit from this.
@@ -63,22 +64,26 @@ def list_versions(url):
     # Request a list of the 'mementos' (what we call 'versions') for a url.
     # It may be paginated. If so, the final line in the repsonse is a link to
     # the next page.
-    
-
     first_page_url = TIMEMAP_URL_TEMPLATE.format(url)
     res = requests.get(first_page_url)
     lines = res.iter_lines()
-
-    try:
-        # The first three lines contain no information we need.
-        for _ in range(3):
-            next(lines)
-    except StopIteration:
-        # Raises error if archived versions of the url don't exist
-        raise ValueError('Internet archive does not have archived versions of {}'.format(url))            
+    first_pass = True
 
     while True:
-
+        # Continue requesting pages of responses until the last page.
+        try:
+            # The first three lines contain no information we need.
+            for _ in range(3):
+                next(lines)
+        except StopIteration:
+            if first_pass:
+                # Raises error if archived versions of the url don't exist
+                raise ValueError("Internet archive does not have archived "
+                                 "versions of {}".format(url))
+            else:
+                # There are no more pages left to parse.
+                break
+        first_pass = False
         for line in lines:
             # Lines are made up semicolon-separated chunks:
             # b'<http://web.archive.org/web/19961231235847/http://www.nasa.gov:80/>; rel="memento"; datetime="Tue, 31 Dec 1996 23:58:47 GMT",'
@@ -107,6 +112,7 @@ def list_versions(url):
 
             dt = datetime.strptime(dt_str, DATE_FMT)
             yield dt, uri
+
 
 def format_version(*, url, dt, uri, version_hash, title, agency, site):
     """
@@ -159,4 +165,4 @@ def timestamped_uri_to_version(dt, uri, *, url, site, agency):
     title = utils.extract_title(res.content)
     return format_version(url=url, dt=dt, uri=uri,
                           version_hash=version_hash, title=title,
-                          agency=agency, site=site)            
+                          agency=agency, site=site)
