@@ -1,4 +1,5 @@
 from distutils.core import setup
+import glob
 import os
 import setuptools
 import sys
@@ -17,7 +18,7 @@ def read(fname):
 
 setup(name='web_monitoring',
       packages=['web_monitoring'],
-      scripts=['scripts/wm'],
+      scripts=glob.glob('scripts/*'),
       install_requires=read('requirements.txt').split(),
       long_description=read('README.md'),
      )
