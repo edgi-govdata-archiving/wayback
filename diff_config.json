@@ -1,0 +1,4 @@
+{"dummy": ["web_monitoring.differs", "dummy"],
+ "length": ["web_monitoring.differs", "compare_length"],
+ "identical_bytes": ["web_monitoring.differs", "identical_bytes"]
+}

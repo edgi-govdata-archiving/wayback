@@ -5,3 +5,7 @@ def dummy(a, b, **options):
 
 def compare_length(a, b):
     return len(b) - len(a)
+
+
+def identical_bytes(a, b):
+    return a == b
