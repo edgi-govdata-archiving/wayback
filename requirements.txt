@@ -3,4 +3,5 @@ lxml
 pandas
 requests
 toolz
+tornado
 tqdm
