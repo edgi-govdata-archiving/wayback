@@ -84,6 +84,7 @@ wm-diffing-server <config_file> [--port <port>]
 Options:
 -h --help     Show this screen.
 --version     Show version.
+--port        Port. [default: 8888]
 """
     arguments = docopt(doc, version='0.0.1')
     with open(arguments['<config_file>']) as f:
