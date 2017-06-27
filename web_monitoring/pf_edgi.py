@@ -10,7 +10,6 @@ from web_monitoring import utils
 from urllib.parse import urlparse
 
 BASE = 'https://edgi.pagefreezer.com/'
-URL_PATTERN = '^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$'
 
 def list_cabinets():
     url = f'{BASE}/master/api/services/storage/library/all/cabinets'
@@ -26,8 +25,10 @@ def get_cabinet_id(url):
 
     if(url.find('://') == -1):
         try_urls = ['https://' + url,'http://' + url]
+    elif(url.find('://') == 4):        
+        try_urls = [url , 'https' + url[4:]]
     else:
-        try_urls = [url]
+        try_urls = [url, 'http' + url[5:]]
 
     for key,value in cabinets.items():
         for dictionary in value:
