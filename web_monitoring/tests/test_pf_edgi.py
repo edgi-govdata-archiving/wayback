@@ -12,9 +12,9 @@ def test_list_cabinets():
     cabinets = wp.list_cabinets()
     assert cabinet in cabinets
 
-def test_get_cabinetID():
-    cabinetID = wp.get_cabinetID(test_url)
-    assert cabinetID in wp.list_cabinets()
+def test_get_cabinet_id():
+    cabinet_id = wp.get_cabinet_id(test_url)
+    assert cabinet_id in wp.list_cabinets()
 
 def test_list_archives():
     archives = wp.list_archives(cabinet)

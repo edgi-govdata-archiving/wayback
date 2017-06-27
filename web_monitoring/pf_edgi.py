@@ -10,7 +10,7 @@ from web_monitoring import utils
 from urllib.parse import urlparse
 
 BASE = 'https://edgi.pagefreezer.com/'
-
+URL_PATTERN = '^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$'
 
 def list_cabinets():
     url = f'{BASE}/master/api/services/storage/library/all/cabinets'
@@ -20,16 +20,23 @@ def list_cabinets():
     assert content['status'] == 'ok'  # business logic is OK
     return content['cabinets']
 
-def get_cabinetID(url):
+def get_cabinet_id(url):
     cabinets = list_cabinets()
-    cabinetID = ''
+    cabinet_id = ''
+
+    if(url.find('://') == -1):
+        try_urls = ['https://' + url,'http://' + url]
+    else:
+        try_urls = [url]
+
     for key,value in cabinets.items():
         for dictionary in value:
-            if(str(urlparse(dictionary['url']).scheme + '://' + urlparse(dictionary['url']).netloc) == url):
-                cabinetID = dictionary['name']                
+            if(str(urlparse(dictionary['url']).scheme + '://' + urlparse(dictionary['url']).netloc) in try_urls):
+                cabinet_id = dictionary['name']                
 
-    assert cabinetID != ''
-    return cabinetID
+    if not cabinet_id != '' : raise ValueError("No such url found in the cabinets.")
+
+    return cabinet_id
 
 
 def list_archives(cabinet_id):
