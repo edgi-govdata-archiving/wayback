@@ -102,7 +102,7 @@ class PageFreezer:
         print(counts)
 
     def run_query(self):
-        self.query_result = compare(self.url1, self.url2)['result']
+        self.query_result = compare(self.url_1, self.url_2)['result']
 
     def parse_to_df(self):
         self.dataframe = result_into_df(self.query_result)
