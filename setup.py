@@ -3,6 +3,8 @@ import os
 import setuptools
 import sys
 
+import versioneer
+
 
 if sys.version_info < (3, 6):
     raise RuntimeError("Python version is {}. Requires 3.6 or greater."
@@ -16,6 +18,8 @@ def read(fname):
 
 
 setup(name='web_monitoring',
+      version=versioneer.get_version(),
+      cmdclass=versioneer.get_cmdclass(),
       packages=['web_monitoring'],
       scripts=['scripts/wm'],
       install_requires=read('requirements.txt').split(),

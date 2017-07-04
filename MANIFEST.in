@@ -1,0 +1,2 @@
+include versioneer.py
+include web_monitoring/_version.py
