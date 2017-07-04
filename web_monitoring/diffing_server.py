@@ -1,5 +1,6 @@
 import concurrent.futures
 from docopt import docopt
+import hashlib
 from importlib import import_module
 import json
 import tornado.gen
@@ -49,9 +50,21 @@ class DiffHandler(tornado.web.RequestHandler):
 
         # Fetch server response for URLs a and b.
         res_a, res_b = yield [client.fetch(a), client.fetch(b)]
-        # TODO Add caching of fetched URIs.
 
-        # TODO Validate the bytes against the hash, if provided.
+        # Validate response bytes against hash, if provided.
+        for query_param, res in zip(('a_hash', 'b_hash'), (res_a, res_b)):
+            try:
+                expected_hash = query_params.pop('a_hash')
+            except KeyError:
+                # No hash provided in the request. Skip validation.
+                pass
+            else:
+                actual_hash = hashlib.sha256(res.body).hexdigest()
+                if actual_hash != expected_hash:
+                    self.send_error(500)
+                    return
+
+        # TODO Add caching of fetched URIs.
 
         # Pass the bytes and any remaining args to the diffing function.
         res = yield executor.submit(func, res_a.body, res_b.body,
