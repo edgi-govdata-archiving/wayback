@@ -2,6 +2,7 @@ import concurrent.futures
 from docopt import docopt
 import hashlib
 from importlib import import_module
+import inspect
 import json
 import tornado.gen
 import tornado.httpclient
@@ -27,7 +28,6 @@ def load_config(config):
 
 
 client = tornado.httpclient.AsyncHTTPClient()
-executor = concurrent.futures.ProcessPoolExecutor()
 
 
 class DiffHandler(tornado.web.RequestHandler):
@@ -67,9 +67,68 @@ class DiffHandler(tornado.web.RequestHandler):
         # TODO Add caching of fetched URIs.
 
         # Pass the bytes and any remaining args to the diffing function.
-        res = yield executor.submit(func, res_a.body, res_b.body,
-                                    **query_params)
+        executor = concurrent.futures.ProcessPoolExecutor()
+        res = yield executor.submit(caller, func, res_a, res_b, **query_params)
         self.write(json.dumps({'diff': res}))
+
+
+def _extract_encoding(headers):
+    content_type = headers["Content-Type"]
+    if 'charset=' in content_type:
+        return content_type.split('charset=')[-1]
+    else:
+        return None
+
+def caller(func, a, b, **query_params):
+    """
+    A translation layer between HTTPResponses and differ functions.
+
+    Parameters
+    ----------
+    func : callable
+        a 'differ' function
+    a : tornado.httpclient.HTTPResponse
+    b : tornado.httpclient.HTTPResponse
+    **query_params
+        additional parameters parsed from the REST diffing request
+
+
+    The function `func` may expect required and/or optional arguments. Its
+    signature serves as a dependency injection scheme, specifying what it
+    needs from the HTTPResponses. The following argument names have special
+    meaning:
+
+    * a_url, b_url: URL of HTTP request
+    * a_body, b_body: Raw HTTP reponse body (bytes)
+    * a_text, b_text: Decoded text of HTTP response body (str)
+
+    Any other argument names in the signature will take their values from the
+    REST query parameters.
+    """
+    # Supplement the query_parameters from the REST call with special items
+    # extracted from `a` and `b`.
+    query_params.setdefault('a_url', a.request.url)
+    query_params.setdefault('b_url', b.request.url)
+    query_params.setdefault('a_body', a.body)
+    query_params.setdefault('b_body', b.body)
+    a_encoding = _extract_encoding(a.headers) or 'UTF-8'
+    b_encoding = _extract_encoding(a.headers) or 'UTF-8'
+    query_params.setdefault('a_text', a.body.decode(a_encoding, errors='ignore'))
+    query_params.setdefault('b_text', b.body.decode(b_encoding, errors='ignore'))
+
+    # The differ's signature is a dependency injection scheme.
+    kwargs = dict()
+    sig = inspect.signature(func)
+    for name, param in sig.parameters.items():
+        try:
+            kwargs[name] = query_params[name]
+        except KeyError:
+            if param.default is inspect._empty:
+                # This is a required argument.
+                raise KeyError("{} requires a parameter {} which was not "
+                               "provided in the query"
+                               "".format(func.__name__, name))
+    return func(**kwargs)
 
 
 def make_app(config):

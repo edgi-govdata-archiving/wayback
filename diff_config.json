@@ -1,4 +1,6 @@
-{"dummy": ["web_monitoring.differs", "dummy"],
- "length": ["web_monitoring.differs", "compare_length"],
- "identical_bytes": ["web_monitoring.differs", "identical_bytes"]
+{"length": ["web_monitoring.differs", "compare_length"],
+ "identical_bytes": ["web_monitoring.differs", "identical_bytes"],
+ "pagefreezer": ["web_monitoring.differs", "pagefreezer"],
+ "pagefreezer_direct": ["web_monitoring.differs", "pagefreezer_direct"],
+ "side_by_side_text": ["web_monitoring.differs", "side_by_side_text"]
 }
