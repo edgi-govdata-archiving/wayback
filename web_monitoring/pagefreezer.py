@@ -36,9 +36,9 @@ def compare(url_1, url_2):
     """
     response = requests.post(COMPARE_ENDPOINT,
                              data=json.dumps({"url1": url_1, "url2": url_2}),
-                             headers= {"Accept": "application/json",
-                                       "Content-Type": "application/json",
-                                       "x-api-key": _settings['api_key']})
+                             headers={"Accept": "application/json",
+                                      "Content-Type": "application/json",
+                                      "x-api-key": _settings['api_key']})
     assert response.ok
     return response.json()
 
