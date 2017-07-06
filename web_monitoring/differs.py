@@ -56,9 +56,6 @@ def pagefreezer(a_url, b_url):
 
 d = diff_match_patch.diff_match_patch()
 
-def _diff(a_text, b_text):
-    return d.diff_compute(a_text, b_text, False, DEADLINE)
-
 
 def html_text_diff(a_text, b_text):
     """
