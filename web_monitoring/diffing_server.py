@@ -61,7 +61,8 @@ class DiffHandler(tornado.web.RequestHandler):
             else:
                 actual_hash = hashlib.sha256(res.body).hexdigest()
                 if actual_hash != expected_hash:
-                    self.send_error(500)
+                    self.send_error(
+                        500, reason="Fetched content does not match hash.")
                     return
 
         # TODO Add caching of fetched URIs.
