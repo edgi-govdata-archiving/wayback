@@ -63,14 +63,15 @@ Versionista returns a JSON blob which contains the following fields:
 - `versionId` : Id of a version in Versionista.
 - `url` : The full URL to view this version in Versionista. You’ll need to be logged into the appropriate Versionista account to make use of it.
 - `date` : The date and time when the version was captured.
-- `hasContent` : Indicates if the version has any content or not. `True` or `False`
+- `hasContent` : Indicates if Versionista has stored any conetent of the page or not. There is a limit on the size of the versions Versionista can store. `True` or `False`
 - `diffWithPreviousUrl` : URL to diff view in Versionista (comparing with previous version).
-- `diffWithPreviousDate` : 
+- `diffWithPreviousDate` : The capture date of the first ever captured version of the page.
 - `diffWithFirstUrl` : URL to diff view in Versionista (comparing with first version). 
-- `diffWithFirstDate` : 
+- `diffWithFirstDate` : The capture date of the current version of the page. 
 - `textDiff` : A dictionary with the URL to the text diff view in Versionista and its SHA 256 hash and length.
 - `diff`: A dictionary with the URL to the entire diff view in Verisionista and its SHA 256 hash and length.
-- `filePath` : Path to the file in Versionista and its SHA 256 hash.
+- `filePath` : Path to the diff file which is stored in our archive.
+-  `hash` : The diff file's SHA 256 hash.
 
 [Recent Versionista output file](https://s3-us-west-2.amazonaws.com/edgi-versionista-archive/versionista1/metadata-2017-06-20T00%3A00Z.json)
 
