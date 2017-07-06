@@ -1,6 +1,9 @@
+bs4
+diff-match-patch
 docopt
 lxml
 pandas
 requests
 toolz
+tornado
 tqdm

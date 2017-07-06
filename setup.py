@@ -1,4 +1,5 @@
 from distutils.core import setup
+import glob
 import os
 import setuptools
 import sys
@@ -21,7 +22,7 @@ setup(name='web_monitoring',
       version=versioneer.get_version(),
       cmdclass=versioneer.get_cmdclass(),
       packages=['web_monitoring'],
-      scripts=['scripts/wm'],
+      scripts=glob.glob('scripts/*'),
       install_requires=read('requirements.txt').split(),
       long_description=read('README.md'),
      )
