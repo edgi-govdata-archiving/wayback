@@ -70,7 +70,7 @@ class DiffHandler(tornado.web.RequestHandler):
         # Pass the bytes and any remaining args to the diffing function.
         executor = concurrent.futures.ProcessPoolExecutor()
         res = yield executor.submit(caller, func, res_a, res_b, **query_params)
-        self.write(json.dumps({'diff': res}))
+        self.write({'diff': res})
 
 
 def _extract_encoding(headers):
