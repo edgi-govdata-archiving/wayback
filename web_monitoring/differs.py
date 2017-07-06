@@ -54,12 +54,6 @@ def pagefreezer(a_url, b_url):
     return web_monitoring.pagefreezer.compare(a_url, b_url)
 
 
-def pagefreezer_direct(a_text, b_text):
-    "Dispatch to PageFreezer, the slow way."
-    # Send PF the full body.
-    return web_monitoring.pagefreezer.compare(a_text, b_text)
-
-
 d = diff_match_patch.diff_match_patch()
 
 def _diff(a_text, b_text):
