@@ -1,4 +1,5 @@
 bs4
+diff-match-patch
 docopt
 lxml
 pandas

@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+import diff_match_patch
 import re
 import web_monitoring.pagefreezer
 import sys
@@ -57,3 +58,35 @@ def pagefreezer_direct(a_text, b_text):
     "Dispatch to PageFreezer, the slow way."
     # Send PF the full body.
     return web_monitoring.pagefreezer.compare(a_text, b_text)
+
+
+d = diff_match_patch.diff_match_patch()
+
+def _diff(a_text, b_text):
+    return d.diff_compute(a_text, b_text, False, DEADLINE)
+
+
+def html_text_diff(a_text, b_text):
+    """
+    Example
+    ------
+    >>> text_diff('<p>Deleted</p><p>Unchanged</p>',
+    ...           '<p>Added</p><p>Unchanged</p>')
+    [(0, '<p>'), (-1, 'Delet'), (1, 'Add'), (0, 'ed</p><p>Unchanged</p>')]
+    """
+    t1 = ' '.join(_get_visible_text(a_text))
+    t2 = ' '.join(_get_visible_text(b_text))
+    DEADLINE = 2  # seconds
+    return d.diff_compute(t1, t2, checklines=False, deadline=DEADLINE)
+
+
+def html_source_diff(a_text, b_text):
+    """
+    Example
+    ------
+    >>> text_diff('<p>Deleted</p><p>Unchanged</p>',
+    ...           '<p>Added</p><p>Unchanged</p>')
+    [(-1, '<p>Deleted</p>'), (1, '<p>Added</p>'), (0, '<p>Unchanged</p>')]
+    """
+    DEADLINE = 2  # seconds
+    return d.diff_compute(a_text, b_text, checklines=False, deadline=DEADLINE)

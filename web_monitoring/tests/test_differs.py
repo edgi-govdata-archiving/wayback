@@ -22,3 +22,23 @@ def test_identical_bytes():
     actual = wd.identical_bytes(a_body=b'asdf', b_body=b'Asdf')
     expected = False
     assert actual == expected
+
+
+def test_text_diff():
+    actual = wd.html_text_diff('<p>Deleted</p><p>Unchanged</p>',
+                               '<p>Added</p><p>Unchanged</p>')
+    expected = [
+                (-1, 'Delet'),
+                (1, 'Add'),
+                (0, 'ed Unchanged')]
+    assert actual == expected
+
+
+def test_html_diff():
+    actual = wd.html_source_diff('<p>Deleted</p><p>Unchanged</p>',
+                                 '<p>Added</p><p>Unchanged</p>')
+    expected = [(0, '<p>'),
+                (-1, 'Delet'),
+                (1, 'Add'),
+                (0, 'ed</p><p>Unchanged</p>')]
+    assert actual == expected
