@@ -56,7 +56,18 @@ XML_PROLOG_PATTERN = re.compile(
     b'<?xml\\s[^>]*encoding=[\'"]([^\'"]+)[\'"].*\?>',
     re.IGNORECASE)
 
-client = tornado.httpclient.AsyncHTTPClient()
+
+class MockRequest:
+    "An HTTPRequest-like object for local file:/// requests."
+    def __init__(self, url):
+        self.url = url
+
+class MockResponse:
+    "An HTTPResponse-like object for local file:/// requests."
+    def __init__(self, url, body, headers):
+        self.request = MockRequest(url)
+        self.body = body
+        self.headers = headers
 
 DEBUG_MODE = os.environ.get('DIFFING_SERVER_DEBUG', 'False').strip().lower() == 'true'
 
@@ -108,9 +119,19 @@ class DiffHandler(BaseHandler):
                        'You must provide a URL as the value '
                        'for both `a` and `b` query parameters.')
             return
-        # Fetch server response for URLs a and b.
-        res_a, res_b = yield [client.fetch(a, raise_error=False),
-                              client.fetch(b, raise_error=False)]
+        # Special case for local files, for dev/testing.
+        if a.startswith('file://') and b.startswith('file://'):
+            headers = {'Content-Type': 'application/html; charset=UTF-8'}
+            with open(a[7:], 'rb') as f:
+                body = f.read()
+                res_a = MockResponse(a, body, headers)
+            with open(b[7:], 'rb') as f:
+                body = f.read()
+                res_b = MockResponse(b, body, headers)
+        else:
+            # Fetch server response for URLs a and b.
+            res_a, res_b = yield [client.fetch(a, raise_error=False),
+                                client.fetch(b, raise_error=False)]
 
         try:
             self.check_response_for_error(res_a)
