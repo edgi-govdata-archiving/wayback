@@ -23,6 +23,6 @@ setup(name='web_monitoring',
       cmdclass=versioneer.get_cmdclass(),
       packages=['web_monitoring'],
       scripts=glob.glob('scripts/*'),
-      install_requires=read('requirements.txt').split(),
+      install_requires=read('requirements.txt').splitlines(),
       long_description=read('README.md'),
      )
