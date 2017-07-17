@@ -36,9 +36,9 @@ def compare(url_1, url_2):
     """
     response = requests.post(COMPARE_ENDPOINT,
                              data=json.dumps({"url1": url_1, "url2": url_2}),
-                             headers={"Accept": "application/json",
-                                      "Content-Type": "application/json",
-                                      "x-api-key": _settings['api_key']})
+                             headers= {"Accept": "application/json",
+                                       "Content-Type": "application/json",
+                                       "x-api-key": _settings['api_key']})
     assert response.ok
     return response.json()
 
@@ -74,6 +74,21 @@ def result_into_df(result):
                        "state": pd.Categorical(state)})
     return df
 
+def filter_out(df):
+
+    df['review'] = 'yes'
+    month_list= ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec']
+    tag_list=['<td class="c" id="displayMonthEl"','<td class="c" id="displayDayEl"','<td class="c" id="displayYearEl"']
+    for index,row in x.iterrows():
+        if((str(row['new']).lower() in month_list)&(str(row['old']).lower() in month_list)):
+            df.loc[index]=df.loc[index].replace(df.loc[index]['Review'],'No')
+
+        for s in tag_list:
+            if(((s in str(row['new']))&(s in str(row['old'])))):
+                df.loc[index]=df.loc[index].replace(df.loc[index]['Review'],'No')
+                break
+
+    return df
 
 def display_pairs(result):
     from IPython.display import HTML, display
