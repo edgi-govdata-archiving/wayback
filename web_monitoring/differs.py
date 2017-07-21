@@ -51,7 +51,7 @@ def pagefreezer(a_url, b_url):
     # Just send PF the urls, not the whole body.
     # It is still useful that we downloaded the body because we are able to
     # validate it against the expected hash.
-    return web_monitoring.pagefreezer.compare(a_url, b_url)
+    return web_monitoring.pagefreezer.PageFreezer(a_url,b_url)
 
 
 d = diff_match_patch.diff_match_patch()
