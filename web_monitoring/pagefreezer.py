@@ -2,8 +2,7 @@ import json
 import os
 import requests
 import pandas as pd
-
-
+from pylru import lrudecorator
 COMPARE_ENDPOINT = "https://api1.pagefreezer.com/v1/api/utils/diff/compare"
 STATE_LOOKUP = { -1: "Removal", 0: "Change", 1: "Addition" }
 
@@ -20,7 +19,7 @@ def set_api_key(api_key):
 if 'PAGE_FREEZER_API_KEY' in os.environ:
     set_api_key(os.environ['PAGE_FREEZER_API_KEY'])
 
-
+@lrudecorator(500)
 def compare(url_1, url_2):
     """
     Query PageFreezer and result the raw response as JSON dict.
@@ -77,9 +76,11 @@ def result_into_df(result):
 def filter_out(df):
 
     df['review'] = 'yes'
-    month_list= ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec']
-    tag_list=['<td class="c" id="displayMonthEl"','<td class="c" id="displayDayEl"','<td class="c" id="displayYearEl"']
-    for index,row in x.iterrows():
+    day_list = ['mon','tue','wed','thu','fri','sat','sun']
+    month_list = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec']
+    tag_list = ['<td class="c" id="displayMonthEl"','<td class="c" id="displayDayEl"','<td class="c" id="displayYearEl"']
+
+    for index,row in df.iterrows():
         if((str(row['new']).lower() in month_list)&(str(row['old']).lower() in month_list)):
             df.loc[index]=df.loc[index].replace(df.loc[index]['Review'],'No')
 
@@ -109,6 +110,7 @@ class PageFreezer:
         self.url_2 = url_2
         self.run_query()
         self.parse_to_df()
+        self.use_filter()
 
     def report(self):
         print("Delta Score: ", self.query_result['delta_score'], " Number of changes: ",len(self.dataframe) )
@@ -116,11 +118,15 @@ class PageFreezer:
         counts.index = counts.index.to_series().map(self.state_lookup)
         print(counts)
 
+
     def run_query(self):
         self.query_result = compare(self.url_1, self.url_2)['result']
 
     def parse_to_df(self):
         self.dataframe = result_into_df(self.query_result)
+
+    def use_filter(self):
+        self.dataframe = filter_out(self.dataframe)
 
     def full_html_changes(self):
         from IPython.display import display, HTML
