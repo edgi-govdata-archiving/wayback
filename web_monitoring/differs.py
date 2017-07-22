@@ -57,6 +57,38 @@ def pagefreezer(a_url, b_url):
 d = diff_match_patch.diff
 d_b = diff_match_patch.diff_bytes
 
+def compute_dmp_diff(a_text, b_text):
+    TIMELIMIT = 4  # seconds
+    
+    if(isinstance(a_text,str) & isinstance(b_text,str)):
+        changes = d(a_text, b_text, checklines=False, timelimit=TIMELIMIT, cleanup_semantic=True, counts_only=True)
+    elif(isinstance(a_text,bytes) & isinstance(b_text,bytes)):
+        changes = d_b(a_text, b_text, checklines=False, timelimit=TIMELIMIT, cleanup_semantic=True, counts_only=True)
+    else:
+        raise TypeError("Both the texts should be either of type 'str' or 'bytes'.")
+    
+    result = []
+    
+    a_index = 0
+    b_index = 0
+    
+    for op, length in changes:
+        if op == "-":
+            start = a_index
+            a_index = a_index + length
+            result.append([-1, a_text[start:a_index]])
+        if op == "=":
+            start = a_index
+            a_index = a_index + length
+            b_index = b_index + length
+            result.append([0, a_text[start:a_index]])
+        if op == "+":
+            start = b_index
+            b_index = b_index + length
+            result.append([1, b_text[start:b_index]]) 
+
+    return result
+
 def html_text_diff(a_text, b_text):
     """
     Diff the visible textual content of an HTML document.
@@ -65,13 +97,13 @@ def html_text_diff(a_text, b_text):
     ------
     >>> html_text_diff('<p>Deleted</p><p>Unchanged</p>',
     ...                '<p>Added</p><p>Unchanged</p>')
-    [('-', 'Delet'), ('+', 'Add'), ('=', 'ed Unchanged')]
+    [[-1, 'Delet'], [1, 'Add'], [0, 'ed Unchanged']]
     """
+    
     t1 = ' '.join(_get_visible_text(a_text))
     t2 = ' '.join(_get_visible_text(b_text))
-    TIMELIMIT = 4  # seconds
-    return d(t1, t2, checklines=False, timelimit=TIMELIMIT, cleanup_semantic=True, counts_only=False)
 
+    return compute_dmp_diff(t1,t2)
 
 def html_source_diff(a_text, b_text):
     """
@@ -81,7 +113,6 @@ def html_source_diff(a_text, b_text):
     ------
     >>> html_source_diff('<p>Deleted</p><p>Unchanged</p>',
     ...                  '<p>Added</p><p>Unchanged</p>')
-    [(0, '<p>'), (-1, 'Delet'), (1, 'Add'), (0, 'ed</p><p>Unchanged</p>')]
+    [[0, '<p>'], [-1, 'Delet'], [1, 'Add'], [0, 'ed</p><p>Unchanged</p>']]
     """
-    TIMELIMIT = 4  # seconds
-    return d_b(a_text.encode('utf-8'), b_text.encode('utf-8'), checklines=False, timelimit=TIMELIMIT, cleanup_semantic=True, counts_only=False)
+    return compute_dmp_diff(a_text,b_text)
