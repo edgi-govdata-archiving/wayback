@@ -54,8 +54,8 @@ def pagefreezer(a_url, b_url):
     return web_monitoring.pagefreezer.PageFreezer(a_url,b_url)
 
 
-d = diff_match_patch.diff_match_patch()
-
+d = diff_match_patch.diff
+d_b = diff_match_patch.diff_bytes
 
 def html_text_diff(a_text, b_text):
     """
@@ -65,12 +65,14 @@ def html_text_diff(a_text, b_text):
     ------
     >>> html_text_diff('<p>Deleted</p><p>Unchanged</p>',
     ...                '<p>Added</p><p>Unchanged</p>')
-    [(0, '<p>'), (-1, 'Delet'), (1, 'Add'), (0, 'ed</p><p>Unchanged</p>')]
+    [('-', 'Delet'), ('+', 'Add'), ('=', 'ed Unchanged')]
     """
     t1 = ' '.join(_get_visible_text(a_text))
     t2 = ' '.join(_get_visible_text(b_text))
-    DEADLINE = 2  # seconds
-    return d.diff_compute(t1, t2, checklines=False, deadline=DEADLINE)
+    print(t1)
+    print(t2)
+    TIMELIMIT = 4  # seconds
+    return d(t1, t2, checklines=False, timelimit=TIMELIMIT, cleanup_semantic=True, counts_only=False)
 
 
 def html_source_diff(a_text, b_text):
@@ -83,5 +85,5 @@ def html_source_diff(a_text, b_text):
     ...                  '<p>Added</p><p>Unchanged</p>')
     [(0, '<p>'), (-1, 'Delet'), (1, 'Add'), (0, 'ed</p><p>Unchanged</p>')]
     """
-    DEADLINE = 2  # seconds
-    return d.diff_compute(a_text, b_text, checklines=False, deadline=DEADLINE)
+    TIMELIMIT = 4  # seconds
+    return d_b(a_text.encode('utf-8'), b_text.encode('utf-8'), checklines=False, timelimit=TIMELIMIT, cleanup_semantic=True, counts_only=False)
