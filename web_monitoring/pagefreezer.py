@@ -2,6 +2,7 @@ import json
 import os
 import requests
 import pandas as pd
+from filtering import df_filter
 from pylru import lrudecorator
 COMPARE_ENDPOINT = "https://api1.pagefreezer.com/v1/api/utils/diff/compare"
 STATE_LOOKUP = { -1: "Removal", 0: "Change", 1: "Addition" }
@@ -73,24 +74,6 @@ def result_into_df(result):
                        "state": pd.Categorical(state)})
     return df
 
-def filter_out(df):
-
-    df['review'] = 'yes'
-    day_list = ['mon','tue','wed','thu','fri','sat','sun']
-    month_list = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec']
-    tag_list = ['<td class="c" id="displayMonthEl"','<td class="c" id="displayDayEl"','<td class="c" id="displayYearEl"']
-
-    for index,row in df.iterrows():
-        if((str(row['new']).lower() in month_list)&(str(row['old']).lower() in month_list)):
-            df.loc[index]=df.loc[index].replace(df.loc[index]['Review'],'No')
-
-        for s in tag_list:
-            if(((s in str(row['new']))&(s in str(row['old'])))):
-                df.loc[index]=df.loc[index].replace(df.loc[index]['Review'],'No')
-                break
-
-    return df
-
 def display_pairs(result):
     from IPython.display import HTML, display
     pairs = [(diff['new'], diff['old']) for diff in result['output']['diffs']]
@@ -126,7 +109,7 @@ class PageFreezer:
         self.dataframe = result_into_df(self.query_result)
 
     def use_filter(self):
-        self.dataframe = filter_out(self.dataframe)
+        self.dataframe = df_filter(self.dataframe)
 
     def full_html_changes(self):
         from IPython.display import display, HTML

@@ -1,5 +1,5 @@
-from bs4 import BeautifulSoup
-import diff_match_patch
+from bs4 import BeautifulSoup   
+from diff_match_patch import diff,diff_bytes
 import re
 import web_monitoring.pagefreezer
 import sys
@@ -51,42 +51,19 @@ def pagefreezer(a_url, b_url):
     # Just send PF the urls, not the whole body.
     # It is still useful that we downloaded the body because we are able to
     # validate it against the expected hash.
-    return web_monitoring.pagefreezer.PageFreezer(a_url,b_url)
+    return web_monitoring.pagefreezer.PageFreezer(a_url, b_url)
 
+def compute_dmp_diff(a_text, b_text, timelimit=4):
+    diff_codes = {'=': 0, '-': -1, '+': 1}
 
-d = diff_match_patch.diff
-d_b = diff_match_patch.diff_bytes
-
-def compute_dmp_diff(a_text, b_text):
-    TIMELIMIT = 4  # seconds
-    
-    if(isinstance(a_text,str) & isinstance(b_text,str)):
-        changes = d(a_text, b_text, checklines=False, timelimit=TIMELIMIT, cleanup_semantic=True, counts_only=True)
-    elif(isinstance(a_text,bytes) & isinstance(b_text,bytes)):
-        changes = d_b(a_text, b_text, checklines=False, timelimit=TIMELIMIT, cleanup_semantic=True, counts_only=True)
+    if(isinstance(a_text, str) and isinstance(b_text, str)):
+        changes = diff(a_text, b_text, checklines=False, timelimit=timelimit, cleanup_semantic=True, counts_only=False)
+    elif(isinstance(a_text, bytes) and isinstance(b_text, bytes)):
+        changes = diff_bytes(a_text, b_text, checklines=False, timelimit=timelimit, cleanup_semantic=True, counts_only=False)
     else:
         raise TypeError("Both the texts should be either of type 'str' or 'bytes'.")
     
-    result = []
-    
-    a_index = 0
-    b_index = 0
-    
-    for op, length in changes:
-        if op == "-":
-            start = a_index
-            a_index = a_index + length
-            result.append([-1, a_text[start:a_index]])
-        if op == "=":
-            start = a_index
-            a_index = a_index + length
-            b_index = b_index + length
-            result.append([0, a_text[start:a_index]])
-        if op == "+":
-            start = b_index
-            b_index = b_index + length
-            result.append([1, b_text[start:b_index]]) 
-
+    result = [(diff_codes[change[0]], change[1]) for change in changes]
     return result
 
 def html_text_diff(a_text, b_text):
@@ -103,7 +80,8 @@ def html_text_diff(a_text, b_text):
     t1 = ' '.join(_get_visible_text(a_text))
     t2 = ' '.join(_get_visible_text(b_text))
 
-    return compute_dmp_diff(t1,t2)
+    TIMELIMIT = 2 #seconds
+    return compute_dmp_diff(t1, t2, timelimit=TIMELIMIT)
 
 def html_source_diff(a_text, b_text):
     """
@@ -115,4 +93,5 @@ def html_source_diff(a_text, b_text):
     ...                  '<p>Added</p><p>Unchanged</p>')
     [[0, '<p>'], [-1, 'Delet'], [1, 'Add'], [0, 'ed</p><p>Unchanged</p>']]
     """
-    return compute_dmp_diff(a_text,b_text)
+    TIMELIMIT = 2 #seconds
+    return compute_dmp_diff(a_text, b_text, timelimit=TIMELIMIT)
