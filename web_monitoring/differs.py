@@ -1,13 +1,14 @@
 from bs4 import BeautifulSoup   
-from diff_match_patch import diff,diff_bytes
+from diff_match_patch import diff, diff_bytes
 import re
 import web_monitoring.pagefreezer
 import sys
 
-
 # BeautifulSoup can sometimes exceed the default Python recursion limit (1000).
 sys.setrecursionlimit(10000)
 
+# Dictionary mapping which maps from diff-match-patch tags to the ones we use
+diff_codes = {'=': 0, '-': -1, '+': 1}
 
 def compare_length(a_body, b_body):
     "Compute difference in response body lengths. (Does not compare contents.)"
@@ -54,11 +55,10 @@ def pagefreezer(a_url, b_url):
     return web_monitoring.pagefreezer.PageFreezer(a_url, b_url)
 
 def compute_dmp_diff(a_text, b_text, timelimit=4):
-    diff_codes = {'=': 0, '-': -1, '+': 1}
 
-    if(isinstance(a_text, str) and isinstance(b_text, str)):
+    if (isinstance(a_text, str) and isinstance(b_text, str)):
         changes = diff(a_text, b_text, checklines=False, timelimit=timelimit, cleanup_semantic=True, counts_only=False)
-    elif(isinstance(a_text, bytes) and isinstance(b_text, bytes)):
+    elif (isinstance(a_text, bytes) and isinstance(b_text, bytes)):
         changes = diff_bytes(a_text, b_text, checklines=False, timelimit=timelimit, cleanup_semantic=True, counts_only=False)
     else:
         raise TypeError("Both the texts should be either of type 'str' or 'bytes'.")
