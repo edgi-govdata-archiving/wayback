@@ -3,7 +3,6 @@ import os
 import requests
 import pandas as pd
 from filtering import df_filter
-from pylru import lrudecorator
 COMPARE_ENDPOINT = "https://api1.pagefreezer.com/v1/api/utils/diff/compare"
 STATE_LOOKUP = { -1: "Removal", 0: "Change", 1: "Addition" }
 
@@ -20,7 +19,6 @@ def set_api_key(api_key):
 if 'PAGE_FREEZER_API_KEY' in os.environ:
     set_api_key(os.environ['PAGE_FREEZER_API_KEY'])
 
-@lrudecorator(500)
 def compare(url_1, url_2):
     """
     Query PageFreezer and result the raw response as JSON dict.
