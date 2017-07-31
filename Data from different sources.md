@@ -63,7 +63,7 @@ Versionista returns a JSON blob which contains the following fields:
 - `versionId` : Id of a version in Versionista.
 - `url` : The full URL to view this version in Versionista. You’ll need to be logged into the appropriate Versionista account to make use of it.
 - `date` : The date and time when the version was captured.
-- `hasContent` : Indicates if Versionista has stored any conetent of the page or not. There is a limit on the size of the versions Versionista can store. `True` or `False`
+- `hasContent` : Indicates if Versionista has stored any content of the page or not. There is a limit on the size of the versions Versionista can store. `True` or `False`
 - `diffWithPreviousUrl` : URL to diff view in Versionista (comparing with previous version).
 - `diffWithPreviousDate` : The capture date of the first ever captured version of the page.
 - `diffWithFirstUrl` : URL to diff view in Versionista (comparing with first version). 
