@@ -63,10 +63,8 @@ Run the actual installer:
 ```sh
 $ cd web-monitoring-processing
 
-# Install these packages via conda first -- you get pre-built versions this way
-# that install faster and more reliably
-$ conda install lxml
-$ conda install pandas
+# Install any packages available through conda as pre-built binaries
+$ while read requirement; do conda install --yes $requirement; done < requirements.txt
 
 # Actually install the project
 $ python setup.py install
