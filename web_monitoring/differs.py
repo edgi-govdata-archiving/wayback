@@ -1,4 +1,4 @@
-from bs4 import BeautifulSoup   
+from bs4 import BeautifulSoup
 from diff_match_patch import diff, diff_bytes
 import re
 import web_monitoring.pagefreezer
@@ -62,7 +62,7 @@ def compute_dmp_diff(a_text, b_text, timelimit=4):
         changes = diff_bytes(a_text, b_text, checklines=False, timelimit=timelimit, cleanup_semantic=True, counts_only=False)
     else:
         raise TypeError("Both the texts should be either of type 'str' or 'bytes'.")
-    
+
     result = [(diff_codes[change[0]], change[1]) for change in changes]
     return result
 
@@ -76,7 +76,7 @@ def html_text_diff(a_text, b_text):
     ...                '<p>Added</p><p>Unchanged</p>')
     [[-1, 'Delet'], [1, 'Add'], [0, 'ed Unchanged']]
     """
-    
+
     t1 = ' '.join(_get_visible_text(a_text))
     t2 = ' '.join(_get_visible_text(b_text))
 

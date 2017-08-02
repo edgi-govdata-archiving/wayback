@@ -45,3 +45,4 @@ def query_import_status(import_id):
                                                 import_id=import_id)
     return requests.get(url,
                         auth=(settings['db_email'], settings['db_password']))
+    
