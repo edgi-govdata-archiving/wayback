@@ -35,17 +35,17 @@ def df_filter(df):
             social_list = list(social_soup.find_all(['a', 'script']))
             for x in social_list:
                 if (x.name == 'a'):
-                    if ((urlparse(x['href']).netloc in social_media)):
-                        df.loc[index] = df.loc[index].replace(df.loc[index]['review'], 'no')
-                        df.loc[index] = df.loc[index].replace(df.loc[index]['id'], 'Social Media')
-                        df.loc[index] = df.loc[index].replace(df.loc[index]['priority'], 0.1)
-                        df.loc[index] = df.loc[index].replace(df.loc[index]['annotation'], 'Repeated Changes')
-                if (x.name == 'a'):
-                    if (urlparse(x['href']).scheme == 'mailto'):
-                        df.loc[index] = df.loc[index].replace(df.loc[index]['review'], 'no')
-                        df.loc[index] = df.loc[index].replace(df.loc[index]['id'], 'Contact info')
-                        df.loc[index] = df.loc[index].replace(df.loc[index]['priority'], 0.1)
-                        df.loc[index] = df.loc[index].replace(df.loc[index]['annotation'], 'Repeated Changes')
+                    if ('href' in x.attrs.keys()):
+                        if (urlparse(x['href']).netloc in social_media):
+                            df.loc[index] = df.loc[index].replace(df.loc[index]['review'], 'no')
+                            df.loc[index] = df.loc[index].replace(df.loc[index]['id'], 'Social Media')
+                            df.loc[index] = df.loc[index].replace(df.loc[index]['priority'], 0.1)
+                            df.loc[index] = df.loc[index].replace(df.loc[index]['annotation'], 'Repeated Changes')
+                        if (urlparse(x['href']).scheme == 'mailto'):
+                            df.loc[index] = df.loc[index].replace(df.loc[index]['review'], 'no')
+                            df.loc[index] = df.loc[index].replace(df.loc[index]['id'], 'Contact info')
+                            df.loc[index] = df.loc[index].replace(df.loc[index]['priority'], 0.1)
+                            df.loc[index] = df.loc[index].replace(df.loc[index]['annotation'], 'Repeated Changes')
 
             date_list = list(social_soup.find_all(['meta'], attrs={"http-equiv":"last-modified"}))
             for y in date_list:
@@ -54,4 +54,5 @@ def df_filter(df):
                     df.loc[index] = df.loc[index].replace(df.loc[index]['id'], 'Date/Time')
                     df.loc[index] = df.loc[index].replace(df.loc[index]['priority'], 0.1)
                     df.loc[index] = df.loc[index].replace(df.loc[index]['annotation'], 'Repeated Changes')
+
     return df
