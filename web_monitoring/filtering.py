@@ -54,5 +54,4 @@ def df_filter(df):
                     df.loc[index] = df.loc[index].replace(df.loc[index]['id'], 'Date/Time')
                     df.loc[index] = df.loc[index].replace(df.loc[index]['priority'], 0.1)
                     df.loc[index] = df.loc[index].replace(df.loc[index]['annotation'], 'Repeated Changes')
-
     return df
