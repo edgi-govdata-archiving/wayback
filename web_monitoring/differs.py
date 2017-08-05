@@ -1,13 +1,14 @@
 from bs4 import BeautifulSoup
-import diff_match_patch
+from diff_match_patch import diff, diff_bytes
 import re
 import web_monitoring.pagefreezer
 import sys
 
-
 # BeautifulSoup can sometimes exceed the default Python recursion limit (1000).
 sys.setrecursionlimit(10000)
 
+# Dictionary mapping which maps from diff-match-patch tags to the ones we use
+diff_codes = {'=': 0, '-': -1, '+': 1}
 
 def compare_length(a_body, b_body):
     "Compute difference in response body lengths. (Does not compare contents.)"
@@ -51,11 +52,20 @@ def pagefreezer(a_url, b_url):
     # Just send PF the urls, not the whole body.
     # It is still useful that we downloaded the body because we are able to
     # validate it against the expected hash.
-    return web_monitoring.pagefreezer.compare(a_url, b_url)
+    obj = web_monitoring.pagefreezer.PageFreezer(a_url, b_url)
+    return obj.query_result
 
+def compute_dmp_diff(a_text, b_text, timelimit=4):
 
-d = diff_match_patch.diff_match_patch()
+    if (isinstance(a_text, str) and isinstance(b_text, str)):
+        changes = diff(a_text, b_text, checklines=False, timelimit=timelimit, cleanup_semantic=True, counts_only=False)
+    elif (isinstance(a_text, bytes) and isinstance(b_text, bytes)):
+        changes = diff_bytes(a_text, b_text, checklines=False, timelimit=timelimit, cleanup_semantic=True, counts_only=False)
+    else:
+        raise TypeError("Both the texts should be either of type 'str' or 'bytes'.")
 
+    result = [(diff_codes[change[0]], change[1]) for change in changes]
+    return result
 
 def html_text_diff(a_text, b_text):
     """
@@ -65,13 +75,14 @@ def html_text_diff(a_text, b_text):
     ------
     >>> html_text_diff('<p>Deleted</p><p>Unchanged</p>',
     ...                '<p>Added</p><p>Unchanged</p>')
-    [(0, '<p>'), (-1, 'Delet'), (1, 'Add'), (0, 'ed</p><p>Unchanged</p>')]
+    [[-1, 'Delet'], [1, 'Add'], [0, 'ed Unchanged']]
     """
+
     t1 = ' '.join(_get_visible_text(a_text))
     t2 = ' '.join(_get_visible_text(b_text))
-    DEADLINE = 2  # seconds
-    return d.diff_compute(t1, t2, checklines=False, deadline=DEADLINE)
 
+    TIMELIMIT = 2 #seconds
+    return compute_dmp_diff(t1, t2, timelimit=TIMELIMIT)
 
 def html_source_diff(a_text, b_text):
     """
@@ -81,7 +92,7 @@ def html_source_diff(a_text, b_text):
     ------
     >>> html_source_diff('<p>Deleted</p><p>Unchanged</p>',
     ...                  '<p>Added</p><p>Unchanged</p>')
-    [(0, '<p>'), (-1, 'Delet'), (1, 'Add'), (0, 'ed</p><p>Unchanged</p>')]
+    [[0, '<p>'], [-1, 'Delet'], [1, 'Add'], [0, 'ed</p><p>Unchanged</p>']]
     """
-    DEADLINE = 2  # seconds
-    return d.diff_compute(a_text, b_text, checklines=False, deadline=DEADLINE)
+    TIMELIMIT = 2 #seconds
+    return compute_dmp_diff(a_text, b_text, timelimit=TIMELIMIT)

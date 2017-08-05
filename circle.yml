@@ -11,6 +11,6 @@ dependencies:
 
 test:
   override:
-    - coverage run run_tests.py -v tests/
+    - coverage run run_tests.py -v web_monitoring/tests/
     - pyflakes web_monitoring
     - coverage report -m

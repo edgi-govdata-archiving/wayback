@@ -2,8 +2,7 @@ import json
 import os
 import requests
 import pandas as pd
-
-
+from web_monitoring.filtering import df_filter
 COMPARE_ENDPOINT = "https://api1.pagefreezer.com/v1/api/utils/diff/compare"
 STATE_LOOKUP = { -1: "Removal", 0: "Change", 1: "Addition" }
 
@@ -20,7 +19,6 @@ def set_api_key(api_key):
 if 'PAGE_FREEZER_API_KEY' in os.environ:
     set_api_key(os.environ['PAGE_FREEZER_API_KEY'])
 
-
 def compare(url_1, url_2):
     """
     Query PageFreezer and result the raw response as JSON dict.
@@ -36,9 +34,9 @@ def compare(url_1, url_2):
     """
     response = requests.post(COMPARE_ENDPOINT,
                              data=json.dumps({"url1": url_1, "url2": url_2}),
-                             headers={"Accept": "application/json",
-                                      "Content-Type": "application/json",
-                                      "x-api-key": _settings['api_key']})
+                             headers= {"Accept": "application/json",
+                                       "Content-Type": "application/json",
+                                       "x-api-key": _settings['api_key']})
     assert response.ok
     return response.json()
 
@@ -74,7 +72,6 @@ def result_into_df(result):
                        "state": pd.Categorical(state)})
     return df
 
-
 def display_pairs(result):
     from IPython.display import HTML, display
     pairs = [(diff['new'], diff['old']) for diff in result['output']['diffs']]
@@ -94,6 +91,7 @@ class PageFreezer:
         self.url_2 = url_2
         self.run_query()
         self.parse_to_df()
+        self.use_filter()
 
     def report(self):
         print("Delta Score: ", self.query_result['delta_score'], " Number of changes: ",len(self.dataframe) )
@@ -101,11 +99,15 @@ class PageFreezer:
         counts.index = counts.index.to_series().map(self.state_lookup)
         print(counts)
 
+
     def run_query(self):
         self.query_result = compare(self.url_1, self.url_2)['result']
 
     def parse_to_df(self):
         self.dataframe = result_into_df(self.query_result)
+
+    def use_filter(self):
+        self.dataframe = df_filter(self.dataframe)
 
     def full_html_changes(self):
         from IPython.display import display, HTML
