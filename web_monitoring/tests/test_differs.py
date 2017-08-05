@@ -1,3 +1,4 @@
+import pytest
 import web_monitoring.differs as wd
 
 
@@ -42,3 +43,12 @@ def test_html_diff():
                 (1, 'Add'),
                 (0, 'ed</p><p>Unchanged</p>')]
     assert actual == expected
+
+@pytest.mark.skip(reason="test not implemented")
+def test_pagefreezer():
+    # 1. Set up mock responses for calls to pagefreezer
+
+    actual = wd.pagefreezer('http://example.com/test_a',
+                            'http://example.com/test_b')
+    # 2. Ensure that the resulting output is properly passed through
+    pass

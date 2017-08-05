@@ -54,7 +54,7 @@ def pagefreezer(a_url, b_url):
     # It is still useful that we downloaded the body because we are able to
     # validate it against the expected hash.
     obj = web_monitoring.pagefreezer.PageFreezer(a_url, b_url)
-    return json.dumps(obj.query_result)
+    return obj.query_result
 
 def compute_dmp_diff(a_text, b_text, timelimit=4):
 
