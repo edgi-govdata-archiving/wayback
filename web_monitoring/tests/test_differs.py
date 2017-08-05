@@ -47,8 +47,7 @@ def test_html_diff():
 @pytest.mark.skip(reason="test not implemented")
 def test_pagefreezer():
     # 1. Set up mock responses for calls to pagefreezer
-
-    actual = wd.pagefreezer('http://example.com/test_a',
-                            'http://example.com/test_b')
+    # actual = wd.pagefreezer('http://example.com/test_a',
+    #                         'http://example.com/test_b')
     # 2. Ensure that the resulting output is properly passed through
     pass
