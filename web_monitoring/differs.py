@@ -3,7 +3,6 @@ from diff_match_patch import diff, diff_bytes
 import re
 import web_monitoring.pagefreezer
 import sys
-import json
 
 # BeautifulSoup can sometimes exceed the default Python recursion limit (1000).
 sys.setrecursionlimit(10000)
