@@ -5,7 +5,6 @@
 # Fails loudly (with exceptions) if REST API reports bad status.
 from datetime import datetime
 import requests
-from tqdm import tqdm
 from web_monitoring import utils
 from urllib.parse import urlparse
 
@@ -25,7 +24,7 @@ def get_cabinet_id(url):
 
     if(url.find('://') == -1):
         try_urls = ['https://' + url,'http://' + url]
-    elif(url.find('://') == 4):        
+    elif(url.find('://') == 4):
         try_urls = [url , 'https' + url[4:]]
     else:
         try_urls = [url, 'http' + url[5:]]
@@ -33,7 +32,7 @@ def get_cabinet_id(url):
     for key,value in cabinets.items():
         for dictionary in value:
             if(str(urlparse(dictionary['url']).scheme + '://' + urlparse(dictionary['url']).netloc) in try_urls):
-                cabinet_id = dictionary['name']                
+                cabinet_id = dictionary['name']
 
     if not cabinet_id != '' : raise ValueError("No such url found in the cabinets.")
 
