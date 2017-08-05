@@ -5,7 +5,6 @@
 # Fails loudly (with exceptions) if REST API reports bad status.
 from datetime import datetime
 import requests
-#from tqdm import tqdm
 from web_monitoring import utils
 from urllib.parse import urlparse
 
