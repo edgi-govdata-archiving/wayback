@@ -51,3 +51,10 @@ def test_pagefreezer():
     #                         'http://example.com/test_b')
     # 2. Ensure that the resulting output is properly passed through
     pass
+
+def test_get_visible_text():
+    html = '<!--First comment--><h1>First Heading</h1><p>First paragraph.</p>'
+    actual = wd._get_visible_text(html)
+    expected = ['First Heading',
+                'First paragraph.']
+    assert actual == expected

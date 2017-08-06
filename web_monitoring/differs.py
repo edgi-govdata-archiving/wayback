@@ -1,4 +1,4 @@
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Comment
 from diff_match_patch import diff, diff_bytes
 import re
 import web_monitoring.pagefreezer
@@ -22,8 +22,10 @@ def identical_bytes(a_body, b_body):
 
 def _get_text(html):
     "Extract textual content from HTML."
-    soup = BeautifulSoup(html, 'html.parser')
-    return soup.findAll(text=True)
+    soup = BeautifulSoup(html, 'lxml')
+    [element.extract() for element in
+     soup.find_all(string=lambda text:isinstance(text, Comment))]
+    return soup.find_all(text=True)
 
 
 def _is_visible(element):
