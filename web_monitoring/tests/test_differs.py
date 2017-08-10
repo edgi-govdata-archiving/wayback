@@ -24,6 +24,14 @@ def test_identical_bytes():
     expected = False
     assert actual == expected
 
+def test_html_diff_render():
+    text1 = '<!DOCTYPE html><html><head></head><body><p>Paragraph</p></body></html>'
+    text2 = '<!DOCTYPE html><html><head></head><body><h1>Header</h1></body></html>'
+    actual = html_diff_render(text1,text2)
+    expected = '<!DOCTYPE html>\n<html>\n <style type="text/css">\n  ins {text-decoration : none; background-color: #d4fcbc;}\n                        del {text-decoration : none; background-color: #fbb6c2;}\n </style>\n <head></head>\n <body><h1><ins>Header</ins></h1> <p><del>Paragraph</del></p></body>\n</html>'
+    assert actual == expected
+
+
 
 def test_text_diff():
     actual = wd.html_text_diff('<p>Deleted</p><p>Unchanged</p>',
