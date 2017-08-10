@@ -1,8 +1,10 @@
 from bs4 import BeautifulSoup, Comment
 from diff_match_patch import diff, diff_bytes
+from lxml.html.diff import htmldiff
 import re
 import web_monitoring.pagefreezer
 import sys
+import os
 
 # BeautifulSoup can sometimes exceed the default Python recursion limit (1000).
 sys.setrecursionlimit(10000)
@@ -109,8 +111,8 @@ def html_diff_render(a_text, b_text):
     text2 = '<!DOCTYPE html><html><head></head><body><h1>Header</h1></body></html>'
     test_diff_render = html_diff_render(text1,text2)
     """
-    soup_old = bsoup(a_text, 'lxml')
-    soup_new = bsoup(b_text, 'lxml')
+    soup_old = BeautifulSoup(a_text, 'lxml')
+    soup_new = BeautifulSoup(b_text, 'lxml')
 
     [element.extract() for element in
      soup_old.find_all(string=lambda text:isinstance(text, Comment))]
