@@ -66,6 +66,13 @@ def search_cdx(params):
     Returns an iterator of CdxRecord objects. The StopIteration value is the
     total count of found captures.
 
+    Note that even URLs without wildcards may return results with different
+    URLs. Search results are matched by url_key, which is a SURT-formatted,
+    canonicalized URL:
+      - Does not differentiate between HTTP and HTTPS
+      - Is not case-sensitive
+      - Treats `www.` and `www*.` subdomains the same as no subdomain at all
+
     Parameters
     ----------
     params : dict
@@ -123,6 +130,13 @@ def list_versions(url, *, from_date=None, to_date=None, skip_repeats=True):
 
     This function provides a convenient, use-case-specific interface to
     archive.org's CDX API. For a more direct, low-level API, use search_cdx().
+
+    Note that even URLs without wildcards may return results with multiple
+    URLs. Search results are matched by url_key, which is a SURT-formatted,
+    canonicalized URL:
+      - Does not differentiate between HTTP and HTTPS
+      - Is not case-sensitive
+      - Treats `www.` and `www*.` subdomains the same as no subdomain at all
 
     Parameters
     ----------
