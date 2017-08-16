@@ -18,11 +18,11 @@ from web_monitoring import db
 
 def import_ia(url, agency, site):
     # Pulling on this generator does the work.
-    versions = (ia.timestamped_uri_to_version(dt, uri,
-                                              url=url,
+    versions = (ia.timestamped_uri_to_version(version.date, version.raw_url,
+                                              url=version.url,
                                               site=site,
                                               agency=agency)
-                for dt, uri in ia.list_versions(url))
+                for version in ia.list_versions(url))
     # Wrap it in a progress bar.
     versions = tqdm(versions, desc='importing', unit=' versions')
     return post_versions_batched(versions)

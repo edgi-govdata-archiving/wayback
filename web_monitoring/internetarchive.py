@@ -126,7 +126,7 @@ def search_cdx(params):
 
 def list_versions(url, *, from_date=None, to_date=None, skip_repeats=True):
     """
-    Yield (version_datetime, version_uri) for all versions of a url.
+    Yield a CdxRecord object for each version of a url.
 
     This function provides a convenient, use-case-specific interface to
     archive.org's CDX API. For a more direct, low-level API, use search_cdx().
@@ -147,20 +147,20 @@ def list_versions(url, *, from_date=None, to_date=None, skip_repeats=True):
     to_date : datetime
         Get versions captured before this date (optional).
     skip_repeats : boolean
-        Don’t include consecutive captures of unchanged content (default: True).
+        Don’t include consecutive captures of the same content (default: True).
 
     Examples
     --------
     Grab the datetime and URL of the version nasa.gov snapshot.
-    >>> pairs = list_versions('nasa.gov')
-    >>> dt, url = next(pairs)
-    >>> dt
+    >>> versions = list_versions('nasa.gov')
+    >>> version = next(versions)
+    >>> version.date
     datetime.datetime(1996, 12, 31, 23, 58, 47)
-    >>> url
-    'http://web.archive.org/web/19961231235847/http://www.nasa.gov:80/'
+    >>> version.raw_url
+    'http://web.archive.org/web/19961231235847id_/http://www.nasa.gov:80/'
 
     Loop through all the snapshots.
-    >>> for dt, url in list_versions('nasa.gov'):
+    >>> for version in list_versions('nasa.gov'):
     ...     # do something
     """
     params = {'url': url, 'collapse': 'digest'}
@@ -177,7 +177,7 @@ def list_versions(url, *, from_date=None, to_date=None, skip_repeats=True):
             has_versions = True
             last_hashes[version.url] = version.digest
             # TODO: yield the whole version
-            yield version.date, version.raw_url
+            yield version
 
     if not has_versions:
         raise ValueError("Internet archive does not have archived "
