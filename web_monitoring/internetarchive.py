@@ -69,14 +69,20 @@ def search_cdx(params):
     Note that even URLs without wildcards may return results with different
     URLs. Search results are matched by url_key, which is a SURT-formatted,
     canonicalized URL:
-      - Does not differentiate between HTTP and HTTPS
-      - Is not case-sensitive
-      - Treats `www.` and `www*.` subdomains the same as no subdomain at all
+
+      * Does not differentiate between HTTP and HTTPS
+      * Is not case-sensitive
+      * Treats `www.` and `www*.` subdomains the same as no subdomain at all
 
     Parameters
     ----------
     params : dict
            Any options that the CDX API takes. Must at least include `url`.
+
+    Raises
+    ------
+    UnexpectedResponseFormat
+        If the CDX response was not parseable.
 
     References
     ----------
@@ -134,9 +140,10 @@ def list_versions(url, *, from_date=None, to_date=None, skip_repeats=True):
     Note that even URLs without wildcards may return results with multiple
     URLs. Search results are matched by url_key, which is a SURT-formatted,
     canonicalized URL:
-      - Does not differentiate between HTTP and HTTPS
-      - Is not case-sensitive
-      - Treats `www.` and `www*.` subdomains the same as no subdomain at all
+
+      * Does not differentiate between HTTP and HTTPS
+      * Is not case-sensitive
+      * Treats `www.` and `www*.` subdomains the same as no subdomain at all
 
     Parameters
     ----------
@@ -148,6 +155,13 @@ def list_versions(url, *, from_date=None, to_date=None, skip_repeats=True):
         Get versions captured before this date (optional).
     skip_repeats : boolean
         Don’t include consecutive captures of the same content (default: True).
+
+    Raises
+    ------
+    UnexpectedResponseFormat
+        If the CDX response was not parseable.
+    ValueError
+        If there were no versions of the given URL.
 
     Examples
     --------
