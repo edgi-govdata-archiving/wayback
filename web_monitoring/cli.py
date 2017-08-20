@@ -2,6 +2,7 @@
 # See scripts/ directory for associated executable(s). All of the interesting
 # functionality is implemented in this module to make it easier to test.
 from docopt import docopt
+import pandas
 import time
 import toolz
 from tqdm import tqdm
@@ -16,13 +17,15 @@ from web_monitoring import db
 # better to use the underlying library code.
 
 
-def import_ia(url, agency, site):
+def import_ia(url, agency, site, from_date=None, to_date=None):
     # Pulling on this generator does the work.
     versions = (ia.timestamped_uri_to_version(version.date, version.raw_url,
                                               url=version.url,
                                               site=site,
                                               agency=agency)
-                for version in ia.list_versions(url))
+                for version in ia.list_versions(url,
+                                                from_date=from_date,
+                                                to_date=to_date))
     # Wrap it in a progress bar.
     versions = tqdm(versions, desc='importing', unit=' versions')
     return post_versions_batched(versions)
@@ -80,11 +83,28 @@ def post_versions_batched(versions):
           "".format(success_tally, error_tally))
 
 
+def parse_date_argument(date_string):
+    """Parse a CLI argument that should represent a date into a datetime"""
+    if not date_string:
+        return None
+
+    try:
+        parsed = pandas.to_datetime(date_string)
+        if not pandas.isnull(parsed):
+            return parsed
+    except ValueError:
+        pass
+
+    return None
+
+
 def main():
     doc = """Command Line Interface to the web_monitoring Python package
 
 Usage:
 wm import ia <url> --site <site> --agency <agency>
+             [--from <from_date>]
+             [--to <to_date>]
 wm import pf <cabinet_id> <archive_id> --site <site> --agency <agency>
 
 Options:
@@ -96,7 +116,9 @@ Options:
         if arguments['ia']:
             import_ia(url=arguments['<url>'],
                       agency=arguments['<agency>'],
-                      site=arguments['<site>'])
+                      site=arguments['<site>'],
+                      from_date=parse_date_argument(arguments['<from_date>']),
+                      to_date=parse_date_argument(arguments['<to_date>']))
         elif arguments['pf']:
             import_pf_archive(cabinet_id=arguments['<cabinet_id>'],
                               archive_id=arguments['<archive_id>'],
