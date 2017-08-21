@@ -266,7 +266,13 @@ def timestamped_uri_to_version(dt, uri, *, url, site, agency, view_url=None):
     Obtain hash and title and return a Version.
     """
     res = requests.get(uri)
-    assert res.ok
+
+    # IA's memento server responds with the status of the original request, so
+    # use the presence of the 'Memento-Datetime' header to determine if we
+    # should use the response or there was an actual error.
+    if not res.ok and not res.headers.get('memento-datetime'):
+        res.raise_for_status()
+
     version_hash = utils.hash_content(res.content)
     title = utils.extract_title(res.content)
     content_type = (res.headers['content-type'] or '').split(';', 1)
