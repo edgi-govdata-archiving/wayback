@@ -22,7 +22,8 @@ def import_ia(url, agency, site, from_date=None, to_date=None):
     versions = (ia.timestamped_uri_to_version(version.date, version.raw_url,
                                               url=version.url,
                                               site=site,
-                                              agency=agency)
+                                              agency=agency,
+                                              view_url=version.view_url)
                 for version in ia.list_versions(url,
                                                 from_date=from_date,
                                                 to_date=to_date))

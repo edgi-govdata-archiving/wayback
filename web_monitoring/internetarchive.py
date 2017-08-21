@@ -198,7 +198,8 @@ def list_versions(url, *, from_date=None, to_date=None, skip_repeats=True):
                          "versions of {}".format(url))
 
 
-def format_version(*, url, dt, uri, version_hash, title, agency, site):
+def format_version(*, url, dt, uri, version_hash, title, agency, site, status,
+                   mime_type, encoding, headers=None, view_url=None):
     """
     Format version info in preparation for submitting it to web-monitoring-db.
 
@@ -218,6 +219,16 @@ def format_version(*, url, dt, uri, version_hash, title, agency, site):
         primer metadata (likely to change in the future)
     site : string
         primer metadata (likely to change in the future)
+    status : int
+        HTTP status code
+    mime_type : string
+        Mime type of HTTP response
+    encoding : string
+        Character encoding of HTTP response
+    headers : dict
+        Any relevant HTTP headers from response
+    view_url : string
+        The archive.org URL for viewing the page (with rewritten links, etc.)
 
     Returns
     -------
@@ -226,6 +237,17 @@ def format_version(*, url, dt, uri, version_hash, title, agency, site):
     """
     # Existing documentation of import API is in this PR:
     # https://github.com/edgi-govdata-archiving/web-monitoring-db/pull/32
+    metadata = {
+        'status_code': status,
+        'mime_type': mime_type,
+        'encoding': encoding,
+        'headers': headers or {},
+        'view_url': view_url
+    }
+
+    if status >= 400:
+        metadata['error_code'] = status
+
     return dict(
          page_url=url,
          page_title=title,
@@ -235,11 +257,11 @@ def format_version(*, url, dt, uri, version_hash, title, agency, site):
          uri=uri,
          version_hash=version_hash,
          source_type='internet_archive',
-         source_metadata={}  # TODO Use CDX API to get additional metadata.
+         source_metadata=metadata
     )
 
 
-def timestamped_uri_to_version(dt, uri, *, url, site, agency):
+def timestamped_uri_to_version(dt, uri, *, url, site, agency, view_url=None):
     """
     Obtain hash and title and return a Version.
     """
@@ -247,7 +269,22 @@ def timestamped_uri_to_version(dt, uri, *, url, site, agency):
     assert res.ok
     version_hash = utils.hash_content(res.content)
     title = utils.extract_title(res.content)
-    # TODO: extract more metadata from X-Archive-Orig-* headers
+    content_type = (res.headers['content-type'] or '').split(';', 1)
+
+    # Get all headers from original response
+    prefix = 'X-Archive-Orig-'
+    original_headers = {
+        k[len(prefix):]: v for k, v in res.headers.items()
+        if k.startswith(prefix)
+    }
+
+    # TODO: pass along info about redirects? e.g:
+    # pattern = re.compile(r'^http://web.archive.org/web/\d+id_/(.*)$'
+    # map(
+    #   lambda response: pattern.match(response.url).groups(0),
+    #   res.history)
     return format_version(url=url, dt=dt, uri=uri,
                           version_hash=version_hash, title=title,
-                          agency=agency, site=site)
+                          agency=agency, site=site, status=res.status_code,
+                          mime_type=content_type[0], encoding=res.encoding,
+                          headers=original_headers, view_url=view_url)
