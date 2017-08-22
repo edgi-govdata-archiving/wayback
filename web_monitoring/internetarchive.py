@@ -18,6 +18,7 @@ from collections import namedtuple
 from datetime import datetime
 import hashlib
 import urllib
+import re
 import requests
 from web_monitoring import utils
 
@@ -35,6 +36,8 @@ CDX_SEARCH_URL = 'http://web.archive.org/cdx/search/cdx'
 ARCHIVE_RAW_URL_TEMPLATE = 'http://web.archive.org/web/{timestamp}id_/{url}'
 ARCHIVE_VIEW_URL_TEMPLATE = 'http://web.archive.org/web/{timestamp}/{url}'
 URL_DATE_FORMAT = '%Y%m%d%H%M%S'
+MEMENTO_URL_PATTERN = re.compile(
+    r'^http(?:s)?://web.archive.org/web/\d+(?:id_)?/(.*)$')
 
 CdxRecord = namedtuple('CdxRecord', (
     # Raw CDX values
@@ -50,6 +53,29 @@ CdxRecord = namedtuple('CdxRecord', (
     'raw_url',
     'view_url'
 ))
+
+
+def original_url_for_memento(memento_url):
+    """
+    Get the original URL that a memento URL represents a capture of.
+
+    Examples
+    --------
+    >>> original_url_for_memento('http://web.archive.org/web/20170813195036/https://arpa-e.energy.gov/?q=engage/events-workshops')
+    'https://arpa-e.energy.gov/?q=engage/events-workshops'
+    """
+    try:
+        url = MEMENTO_URL_PATTERN.match(memento_url).group(1)
+    except:
+        raise ValueError(f'"{memento_url}" is not a memento URL')
+
+    # A URL *may* be percent encoded, decode ONLY if so (we don’t want to
+    # accidentally decode the querystring if there is one)
+    lower_url = url.lower()
+    if lower_url.startswith('http%3a') or lower_url.startswith('https%3a'):
+        url = urllib.parse.unquote(url)
+
+    return url
 
 
 def cdx_hash(content):
@@ -199,7 +225,8 @@ def list_versions(url, *, from_date=None, to_date=None, skip_repeats=True):
 
 
 def format_version(*, url, dt, uri, version_hash, title, agency, site, status,
-                   mime_type, encoding, headers=None, view_url=None):
+                   mime_type, encoding, headers=None, view_url=None,
+                   redirected_url=None, redirects=None):
     """
     Format version info in preparation for submitting it to web-monitoring-db.
 
@@ -248,6 +275,10 @@ def format_version(*, url, dt, uri, version_hash, title, agency, site, status,
     if status >= 400:
         metadata['error_code'] = status
 
+    if redirected_url:
+        metadata['redirected_url'] = redirected_url
+        metadata['redirects'] = redirects
+
     return dict(
          page_url=url,
          page_title=title,
@@ -284,13 +315,18 @@ def timestamped_uri_to_version(dt, uri, *, url, site, agency, view_url=None):
         if k.startswith(prefix)
     }
 
-    # TODO: pass along info about redirects? e.g:
-    # pattern = re.compile(r'^http://web.archive.org/web/\d+id_/(.*)$'
-    # map(
-    #   lambda response: pattern.match(response.url).groups(0),
-    #   res.history)
+    redirected_url = None
+    redirects = None
+    if res.url != uri:
+        redirected_url = original_url_for_memento(res.url)
+        redirects = list(map(
+            lambda response: original_url_for_memento(response.url),
+            res.history))
+        redirects.append(redirected_url)
+
     return format_version(url=url, dt=dt, uri=uri,
                           version_hash=version_hash, title=title,
                           agency=agency, site=site, status=res.status_code,
                           mime_type=content_type[0], encoding=res.encoding,
-                          headers=original_headers, view_url=view_url)
+                          headers=original_headers, view_url=view_url,
+                          redirected_url=redirected_url, redirects=redirects)
