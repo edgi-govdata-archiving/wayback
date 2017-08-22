@@ -255,6 +255,13 @@ def format_version(*, url, dt, uri, version_hash, title, agency, site, status,
         Any relevant HTTP headers from response
     view_url : string
         The archive.org URL for viewing the page (with rewritten links, etc.)
+    redirected_url : string
+        If getting `url` resulted in a redirect, this should be the URL
+        that was ultimately redirected to.
+    redirects : string
+        If getting `url` resulted in any redirects this should be a sequence
+        of all the URLs that were retrieved, starting with the originally
+        requested URL and ending with the value of the `redirected_url` arg.
 
     Returns
     -------
