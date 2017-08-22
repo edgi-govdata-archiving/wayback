@@ -181,7 +181,7 @@ def list_versions(url, *, from_date=None, to_date=None, skip_repeats=True):
     if from_date:
         params['from'] = from_date.strftime(URL_DATE_FORMAT)
     if to_date:
-        params['to'] = from_date.strftime(URL_DATE_FORMAT)
+        params['to'] = to_date.strftime(URL_DATE_FORMAT)
 
     has_versions = False
     last_hashes = {}
