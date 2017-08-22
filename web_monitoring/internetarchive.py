@@ -81,7 +81,7 @@ def original_url_for_memento(memento_url):
 def cdx_hash(content):
     if isinstance(content, str):
         content = content.encode()
-    return b32encode(hashlib.sha1(content).digest())
+    return b32encode(hashlib.sha1(content).digest()).decode()
 
 
 def search_cdx(params):
@@ -135,7 +135,6 @@ def search_cdx(params):
 
         try:
             data = CdxRecord(*text.split(' '), None, '', '')
-            encoded_url = urllib.parse.quote(data.url, safe='')
             capture_time = datetime.strptime(data.timestamp, URL_DATE_FORMAT)
         except:
             raise UnexpectedResponseFormat(text)
@@ -146,9 +145,9 @@ def search_cdx(params):
         data = data._replace(
             date=capture_time,
             raw_url=ARCHIVE_RAW_URL_TEMPLATE.format(
-                timestamp=data.timestamp, url=encoded_url),
+                timestamp=data.timestamp, url=data.url),
             view_url=ARCHIVE_VIEW_URL_TEMPLATE.format(
-                timestamp=data.timestamp, url=encoded_url)
+                timestamp=data.timestamp, url=data.url)
         )
         count += 1
         yield data
