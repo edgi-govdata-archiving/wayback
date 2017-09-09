@@ -13,7 +13,11 @@ Other potentially useful links:
 * https://archive.readme.io/docs/memento
 """
 
+from base64 import b32encode
+from collections import namedtuple
 from datetime import datetime
+import hashlib
+import urllib
 import re
 import requests
 from web_monitoring import utils
@@ -28,93 +32,200 @@ class UnexpectedResponseFormat(WebMonitoringException):
     ...
 
 
-TIMEMAP_URL_TEMPLATE = 'http://web.archive.org/web/timemap/link/{}'
-DATE_FMT = '%a, %d %b %Y %H:%M:%S %Z'
-DATE_URL_FMT = '%Y%m%d%H%M%S'
-URL_CHUNK_PATTERN = re.compile('\<(.*)\>')
-DATETIME_CHUNK_PATTERN = re.compile(' datetime="(.*)",')
+CDX_SEARCH_URL = 'http://web.archive.org/cdx/search/cdx'
+ARCHIVE_RAW_URL_TEMPLATE = 'http://web.archive.org/web/{timestamp}id_/{url}'
+ARCHIVE_VIEW_URL_TEMPLATE = 'http://web.archive.org/web/{timestamp}/{url}'
+URL_DATE_FORMAT = '%Y%m%d%H%M%S'
+MEMENTO_URL_PATTERN = re.compile(
+    r'^http(?:s)?://web.archive.org/web/\d+(?:id_)?/(.*)$')
+
+CdxRecord = namedtuple('CdxRecord', (
+    # Raw CDX values
+    'key',
+    'timestamp',
+    'url',
+    'mime_type',
+    'status_code',
+    'digest',
+    'length',
+    # Synthesized values
+    'date',
+    'raw_url',
+    'view_url'
+))
 
 
-def list_versions(url):
+def original_url_for_memento(memento_url):
     """
-    Yield (version_datetime, version_uri) for all versions of a url.
+    Get the original URL that a memento URL represents a capture of.
+
+    Examples
+    --------
+    >>> original_url_for_memento('http://web.archive.org/web/20170813195036/https://arpa-e.energy.gov/?q=engage/events-workshops')
+    'https://arpa-e.energy.gov/?q=engage/events-workshops'
+    """
+    try:
+        url = MEMENTO_URL_PATTERN.match(memento_url).group(1)
+    except:
+        raise ValueError(f'"{memento_url}" is not a memento URL')
+
+    # A URL *may* be percent encoded, decode ONLY if so (we don’t want to
+    # accidentally decode the querystring if there is one)
+    lower_url = url.lower()
+    if lower_url.startswith('http%3a') or lower_url.startswith('https%3a'):
+        url = urllib.parse.unquote(url)
+
+    return url
+
+
+def cdx_hash(content):
+    if isinstance(content, str):
+        content = content.encode()
+    return b32encode(hashlib.sha1(content).digest()).decode()
+
+
+def search_cdx(params):
+    """
+    Search archive.org's CDX API for captures of a given URL. This will
+    automatically page through all results for a given search.
+
+    Returns an iterator of CdxRecord objects. The StopIteration value is the
+    total count of found captures.
+
+    Note that even URLs without wildcards may return results with different
+    URLs. Search results are matched by url_key, which is a SURT-formatted,
+    canonicalized URL:
+
+      * Does not differentiate between HTTP and HTTPS
+      * Is not case-sensitive
+      * Treats `www.` and `www*.` subdomains the same as no subdomain at all
+
+    Parameters
+    ----------
+    params : dict
+           Any options that the CDX API takes. Must at least include `url`.
+
+    Raises
+    ------
+    UnexpectedResponseFormat
+        If the CDX response was not parseable.
+
+    References
+    ----------
+    * https://github.com/internetarchive/wayback/tree/master/wayback-cdx-server
+    """
+
+    # NOTE: resolveRevisits works on a CDX server version that isn't released.
+    # It attempts to automatically resolve `warc/revisit` records.
+    params['resolveRevisits'] = 'true'
+    params['showResumeKey'] = 'true'
+
+    response = requests.get(CDX_SEARCH_URL, params=params)
+    lines = response.iter_lines()
+    count = 0
+
+    for line in lines:
+        text = line.decode()
+
+        # The resume key is delineated by a blank line.
+        if text == '':
+            params['resumeKey'] = next(lines).decode()
+            count += yield from search_cdx(params)
+            break
+
+        try:
+            data = CdxRecord(*text.split(' '), None, '', '')
+            capture_time = datetime.strptime(data.timestamp, URL_DATE_FORMAT)
+        except:
+            raise UnexpectedResponseFormat(text)
+
+        # TODO: repeat captures have a status code of `-` and a mime type of
+        # `warc/revisit`. These can only be resolved by requesting the content
+        # and following redirects. Maybe nice to do so automatically here.
+        data = data._replace(
+            date=capture_time,
+            raw_url=ARCHIVE_RAW_URL_TEMPLATE.format(
+                timestamp=data.timestamp, url=data.url),
+            view_url=ARCHIVE_VIEW_URL_TEMPLATE.format(
+                timestamp=data.timestamp, url=data.url)
+        )
+        count += 1
+        yield data
+
+    return count
+
+
+def list_versions(url, *, from_date=None, to_date=None, skip_repeats=True):
+    """
+    Yield a CdxRecord object for each version of a url.
+
+    This function provides a convenient, use-case-specific interface to
+    archive.org's CDX API. For a more direct, low-level API, use search_cdx().
+
+    Note that even URLs without wildcards may return results with multiple
+    URLs. Search results are matched by url_key, which is a SURT-formatted,
+    canonicalized URL:
+
+      * Does not differentiate between HTTP and HTTPS
+      * Is not case-sensitive
+      * Treats `www.` and `www*.` subdomains the same as no subdomain at all
 
     Parameters
     ----------
     url : string
+        The URL to list versions for. Can contain wildcards.
+    from_date : datetime
+        Get versions captured after this date (optional).
+    to_date : datetime
+        Get versions captured before this date (optional).
+    skip_repeats : boolean
+        Don’t include consecutive captures of the same content (default: True).
+
+    Raises
+    ------
+    UnexpectedResponseFormat
+        If the CDX response was not parseable.
+    ValueError
+        If there were no versions of the given URL.
 
     Examples
     --------
     Grab the datetime and URL of the version nasa.gov snapshot.
-    >>> pairs = list_versions('nasa.gov')
-    >>> dt, url = next(pairs)
-    >>> dt
+    >>> versions = list_versions('nasa.gov')
+    >>> version = next(versions)
+    >>> version.date
     datetime.datetime(1996, 12, 31, 23, 58, 47)
-    >>> url
-    'http://web.archive.org/web/19961231235847/http://www.nasa.gov:80/'
+    >>> version.raw_url
+    'http://web.archive.org/web/19961231235847id_/http://www.nasa.gov:80/'
 
     Loop through all the snapshots.
-    >>> for dt, url in list_versions('nasa.gov'):
+    >>> for version in list_versions('nasa.gov'):
     ...     # do something
-
-    References
-    ----------
-    * https://ws-dl.blogspot.fr/2013/07/2013-07-15-wayback-machine-upgrades.html
     """
-    # Request a list of the 'mementos' (what we call 'versions') for a url.
-    # It may be paginated. If so, the final line in the repsonse is a link to
-    # the next page.
-    first_page_url = TIMEMAP_URL_TEMPLATE.format(url)
-    res = requests.get(first_page_url)
-    lines = res.iter_lines()
-    first_pass = True
+    params = {'url': url, 'collapse': 'digest'}
+    if from_date:
+        params['from'] = from_date.strftime(URL_DATE_FORMAT)
+    if to_date:
+        params['to'] = to_date.strftime(URL_DATE_FORMAT)
 
-    while True:
-        # Continue requesting pages of responses until the last page.
-        try:
-            # The first three lines contain no information we need.
-            for _ in range(3):
-                next(lines)
-        except StopIteration:
-            if first_pass:
-                # Raises error if archived versions of the url don't exist
-                raise ValueError("Internet archive does not have archived "
-                                 "versions of {}".format(url))
-            else:
-                # There are no more pages left to parse.
-                break
-        first_pass = False
-        for line in lines:
-            # Lines are made up semicolon-separated chunks:
-            # b'<http://web.archive.org/web/19961231235847/http://www.nasa.gov:80/>; rel="memento"; datetime="Tue, 31 Dec 1996 23:58:47 GMT",'
+    has_versions = False
+    last_hashes = {}
+    for version in search_cdx(params):
+        # TODO: may want to follow redirects and resolve them in the future
+        if not skip_repeats or last_hashes.get(version.url) != version.digest:
+            has_versions = True
+            last_hashes[version.url] = version.digest
+            # TODO: yield the whole version
+            yield version
 
-            # Split by semicolon. Fail with an informative error if there are
-            # not exactly three chunks.
-            try:
-                url_chunk, rel_chunk, dt_chunk = line.decode().split(';')
-            except ValueError:
-                raise UnexpectedResponseFormat(line.decode())
-
-            if 'timemap' in rel_chunk:
-                # This line is a link to the next page of mementos.
-                next_page_url, = URL_CHUNK_PATTERN.match(url_chunk).groups()
-                res = requests.get(next_page_url)
-                lines = res.iter_lines()
-                break
-
-            # Extract the URL and the datetime from the surrounding characters.
-            # Again, fail with an informative error.
-            try:
-                uri, = URL_CHUNK_PATTERN.match(url_chunk).groups()
-                dt_str, = DATETIME_CHUNK_PATTERN.match(dt_chunk).groups()
-            except AttributeError:
-                raise UnexpectedResponseFormat(line.decode())
-
-            dt = datetime.strptime(dt_str, DATE_FMT)
-            yield dt, uri
+    if not has_versions:
+        raise ValueError("Internet archive does not have archived "
+                         "versions of {}".format(url))
 
 
-def format_version(*, url, dt, uri, version_hash, title, agency, site):
+def format_version(*, url, dt, uri, version_hash, title, agency, site, status,
+                   mime_type, encoding, headers=None, view_url=None,
+                   redirected_url=None, redirects=None):
     """
     Format version info in preparation for submitting it to web-monitoring-db.
 
@@ -134,6 +245,23 @@ def format_version(*, url, dt, uri, version_hash, title, agency, site):
         primer metadata (likely to change in the future)
     site : string
         primer metadata (likely to change in the future)
+    status : int
+        HTTP status code
+    mime_type : string
+        Mime type of HTTP response
+    encoding : string
+        Character encoding of HTTP response
+    headers : dict
+        Any relevant HTTP headers from response
+    view_url : string
+        The archive.org URL for viewing the page (with rewritten links, etc.)
+    redirected_url : string
+        If getting `url` resulted in a redirect, this should be the URL
+        that was ultimately redirected to.
+    redirects : string
+        If getting `url` resulted in any redirects this should be a sequence
+        of all the URLs that were retrieved, starting with the originally
+        requested URL and ending with the value of the `redirected_url` arg.
 
     Returns
     -------
@@ -142,6 +270,21 @@ def format_version(*, url, dt, uri, version_hash, title, agency, site):
     """
     # Existing documentation of import API is in this PR:
     # https://github.com/edgi-govdata-archiving/web-monitoring-db/pull/32
+    metadata = {
+        'status_code': status,
+        'mime_type': mime_type,
+        'encoding': encoding,
+        'headers': headers or {},
+        'view_url': view_url
+    }
+
+    if status >= 400:
+        metadata['error_code'] = status
+
+    if redirected_url:
+        metadata['redirected_url'] = redirected_url
+        metadata['redirects'] = redirects
+
     return dict(
          page_url=url,
          page_title=title,
@@ -151,18 +294,45 @@ def format_version(*, url, dt, uri, version_hash, title, agency, site):
          uri=uri,
          version_hash=version_hash,
          source_type='internet_archive',
-         source_metadata={}  # TODO Use CDX API to get additional metadata.
+         source_metadata=metadata
     )
 
 
-def timestamped_uri_to_version(dt, uri, *, url, site, agency):
+def timestamped_uri_to_version(dt, uri, *, url, site, agency, view_url=None):
     """
     Obtain hash and title and return a Version.
     """
     res = requests.get(uri)
-    assert res.ok
+
+    # IA's memento server responds with the status of the original request, so
+    # use the presence of the 'Memento-Datetime' header to determine if we
+    # should use the response or there was an actual error.
+    if not res.ok and not res.headers.get('memento-datetime'):
+        res.raise_for_status()
+
     version_hash = utils.hash_content(res.content)
     title = utils.extract_title(res.content)
+    content_type = (res.headers['content-type'] or '').split(';', 1)
+
+    # Get all headers from original response
+    prefix = 'X-Archive-Orig-'
+    original_headers = {
+        k[len(prefix):]: v for k, v in res.headers.items()
+        if k.startswith(prefix)
+    }
+
+    redirected_url = None
+    redirects = None
+    if res.url != uri:
+        redirected_url = original_url_for_memento(res.url)
+        redirects = list(map(
+            lambda response: original_url_for_memento(response.url),
+            res.history))
+        redirects.append(redirected_url)
+
     return format_version(url=url, dt=dt, uri=uri,
                           version_hash=version_hash, title=title,
-                          agency=agency, site=site)
+                          agency=agency, site=site, status=res.status_code,
+                          mime_type=content_type[0], encoding=res.encoding,
+                          headers=original_headers, view_url=view_url,
+                          redirected_url=redirected_url, redirects=redirects)
