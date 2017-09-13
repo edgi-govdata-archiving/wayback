@@ -2,6 +2,7 @@ import concurrent.futures
 from docopt import docopt
 import hashlib
 import inspect
+import json
 import os
 import re
 import tornado.gen
@@ -55,6 +56,8 @@ META_TAG_PATTERN = re.compile(
 XML_PROLOG_PATTERN = re.compile(
     b'<?xml\\s[^>]*encoding=[\'"]([^\'"]+)[\'"].*\?>',
     re.IGNORECASE)
+
+client = tornado.httpclient.AsyncHTTPClient()
 
 
 class MockRequest:
@@ -121,13 +124,18 @@ class DiffHandler(BaseHandler):
             return
         # Special case for local files, for dev/testing.
         if a.startswith('file://') and b.startswith('file://'):
-            headers = {'Content-Type': 'application/html; charset=UTF-8'}
-            with open(a[7:], 'rb') as f:
-                body = f.read()
-                res_a = MockResponse(a, body, headers)
-            with open(b[7:], 'rb') as f:
-                body = f.read()
-                res_b = MockResponse(b, body, headers)
+            if os.get('WEB_MONITORING_APP_ENV') in ('development', 'testing'):
+                headers = {'Content-Type': 'application/html; charset=UTF-8'}
+                with open(a[7:], 'rb') as f:
+                    body = f.read()
+                    res_a = MockResponse(a, body, headers)
+                with open(b[7:], 'rb') as f:
+                    body = f.read()
+                    res_b = MockResponse(b, body, headers)
+            else:
+                self.send_error(
+                    500, reason=("Local files can only be used in development "
+                                 "or testing environment."))
         else:
             # Fetch server response for URLs a and b.
             res_a, res_b = yield [client.fetch(a, raise_error=False),
