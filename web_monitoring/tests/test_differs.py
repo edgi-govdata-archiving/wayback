@@ -1,6 +1,5 @@
 import pytest
 import web_monitoring.differs as wd
-import codecs
 
 def test_side_by_side_text():
     actual = wd.side_by_side_text(a_text='<html><body>hi</body></html>',
@@ -59,18 +58,24 @@ def test_get_visible_text():
     assert actual == expected
 
 def test_html_diff_render():
-    test_data = []
-    test_results = []
-    with open('htmldiff_test.txt', 'r') as file:
-        for line in file:
-            test_data.append(line)
+    test_data = [('<html><head></head><body><p>Paragraph</p></body></html>',
+                  '<html><head></head><body><h1>Heading</h1></body></html>'),
+                 ('<html><body><p>Paragraph</p></body></html>',
+                  '<html><body><h1>Heading</h1><p>Paragraph</p></html>'),
+                 ('<html><body><p>Paragraph</p></body></html>',
+                  '<html><body><h3>Paragraph</h3></body></html>'),
+                 ('<html><head><title>HTML Diff Render</title></head><body><h1>Heading</h1></body></html>',
+                  '<html><head><title>HTML Difference Render</title></head><body><h1>Head</h1></body></html>')]
 
-    for index in range(0, len(test_data), 3):
-        actual = wd.html_diff_render(test_data[index], test_data[index + 1])
-        expected = test_data[index + 2]
-        if (actual == codecs.decode(expected, 'unicode_escape')):
-            test_results.append(True)
-        else:
-            test_results.append(False)
+    test_results = ['<html>\n <style type="text/css">\n  ins {text-decoration : none; background-color: #d4fcbc;}\n                        del {text-decoration : none; background-color: #fbb6c2;}\n </style>\n <head></head>\n <body><h1><ins>Heading</ins></h1> <p><del>Paragraph</del></p></body>\n</html>',
+                    '<html>\n <style type="text/css">\n  ins {text-decoration : none; background-color: #d4fcbc;}\n                        del {text-decoration : none; background-color: #fbb6c2;}\n </style>\n <body><h1><ins>Heading</ins></h1> <p>Paragraph</p></body>\n</html>',
+                    '<html>\n <style type="text/css">\n  ins {text-decoration : none; background-color: #d4fcbc;}\n                        del {text-decoration : none; background-color: #fbb6c2;}\n </style>\n <body><h3>Paragraph</h3></body>\n</html>',
+                    '<html>\n <style type="text/css">\n  ins {text-decoration : none; background-color: #d4fcbc;}\n                        del {text-decoration : none; background-color: #fbb6c2;}\n </style>\n <head><title>HTML <ins>Difference</ins> <del>Diff</del> Render</title></head>\n <body><h1><ins>Head</ins></h1> <h1><del>Heading</del></h1></body>\n</html>']
 
-    assert False not in test_results
+    test_check = []
+
+    for index in range(len(test_data)):
+        test_check.append(wd.html_diff_render(test_data[index][0],
+                                              test_data[index][1]) == test_results[index])
+
+    assert False not in test_check
