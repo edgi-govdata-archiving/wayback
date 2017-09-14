@@ -1,0 +1,12 @@
+<html><head></head><body><p>Paragraph</p></body></html>
+<html><head></head><body><h1>Heading</h1></body></html>
+<html>\n <style type="text/css">\n  ins {text-decoration : none; background-color: #d4fcbc;}\n                        del {text-decoration : none; background-color: #fbb6c2;}\n </style>\n <head></head>\n <body><h1><ins>Heading</ins></h1> <p><del>Paragraph</del></p></body>\n</html>
+<html><body><p>Paragraph</p></body></html>
+<html><body><h1>Heading</h1><p>Paragraph</p></html>
+<html>\n <style type="text/css">\n  ins {text-decoration : none; background-color: #d4fcbc;}\n                        del {text-decoration : none; background-color: #fbb6c2;}\n </style>\n <body><h1><ins>Heading</ins></h1> <p>Paragraph</p></body>\n</html>
+<html><body><p>Paragraph</p></body></html>
+<html><body><h3>Paragraph</h3></body></html>
+<html>\n <style type="text/css">\n  ins {text-decoration : none; background-color: #d4fcbc;}\n                        del {text-decoration : none; background-color: #fbb6c2;}\n </style>\n <body><h3>Paragraph</h3></body>\n</html>
+<html><head><title>HTML Diff Render</title></head><body><h1>Heading</h1></body></html>
+<html><head><title>HTML Difference Render</title></head><body><h1>Head</h1></body></html>
+<html>\n <style type="text/css">\n  ins {text-decoration : none; background-color: #d4fcbc;}\n                        del {text-decoration : none; background-color: #fbb6c2;}\n </style>\n <head><title>HTML <ins>Difference</ins> <del>Diff</del> Render</title></head>\n <body><h1><ins>Head</ins></h1> <h1><del>Heading</del></h1></body>\n</html>

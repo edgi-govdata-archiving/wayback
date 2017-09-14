@@ -1,6 +1,6 @@
 import pytest
 import web_monitoring.differs as wd
-
+import codecs
 
 def test_side_by_side_text():
     actual = wd.side_by_side_text(a_text='<html><body>hi</body></html>',
@@ -59,8 +59,18 @@ def test_get_visible_text():
     assert actual == expected
 
 def test_html_diff_render():
-    text1 = '<!DOCTYPE html><html><head></head><body><p>Paragraph</p></body></html>'
-    text2 = '<!DOCTYPE html><html><head></head><body><h1>Header</h1></body></html>'
-    actual = wd.html_diff_render(text1,text2)
-    expected = '<!DOCTYPE html>\n<html>\n <style type="text/css">\n  ins {text-decoration : none; background-color: #d4fcbc;}\n                        del {text-decoration : none; background-color: #fbb6c2;}\n </style>\n <head></head>\n <body><h1><ins>Header</ins></h1> <p><del>Paragraph</del></p></body>\n</html>'
-    assert actual == expected
+    test_data = []
+    test_results = []
+    with open('htmldiff_test.txt', 'r') as file:
+        for line in file:
+            test_data.append(line)
+
+    for index in range(0, len(test_data), 3):
+        actual = wd.html_diff_render(test_data[index], test_data[index + 1])
+        expected = test_data[index + 2]
+        if (actual == codecs.decode(expected, 'unicode_escape')):
+            test_results.append(True)
+        else:
+            test_results.append(False)
+
+    assert False not in test_results
