@@ -8,6 +8,7 @@ import tornado.gen
 import tornado.httpclient
 import tornado.ioloop
 import tornado.web
+import web_monitoring
 
 
 def load_config(config):
@@ -70,7 +71,7 @@ class DiffHandler(tornado.web.RequestHandler):
         # Pass the bytes and any remaining args to the diffing function.
         executor = concurrent.futures.ProcessPoolExecutor()
         res = yield executor.submit(caller, func, res_a, res_b, **query_params)
-        self.write({'diff': res})
+        self.write({'diff': res, 'version': web_monitoring.__version__})
 
 
 def _extract_encoding(headers):
