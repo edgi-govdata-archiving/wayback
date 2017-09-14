@@ -1,8 +1,10 @@
 from bs4 import BeautifulSoup, Comment
 from diff_match_patch import diff, diff_bytes
+from lxml.html.diff import htmldiff
 import re
 import web_monitoring.pagefreezer
 import sys
+import os
 
 # BeautifulSoup can sometimes exceed the default Python recursion limit (1000).
 sys.setrecursionlimit(10000)
@@ -98,3 +100,49 @@ def html_source_diff(a_text, b_text):
     """
     TIMELIMIT = 2 #seconds
     return compute_dmp_diff(a_text, b_text, timelimit=TIMELIMIT)
+
+def html_diff_render(a_text, b_text):
+    """
+    HTML Diff for rendering
+
+    Example
+    -------
+    text1 = '<!DOCTYPE html><html><head></head><body><p>Paragraph</p></body></html>'
+    text2 = '<!DOCTYPE html><html><head></head><body><h1>Header</h1></body></html>'
+    test_diff_render = html_diff_render(text1,text2)
+    """
+    soup_old = BeautifulSoup(a_text, 'lxml')
+    soup_new = BeautifulSoup(b_text, 'lxml')
+
+    [element.extract() for element in
+     soup_old.find_all(string=lambda text:isinstance(text, Comment))]
+    [element.extract() for element in
+     soup_new.find_all(string=lambda text:isinstance(text, Comment))]
+
+    old_content = [str(child) for child in soup_old.html.children]
+    new_content = [str(child) for child in soup_new.html.children]
+
+    parent_tags = [content[:content.find('>')+1] for content in new_content]
+    parent_tag_names = [tag[1:tag.find(' ')] + '>' if (tag.find(' ') != -1) else tag[1:] for tag in parent_tags]
+
+    diff_list = []
+    for index in range(len(new_content)):
+        diff_list.append(htmldiff(old_content[index], new_content[index]))
+
+    diff_list = [os.linesep.join([s for s in text.splitlines() if s]) for text in diff_list]
+
+    append_list = [parent_tags[index]+diff_list[index]+'</'+parent_tag_names[index] for index in range(len(new_content))]
+
+    soup_new.html.clear()
+
+    new_tag = soup_new.new_tag("style", type="text/css")
+    new_tag.string = """ins {text-decoration : none; background-color: #d4fcbc;}
+                        del {text-decoration : none; background-color: #fbb6c2;}"""
+    soup_new.html.append(new_tag)
+
+    for index in range(len(append_list)):
+        soup_new.html.append(append_list[index])
+
+    render = soup_new.prettify(formatter=None)
+
+    return render
