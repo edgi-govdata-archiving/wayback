@@ -69,10 +69,10 @@ def test_html_diff_render():
                  ('<html><head><title>HTML Diff Render</title></head><body><h1>Heading</h1></body></html>',
                   '<html><head><title>HTML Difference Render</title></head><body><h1>Head</h1></body></html>')]
 
-    test_results = ['<html>\n <style type="text/css">\n  ins {text-decoration : none; background-color: #d4fcbc;}\n                        del {text-decoration : none; background-color: #fbb6c2;}\n </style> <head>\n </head> <body>\n  <h1><ins>Heading</ins></h1> <p><del>Paragraph</del></p>\n </body>\n</html>',
-                    '<html>\n <style type="text/css">\n  ins {text-decoration : none; background-color: #d4fcbc;}\n                        del {text-decoration : none; background-color: #fbb6c2;}\n </style> <body>\n  <h1><ins>Heading</ins></h1> <p>Paragraph</p>\n </body>\n</html>',
-                    '<html>\n <style type="text/css">\n  ins {text-decoration : none; background-color: #d4fcbc;}\n                        del {text-decoration : none; background-color: #fbb6c2;}\n </style> <body>\n  <h3>Paragraph</h3>\n </body>\n</html>',
-                    '<html>\n <style type="text/css">\n  ins {text-decoration : none; background-color: #d4fcbc;}\n                        del {text-decoration : none; background-color: #fbb6c2;}\n </style> <head>\n  <title>HTML <ins>Difference</ins> <del>Diff</del> Render</title>\n </head> <body>\n  <h1><ins>Head</ins></h1> <h1><del>Heading</del></h1>\n </body>\n</html>']
+    test_results = ['<html>\n <head>\n  <style type="text/css">\n   ins {text-decoration : none; background-color: #d4fcbc;}\n                        del {text-decoration : none; background-color: #fbb6c2;}\n  </style>\n </head> <body>\n  <h1><ins>Heading</ins></h1> <p><del>Paragraph</del></p>\n </body>\n</html>',
+                    '<html>\n <head>\n  <style type="text/css">\n   ins {text-decoration : none; background-color: #d4fcbc;}\n                        del {text-decoration : none; background-color: #fbb6c2;}\n  </style>\n </head> <body>\n  <h1><ins>Heading</ins></h1> <p>Paragraph</p>\n </body>\n</html>',
+                    '<html>\n <head>\n  <style type="text/css">\n   ins {text-decoration : none; background-color: #d4fcbc;}\n                        del {text-decoration : none; background-color: #fbb6c2;}\n  </style>\n </head> <body>\n  <h3>Paragraph</h3>\n </body>\n</html>',
+                    '<html>\n <head>\n  <title>HTML <ins>Difference</ins> <del>Diff</del> Render</title>\n  <style type="text/css">\n   ins {text-decoration : none; background-color: #d4fcbc;}\n                        del {text-decoration : none; background-color: #fbb6c2;}\n  </style>\n </head> <body>\n  <h1><ins>Head</ins></h1> <h1><del>Heading</del></h1>\n </body>\n</html>']
 
     for index in range(len(test_data)):
         diff = wd.html_diff_render(test_data[index][0], test_data[index][1])
@@ -83,6 +83,6 @@ def test_html_diff_render_handles_differing_numbers_of_nodes():
     test_data = ('<html><head></head><body><p>Paragraph</p></body></html>',
                  '<html><head></head>\n<body><h1>Heading</h1></body></html>')
 
-    expected = '<html>\n <style type="text/css">\n  ins {text-decoration : none; background-color: #d4fcbc;}\n                        del {text-decoration : none; background-color: #fbb6c2;}\n </style> <head>\n </head> <body>\n  <h1><ins>Heading</ins></h1> <p><del>Paragraph</del></p>\n </body>\n</html>'
+    expected = '<html>\n <head>\n  <style type="text/css">\n   ins {text-decoration : none; background-color: #d4fcbc;}\n                        del {text-decoration : none; background-color: #fbb6c2;}\n  </style>\n </head> <body>\n  <h1><ins>Heading</ins></h1> <p><del>Paragraph</del></p>\n </body>\n</html>'
     diff = wd.html_diff_render(test_data[0], test_data[1])
     assert expected == diff

@@ -145,14 +145,17 @@ def html_diff_render(a_text, b_text):
     ]
 
     soup_new.html.clear()
-
-    new_tag = soup_new.new_tag("style", type="text/css")
-    new_tag.string = """ins {text-decoration : none; background-color: #d4fcbc;}
-                        del {text-decoration : none; background-color: #fbb6c2;}"""
-    soup_new.html.append(new_tag)
-
     for index in range(len(diffs)):
         soup_new.html.append(diffs[index])
+
+    if not soup_new.head:
+        head = soup_new.new_tag('head')
+        soup_new.html.insert(0, head)
+
+    change_styles = soup_new.new_tag("style", type="text/css")
+    change_styles.string = """ins {text-decoration : none; background-color: #d4fcbc;}
+                        del {text-decoration : none; background-color: #fbb6c2;}"""
+    soup_new.head.append(change_styles)
 
     render = soup_new.prettify(formatter=None)
 
