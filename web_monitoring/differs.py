@@ -4,7 +4,6 @@ from lxml.html.diff import htmldiff
 import re
 import web_monitoring.pagefreezer
 import sys
-import os
 import copy
 
 # BeautifulSoup can sometimes exceed the default Python recursion limit (1000).
