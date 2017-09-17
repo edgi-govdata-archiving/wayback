@@ -4,7 +4,7 @@ from lxml.html.diff import htmldiff
 import re
 import web_monitoring.pagefreezer
 import sys
-import os
+import copy
 
 # BeautifulSoup can sometimes exceed the default Python recursion limit (1000).
 sys.setrecursionlimit(10000)
@@ -101,9 +101,15 @@ def html_source_diff(a_text, b_text):
     TIMELIMIT = 2 #seconds
     return compute_dmp_diff(a_text, b_text, timelimit=TIMELIMIT)
 
+
 def html_diff_render(a_text, b_text):
     """
-    HTML Diff for rendering
+    HTML Diff for rendering.
+
+    Please note that the result of this should not be displayed as-is in a
+    browser -- because this contains added and removed sections of the
+    document’s <head>, it may cause a browser to load two different CSS or JS
+    files that are in conflict with each other.
 
     Example
     -------
@@ -114,35 +120,97 @@ def html_diff_render(a_text, b_text):
     soup_old = BeautifulSoup(a_text, 'lxml')
     soup_new = BeautifulSoup(b_text, 'lxml')
 
+    # Remove comment nodes since they generally don't affect display.
+    # NOTE: This could affect display if the removed are conditional comments,
+    # but it's unclear how we'd meaningfully visualize those anyway.
     [element.extract() for element in
      soup_old.find_all(string=lambda text:isinstance(text, Comment))]
     [element.extract() for element in
      soup_new.find_all(string=lambda text:isinstance(text, Comment))]
 
-    old_content = [str(child) for child in soup_old.html.children]
-    new_content = [str(child) for child in soup_new.html.children]
-
-    parent_tags = [content[:content.find('>')+1] for content in new_content]
-    parent_tag_names = [tag[1:tag.find(' ')] + '>' if (tag.find(' ') != -1) else tag[1:] for tag in parent_tags]
-
-    diff_list = []
-    for index in range(len(new_content)):
-        diff_list.append(htmldiff(old_content[index], new_content[index]))
-
-    diff_list = [os.linesep.join([s for s in text.splitlines() if s]) for text in diff_list]
-
-    append_list = [parent_tags[index]+diff_list[index]+'</'+parent_tag_names[index] for index in range(len(new_content))]
+    # htmldiff will normally extract the <body> and return only a diff of its
+    # contents (without any of the surround code like a doctype, <html>, or
+    # <head>). Because we want something a little more like a structured diff
+    # of the whole page, we work around the standard behavior by finding each
+    # part of the <html> element and diffing it individually.
+    old_content = _find_meaningful_nodes(soup_old)
+    new_content = _find_meaningful_nodes(soup_new)
+    diffs = [
+        htmldiff(old_content['pre_head'], new_content['pre_head']),
+        _diff_elements(old_content['head'], new_content['head']),
+        htmldiff(old_content['pre_body'], new_content['pre_body']),
+        _diff_elements(old_content['body'], new_content['body']),
+        htmldiff(old_content['post_body'], new_content['post_body'])
+    ]
 
     soup_new.html.clear()
+    for index in range(len(diffs)):
+        soup_new.html.append(diffs[index])
 
-    new_tag = soup_new.new_tag("style", type="text/css")
-    new_tag.string = """ins {text-decoration : none; background-color: #d4fcbc;}
+    if not soup_new.head:
+        head = soup_new.new_tag('head')
+        soup_new.html.insert(0, head)
+
+    change_styles = soup_new.new_tag("style", type="text/css")
+    change_styles.string = """ins {text-decoration : none; background-color: #d4fcbc;}
                         del {text-decoration : none; background-color: #fbb6c2;}"""
-    soup_new.html.append(new_tag)
-
-    for index in range(len(append_list)):
-        soup_new.html.append(append_list[index])
+    soup_new.head.append(change_styles)
 
     render = soup_new.prettify(formatter=None)
 
     return render
+
+
+def _find_meaningful_nodes(soup):
+    """
+    Find meaningful content chunks from a Beautiful Soup document. Namely, this
+    is a dict of:
+    {
+        pre_head: string,
+        head: node,
+        pre_body: string,
+        body: node,
+        post_body: string
+    }
+    """
+    pre_head = []
+    head = None
+    pre_body = []
+    body = None
+    post_body = []
+    for node in soup.html.children:
+        if not head and not body:
+            if hasattr(node, 'name') and node.name == 'head':
+                head = node
+            elif hasattr(node, 'name') and node.name == 'body':
+                body = node
+            else:
+                pre_head.append(str(node))
+        elif not body:
+            if hasattr(node, 'name') and node.name == 'body':
+                body = node
+            else:
+                pre_body.append(str(node))
+        else:
+            post_body.append(str(node))
+
+    return {
+        'pre_head': '\n'.join(pre_head),
+        'head': head,
+        'pre_body': '\n'.join(pre_body),
+        'body': body,
+        'post_body': '\n'.join(post_body)
+    }
+
+
+def _diff_elements(old, new):
+    """
+    Diff the contents of two Beatiful Soup elements. Note that this returns
+    the "new" element with its content replaced by the diff.
+    """
+    if not old or not new:
+        return ''
+    result_element = copy.copy(new)
+    result_element.clear()
+    result_element.append(htmldiff(str(old), str(new)))
+    return result_element
