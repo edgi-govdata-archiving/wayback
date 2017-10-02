@@ -12,6 +12,8 @@ sys.setrecursionlimit(10000)
 # Dictionary mapping which maps from diff-match-patch tags to the ones we use
 diff_codes = {'=': 0, '-': -1, '+': 1}
 
+REPEATED_BLANK_LINES = re.compile(r'([^\S\n]*\n\s*){2,}')
+
 def compare_length(a_body, b_body):
     "Compute difference in response body lengths. (Does not compare contents.)"
     return len(b_body) - len(a_body)
@@ -42,7 +44,8 @@ def _is_visible(element):
 
 
 def _get_visible_text(html):
-    return list(filter(_is_visible, _get_text(html)))
+    text = ' '.join(filter(_is_visible, _get_text(html)))
+    return REPEATED_BLANK_LINES.sub('\n\n', text).strip()
 
 
 def side_by_side_text(a_text, b_text):
@@ -82,8 +85,8 @@ def html_text_diff(a_text, b_text):
     [[-1, 'Delet'], [1, 'Add'], [0, 'ed Unchanged']]
     """
 
-    t1 = ' '.join(_get_visible_text(a_text))
-    t2 = ' '.join(_get_visible_text(b_text))
+    t1 = _get_visible_text(a_text)
+    t2 = _get_visible_text(b_text)
 
     TIMELIMIT = 2 #seconds
     return compute_dmp_diff(t1, t2, timelimit=TIMELIMIT)
