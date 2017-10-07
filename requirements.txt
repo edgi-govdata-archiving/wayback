@@ -1,4 +1,4 @@
-bs4
+beautifulsoup4
 diff_match_patch_python
 docopt
 lxml
