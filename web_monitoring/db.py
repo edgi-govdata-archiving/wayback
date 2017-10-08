@@ -10,12 +10,20 @@ settings['db_url'] = os.environ.get('WEB_MONITORING_DB_URL')
 settings['db_email'] = os.environ.get('WEB_MONITORING_DB_EMAIL')
 settings['db_password'] = os.environ.get('WEB_MONITORING_DB_PASSWORD')
 
+
+def auth():
+    """Return db_email, db_password from settings."""
+    return (settings['db_email'], settings['db_password'])
+
+
 WEB_MONITORING_CREATE_IMPORT_API = '{db_url}/api/v0/imports'
 WEB_MONITORING_SHOW_IMPORT_API = '{db_url}/api/v0/imports/{import_id}'
 WEB_MONITORING_GET_CHANGES_API = '{db_url}/api/v0/pages/{page_id}/changes/{from_version}..{to_version}'
 WEB_MONITORING_POST_CHANGES_API ='{db_url}/api/v0/pages/{page_id}/changes/{from_version}..{to_version}/annotations'
 WEB_MONITORING_GET_VERSION_API = '{db_url}/api/v0/versions/{version_id}'
 WEB_MONITORING_GET_VERSION_SOURCE_API = '{db_url}/api/v0/versions?source_type={source_type}&source_metadata[version_id]={version_id}'
+WEB_MONITORING_SHOW_VERSION_API = '{db_url}/api/v0/versions/{version_id}'
+
 
 def post_versions(versions):
     """
@@ -25,12 +33,16 @@ def post_versions(versions):
     ----------
     versions : iterable
         iterable of dicts from :func:`format_version`
+
+    Returns
+    -------
+    response : :class:`requests.Response`
     """
     # Existing documentation of import API is in this PR:
     # https://github.com/edgi-govdata-archiving/web-monitoring-db/pull/32
     url = WEB_MONITORING_CREATE_IMPORT_API.format(db_url=settings['db_url'])
     return requests.post(url,
-                         auth=(settings['db_email'], settings['db_password']),
+                         auth=auth(),
                          headers={'Content-Type': 'application/x-json-stream'},
                          data='\n'.join(map(json.dumps, versions)))
 
@@ -42,11 +54,15 @@ def query_import_status(import_id):
     Parameters
     ----------
     import_id : integer
+
+    Returns
+    -------
+    response : :class:`requests.Response`
     """
     url = WEB_MONITORING_SHOW_IMPORT_API.format(db_url=settings['db_url'],
                                                 import_id=import_id)
     return requests.get(url,
-                        auth=(settings['db_email'], settings['db_password']))
+                        auth=auth())
 
 def get_version_uri(version_id, id_type='db', source_type='versionista', get_previous=False):
     """
@@ -107,7 +123,7 @@ def get_changes(page_id, to_version_id, from_version_id=''):
                                                 from_version=from_version_id,
                                                 to_version=to_version_id)
     return requests.get(url,
-                        auth=(settings['db_email'], settings['db_password']))
+                        auth=auth())
 
 def post_changes(page_id, to_version_id, annotations, from_version_id=''):
     """
@@ -131,5 +147,25 @@ def post_changes(page_id, to_version_id, annotations, from_version_id=''):
                                                  to_version=to_version_id,
                                                  annotations=json.dumps(annotations))
     return requests.post(url,
-                         auth=(settings['db_email'], settings['db_password']),
+                         auth=auth(),
                          headers={'Content-Type': 'application/x-json-stream'})
+
+
+def fetch_version_content(version_id):
+    """
+    Download the saved content from a given Version.
+
+    Parameters
+    ----------
+    version_id : string
+
+    Returns
+    -------
+    content : bytes
+    """
+
+    url = WEB_MONITORING_SHOW_VERSION_API.format(db_url=settings['db_url'],
+                                                 version_id=version_id)
+    version = requests.get(url, auth=auth())
+    content_uri = version.json()['data']['uri']
+    return requests.get(content_uri).content
