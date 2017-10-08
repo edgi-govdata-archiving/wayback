@@ -1,8 +1,0 @@
-{"length": ["web_monitoring.differs", "compare_length"],
- "identical_bytes": ["web_monitoring.differs", "identical_bytes"],
- "pagefreezer": ["web_monitoring.differs", "pagefreezer"],
- "side_by_side_text": ["web_monitoring.differs", "side_by_side_text"],
- "html_text_diff": ["web_monitoring.differs", "html_text_diff"],
- "html_source_diff": ["web_monitoring.differs", "html_source_diff"],
- "html_visual_diff": ["web_monitoring.differs", "html_diff_render"]
-}
