@@ -1,7 +1,6 @@
 import concurrent.futures
 from docopt import docopt
 import hashlib
-from importlib import import_module
 import inspect
 import tornado.gen
 import tornado.httpclient
@@ -10,34 +9,17 @@ import tornado.web
 import web_monitoring
 
 
-# MAP tokens in the REST API to functions in modules.
+# Map tokens in the REST API to functions in modules.
 # The modules do not have to be part of the web_monitoring package.
-CONFIG = {
-    "length": ["web_monitoring.differs", "compare_length"],
-    "identical_bytes": ["web_monitoring.differs", "identical_bytes"],
-    "pagefreezer": ["web_monitoring.differs", "pagefreezer"],
-    "side_by_side_text": ["web_monitoring.differs", "side_by_side_text"],
-    "html_text_diff": ["web_monitoring.differs", "html_text_diff"],
-    "html_source_diff": ["web_monitoring.differs", "html_source_diff"],
-    "html_visual_diff": ["web_monitoring.differs", "html_diff_render"]
+DIFF_ROUTES = {
+    "length": web_monitoring.differs.compare_length,
+    "identical_bytes": web_monitoring.differs.identical_bytes,
+    "pagefreezer": web_monitoring.differs.pagefreezer,
+    "side_by_side_text": web_monitoring.differs.side_by_side_text,
+    "html_text_diff": web_monitoring.differs.html_text_diff,
+    "html_source_diff": web_monitoring.differs.html_source_diff,
+    "html_visual_diff": web_monitoring.differs.html_diff_render,
 }
-
-
-def load_config(config):
-    """
-
-    Example
-    -------
-
-    >>> load_config({'foo', ('mypackage.mymodule', 'foofunc')})
-    """
-    d = {}
-    for name, spec in config.items():
-        modname, funcname = spec
-        mod = import_module(modname)
-        func = getattr(mod, funcname)
-        d[name] = func
-    return d
 
 
 client = tornado.httpclient.AsyncHTTPClient()
@@ -149,14 +131,14 @@ class IndexHandler(tornado.web.RequestHandler):
     @tornado.gen.coroutine
     def get(self):
         # Return a list of the differs.
-        # TODO Show swagger API instead.
-        self.write(repr(list(CONFIG)))
+        # TODO Show swagger API or Markdown instead.
+        self.write(repr(list(DIFF_ROUTES)))
 
 
 def make_app():
 
     class BoundDiffHandler(DiffHandler):
-        differs = load_config(CONFIG)
+        differs = DIFF_ROUTES
 
     return tornado.web.Application([
         (r"/([A-Za-z0-9_]+)", BoundDiffHandler),
