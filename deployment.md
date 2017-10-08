@@ -73,7 +73,7 @@ $ python setup.py install
 Now, test that your installation actually works by running the diffing server on port 8000:
 
 ```sh
-$ wm-diffing-server diff_config.json --port 8000
+$ wm-diffing-server --port 8000
 ```
 
 Open a web browser and try browsing to: `http://[IP address for your server]:8000/html_text_diff`
@@ -107,25 +107,25 @@ The content of this file should look like:
 ; To take advantage of multiple cores, you'll need multiple processes.
 
 [program:wm-diffing-server-8000]
-command=/opt/conda/bin/wm-diffing-server /var/www/web-monitoring-processing/diff_config.json --port 8000
+command=/opt/conda/bin/wm-diffing-server --port 8000
 stderr_logfile = /var/log/supervisor/tornado-stderr.log
 stdout_logfile = /var/log/supervisor/tornado-stdout.log
 environment=PAGE_FREEZER_API_KEY=<page_freezer_key>
 
 [program:wm-diffing-server-8001]
-command=/opt/conda/bin/wm-diffing-server /var/www/web-monitoring-processing/diff_config.json --port 8001
+command=/opt/conda/bin/wm-diffing-server --port 8001
 stderr_logfile = /var/log/supervisor/tornado-stderr.log
 stdout_logfile = /var/log/supervisor/tornado-stdout.log
 environment=PAGE_FREEZER_API_KEY=<page_freezer_key>
 
 [program:wm-diffing-server-8002]
-command=/opt/conda/bin/wm-diffing-server /var/www/web-monitoring-processing/diff_config.json --port 8002
+command=/opt/conda/bin/wm-diffing-server --port 8002
 stderr_logfile = /var/log/supervisor/tornado-stderr.log
 stdout_logfile = /var/log/supervisor/tornado-stdout.log
 environment=PAGE_FREEZER_API_KEY=<page_freezer_key>
 
 [program:wm-diffing-server-8003]
-command=/opt/conda/bin/wm-diffing-server /var/www/web-monitoring-processing/diff_config.json --port 8003
+command=/opt/conda/bin/wm-diffing-server --port 8003
 stderr_logfile = /var/log/supervisor/tornado-stderr.log
 stdout_logfile = /var/log/supervisor/tornado-stdout.log
 environment=PAGE_FREEZER_API_KEY=<page_freezer_key>
