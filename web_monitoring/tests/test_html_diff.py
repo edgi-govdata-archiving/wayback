@@ -1,6 +1,8 @@
 from pkg_resources import resource_filename
 import pytest
 import htmltreediff
+from web_monitoring.differs import html_diff_render
+from htmldiffer.diff import HTMLDiffer
 
 
 def lookup_pair(fn):
@@ -14,26 +16,46 @@ def lookup_pair(fn):
     return before, after
 
 
-@pytest.mark.parametrize('fn',
-                         ['change-tag',
-                          'change-href',
-                          'change-link-text',
-                          'ins-in-source',
-                          'two-paragraphs',
-                          'add-paragraph',
-                          'change-word-in-paragraph',
-                         ])
-def test_change(fn):
-    # For now it's unclear what the 'expected' result should be, so this
-    # test will never FAIL (but it can still ERROR). Run pytest with the -s
-    # flag to see these outputs.
-    before, after = lookup_pair(fn)
-    d = htmltreediff.diff(before, after)
-    print("""
+TEMPLATE = """
 BEFORE:
 {}
 AFTER:
 {}
 DIFF:
 {}
-""".format(before, after, d))
+"""
+
+cases = ['change-tag',
+         'change-href',
+         'change-link-text',
+         'ins-in-source',
+         'two-paragraphs',
+         'add-paragraph',
+         'change-word-in-paragraph',
+         'change-title',
+        ]
+
+# For now it's unclear what the 'expected' results should be, so these
+# tests will never FAIL (but it can still ERROR). Run pytest with the -s
+# flag to see these outputs.
+
+@pytest.mark.parametrize('fn', cases)
+def test_htmltreediff(fn):
+    before, after = lookup_pair(fn)
+    d = htmltreediff.diff(before, after, ins_tag='diffins', del_tag='diffdel',
+                          pretty=True)
+    print(TEMPLATE.format(before, after, d))
+
+
+@pytest.mark.parametrize('fn', cases)
+def test_html_diff_render(fn):
+    before, after = lookup_pair(fn)
+    d = html_diff_render(before, after)
+    print(TEMPLATE.format(before, after, d))
+
+
+@pytest.mark.parametrize('fn', cases)
+def test_htmldiffer(fn):
+    before, after = lookup_pair(fn)
+    d = HTMLDiffer(before, after).combined_diff
+    print(TEMPLATE.format(before, after, d))
