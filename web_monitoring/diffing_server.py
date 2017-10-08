@@ -1,9 +1,7 @@
 import concurrent.futures
 from docopt import docopt
 import hashlib
-from importlib import import_module
 import inspect
-import json
 import tornado.gen
 import tornado.httpclient
 import tornado.ioloop
@@ -11,21 +9,17 @@ import tornado.web
 import web_monitoring
 
 
-def load_config(config):
-    """
-
-    Example
-    -------
-
-    >>> load_config({'foo', ('mypackage.mymodule', 'foofunc')})
-    """
-    d = {}
-    for name, spec in config.items():
-        modname, funcname = spec
-        mod = import_module(modname)
-        func = getattr(mod, funcname)
-        d[name] = func
-    return d
+# Map tokens in the REST API to functions in modules.
+# The modules do not have to be part of the web_monitoring package.
+DIFF_ROUTES = {
+    "length": web_monitoring.differs.compare_length,
+    "identical_bytes": web_monitoring.differs.identical_bytes,
+    "pagefreezer": web_monitoring.differs.pagefreezer,
+    "side_by_side_text": web_monitoring.differs.side_by_side_text,
+    "html_text_diff": web_monitoring.differs.html_text_diff,
+    "html_source_diff": web_monitoring.differs.html_source_diff,
+    "html_visual_diff": web_monitoring.differs.html_diff_render,
+}
 
 
 client = tornado.httpclient.AsyncHTTPClient()
@@ -132,18 +126,27 @@ def caller(func, a, b, **query_params):
                                "".format(func.__name__, name))
     return func(**kwargs)
 
+class IndexHandler(tornado.web.RequestHandler):
 
-def make_app(config):
+    @tornado.gen.coroutine
+    def get(self):
+        # Return a list of the differs.
+        # TODO Show swagger API or Markdown instead.
+        self.write(repr(list(DIFF_ROUTES)))
+
+
+def make_app():
 
     class BoundDiffHandler(DiffHandler):
-        differs = load_config(config)
+        differs = DIFF_ROUTES
 
     return tornado.web.Application([
         (r"/([A-Za-z0-9_]+)", BoundDiffHandler),
+        (r"/", IndexHandler),
     ])
 
-def start_app(config, port):
-    app = make_app(config)
+def start_app(port):
+    app = make_app()
     app.listen(port)
     print(f'Starting server on port {port}')
     tornado.ioloop.IOLoop.current().start()
@@ -153,7 +156,7 @@ def cli():
     doc = """Start a diffing server.
 
 Usage:
-wm-diffing-server <config_file> [--port <port>]
+wm-diffing-server [--port <port>]
 
 Options:
 -h --help     Show this screen.
@@ -161,7 +164,5 @@ Options:
 --port        Port. [default: 8888]
 """
     arguments = docopt(doc, version='0.0.1')
-    with open(arguments['<config_file>']) as f:
-        config = json.load(f)
     port = int(arguments['<port>'] or 8888)
-    start_app(config, port)
+    start_app(port)
