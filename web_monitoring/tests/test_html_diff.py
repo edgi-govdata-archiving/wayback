@@ -67,8 +67,15 @@ def test_contrived_examples_htmldiffer(fn):
 # TODO These UUIDs refer to the staging app and therefore assume that the
 # env variable WEB_MONITORING_DB_URL is pointed at staging.
 version_ids = [
+    # @Mr0grog: "The “Survivor Impacts” text is in a `<p>` element between
+    # two `<ul>` elements on this page, but in the diff, the `<p>` gets moved
+    # _into_ the `<ul>`, so it renders like a list item instead of like the
+    # header-ish thing it actually is."
      ('f2d5d701-707a-42e0-8881-653346d01e0a',
       'fc74d750-c651-46b7-bf74-434ad8c62e04'),
+     # See issue #99
+     ('9d4de183-a186-456c-bffb-55d82989877d',
+      '775a8b04-9bac-4d0d-8db0-a8e133c4a964'),
     ]
 
 # Fetch content as we need it, and cache. This can potentially matter if a
