@@ -1,0 +1,70 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "GET",
+                "uri": "http://localhost:3000/api/v0/pages/6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8/changes/..9342c121-cff0-4454-934f-d0f118508da1",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "python-requests/2.18.4"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Authorization": [
+                        "Basic c2VlZC1hZG1pbkBleGFtcGxlLmNvbTpQQVNTV09SRA=="
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "X-XSS-Protection": [
+                        "1; mode=block"
+                    ],
+                    "Content-Type": [
+                        "application/json; charset=utf-8"
+                    ],
+                    "X-Runtime": [
+                        "0.013369"
+                    ],
+                    "X-Content-Type-Options": [
+                        "nosniff"
+                    ],
+                    "X-Frame-Options": [
+                        "SAMEORIGIN"
+                    ],
+                    "ETag": [
+                        "W/\"aa0dd21431af071321287c68ebd7fcf3\""
+                    ],
+                    "Cache-Control": [
+                        "max-age=0, private, must-revalidate"
+                    ],
+                    "X-Request-Id": [
+                        "935b6481-ee36-4c6f-83e4-7a1fe5d85ee3"
+                    ],
+                    "Vary": [
+                        "Origin"
+                    ],
+                    "X-Environment": [
+                        "development"
+                    ]
+                },
+                "body": {
+                    "string": "{\"links\":{\"page\":\"http://localhost:3000/api/v0/pages/6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8\",\"from_version\":\"http://localhost:3000/api/v0/pages/6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8/versions/f343bf02-9aef-46c5-96ca-5644280340fd\",\"to_version\":\"http://localhost:3000/api/v0/pages/6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8/versions/9342c121-cff0-4454-934f-d0f118508da1\"},\"data\":{\"uuid\":\"f59f3a12-fcb9-42d5-81f4-87d769083b51\",\"uuid_from\":\"f343bf02-9aef-46c5-96ca-5644280340fd\",\"uuid_to\":\"9342c121-cff0-4454-934f-d0f118508da1\",\"priority\":null,\"current_annotation\":{\"foo\":\"bar\"},\"created_at\":\"2017-10-09T20:27:44.226Z\",\"updated_at\":\"2017-10-09T20:27:44.285Z\",\"significance\":null}}"
+                }
+            }
+        }
+    ]
+}

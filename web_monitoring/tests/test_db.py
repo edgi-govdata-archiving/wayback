@@ -6,16 +6,31 @@
 from datetime import datetime, timedelta
 import requests
 import requests.exceptions
+import os
 import pytest
 import web_monitoring.db as wdb
-import uuid
+import vcr
 
+
+# This stashes web-monitoring-dbserver responses in JSON files (one per test)
+# so that an actual server does not have to be running.
+cassette_library_dir = os.path.join(os.path.dirname(__file__), 'cassettes')
+db_vcr = vcr.VCR(
+         serializer='json',
+         cassette_library_dir=cassette_library_dir,
+         record_mode='once',
+         match_on=['uri', 'method'],
+)
+
+
+# Refers to real data that is part of the 'seed' dataset in web-monitoring-db
 URL = 'https://www3.epa.gov/climatechange/impacts/society.html'
 SITE = 'EPA - www3.epa.gov'
 AGENCY = 'EPA'
 PAGE_ID = '6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8'
 TO_VERSION_ID = '9342c121-cff0-4454-934f-d0f118508da1'
 
+# The only matters when re-recording the tests for vcr.
 SETTINGS = {}
 SETTINGS['db_url'] = "http://localhost:3000"
 SETTINGS['db_email'] = "seed-admin@example.com"
@@ -31,6 +46,7 @@ def test_missing_creds():
         wdb.list_pages()
 
 
+@db_vcr.use_cassette()
 def test_list_pages():
     wdb.settings = SETTINGS
     res = wdb.list_pages()
@@ -57,24 +73,28 @@ def test_list_pages():
     assert len(res['data']) > 0
 
 
+@db_vcr.use_cassette()
 def test_get_page():
     wdb.settings = SETTINGS
     res = wdb.get_page(PAGE_ID)
     assert res['data']['uuid'] == PAGE_ID
 
 
+@db_vcr.use_cassette()
 def test_list_page_versions():
     wdb.settings = SETTINGS
     res = wdb.list_page_versions(PAGE_ID)
     assert all([v['page_uuid'] == PAGE_ID for v in res['data']])
 
 
+@db_vcr.use_cassette()
 def test_list_versions():
     wdb.settings = SETTINGS
     res = wdb.list_versions()
     assert res['data']
 
 
+@db_vcr.use_cassette()
 def test_get_version():
     wdb.settings = SETTINGS
     res = wdb.get_version(TO_VERSION_ID)
@@ -82,8 +102,9 @@ def test_get_version():
     assert res['data']['page_uuid'] == PAGE_ID
 
 
+@db_vcr.use_cassette()
 def test_post_version():
-    new_version_id = str(uuid.uuid4())
+    new_version_id = '06620776-d347-4abd-a423-a871620299b2'
     now = datetime.now()
     wdb.post_version(page_id=PAGE_ID, uuid=new_version_id,
                      capture_time=now,
@@ -101,37 +122,52 @@ def test_post_version():
 def test_post_versions():
     pass
 
+
 def test_query_import_status():
     pass
 
 
+@db_vcr.use_cassette()
 def test_list_changes():
     # smoke test
     result = wdb.list_changes(PAGE_ID)
 
 
+@db_vcr.use_cassette()
 def test_get_change():
     # smoke test
     result = wdb.get_change(page_id=PAGE_ID,
                             to_version_id=TO_VERSION_ID)
 
 
+@db_vcr.use_cassette()
 def test_list_annotations():
     # smoke test
     result = wdb.list_annotations(page_id=PAGE_ID,
                                   to_version_id=TO_VERSION_ID)
 
 
-def test_post_and_get_annotation():
+
+mutable_stash = []  # used to pass info from this test to the next
+
+
+@db_vcr.use_cassette()
+def test_post_annotation():
     # smoke test
     annotation = {'foo': 'bar'}
     result = wdb.post_annotation(annotation,
                                  page_id=PAGE_ID,
                                  to_version_id=TO_VERSION_ID)
     annotation_id = result['data']['uuid']
+    mutable_stash.append(annotation_id)
 
-    result2= wdb.get_annotation(annotation_id,
+
+@db_vcr.use_cassette()
+def test_get_annotation():
+    annotation_id = mutable_stash.pop()
+    result = wdb.get_annotation(annotation_id,
                                 page_id=PAGE_ID,
                                 to_version_id=TO_VERSION_ID)
-    fetched_annotation = result2['data']['annotation']
+    fetched_annotation = result['data']['annotation']
+    annotation = {'foo': 'bar'}
     assert fetched_annotation == annotation
