@@ -1,4 +1,5 @@
 beautifulsoup4
+python-dateutil
 diff_match_patch_python
 docopt
 lxml
@@ -7,3 +8,4 @@ requests
 toolz
 tornado
 tqdm
+tzlocal

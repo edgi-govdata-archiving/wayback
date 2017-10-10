@@ -1,9 +1,12 @@
 # Functions for interacting with web-monitoring-db
-from datetime import datetime
+from dateutil.parser import parse as parse_timestamp
 import functools
 import json
 import os
 import requests
+import tzlocal
+import uuid as _uuid
+
 
 # mutable singleton for stashing web-monitoring-db url, potentially other stuff
 settings = {}
@@ -24,6 +27,13 @@ def auth():
     return (settings['db_email'], settings['db_password'])
 
 
+def tzaware_iso_format(dt):
+    """Express a datetime object in timezone-aware ISO format."""
+    if dt.tzinfo is None:
+        # This is naive. Assume they mean this time in the local timezone.
+        dt_tzaware = dt.replace(tzinfo=tzlocal.get_localzone())
+    return dt_tzaware.isoformat()
+
 def time_range_string(start_date, end_date):
     """
     Parameters
@@ -39,18 +49,14 @@ def time_range_string(start_date, end_date):
     if start_date is None and end_date is None:
         return None
     if start_date is not None:
-        start_str = start_date.isoformat() + 'Z'
+        start_str = tzaware_iso_format(start_date)
     else:
         start_str = ''
     if end_date is not None:
-        end_str = end_date.isoformat() + 'Z'
+        end_str = tzaware_iso_format(end_date)
     else:
         end_str = ''
     return f'{start_str}..{end_str}'
-
-
-def parse_timestamp(capture_time):
-    return datetime.strptime(capture_time, '%Y-%m-%dT%H:%M:%S.%fZ')
 
 
 class MissingCredentials(RuntimeError):
@@ -83,7 +89,8 @@ You can do this in one of two ways:
 @ensure_credentials
 def list_pages(chunk=None, chunk_size=None,
                site=None, agency=None, url=None, title=None,
-               include_versions=None, source_type=None, version_hash=None,
+               include_versions=None, include_latest=None,
+               source_type=None, hash=None,
                start_date=None, end_date=None):
     """
     List all Pages, optionally filtered by search criteria.
@@ -99,14 +106,13 @@ def list_pages(chunk=None, chunk_size=None,
     url : string, optional
     title : string, optional
     include_versions : boolean, optional
+    include_latest : boolean, optional
     source_type : string, optional
-        Only relevant if ``include_versions`` is True
-    version_hash : string, optional
-        Only relevant if ``include_versions`` is True
+        such as 'versionista' or 'internetarchive'
+    hash : string, optional
+        SHA256 hash of Version content
     start_date : datetime, optional
-        Only relevant if ``include_versions`` is True
     end_date : datetime, optional
-        Only relevant if ``include_versions`` is True
 
     Returns
     -------
@@ -118,12 +124,10 @@ def list_pages(chunk=None, chunk_size=None,
               'agency': agency,
               'url': url,
               'title': title,
-              'include_versions': include_versions}
-    if include_versions is not None:
-        params.update({'source_type': source_type,
-                       'version_hash': version_hash,
-                       'capture_time': time_range_string(start_date,
-                                                          end_date)})
+              'include_versions': include_versions,
+              'source_type': source_type,
+              'hash': hash,
+              'capture_time': time_range_string(start_date, end_date)}
     url = f'{api_url()}/pages'
     res = requests.get(url, auth=auth(), params=params)
     res.raise_for_status()
@@ -133,7 +137,7 @@ def list_pages(chunk=None, chunk_size=None,
     for page in data:
         page['created_at'] = parse_timestamp(page['created_at'])
         page['updated_at'] = parse_timestamp(page['updated_at'])
-        if 'latest' in page:
+        if include_latest:
             page['latest']['capture_time'] = parse_timestamp(
                 page['latest']['capture_time'])
         if include_versions:
@@ -165,9 +169,10 @@ def get_page(page_id):
     data = result['data']
     data['created_at'] = parse_timestamp(data['created_at'])
     data['updated_at'] = parse_timestamp(data['updated_at'])
-    if 'latest' in data:
-        data['latest']['capture_time'] = parse_timestamp(
-            data['latest']['capture_time'])
+    for v in data['versions']:
+        v['created_at'] = parse_timestamp(v['created_at'])
+        v['updated_at'] = parse_timestamp(v['updated_at'])
+        v['capture_time'] = parse_timestamp(v['capture_time'])
     return result
 
 
@@ -175,59 +180,17 @@ def get_page(page_id):
 
 
 @ensure_credentials
-def list_page_versions(page_id, chunk=None, chunk_size=None,
-                       start_date=None, end_date=None,
-                       source_metadata=None):
-    """
-    List Versions for a given Page, optionally filtered by search criteria.
-
-    Parameters
-    ----------
-    page_id : string
-    chunk : integer, optional
-        pagination parameter
-    chunk_size : integer, optional
-        number of items per chunk
-    start_date : datetime, optional
-    end_date : datetime, optional
-    source_metadata : dict, optional
-        Examples:
-
-        * ``{'version_id': 12345678}``
-        * ``{'account': 'versionista1', 'has_content': True}``
-
-    Returns
-    -------
-    response : dict
-    """
-    params = {'chunk': chunk,
-              'chunk_size': chunk_size,
-              'capture_time': time_range_string(start_date, end_date)}
-    if source_metadata is not None:
-        for k, v in source_metadata.items():
-            params[f'source_metadata[{k}]'] = v
-    url = f'{api_url()}/pages/{page_id}/versions'
-    res = requests.get(url, auth=auth(), params=params)
-    res.raise_for_status()
-    result = res.json()
-    # In place, replace datetime strings with datetime objects.
-    for v in result['data']:
-        v['created_at'] = parse_timestamp(v['created_at'])
-        v['updated_at'] = parse_timestamp(v['updated_at'])
-        v['capture_time'] = parse_timestamp(v['capture_time'])
-    return result
-
-
-@ensure_credentials
-def list_versions(chunk=None, chunk_size=None,
+def list_versions(page_id=None, chunk=None, chunk_size=None,
                   start_date=None, end_date=None,
-                  source_type=None, version_hash=None,
+                  source_type=None, hash=None,
                   source_metadata=None):
     """
-    List all Versions, optionally filtered by serach criteria.
+    List Versions, optionally filtered by serach criteria, including Page.
 
     Parameters
     ----------
+    page_id : string, optional
+        restricts serach to Versions of a specific Page
     chunk : integer, optional
         pagination parameter
     chunk_size : integer, optional
@@ -235,7 +198,9 @@ def list_versions(chunk=None, chunk_size=None,
     start_date : datetime, optional
     end_date : datetime, optional
     source_type : string, optional
-    version_hash : string, optional
+        such as 'versionista' or 'internetarchive'
+    hash : string, optional
+        SHA256 hash of Version content
     source_metadata : dict, optional
         Examples:
 
@@ -250,11 +215,14 @@ def list_versions(chunk=None, chunk_size=None,
               'chunk_size': chunk_size,
               'capture_time': time_range_string(start_date, end_date),
               'source_type': source_type,
-              'version_hash': version_hash}
+              'hash': hash}
     if source_metadata is not None:
         for k, v in source_metadata.items():
             params[f'source_metadata[{k}]'] = v
-    url = f'{api_url()}/versions'
+    if page_id is None:
+        url = f'{api_url()}/versions'
+    else:
+        url = f'{api_url()}/pages/{page_id}/versions'
     res = requests.get(url, auth=auth(), params=params)
     res.raise_for_status()
     result = res.json()
@@ -291,27 +259,28 @@ def get_version(version_id):
 
 
 @ensure_credentials
-def post_version(page_id, uuid, capture_time, uri, version_hash,
-                 source_type, source_metadata=None):
+def add_version(page_id, capture_time, uri, hash,
+                 source_type, title, uuid=None, source_metadata=None):
     """
     Submit one new Version.
 
-    See :func:`post_versions` for a more efficient bulk importer.
+    See :func:`add_versions` for a more efficient bulk importer.
 
     Parameters
     ----------
     page_id : string
         Page to which the Version is associated
-    uuid : string
-        a new, unique Version ID (UUID4)
-    start_date : datetime
-    end_date : datetime
     uri : string
         URI of content (such as an S3 bucket or InternetArchive URL)
-    version_hash : string
-        SHA256 of Version content
+    hash : string
+        SHA256 hash of Version content
     source_type : string
         such as 'versionista' or 'internetarchive'
+    title : string
+        content of ``<title>`` tag
+    uuid : string, optional
+        A new, unique Version ID (UUID4). If not specified, one will be
+        generated.
     source_metadata : dict, optional
         free-form metadata blob provided by source
 
@@ -320,11 +289,14 @@ def post_version(page_id, uuid, capture_time, uri, version_hash,
     response : dict
     """
     # Do some type casting here as gentle error-checking.
+    if uuid is None:
+        uuid = _uuid.uuid4()
     version = {'uuid': str(uuid),
                'capture_time': capture_time.isoformat() + 'Z',
                'uri': str(uri),
-               'version_hash': str(version_hash),
+               'hash': str(hash),
                'source_type': str(source_type),
+               'title': str(title),
                'source_metadata': source_metadata}
     url = f'{api_url()}/pages/{page_id}/versions'
     res = requests.post(url, auth=auth(),
@@ -335,7 +307,7 @@ def post_version(page_id, uuid, capture_time, uri, version_hash,
 
 
 @ensure_credentials
-def post_versions(versions):
+def add_versions(versions):
     """
     Submit versions in bulk for importing into web-monitoring-db.
 
@@ -463,7 +435,7 @@ def list_annotations(page_id, to_version_id, from_version_id=''):
 
 
 @ensure_credentials
-def post_annotation(annotation, page_id, to_version_id, from_version_id=''):
+def add_annotation(annotation, page_id, to_version_id, from_version_id=''):
     """
     Submit updated annotations for a change between versions.
 
@@ -535,11 +507,14 @@ def fetch_version_content(version_id):
     -------
     content : bytes
     """
-    url = f'{api_url()}/versions/{version_id}'
-    res = requests.get(url, auth=auth())
-    assert res.ok
-    content_uri = res.json()['data']['uri']
-    return requests.get(content_uri).content
+    db_result = get_version(version_id)
+    content_uri = db_result['data']['uri']
+    res = requests.get(content_uri)
+    res.raise_for_status()
+    if res.headers.get('Content-Type', '').startswith('text/'):
+        return res.text
+    else:
+        return res.content
 
 
 def get_version_by_versionista_id(versionista_id):
