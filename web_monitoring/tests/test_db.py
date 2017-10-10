@@ -4,8 +4,6 @@
 # The purpose is to test that the Python API can exercise all parts of the REST
 # API. It is not meant to thoroughly check the correctness of the REST API.
 from datetime import datetime, timedelta
-import requests
-import requests.exceptions
 import os
 import pytest
 import web_monitoring.db as wdb
@@ -118,14 +116,14 @@ def test_get_version_by_versionista_id_failure():
 
 
 @db_vcr.use_cassette()
-def test_get_version_uri_versionista():
+def test_get_version_uri_from_versionista():
     wdb.settings = SETTINGS
     # smoke test (because URI is installation-dependent)
-    wdb.get_version_uri(VERSIONISTA_ID, id_type='versioninsta')
+    wdb.get_version_uri(VERSIONISTA_ID, id_type='source')
 
 
 @db_vcr.use_cassette()
-def test_get_version_uri_versionista():
+def test_get_version_uri_from_db():
     wdb.settings = SETTINGS
     # smoke test (because URI is installation-dependent)
     wdb.get_version_uri(TO_VERSION_ID, id_type='db')
@@ -161,23 +159,23 @@ def test_query_import_status():
 def test_list_changes():
     # smoke test
     wdb.settings = SETTINGS
-    result = wdb.list_changes(PAGE_ID)
+    wdb.list_changes(PAGE_ID)
 
 
 @db_vcr.use_cassette()
 def test_get_change():
     # smoke test
     wdb.settings = SETTINGS
-    result = wdb.get_change(page_id=PAGE_ID,
-                            to_version_id=TO_VERSION_ID)
+    wdb.get_change(page_id=PAGE_ID,
+                   to_version_id=TO_VERSION_ID)
 
 
 @db_vcr.use_cassette()
 def test_list_annotations():
     # smoke test
     wdb.settings = SETTINGS
-    result = wdb.list_annotations(page_id=PAGE_ID,
-                                  to_version_id=TO_VERSION_ID)
+    wdb.list_annotations(page_id=PAGE_ID,
+                         to_version_id=TO_VERSION_ID)
 
 
 
