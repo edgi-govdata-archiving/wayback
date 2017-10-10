@@ -18,6 +18,23 @@ def _tzaware_isoformat(dt):
     return dt.isoformat()
 
 
+class WebMonitoringDbError(Exception):
+    ...
+
+
+def _process_errors(res):
+    # If the app gives us errors, raise a custom exception with those.
+    # If not, fall back on requests, which will raise an HTTPError.
+    if res.ok:
+        return
+    try:
+        errors = res.json()['errors']
+    except Exception:
+        res.raise_for_status()
+    else:
+        raise WebMonitoringDbError(', '.join(map(repr, errors)))
+
+
 def _time_range_string(start_date, end_date):
     """
     Parameters
@@ -180,7 +197,7 @@ Alternatively, you can instaniate Client(db_url, user, password) directly.""")
                   'capture_time': _time_range_string(start_date, end_date)}
         url = f'{self._api_url}/pages'
         res = requests.get(url, auth=self._auth, params=params)
-        res.raise_for_status()
+        _process_errors(res)
         result = res.json()
         data = result['data']
         # In place, replace datetime strings with datetime objects.
@@ -211,7 +228,7 @@ Alternatively, you can instaniate Client(db_url, user, password) directly.""")
         """
         url = f'{self._api_url}/pages/{page_id}'
         res = requests.get(url, auth=self._auth)
-        res.raise_for_status()
+        _process_errors(res)
         result = res.json()
         # In place, replace datetime strings with datetime objects.
         data = result['data']
@@ -270,7 +287,7 @@ Alternatively, you can instaniate Client(db_url, user, password) directly.""")
         else:
             url = f'{self._api_url}/pages/{page_id}/versions'
         res = requests.get(url, auth=self._auth, params=params)
-        res.raise_for_status()
+        _process_errors(res)
         result = res.json()
         # In place, replace datetime strings with datetime objects.
         for v in result['data']:
@@ -293,7 +310,7 @@ Alternatively, you can instaniate Client(db_url, user, password) directly.""")
         """
         url = f'{self._api_url}/versions/{version_id}'
         res = requests.get(url, auth=self._auth)
-        res.raise_for_status()
+        _process_errors(res)
         result = res.json()
         data = result['data']
         data['capture_time'] = parse_timestamp(data['capture_time'])
@@ -344,7 +361,7 @@ Alternatively, you can instaniate Client(db_url, user, password) directly.""")
         res = requests.post(url, auth=self._auth,
                             headers={'Content-Type': 'application/json'},
                             data=json.dumps(version))
-        res.raise_for_status()
+        _process_errors(res)
         return res.json()
 
     def add_versions(self, versions):
@@ -366,7 +383,7 @@ Alternatively, you can instaniate Client(db_url, user, password) directly.""")
             url, auth=self._auth,
             headers={'Content-Type': 'application/x-json-stream'},
             data='\n'.join(map(json.dumps, validated_versions)))
-        res.raise_for_status()
+        _process_errors(res)
         return res.json()['data']['id']
 
     def add_versions_batched(self, versions, batch_size=1000):
@@ -446,7 +463,7 @@ Alternatively, you can instaniate Client(db_url, user, password) directly.""")
         """
         url = f'{self._api_url}/imports/{import_id}'
         res = requests.get(url, auth=self._auth)
-        res.raise_for_status()
+        _process_errors(res)
         return res.json()
 
     ### CHANGES AND ANNOTATIONS ###
@@ -465,7 +482,7 @@ Alternatively, you can instaniate Client(db_url, user, password) directly.""")
         """
         url = f'{self._api_url}/pages/{page_id}/changes/'
         res = requests.get(url, auth=self._auth)
-        res.raise_for_status()
+        _process_errors(res)
         result = res.json()
         # In place, replace datetime strings with datetime objects.
         for change in result['data']:
@@ -492,7 +509,7 @@ Alternatively, you can instaniate Client(db_url, user, password) directly.""")
         url = (f'{self._api_url}/pages/{page_id}/changes/'
                f'{from_version_id}..{to_version_id}')
         res = requests.get(url, auth=self._auth)
-        res.raise_for_status()
+        _process_errors(res)
         result = res.json()
         # In place, replace datetime strings with datetime objects.
         data = result['data']
@@ -519,7 +536,7 @@ Alternatively, you can instaniate Client(db_url, user, password) directly.""")
         url = (f'{self._api_url}/pages/{page_id}/changes/'
                f'{from_version_id}..{to_version_id}/annotations')
         res = requests.get(url, auth=self._auth)
-        res.raise_for_status()
+        _process_errors(res)
         result = res.json()
         # In place, replace datetime strings with datetime objects.
         for a in result['data']:
@@ -550,7 +567,7 @@ Alternatively, you can instaniate Client(db_url, user, password) directly.""")
         res = requests.post(url, auth=self._auth,
                             headers={'Content-Type': 'application/json'},
                             data=json.dumps(annotation))
-        res.raise_for_status()
+        _process_errors(res)
         return res.json()
 
     def get_annotation(self, annotation_id, page_id, to_version_id,
@@ -575,7 +592,7 @@ Alternatively, you can instaniate Client(db_url, user, password) directly.""")
                f'{from_version_id}..{to_version_id}/annotations/'
                f'{annotation_id}')
         res = requests.get(url, auth=self._auth)
-        res.raise_for_status()
+        _process_errors(res)
         result = res.json()
         # In place, replace datetime strings with datetime objects.
         data = result['data']
@@ -600,7 +617,7 @@ Alternatively, you can instaniate Client(db_url, user, password) directly.""")
         db_result = self.get_version(version_id)
         content_uri = db_result['data']['uri']
         res = requests.get(content_uri)
-        res.raise_for_status()
+        _process_errors(res)
         if res.headers.get('Content-Type', '').startswith('text/'):
             return res.text
         else:
