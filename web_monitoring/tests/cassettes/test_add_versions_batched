@@ -1,0 +1,147 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "POST",
+                "uri": "http://localhost:3000/api/v0/imports",
+                "body": "{\"page_id\": \"6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8\", \"uuid\": \"d68c5521-0728-4098-96dd-e6330612f033\", \"capture_time\": \"2017-01-01T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": null}\n{\"page_id\": \"6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8\", \"uuid\": \"db2932c4-413b-41f6-b73d-602faccf2f23\", \"capture_time\": \"2017-01-01T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": null}\n{\"page_id\": \"6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8\", \"uuid\": \"4cfe3e9b-01b3-4a5f-bb45-e7657fc38863\", \"capture_time\": \"2017-01-01T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": null}\n{\"page_id\": \"6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8\", \"uuid\": \"e1731130-569a-45a5-8db9-e58764e720d3\", \"capture_time\": \"2017-01-01T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": null}\n{\"page_id\": \"6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8\", \"uuid\": \"901feef4-91b8-4140-8dcc-a414f52befb3\", \"capture_time\": \"2017-01-01T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": null}",
+                "headers": {
+                    "User-Agent": [
+                        "python-requests/2.18.4"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Content-Type": [
+                        "application/x-json-stream"
+                    ],
+                    "Content-Length": [
+                        "1399"
+                    ],
+                    "Authorization": [
+                        "Basic c2VlZC1hZG1pbkBleGFtcGxlLmNvbTpQQVNTV09SRA=="
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 202,
+                    "message": "Accepted"
+                },
+                "headers": {
+                    "X-Frame-Options": [
+                        "SAMEORIGIN"
+                    ],
+                    "X-XSS-Protection": [
+                        "1; mode=block"
+                    ],
+                    "X-Content-Type-Options": [
+                        "nosniff"
+                    ],
+                    "Content-Type": [
+                        "application/json; charset=utf-8"
+                    ],
+                    "Vary": [
+                        "Origin"
+                    ],
+                    "X-Runtime": [
+                        "0.212012"
+                    ],
+                    "X-Environment": [
+                        "development"
+                    ],
+                    "Set-Cookie": [
+                        "_webpage-versions-db_session=Q2s0VmZqaDdVUnZzRzQ0eG9DS0NRMlNWcnlLUEZRNW1uTDV3UE5RVDc3Z05Wc2JKbk0xQmlYbmJBVytQYXE1SE5XbTRCY08rU1hWdllIaXVidUtsSEE9PS0td05udytlZzVUWEh6bkRiQ0RWcGxqUT09--079ea9f8ea62a026fa7744be71b035913b5c4f9e; path=/; HttpOnly"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "X-Request-Id": [
+                        "0c13630e-81d3-4250-b093-a87739a6af69"
+                    ]
+                },
+                "body": {
+                    "string": "{\"data\":{\"id\":7,\"user_id\":1,\"status\":\"pending\",\"file\":\"3353617b-5d02-492f-820c-3701f09747cf\",\"processing_errors\":[],\"created_at\":\"2017-10-10T21:41:21.781Z\",\"updated_at\":\"2017-10-10T21:41:21.781Z\",\"update_behavior\":\"skip\"}}"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "http://localhost:3000/api/v0/imports",
+                "body": "{\"page_id\": \"6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8\", \"uuid\": \"4cd662bc-e322-463e-9fe1-12fbccb62ab3\", \"capture_time\": \"2017-01-01T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": null}\n{\"page_id\": \"6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8\", \"uuid\": \"1d0e7eb7-4920-48b5-a810-d01e7ae27c53\", \"capture_time\": \"2017-01-01T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": null}\n{\"page_id\": \"6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8\", \"uuid\": \"8b420ce3-ecc5-43e2-865a-b02c854f64d3\", \"capture_time\": \"2017-01-01T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": null}\n{\"page_id\": \"6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8\", \"uuid\": \"ae23d4f2-ab34-43da-b58f-57c4ab8bdd53\", \"capture_time\": \"2017-01-01T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": null}\n{\"page_id\": \"6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8\", \"uuid\": \"b8cc3d0f-f2eb-43ef-bfc7-d0b589ee7f23\", \"capture_time\": \"2017-01-01T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": null}",
+                "headers": {
+                    "User-Agent": [
+                        "python-requests/2.18.4"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Content-Type": [
+                        "application/x-json-stream"
+                    ],
+                    "Content-Length": [
+                        "1399"
+                    ],
+                    "Authorization": [
+                        "Basic c2VlZC1hZG1pbkBleGFtcGxlLmNvbTpQQVNTV09SRA=="
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 202,
+                    "message": "Accepted"
+                },
+                "headers": {
+                    "X-Frame-Options": [
+                        "SAMEORIGIN"
+                    ],
+                    "X-XSS-Protection": [
+                        "1; mode=block"
+                    ],
+                    "X-Content-Type-Options": [
+                        "nosniff"
+                    ],
+                    "Content-Type": [
+                        "application/json; charset=utf-8"
+                    ],
+                    "Vary": [
+                        "Origin"
+                    ],
+                    "X-Runtime": [
+                        "0.240458"
+                    ],
+                    "X-Environment": [
+                        "development"
+                    ],
+                    "Set-Cookie": [
+                        "_webpage-versions-db_session=VGtWK2hFSWdvTFowU1lKT0V3SG1sWnVBSTVNL1BiSnlxQ296aEVhVVBRcnBTa1BlQkFxK0RrL0NGNkdkYUJLekhScm5TREZQcGZYOU8yWFQvcTYzeWc9PS0tL1BqMzA0QkFPWW9sTE5hY0NSN0JzUT09--91cae16aa8345d70600513fd9fea7c512d5f8e69; path=/; HttpOnly"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "X-Request-Id": [
+                        "2a2198e5-9f8a-4350-8d4f-d170ca6430fd"
+                    ]
+                },
+                "body": {
+                    "string": "{\"data\":{\"id\":8,\"user_id\":1,\"status\":\"pending\",\"file\":\"1ebdfce8-efef-492c-a48f-7b7d100403fa\",\"processing_errors\":[],\"created_at\":\"2017-10-10T21:41:22.042Z\",\"updated_at\":\"2017-10-10T21:41:22.042Z\",\"update_behavior\":\"skip\"}}"
+                }
+            }
+        }
+    ]
+}
