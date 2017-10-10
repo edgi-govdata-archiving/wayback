@@ -1,0 +1,70 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "GET",
+                "uri": "http://localhost:3000/api/v0/versions/9342c121-cff0-4454-934f-d0f118508da1",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "python-requests/2.18.4"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Authorization": [
+                        "Basic c2VlZC1hZG1pbkBleGFtcGxlLmNvbTpQQVNTV09SRA=="
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "X-Request-Id": [
+                        "a80df70f-e618-4d64-a6ed-0842da2fbf00"
+                    ],
+                    "X-Frame-Options": [
+                        "SAMEORIGIN"
+                    ],
+                    "X-XSS-Protection": [
+                        "1; mode=block"
+                    ],
+                    "Cache-Control": [
+                        "max-age=0, private, must-revalidate"
+                    ],
+                    "Vary": [
+                        "Origin"
+                    ],
+                    "X-Content-Type-Options": [
+                        "nosniff"
+                    ],
+                    "X-Runtime": [
+                        "0.063803"
+                    ],
+                    "Content-Type": [
+                        "application/json; charset=utf-8"
+                    ],
+                    "ETag": [
+                        "W/\"28fd524d83b3999a6764111bb94743e1\""
+                    ],
+                    "X-Environment": [
+                        "development"
+                    ]
+                },
+                "body": {
+                    "string": "{\"links\":{\"page\":\"http://localhost:3000/api/v0/pages/6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8\",\"previous\":\"http://localhost:3000/api/v0/pages/6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8/versions/f343bf02-9aef-46c5-96ca-5644280340fd\"},\"data\":{\"uuid\":\"9342c121-cff0-4454-934f-d0f118508da1\",\"page_uuid\":\"6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8\",\"capture_time\":\"2017-03-12T04:55:43.000Z\",\"uri\":\"file:///Users/dallan/Documents/Repos/web-monitoring-db/tmp/storage/archive/b35a1496d4308b97470066aaf473e89f695cc5bdfcb548e1f4fb171abf7ff8e0\",\"version_hash\":\"b35a1496d4308b97470066aaf473e89f695cc5bdfcb548e1f4fb171abf7ff8e0\",\"source_type\":\"versionista\",\"source_metadata\":{\"url\":\"https://versionista.com/69957/6026627/10329339/\",\"account\":\"versionista1\",\"page_id\":\"6026627\",\"site_id\":\"69957\",\"diff_hash\":\"bb3ad95912271263361cdf455385ed6fcd3e85617013d3f918ad227b5129b530\",\"version_id\":\"10329339\",\"diff_length\":17404,\"has_content\":true,\"original_url\":\"https://edgi-versionista-archive.s3.amazonaws.com/versionista1/69957-6026627/version-10329339.html\",\"diff_with_first_url\":\"https://versionista.com/69957/6026627/10329339:8946530\",\"diff_with_previous_url\":\"https://versionista.com/69957/6026627/10329339:9956844\"},\"created_at\":\"2017-10-08T22:51:00.041Z\",\"updated_at\":\"2017-10-08T22:51:00.041Z\",\"title\":\"Page being updated | US EPA\"}}"
+                }
+            }
+        }
+    ]
+}
