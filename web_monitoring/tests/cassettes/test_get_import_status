@@ -4,7 +4,7 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "http://localhost:3000/api/v0/imports/3",
+                "uri": "http://localhost:3000/api/v0/imports/20",
                 "body": null,
                 "headers": {
                     "User-Agent": [
@@ -26,43 +26,40 @@
             },
             "response": {
                 "status": {
-                    "code": 200,
-                    "message": "OK"
+                    "code": 202,
+                    "message": "Accepted"
                 },
                 "headers": {
-                    "X-Runtime": [
-                        "0.092256"
-                    ],
-                    "X-XSS-Protection": [
-                        "1; mode=block"
-                    ],
-                    "ETag": [
-                        "W/\"5a37dafc4ca0da97d9963ad0ef2e8e79\""
-                    ],
-                    "Content-Type": [
-                        "application/json; charset=utf-8"
-                    ],
                     "X-Frame-Options": [
                         "SAMEORIGIN"
-                    ],
-                    "X-Environment": [
-                        "development"
                     ],
                     "X-Content-Type-Options": [
                         "nosniff"
                     ],
-                    "Cache-Control": [
-                        "max-age=0, private, must-revalidate"
+                    "X-Environment": [
+                        "development"
                     ],
-                    "X-Request-Id": [
-                        "cdd08cbd-d813-4f00-b1b3-fbae3edb411a"
+                    "Cache-Control": [
+                        "no-cache"
                     ],
                     "Vary": [
                         "Origin"
+                    ],
+                    "X-XSS-Protection": [
+                        "1; mode=block"
+                    ],
+                    "X-Runtime": [
+                        "0.006807"
+                    ],
+                    "X-Request-Id": [
+                        "ed20eefa-1d17-48af-8ec5-2e02c2543f43"
+                    ],
+                    "Content-Type": [
+                        "application/json; charset=utf-8"
                     ]
                 },
                 "body": {
-                    "string": "{\"data\":{\"id\":3,\"user_id\":1,\"status\":\"complete\",\"file\":\"4758e6b5-fbf5-478a-a70b-c90cedf0c751\",\"processing_errors\":[\"Unknown error occurred\",\"Unknown error occurred\"],\"created_at\":\"2017-10-10T20:59:29.508Z\",\"updated_at\":\"2017-10-10T20:59:33.015Z\",\"update_behavior\":\"skip\"}}"
+                    "string": "{\"data\":{\"id\":20,\"user_id\":1,\"status\":\"pending\",\"file\":\"439fcce8-51a4-4484-8c7c-c02d985f143d\",\"processing_errors\":[],\"created_at\":\"2017-10-10T23:00:29.464Z\",\"updated_at\":\"2017-10-10T23:00:29.464Z\",\"update_behavior\":\"skip\"}}"
                 }
             }
         }

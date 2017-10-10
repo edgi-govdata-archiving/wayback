@@ -3,9 +3,9 @@
     "interactions": [
         {
             "request": {
-                "method": "POST",
-                "uri": "http://localhost:3000/api/v0/pages/6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8/versions",
-                "body": "{\"page_id\": \"6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8\", \"uuid\": \"06620776-d347-4abd-a423-a871620299a9\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}",
+                "method": "GET",
+                "uri": "http://localhost:3000/api/v0/versions/06620776-d347-4abd-a423-a871620299a9",
+                "body": null,
                 "headers": {
                     "User-Agent": [
                         "python-requests/2.18.4"
@@ -18,12 +18,6 @@
                     ],
                     "Connection": [
                         "keep-alive"
-                    ],
-                    "Content-Type": [
-                        "application/json"
-                    ],
-                    "Content-Length": [
-                        "277"
                     ],
                     "Authorization": [
                         "Basic c2VlZC1hZG1pbkBleGFtcGxlLmNvbTpQQVNTV09SRA=="
@@ -54,17 +48,14 @@
                     "Vary": [
                         "Origin"
                     ],
-                    "Set-Cookie": [
-                        "_webpage-versions-db_session=d2MvSFRocEt0RDVURkRLOENVNmkwRzVsTldjektVVm1TRXd0cVlPb2tFdFhWZkthTEk3S1hselc1K1o3czM4ck0yUG81Z1Fad21yN2ZBeTh5eVl2QVE9PS0tcU9sTmwyc2tubmIwVC9IL3l0RUhPdz09--4b0b1a384c9ae97a853de785f4d421a6a71956b3; path=/; HttpOnly"
-                    ],
                     "X-XSS-Protection": [
                         "1; mode=block"
                     ],
                     "X-Runtime": [
-                        "0.384596"
+                        "0.010011"
                     ],
                     "X-Request-Id": [
-                        "d803984c-b4a6-430e-9ea8-ec1b397fc3db"
+                        "d813d7ec-fdb2-4f5a-83e8-ad07edf97493"
                     ],
                     "Content-Type": [
                         "application/json; charset=utf-8"

@@ -5,7 +5,7 @@
             "request": {
                 "method": "POST",
                 "uri": "http://localhost:3000/api/v0/imports",
-                "body": "null\nnull\nnull\nnull\nnull\nnull\nnull\nnull\nnull\nnull",
+                "body": "{\"page_url\": \"http://example.com\", \"uuid\": \"afe59db6-e7f7-4f34-a54f-54b7cf83dcf5\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}\n{\"page_url\": \"http://example.com\", \"uuid\": \"26cf9f7c-ce36-4d47-8d8c-86d44e1d1d85\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}\n{\"page_url\": \"http://example.com\", \"uuid\": \"4d04d19e-6d29-4d00-965f-b2b7fc320625\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}\n{\"page_url\": \"http://example.com\", \"uuid\": \"64b3ed51-b9e4-40d7-9068-3c76306a6565\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}\n{\"page_url\": \"http://example.com\", \"uuid\": \"85091741-b8f4-4ac8-8677-613403425ac5\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}\n{\"page_url\": \"http://example.com\", \"uuid\": \"a1533b44-3378-4060-af60-3870ef132775\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}\n{\"page_url\": \"http://example.com\", \"uuid\": \"a19b547a-26de-4610-bc61-32a85acea565\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}\n{\"page_url\": \"http://example.com\", \"uuid\": \"24698ec1-d54a-40e6-ae88-d57472a92255\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}\n{\"page_url\": \"http://example.com\", \"uuid\": \"6f2d3a12-3742-4755-b419-4c5ea3989385\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}\n{\"page_url\": \"http://example.com\", \"uuid\": \"f133040c-7222-4189-aa7b-b155b7859ae5\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}",
                 "headers": {
                     "User-Agent": [
                         "python-requests/2.18.4"
@@ -23,7 +23,7 @@
                         "application/x-json-stream"
                     ],
                     "Content-Length": [
-                        "49"
+                        "2609"
                     ],
                     "Authorization": [
                         "Basic c2VlZC1hZG1pbkBleGFtcGxlLmNvbTpQQVNTV09SRA=="
@@ -36,39 +36,39 @@
                     "message": "Accepted"
                 },
                 "headers": {
-                    "X-Environment": [
-                        "development"
-                    ],
                     "X-Frame-Options": [
                         "SAMEORIGIN"
-                    ],
-                    "Set-Cookie": [
-                        "_webpage-versions-db_session=eW5NYmxMZVBOOWtoNTV4RURldE03bE16OU42aXpObWpXWTYwdENVV2MwZXJkTi9Yd1RzdTM5THRXcXc2UnBKWVhXVHhCU3RMbWN1dnkwQzJZSkFrSXc9PS0tbUlVeHV5Z1E3c3FTUWlFb0R1U3Bldz09--ddef068372a0d85c26bd822f4a1bec9c4a4c9a4d; path=/; HttpOnly"
-                    ],
-                    "Vary": [
-                        "Origin"
                     ],
                     "X-Content-Type-Options": [
                         "nosniff"
                     ],
+                    "X-Environment": [
+                        "development"
+                    ],
                     "Cache-Control": [
                         "no-cache"
                     ],
-                    "Content-Type": [
-                        "application/json; charset=utf-8"
+                    "Vary": [
+                        "Origin"
+                    ],
+                    "Set-Cookie": [
+                        "_webpage-versions-db_session=WUtXMUF3R2NyZGlKSUhUZS9MYWtZNW9qaVhxYi9jRVNSSndGd3JhM3hyNGsxWEx6SHNabUpNNFFxVVRQNGJZd3FtbTUvekg2L2dBeUc1dnBvQUpKRkE9PS0tNkoxUFhUTmErU250clA3TFVBVjlhUT09--f49c6541241f8edccf3df77bf46a57ccb59f1ec7; path=/; HttpOnly"
                     ],
                     "X-XSS-Protection": [
                         "1; mode=block"
                     ],
-                    "X-Request-Id": [
-                        "c3ce4e9f-485d-4fc1-9df3-8ffcc3d24362"
-                    ],
                     "X-Runtime": [
-                        "0.852996"
+                        "0.265551"
+                    ],
+                    "X-Request-Id": [
+                        "ada228ce-ae17-4b45-81d1-c324d6cbe616"
+                    ],
+                    "Content-Type": [
+                        "application/json; charset=utf-8"
                     ]
                 },
                 "body": {
-                    "string": "{\"data\":{\"id\":3,\"user_id\":1,\"status\":\"pending\",\"file\":\"4758e6b5-fbf5-478a-a70b-c90cedf0c751\",\"processing_errors\":[],\"created_at\":\"2017-10-10T20:59:29.508Z\",\"updated_at\":\"2017-10-10T20:59:29.508Z\",\"update_behavior\":\"skip\"}}"
+                    "string": "{\"data\":{\"id\":20,\"user_id\":1,\"status\":\"pending\",\"file\":\"439fcce8-51a4-4484-8c7c-c02d985f143d\",\"processing_errors\":[],\"created_at\":\"2017-10-10T23:00:29.464Z\",\"updated_at\":\"2017-10-10T23:00:29.464Z\",\"update_behavior\":\"skip\"}}"
                 }
             }
         }
