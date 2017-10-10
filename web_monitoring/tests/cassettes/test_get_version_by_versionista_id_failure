@@ -1,0 +1,70 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "GET",
+                "uri": "http://localhost:3000/api/v0/versions?source_type=versionista&source_metadata%5Bversion_id%5D=__nonexistent__",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "python-requests/2.18.4"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Authorization": [
+                        "Basic c2VlZC1hZG1pbkBleGFtcGxlLmNvbTpQQVNTV09SRA=="
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "X-Frame-Options": [
+                        "SAMEORIGIN"
+                    ],
+                    "X-Content-Type-Options": [
+                        "nosniff"
+                    ],
+                    "Cache-Control": [
+                        "max-age=0, private, must-revalidate"
+                    ],
+                    "X-Runtime": [
+                        "0.009782"
+                    ],
+                    "X-Environment": [
+                        "development"
+                    ],
+                    "Content-Type": [
+                        "application/json; charset=utf-8"
+                    ],
+                    "X-Request-Id": [
+                        "01fe8f06-fc85-42f2-91f5-48b5f4cbd308"
+                    ],
+                    "ETag": [
+                        "W/\"512fa496aecffa3a8d5dc58bb2987876\""
+                    ],
+                    "X-XSS-Protection": [
+                        "1; mode=block"
+                    ],
+                    "Vary": [
+                        "Origin"
+                    ]
+                },
+                "body": {
+                    "string": "{\"links\":{\"first\":\"http://localhost:3000/api/v0/versions?chunk=1\\u0026source_metadata%5Bversion_id%5D=__nonexistent__\\u0026source_type=versionista\",\"last\":\"http://localhost:3000/api/v0/versions?chunk=1\\u0026source_metadata%5Bversion_id%5D=__nonexistent__\\u0026source_type=versionista\",\"prev\":null,\"next\":null},\"data\":[]}"
+                }
+            }
+        }
+    ]
+}
