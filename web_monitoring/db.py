@@ -50,6 +50,8 @@ def _build_version(*, page_id, uuid, capture_time, uri, hash, source_type, title
     """
     if not isinstance(capture_time, str):
         capture_time = _tzaware_isoformat(capture_time)
+    if source_metadata is None:
+        source_metadata = {}
     version = {'page_id': page_id,
                'uuid': uuid,
                'capture_time': capture_time,
@@ -60,6 +62,28 @@ def _build_version(*, page_id, uuid, capture_time, uri, hash, source_type, title
                'source_metadata': source_metadata}
     return version
 
+
+def _build_importable_version(*, page_url, uuid, capture_time, uri, hash,
+                             source_type, title, source_metadata=None):
+    """
+    Build a Version dict from parameters, performing some validation.
+
+    This is different than _build_version because it needs ``page_url`` instead
+    of ``page_id`` of an existing Page.
+    """
+    if not isinstance(capture_time, str):
+        capture_time = _tzaware_isoformat(capture_time)
+    if source_metadata is None:
+        source_metadata = {}
+    version = {'page_url': page_url,
+               'uuid': uuid,
+               'capture_time': capture_time,
+               'uri': str(uri),
+               'hash': str(hash),
+               'source_type': str(source_type),
+               'title': str(title),
+               'source_metadata': source_metadata}
+    return version
 
 class MissingCredentials(RuntimeError):
     ...
@@ -337,7 +361,7 @@ Alternatively, you can instaniate Client(db_url, user, password) directly.""")
         import_id : integer
         """
         url = f'{self._api_url}/imports'
-        validated_versions = [_build_version(**v) for v in versions]
+        validated_versions = [_build_importable_version(**v) for v in versions]
         res = requests.post(
             url, auth=self._auth,
             headers={'Content-Type': 'application/x-json-stream'},
@@ -366,7 +390,7 @@ Alternatively, you can instaniate Client(db_url, user, password) directly.""")
         import_ids = []
         for batch in toolz.partition_all(batch_size, versions):
             # versions might be a generator. This comprehension will pull on it
-            validated_batch = [_build_version(**v) for v in batch]
+            validated_batch = [_build_importable_version(**v) for v in batch]
             import_id = self.add_versions(validated_batch)
             import_ids.append(import_id)
         return tuple(import_ids)

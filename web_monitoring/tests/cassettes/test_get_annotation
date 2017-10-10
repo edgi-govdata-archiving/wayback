@@ -30,35 +30,35 @@
                     "message": "OK"
                 },
                 "headers": {
-                    "X-Runtime": [
-                        "0.016747"
-                    ],
-                    "Content-Type": [
-                        "application/json; charset=utf-8"
+                    "X-Frame-Options": [
+                        "SAMEORIGIN"
                     ],
                     "ETag": [
                         "W/\"b203e184549e9f2e2b1d9b27256ccebe\""
                     ],
-                    "X-Frame-Options": [
-                        "SAMEORIGIN"
+                    "X-Content-Type-Options": [
+                        "nosniff"
                     ],
                     "X-Environment": [
                         "development"
                     ],
-                    "X-XSS-Protection": [
-                        "1; mode=block"
-                    ],
-                    "X-Content-Type-Options": [
-                        "nosniff"
-                    ],
                     "Cache-Control": [
                         "max-age=0, private, must-revalidate"
                     ],
-                    "X-Request-Id": [
-                        "ed79f4bb-d66e-4f81-8d82-aacfc60ea59b"
-                    ],
                     "Vary": [
                         "Origin"
+                    ],
+                    "X-XSS-Protection": [
+                        "1; mode=block"
+                    ],
+                    "X-Runtime": [
+                        "0.014153"
+                    ],
+                    "X-Request-Id": [
+                        "deefe16b-4f39-4df8-b9b6-03d9d1ca825e"
+                    ],
+                    "Content-Type": [
+                        "application/json; charset=utf-8"
                     ]
                 },
                 "body": {
