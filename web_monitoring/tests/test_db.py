@@ -3,7 +3,7 @@
 
 # The purpose is to test that the Python API can exercise all parts of the REST
 # API. It is not meant to thoroughly check the correctness of the REST API.
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import os
 import pytest
 import web_monitoring.db as wdb
@@ -82,7 +82,7 @@ def test_get_page():
 @db_vcr.use_cassette()
 def test_list_page_versions():
     wdb.settings = SETTINGS
-    res = wdb.list_page_versions(PAGE_ID)
+    res = wdb.list_versions(page_id=PAGE_ID)
     assert all([v['page_uuid'] == PAGE_ID for v in res['data']])
 
 
@@ -130,14 +130,15 @@ def test_get_version_uri_from_db():
 
 
 @db_vcr.use_cassette()
-def test_post_version():
+def test_add_version():
     wdb.settings = SETTINGS
-    new_version_id = '06620776-d347-4abd-a423-a871620299b2'
-    now = datetime.now()
-    wdb.post_version(page_id=PAGE_ID, uuid=new_version_id,
+    new_version_id = '06620776-d347-4abd-a423-a871620299b4'
+    now = datetime.now(timezone.utc)
+    wdb.add_version(page_id=PAGE_ID, uuid=new_version_id,
                      capture_time=now,
                      uri='http://example.com',
-                     version_hash='placeholder',
+                     hash='hash_placeholder',
+                     title='title_placeholder',
                      source_type='test')
     data = wdb.get_version(new_version_id)['data']
     assert data['uuid'] == new_version_id
@@ -145,9 +146,10 @@ def test_post_version():
     # Some floating-point error occurs in round-trip.
     assert (data['capture_time'] - now) < timedelta(seconds=0.001)
     assert data['source_type'] == 'test'
+    assert data['title'] == 'title_placeholder'
 
 
-def test_post_versions():
+def test_add_versions():
     pass
 
 
@@ -183,11 +185,11 @@ mutable_stash = []  # used to pass info from this test to the next
 
 
 @db_vcr.use_cassette()
-def test_post_annotation():
+def test_add_annotation():
     # smoke test
     wdb.settings = SETTINGS
     annotation = {'foo': 'bar'}
-    result = wdb.post_annotation(annotation,
+    result = wdb.add_annotation(annotation,
                                  page_id=PAGE_ID,
                                  to_version_id=TO_VERSION_ID)
     annotation_id = result['data']['uuid']

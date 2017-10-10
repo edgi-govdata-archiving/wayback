@@ -1,0 +1,144 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "POST",
+                "uri": "http://localhost:3000/api/v0/pages/6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8/versions",
+                "body": "{\"uuid\": \"06620776-d347-4abd-a423-a871620299b4\", \"capture_time\": \"2017-10-10T11:32:10.333905Z\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": null}",
+                "headers": {
+                    "User-Agent": [
+                        "python-requests/2.18.4"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Content-Length": [
+                        "230"
+                    ],
+                    "Authorization": [
+                        "Basic c2VlZC1hZG1pbkBleGFtcGxlLmNvbTpQQVNTV09SRA=="
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "X-Runtime": [
+                        "0.321697"
+                    ],
+                    "Set-Cookie": [
+                        "_webpage-versions-db_session=OFg5VmxFRTVkYTVtVUZ3THBGcUdabmErcWZwZWpDQ0lJVXFPbjN0a211NDVkM0Jzd2t3QkhlR21qQTliM1lNQzdQWG5zTjZDWUZNVlBPV0xpeU9XSEE9PS0taWhMK3NLQTF3ZDh4bkJiMWRBb2NZZz09--40fd717ebb360f0ace0c4018aa8b3b12d075aa72; path=/; HttpOnly"
+                    ],
+                    "Content-Type": [
+                        "application/json; charset=utf-8"
+                    ],
+                    "ETag": [
+                        "W/\"cc323a7f7693a0c4129f5bd29ff8a19a\""
+                    ],
+                    "X-Frame-Options": [
+                        "SAMEORIGIN"
+                    ],
+                    "X-Environment": [
+                        "development"
+                    ],
+                    "X-XSS-Protection": [
+                        "1; mode=block"
+                    ],
+                    "X-Content-Type-Options": [
+                        "nosniff"
+                    ],
+                    "Cache-Control": [
+                        "max-age=0, private, must-revalidate"
+                    ],
+                    "X-Request-Id": [
+                        "26b0052a-b3e4-4349-a40f-95db2dd06209"
+                    ],
+                    "Vary": [
+                        "Origin"
+                    ]
+                },
+                "body": {
+                    "string": "{\"links\":{\"page\":\"http://localhost:3000/api/v0/pages/6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8\",\"previous\":\"http://localhost:3000/api/v0/pages/6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8/versions/06620776-d347-4abd-a423-a871620299b3\"},\"data\":{\"uuid\":\"06620776-d347-4abd-a423-a871620299b4\",\"page_uuid\":\"6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8\",\"capture_time\":\"2017-10-10T11:32:10.333Z\",\"uri\":\"file:///Users/dallan/Documents/Repos/web-monitoring-db/tmp/storage/archive/3587cb776ce0e4e8237f215800b7dffba0f25865cb84550e87ea8bbac838c423\",\"version_hash\":\"3587cb776ce0e4e8237f215800b7dffba0f25865cb84550e87ea8bbac838c423\",\"source_type\":\"test\",\"source_metadata\":null,\"created_at\":\"2017-10-10T15:32:10.618Z\",\"updated_at\":\"2017-10-10T15:32:10.618Z\",\"title\":\"title_placeholder\"}}"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "http://localhost:3000/api/v0/versions/06620776-d347-4abd-a423-a871620299b4",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "python-requests/2.18.4"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Authorization": [
+                        "Basic c2VlZC1hZG1pbkBleGFtcGxlLmNvbTpQQVNTV09SRA=="
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "X-Runtime": [
+                        "0.013108"
+                    ],
+                    "Content-Type": [
+                        "application/json; charset=utf-8"
+                    ],
+                    "ETag": [
+                        "W/\"cc323a7f7693a0c4129f5bd29ff8a19a\""
+                    ],
+                    "X-Frame-Options": [
+                        "SAMEORIGIN"
+                    ],
+                    "X-Environment": [
+                        "development"
+                    ],
+                    "X-XSS-Protection": [
+                        "1; mode=block"
+                    ],
+                    "X-Content-Type-Options": [
+                        "nosniff"
+                    ],
+                    "Cache-Control": [
+                        "max-age=0, private, must-revalidate"
+                    ],
+                    "X-Request-Id": [
+                        "e13692fa-4b0e-476e-8642-a296edd80fb7"
+                    ],
+                    "Vary": [
+                        "Origin"
+                    ]
+                },
+                "body": {
+                    "string": "{\"links\":{\"page\":\"http://localhost:3000/api/v0/pages/6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8\",\"previous\":\"http://localhost:3000/api/v0/pages/6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8/versions/06620776-d347-4abd-a423-a871620299b3\"},\"data\":{\"uuid\":\"06620776-d347-4abd-a423-a871620299b4\",\"page_uuid\":\"6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8\",\"capture_time\":\"2017-10-10T11:32:10.333Z\",\"uri\":\"file:///Users/dallan/Documents/Repos/web-monitoring-db/tmp/storage/archive/3587cb776ce0e4e8237f215800b7dffba0f25865cb84550e87ea8bbac838c423\",\"version_hash\":\"3587cb776ce0e4e8237f215800b7dffba0f25865cb84550e87ea8bbac838c423\",\"source_type\":\"test\",\"source_metadata\":null,\"created_at\":\"2017-10-10T15:32:10.618Z\",\"updated_at\":\"2017-10-10T15:32:10.618Z\",\"title\":\"title_placeholder\"}}"
+                }
+            }
+        }
+    ]
+}

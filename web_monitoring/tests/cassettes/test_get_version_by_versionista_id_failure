@@ -30,8 +30,23 @@
                     "message": "OK"
                 },
                 "headers": {
+                    "X-Runtime": [
+                        "0.009732"
+                    ],
+                    "Content-Type": [
+                        "application/json; charset=utf-8"
+                    ],
+                    "ETag": [
+                        "W/\"512fa496aecffa3a8d5dc58bb2987876\""
+                    ],
                     "X-Frame-Options": [
                         "SAMEORIGIN"
+                    ],
+                    "X-Environment": [
+                        "development"
+                    ],
+                    "X-XSS-Protection": [
+                        "1; mode=block"
                     ],
                     "X-Content-Type-Options": [
                         "nosniff"
@@ -39,23 +54,8 @@
                     "Cache-Control": [
                         "max-age=0, private, must-revalidate"
                     ],
-                    "X-Runtime": [
-                        "0.009782"
-                    ],
-                    "X-Environment": [
-                        "development"
-                    ],
-                    "Content-Type": [
-                        "application/json; charset=utf-8"
-                    ],
                     "X-Request-Id": [
-                        "01fe8f06-fc85-42f2-91f5-48b5f4cbd308"
-                    ],
-                    "ETag": [
-                        "W/\"512fa496aecffa3a8d5dc58bb2987876\""
-                    ],
-                    "X-XSS-Protection": [
-                        "1; mode=block"
+                        "bb7305dd-0df9-4d21-b7ad-607bf41da1b0"
                     ],
                     "Vary": [
                         "Origin"
