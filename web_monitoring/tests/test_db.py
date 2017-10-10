@@ -29,6 +29,7 @@ SITE = 'EPA - www3.epa.gov'
 AGENCY = 'EPA'
 PAGE_ID = '6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8'
 TO_VERSION_ID = '9342c121-cff0-4454-934f-d0f118508da1'
+VERSIONISTA_ID = '10329339'
 
 # The only matters when re-recording the tests for vcr.
 SETTINGS = {}
@@ -103,7 +104,36 @@ def test_get_version():
 
 
 @db_vcr.use_cassette()
+def test_get_version_by_versionista_id():
+    wdb.settings = SETTINGS
+    res = wdb.get_version_by_versionista_id(VERSIONISTA_ID)
+    assert res['data']['uuid'] == TO_VERSION_ID
+    assert res['data']['page_uuid'] == PAGE_ID
+
+
+@db_vcr.use_cassette()
+def test_get_version_by_versionista_id_failure():
+    with pytest.raises(ValueError):
+        wdb.get_version_by_versionista_id('__nonexistent__')
+
+
+@db_vcr.use_cassette()
+def test_get_version_uri_versionista():
+    wdb.settings = SETTINGS
+    # smoke test (because URI is installation-dependent)
+    wdb.get_version_uri(VERSIONISTA_ID, id_type='versioninsta')
+
+
+@db_vcr.use_cassette()
+def test_get_version_uri_versionista():
+    wdb.settings = SETTINGS
+    # smoke test (because URI is installation-dependent)
+    wdb.get_version_uri(TO_VERSION_ID, id_type='db')
+
+
+@db_vcr.use_cassette()
 def test_post_version():
+    wdb.settings = SETTINGS
     new_version_id = '06620776-d347-4abd-a423-a871620299b2'
     now = datetime.now()
     wdb.post_version(page_id=PAGE_ID, uuid=new_version_id,
@@ -130,12 +160,14 @@ def test_query_import_status():
 @db_vcr.use_cassette()
 def test_list_changes():
     # smoke test
+    wdb.settings = SETTINGS
     result = wdb.list_changes(PAGE_ID)
 
 
 @db_vcr.use_cassette()
 def test_get_change():
     # smoke test
+    wdb.settings = SETTINGS
     result = wdb.get_change(page_id=PAGE_ID,
                             to_version_id=TO_VERSION_ID)
 
@@ -143,6 +175,7 @@ def test_get_change():
 @db_vcr.use_cassette()
 def test_list_annotations():
     # smoke test
+    wdb.settings = SETTINGS
     result = wdb.list_annotations(page_id=PAGE_ID,
                                   to_version_id=TO_VERSION_ID)
 
@@ -154,6 +187,7 @@ mutable_stash = []  # used to pass info from this test to the next
 @db_vcr.use_cassette()
 def test_post_annotation():
     # smoke test
+    wdb.settings = SETTINGS
     annotation = {'foo': 'bar'}
     result = wdb.post_annotation(annotation,
                                  page_id=PAGE_ID,
@@ -164,6 +198,7 @@ def test_post_annotation():
 
 @db_vcr.use_cassette()
 def test_get_annotation():
+    wdb.settings = SETTINGS
     annotation_id = mutable_stash.pop()
     result = wdb.get_annotation(annotation_id,
                                 page_id=PAGE_ID,
