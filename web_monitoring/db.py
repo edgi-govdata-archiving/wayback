@@ -1,13 +1,16 @@
 # Functions for interacting with web-monitoring-db
 from dateutil.parser import parse as parse_timestamp
-import functools
 import json
 import os
 import requests
+import requests.exceptions
+import time
+import toolz
 import tzlocal
+import warnings
 
 
-def tzaware_iso_format(dt):
+def _tzaware_isoformat(dt):
     """Express a datetime object in timezone-aware ISO format."""
     if dt.tzinfo is None:
         # This is naive. Assume they mean this time in the local timezone.
@@ -15,7 +18,7 @@ def tzaware_iso_format(dt):
     return dt.isoformat()
 
 
-def time_range_string(start_date, end_date):
+def _time_range_string(start_date, end_date):
     """
     Parameters
     ----------
@@ -30,14 +33,32 @@ def time_range_string(start_date, end_date):
     if start_date is None and end_date is None:
         return None
     if start_date is not None:
-        start_str = tzaware_iso_format(start_date)
+        start_str = _tzaware_isoformat(start_date)
     else:
         start_str = ''
     if end_date is not None:
-        end_str = tzaware_iso_format(end_date)
+        end_str = _tzaware_isoformat(end_date)
     else:
         end_str = ''
     return f'{start_str}..{end_str}'
+
+
+def _build_version(*, page_id, uuid, capture_time, uri, hash, source_type, title,
+                   source_metadata=None):
+    """
+    Build a Version dict from parameters, performing some validation.
+    """
+    if not isinstance(capture_time, str):
+        capture_time = _tzaware_isoformat(capture_time)
+    version = {'page_id': page_id,
+               'uuid': uuid,
+               'capture_time': capture_time,
+               'uri': str(uri),
+               'hash': str(hash),
+               'source_type': str(source_type),
+               'title': str(title),
+               'source_metadata': source_metadata}
+    return version
 
 
 class MissingCredentials(RuntimeError):
@@ -67,8 +88,8 @@ class Client:
     @classmethod
     def from_env(cls):
         """
-        Instantiate a :class:`Client` instance obtaining its authentication
-        info from the environment variables:
+        Instantiate a :class:`Client` by obtaining its authentication info from
+        these environment variables:
 
             * ``WEB_MONITORING_DB_URL``
             * ``WEB_MONITORING_DB_EMAIL``
@@ -132,7 +153,7 @@ Alternatively, you can instaniate Client(db_url, user, password) directly.""")
                   'include_versions': include_versions,
                   'source_type': source_type,
                   'hash': hash,
-                  'capture_time': time_range_string(start_date, end_date)}
+                  'capture_time': _time_range_string(start_date, end_date)}
         url = f'{self._api_url}/pages'
         res = requests.get(url, auth=self._auth, params=params)
         res.raise_for_status()
@@ -214,7 +235,7 @@ Alternatively, you can instaniate Client(db_url, user, password) directly.""")
         """
         params = {'chunk': chunk,
                   'chunk_size': chunk_size,
-                  'capture_time': time_range_string(start_date, end_date),
+                  'capture_time': _time_range_string(start_date, end_date),
                   'source_type': source_type,
                   'hash': hash}
         if source_metadata is not None:
@@ -286,13 +307,15 @@ Alternatively, you can instaniate Client(db_url, user, password) directly.""")
         response : dict
         """
         # Do some type casting here as gentle error-checking.
-        version = {'uuid': uuid,
-                   'capture_time': tzaware_iso_format(capture_time),
-                   'uri': str(uri),
-                   'hash': str(hash),
-                   'source_type': str(source_type),
-                   'title': str(title),
-                   'source_metadata': source_metadata}
+        version = _build_version(
+            page_id=page_id,
+            uuid=uuid,
+            capture_time=capture_time,
+            uri=uri,
+            hash=hash,
+            source_type=source_type,
+            title=title,
+            source_metadata=source_metadata)
         url = f'{self._api_url}/pages/{page_id}/versions'
         res = requests.post(url, auth=self._auth,
                             headers={'Content-Type': 'application/json'},
@@ -311,17 +334,79 @@ Alternatively, you can instaniate Client(db_url, user, password) directly.""")
 
         Returns
         -------
-        response : dict
+        import_id : integer
         """
-        # Existing documentation of import API is in this PR:
-        # https://github.com/edgi-govdata-archiving/web-monitoring-db/pull/32
         url = f'{self._api_url}/imports'
+        validated_versions = [_build_version(**v) for v in versions]
         res = requests.post(
             url, auth=self._auth,
             headers={'Content-Type': 'application/x-json-stream'},
-            data='\n'.join(map(json.dumps, versions)))
+            data='\n'.join(map(json.dumps, validated_versions)))
         res.raise_for_status()
-        return res.json()
+        return res.json()['data']['id']
+
+    def add_versions_batched(self, versions, batch_size=1000):
+        """
+        Submit versions in bulk for importing into web-monitoring-db.
+
+        Chunk the versions into batches of at most the given size.
+
+        Parameters
+        ----------
+        versions : iterable
+            Iterable of dicts from :func:`format_version`
+        batch_size : integer, optional
+            Default batch size is 1000 Versions.
+
+        Returns
+        -------
+        import_ids : tuple
+        """
+        # POST to the server in chunks. Stash the import id from each response.
+        import_ids = []
+        for batch in toolz.partition_all(batch_size, versions):
+            # versions might be a generator. This comprehension will pull on it
+            validated_batch = [_build_version(**v) for v in batch]
+            import_id = self.add_versions(validated_batch)
+            import_ids.append(import_id)
+        return tuple(import_ids)
+
+    def monitor_batch_import_status(self, import_ids):
+        """
+        Poll status of bulk Version import jobs until all complete.
+
+        Use Ctrl+C to exit early. A list of the errors (so far) will be
+        returned.
+
+        Parameters
+        ----------
+        import_ids: collection
+
+        Return
+        ------
+        errors : tuple
+        """
+        errors = []
+        import_ids = list(import_ids)  # to ensure mutable collection
+        try:
+            while import_ids:
+                for import_id in tuple(import_ids):
+                    # We are mainly interrested in processing errors. We don't
+                    # expect HTTPErrors, so we'll just warn and hope that
+                    # everything works in the second pass.
+                    try:
+                        result = self.get_import_status(import_id)
+                    except requests.exceptions.HTTPError as exc:
+                        warnings.warn("Ignoring Exception: {}".format(exc))
+                        continue
+                    data = result['data']
+                    if data['status'] == 'complete':
+                        errors.extend(data['processing_errors'])
+                        import_ids.remove(import_id)
+                time.sleep(1)
+        except KeyboardInterrupt:
+            ...
+        return errors
 
     def get_import_status(self, import_id):
         """
@@ -501,7 +586,7 @@ Alternatively, you can instaniate Client(db_url, user, password) directly.""")
         """
         Look up a Version by its Verisonista-issued ID.
 
-        This is a convenience function for dealing with Versions ingested from
+        This is a convenience method for dealing with Versions ingested from
         Versionista.
 
         Parameters
@@ -529,40 +614,3 @@ Alternatively, you can instaniate Client(db_url, user, password) directly.""")
         # result of list_versions.
         result['data'] = result['data'][0]
         return result
-
-
-    def get_version_uri(self, version_id, id_type='db',
-                        source_type='versionista', get_previous=False):
-        """
-        Get the uri of a version(snapshot) stored in the db.
-
-        Parameters
-        ----------
-        version_id : string
-        source_type : string, optional
-            'versionista' by default
-        get_previous : boolean
-            False by default
-
-        Returns
-        -------
-        source_uri or (source_uri, previous_id) depending on ``get_previous``
-        """
-        if (id_type == 'db'):
-            result = self.get_version(version_id=version_id)
-        elif (id_type == 'source'):
-            result = self.get_version_by_versionista_id(
-                versionista_id=version_id)
-        else:
-            raise ValueError('id type should be either "db" or "source"')
-        # The functions above raise an exception if they don't get exactly one
-        # result, so from here we can safely assume we have one result.
-        source_uri = result['data']['uri']
-
-        if (get_previous and source_type == 'versionista'):
-            diff_with_previous_url = \
-                result['data']['source_metadata']['diff_with_previous_url']
-            previous_id = diff_with_previous_url.split(':')[-1]
-            return source_uri, previous_id
-        else:
-            return source_uri
