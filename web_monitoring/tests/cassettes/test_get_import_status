@@ -4,7 +4,7 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "http://localhost:3000/api/v0/imports/20",
+                "uri": "http://localhost:3000/api/v0/imports/23",
                 "body": null,
                 "headers": {
                     "User-Agent": [
@@ -26,40 +26,43 @@
             },
             "response": {
                 "status": {
-                    "code": 202,
-                    "message": "Accepted"
+                    "code": 200,
+                    "message": "OK"
                 },
                 "headers": {
-                    "X-Frame-Options": [
-                        "SAMEORIGIN"
-                    ],
-                    "X-Content-Type-Options": [
-                        "nosniff"
-                    ],
-                    "X-Environment": [
-                        "development"
-                    ],
-                    "Cache-Control": [
-                        "no-cache"
+                    "ETag": [
+                        "W/\"9e780a4932916d8b0cb6bda32a250521\""
                     ],
                     "Vary": [
                         "Origin"
                     ],
+                    "Content-Type": [
+                        "application/json; charset=utf-8"
+                    ],
                     "X-XSS-Protection": [
                         "1; mode=block"
                     ],
-                    "X-Runtime": [
-                        "0.006807"
+                    "Cache-Control": [
+                        "max-age=0, private, must-revalidate"
                     ],
                     "X-Request-Id": [
-                        "ed20eefa-1d17-48af-8ec5-2e02c2543f43"
+                        "c038b266-826b-48c8-8ae6-cbd1f400e10f"
                     ],
-                    "Content-Type": [
-                        "application/json; charset=utf-8"
+                    "X-Content-Type-Options": [
+                        "nosniff"
+                    ],
+                    "X-Runtime": [
+                        "0.008877"
+                    ],
+                    "X-Frame-Options": [
+                        "SAMEORIGIN"
+                    ],
+                    "X-Environment": [
+                        "development"
                     ]
                 },
                 "body": {
-                    "string": "{\"data\":{\"id\":20,\"user_id\":1,\"status\":\"pending\",\"file\":\"439fcce8-51a4-4484-8c7c-c02d985f143d\",\"processing_errors\":[],\"created_at\":\"2017-10-10T23:00:29.464Z\",\"updated_at\":\"2017-10-10T23:00:29.464Z\",\"update_behavior\":\"skip\"}}"
+                    "string": "{\"data\":{\"id\":23,\"user_id\":1,\"status\":\"complete\",\"file\":\"6407b8ac-f6e7-4db3-a41c-96b8bfe1cba7\",\"processing_errors\":[],\"created_at\":\"2017-10-11T09:13:18.146Z\",\"updated_at\":\"2017-10-11T09:13:19.497Z\",\"update_behavior\":\"skip\"}}"
                 }
             }
         }

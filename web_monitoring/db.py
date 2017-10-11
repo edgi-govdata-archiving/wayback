@@ -10,6 +10,9 @@ import tzlocal
 import warnings
 
 
+DEFAULT_URL = 'https://api.monitoring.envirodatagov.org'
+
+
 def _tzaware_isoformat(dt):
     """Express a datetime object in timezone-aware ISO format."""
     if dt.tzinfo is None:
@@ -118,11 +121,12 @@ class Client:
 
     Parameters
     ----------
-    url : string
     email : string
     password : string
+    url : string, optional
+        Default is ``https://api.monitoring.envirodatagov.org``.
     """
-    def __init__(self, url, email, password):
+    def __init__(self, email, password, url=DEFAULT_URL):
         self._auth = (email, password)
         self._api_url = f'{url}/api/v0'
 
@@ -134,7 +138,8 @@ class Client:
 
             * ``WEB_MONITORING_DB_URL``
             * ``WEB_MONITORING_DB_EMAIL``
-            * ``WEB_MONITORING_DB_PASSWORD``
+            * ``WEB_MONITORING_DB_PASSWORD`` (optional -- defaults to
+              ``https://api.monitoring.envirodatagov.org``)
         """
         try:
             url = os.environ['WEB_MONITORING_DB_URL']
@@ -142,14 +147,13 @@ class Client:
             password = os.environ['WEB_MONITORING_DB_PASSWORD']
         except KeyError:
             raise MissingCredentials("""
-Before using this method, database credentials must set via environmental
+Before using this method, database credentials must be set via environmental
 variables:
 
    WEB_MONITORING_DB_URL
    WEB_MONITORING_DB_EMAIL
-   WEB_MONITORING_DB_PASSWORD
 
-Alternatively, you can instaniate Client(db_url, user, password) directly.""")
+Alternatively, you can instaniate Client(user, password) directly.""")
         return cls(url, email, password)
 
     ### PAGES ###
@@ -175,7 +179,7 @@ Alternatively, you can instaniate Client(db_url, user, password) directly.""")
         include_versions : boolean, optional
         include_latest : boolean, optional
         source_type : string, optional
-            such as 'versionista' or 'internetarchive'
+            such as 'versionista' or 'internet_archive'
         hash : string, optional
             SHA256 hash of Version content
         start_date : datetime, optional
@@ -204,10 +208,10 @@ Alternatively, you can instaniate Client(db_url, user, password) directly.""")
         for page in data:
             page['created_at'] = parse_timestamp(page['created_at'])
             page['updated_at'] = parse_timestamp(page['updated_at'])
-            if include_latest:
+            if 'latest' in page:
                 page['latest']['capture_time'] = parse_timestamp(
                     page['latest']['capture_time'])
-            if include_versions:
+            if 'versions' in page:
                 for v in page['versions']:
                     v['created_at'] = parse_timestamp(v['created_at'])
                     v['updated_at'] = parse_timestamp(v['updated_at'])
@@ -364,29 +368,7 @@ Alternatively, you can instaniate Client(db_url, user, password) directly.""")
         _process_errors(res)
         return res.json()
 
-    def add_versions(self, versions):
-        """
-        Submit versions in bulk for importing into web-monitoring-db.
-
-        Parameters
-        ----------
-        versions : iterable
-            iterable of dicts from :func:`format_version`
-
-        Returns
-        -------
-        import_id : integer
-        """
-        url = f'{self._api_url}/imports'
-        validated_versions = [_build_importable_version(**v) for v in versions]
-        res = requests.post(
-            url, auth=self._auth,
-            headers={'Content-Type': 'application/x-json-stream'},
-            data='\n'.join(map(json.dumps, validated_versions)))
-        _process_errors(res)
-        return res.json()['data']['id']
-
-    def add_versions_batched(self, versions, batch_size=1000):
+    def add_versions(self, versions, update='skip', batch_size=50000):
         """
         Submit versions in bulk for importing into web-monitoring-db.
 
@@ -396,25 +378,45 @@ Alternatively, you can instaniate Client(db_url, user, password) directly.""")
         ----------
         versions : iterable
             Iterable of dicts from :func:`format_version`
+        update : {'skip', 'replace', 'merge'}, optional
+            Specifies how versions that are already in the database (i.e.
+            versions with the same ``capture_time`` and ``source_type``) should
+            be handled:
+
+                * ``'skip'`` (default) -- Don’t import the version or modify
+                  the existing database entry.
+                * ``'replace'`` -- Replace the existing database entry with the
+                  imported one
+                * ``'merge'`` -- Similar to `replace`, but merges the values in
+                  ``source_metadata``
+
         batch_size : integer, optional
-            Default batch size is 1000 Versions.
+            Default batch size is 50000 Versions.
 
         Returns
         -------
         import_ids : tuple
         """
+        url = f'{self._api_url}/imports'
         # POST to the server in chunks. Stash the import id from each response.
         import_ids = []
         for batch in toolz.partition_all(batch_size, versions):
             # versions might be a generator. This comprehension will pull on it
-            validated_batch = [_build_importable_version(**v) for v in batch]
-            import_id = self.add_versions(validated_batch)
+            validated_versions = [_build_importable_version(**v)
+                                  for v in versions]
+            res = requests.post(
+                url, auth=self._auth,
+                headers={'Content-Type': 'application/x-json-stream'},
+                params={'update': update},
+                data='\n'.join(map(json.dumps, validated_versions)))
+            _process_errors(res)
+            import_id = res.json()['data']['id']
             import_ids.append(import_id)
         return tuple(import_ids)
 
-    def monitor_batch_import_status(self, import_ids):
+    def monitor_import_statuses(self, import_ids):
         """
-        Poll status of bulk Version import jobs until all complete.
+        Poll status of Version import jobs until all complete.
 
         Use Ctrl+C to exit early. A list of the errors (so far) will be
         returned.
@@ -451,7 +453,7 @@ Alternatively, you can instaniate Client(db_url, user, password) directly.""")
 
     def get_import_status(self, import_id):
         """
-        Check on the status of a bulk import job.
+        Check on the status of a batch Version import job.
 
         Parameters
         ----------
@@ -602,7 +604,7 @@ Alternatively, you can instaniate Client(db_url, user, password) directly.""")
 
     ### CONVENIENCE METHODS ###
 
-    def fetch_version_content(self, version_id):
+    def get_version_content(self, version_id):
         """
         Download the saved content from a given Version.
 
@@ -651,7 +653,6 @@ Alternatively, you can instaniate Client(db_url, user, password) directly.""")
                             "Their web-monitoring-db version_ids are: {}"
                             "".format(versionista_id,
                                       [v['uuid'] for v in data]))
-        # Hack 'data' to look like the result of get_version rather than the
-        # result of list_versions.
-        result['data'] = result['data'][0]
-        return result
+        # Make result look like the result of `get_version` rather than the
+        # result of `list_versions`.
+        return {'data': result['data'][0]}
