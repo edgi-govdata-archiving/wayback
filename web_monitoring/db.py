@@ -158,7 +158,7 @@ Alternatively, you can instaniate Client(user, password) directly.""")
 
     ### PAGES ###
 
-    def list_pages(self, chunk=None, chunk_size=None,
+    def list_pages(self, *, chunk=None, chunk_size=None,
                    site=None, agency=None, url=None, title=None,
                    include_versions=None, include_latest=None,
                    source_type=None, hash=None,
@@ -247,7 +247,7 @@ Alternatively, you can instaniate Client(user, password) directly.""")
 
     ### VERSIONS ###
 
-    def list_versions(self, page_id=None, chunk=None, chunk_size=None,
+    def list_versions(self, *, page_id=None, chunk=None, chunk_size=None,
                       start_date=None, end_date=None,
                       source_type=None, hash=None,
                       source_metadata=None):
@@ -322,7 +322,7 @@ Alternatively, you can instaniate Client(user, password) directly.""")
         data['created_at'] = parse_timestamp(data['created_at'])
         return result
 
-    def add_version(self, page_id, capture_time, uri, hash,
+    def add_version(self, *, page_id, capture_time, uri, hash,
                     source_type, title, uuid=None, source_metadata=None):
         """
         Submit one new Version.
@@ -368,7 +368,7 @@ Alternatively, you can instaniate Client(user, password) directly.""")
         _process_errors(res)
         return res.json()
 
-    def add_versions(self, versions, update='skip', batch_size=50000):
+    def add_versions(self, versions, *, update='skip', batch_size=50000):
         """
         Submit versions in bulk for importing into web-monitoring-db.
 
@@ -492,7 +492,7 @@ Alternatively, you can instaniate Client(user, password) directly.""")
             change['updated_at'] = parse_timestamp(change['updated_at'])
         return result
 
-    def get_change(self, page_id, to_version_id, from_version_id=''):
+    def get_change(self, *, page_id, to_version_id, from_version_id=''):
         """
         Get a Changes between two Versions.
 
@@ -519,7 +519,7 @@ Alternatively, you can instaniate Client(user, password) directly.""")
         data['updated_at'] = parse_timestamp(data['updated_at'])
         return result
 
-    def list_annotations(self, page_id, to_version_id, from_version_id=''):
+    def list_annotations(self, *, page_id, to_version_id, from_version_id=''):
         """
         List Annotations for a Change between two Versions.
 
@@ -546,7 +546,7 @@ Alternatively, you can instaniate Client(user, password) directly.""")
             a['updated_at'] = parse_timestamp(a['updated_at'])
         return result
 
-    def add_annotation(self, annotation, page_id, to_version_id,
+    def add_annotation(self, *, annotation, page_id, to_version_id,
                        from_version_id=''):
         """
         Submit updated annotations for a change between versions.
@@ -572,7 +572,7 @@ Alternatively, you can instaniate Client(user, password) directly.""")
         _process_errors(res)
         return res.json()
 
-    def get_annotation(self, annotation_id, page_id, to_version_id,
+    def get_annotation(self, *, annotation_id, page_id, to_version_id,
                        from_version_id=''):
         """
         Get a specific Annontation.

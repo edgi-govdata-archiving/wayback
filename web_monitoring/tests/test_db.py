@@ -221,9 +221,9 @@ def test_add_annotation():
     cli = Client(**AUTH)
     # smoke test
     annotation = {'foo': 'bar'}
-    result = cli.add_annotation(annotation,
-                                 page_id=PAGE_ID,
-                                 to_version_id=TO_VERSION_ID)
+    result = cli.add_annotation(annotation=annotation,
+                                page_id=PAGE_ID,
+                                to_version_id=TO_VERSION_ID)
     annotation_id = result['data']['uuid']
     global_stash['annotation_id'] = annotation_id
 
@@ -232,7 +232,7 @@ def test_add_annotation():
 def test_get_annotation():
     cli = Client(**AUTH)
     annotation_id = global_stash['annotation_id']
-    result = cli.get_annotation(annotation_id,
+    result = cli.get_annotation(annotation_id=annotation_id,
                                 page_id=PAGE_ID,
                                 to_version_id=TO_VERSION_ID)
     fetched_annotation = result['data']['annotation']
