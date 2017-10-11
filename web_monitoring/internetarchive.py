@@ -61,6 +61,7 @@ def original_url_for_memento(memento_url):
 
     Examples
     --------
+    Extract original URL.
     >>> original_url_for_memento('http://web.archive.org/web/20170813195036/https://arpa-e.energy.gov/?q=engage/events-workshops')
     'https://arpa-e.energy.gov/?q=engage/events-workshops'
     """
@@ -86,8 +87,9 @@ def cdx_hash(content):
 
 def search_cdx(params):
     """
-    Search archive.org's CDX API for captures of a given URL. This will
-    automatically page through all results for a given search.
+    Search archive.org's CDX API for all captures of a given URL.
+
+    This will automatically page through all results for a given search.
 
     Returns an iterator of CdxRecord objects. The StopIteration value is the
     total count of found captures.
@@ -136,7 +138,7 @@ def search_cdx(params):
         try:
             data = CdxRecord(*text.split(' '), None, '', '')
             capture_time = datetime.strptime(data.timestamp, URL_DATE_FORMAT)
-        except:
+        except Exception:
             raise UnexpectedResponseFormat(text)
 
         # TODO: repeat captures have a status code of `-` and a mime type of
@@ -157,10 +159,11 @@ def search_cdx(params):
 
 def list_versions(url, *, from_date=None, to_date=None, skip_repeats=True):
     """
-    Yield a CdxRecord object for each version of a url.
+    Search archive.org for captures of a URL (optionally, within a time span).
 
     This function provides a convenient, use-case-specific interface to
-    archive.org's CDX API. For a more direct, low-level API, use search_cdx().
+    archive.org's CDX API. For a more direct, low-level API, use
+    :func:`search_cdx`.
 
     Note that even URLs without wildcards may return results with multiple
     URLs. Search results are matched by url_key, which is a SURT-formatted,
@@ -174,11 +177,11 @@ def list_versions(url, *, from_date=None, to_date=None, skip_repeats=True):
     ----------
     url : string
         The URL to list versions for. Can contain wildcards.
-    from_date : datetime
-        Get versions captured after this date (optional).
-    to_date : datetime
-        Get versions captured before this date (optional).
-    skip_repeats : boolean
+    from_date : datetime, optional
+        Get versions captured after this date.
+    to_date : datetime, optional
+        Get versions captured before this date.
+    skip_repeats : boolean, optional
         Don’t include consecutive captures of the same content (default: True).
 
     Raises
@@ -208,17 +211,15 @@ def list_versions(url, *, from_date=None, to_date=None, skip_repeats=True):
     if to_date:
         params['to'] = to_date.strftime(URL_DATE_FORMAT)
 
-    has_versions = False
     last_hashes = {}
     for version in search_cdx(params):
         # TODO: may want to follow redirects and resolve them in the future
         if not skip_repeats or last_hashes.get(version.url) != version.digest:
-            has_versions = True
             last_hashes[version.url] = version.digest
             # TODO: yield the whole version
             yield version
 
-    if not has_versions:
+    if not last_hashes:
         raise ValueError("Internet archive does not have archived "
                          "versions of {}".format(url))
 
@@ -268,8 +269,10 @@ def format_version(*, url, dt, uri, version_hash, title, agency, site, status,
     version : dict
         properly formatted for as JSON blob for web-monitoring-db
     """
-    # Existing documentation of import API is in this PR:
-    # https://github.com/edgi-govdata-archiving/web-monitoring-db/pull/32
+    # The reason that this is a function, not just dict(**kwargs), is that we
+    # have to scope information that is not part of web-monitoring-db's Version
+    # format into source_metadata, a free-form object for extra info that not
+    # all sources are required to provide.
     metadata = {
         'status_code': status,
         'mime_type': mime_type,
@@ -298,9 +301,29 @@ def format_version(*, url, dt, uri, version_hash, title, agency, site, status,
     )
 
 
-def timestamped_uri_to_version(dt, uri, *, url, site, agency, view_url=None):
+def timestamped_uri_to_version(dt, uri, *, url, agency, site, view_url=None):
     """
-    Obtain hash and title and return a Version.
+    Fetch version content and combine it with metadata to build a Version.
+
+    Parameters
+    ----------
+    dt : datetime.datetime
+        capture time
+    uri : string
+        URI of version
+    url : string
+        page URL
+    agency : string
+        primer metadata (likely to change in the future)
+    site : string
+        primer metadata (likely to change in the future)
+    view_url : string, optional
+        The archive.org URL for viewing the page (with rewritten links, etc.)
+
+    Returns
+    -------
+    dict : Version
+        suitable for passing to :class:`Client.add_versions`
     """
     res = requests.get(uri)
 
