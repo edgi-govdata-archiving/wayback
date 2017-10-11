@@ -1,0 +1,70 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "GET",
+                "uri": "http://localhost:3000/api/v0/pages/6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8/changes/..9342c121-cff0-4454-934f-d0f118508da1/annotations/2bf14db1-1336-47ab-897e-72bf0d89f870",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "python-requests/2.18.4"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Authorization": [
+                        "Basic c2VlZC1hZG1pbkBleGFtcGxlLmNvbTpQQVNTV09SRA=="
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "X-Frame-Options": [
+                        "SAMEORIGIN"
+                    ],
+                    "ETag": [
+                        "W/\"b203e184549e9f2e2b1d9b27256ccebe\""
+                    ],
+                    "X-Content-Type-Options": [
+                        "nosniff"
+                    ],
+                    "X-Environment": [
+                        "development"
+                    ],
+                    "Cache-Control": [
+                        "max-age=0, private, must-revalidate"
+                    ],
+                    "Vary": [
+                        "Origin"
+                    ],
+                    "X-XSS-Protection": [
+                        "1; mode=block"
+                    ],
+                    "X-Runtime": [
+                        "0.014153"
+                    ],
+                    "X-Request-Id": [
+                        "deefe16b-4f39-4df8-b9b6-03d9d1ca825e"
+                    ],
+                    "Content-Type": [
+                        "application/json; charset=utf-8"
+                    ]
+                },
+                "body": {
+                    "string": "{\"links\":{\"version\":\"http://localhost:3000/api/v0/pages/6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8/versions/9342c121-cff0-4454-934f-d0f118508da1\",\"from_version\":\"http://localhost:3000/api/v0/pages/6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8/versions/f343bf02-9aef-46c5-96ca-5644280340fd\"},\"data\":{\"uuid\":\"2bf14db1-1336-47ab-897e-72bf0d89f870\",\"annotation\":{\"foo\":\"bar\"},\"created_at\":\"2017-10-09T20:27:44.252Z\",\"updated_at\":\"2017-10-09T20:27:44.252Z\",\"author\":{\"id\":1,\"email\":\"seed-admin@example.com\"},\"from_version\":\"f343bf02-9aef-46c5-96ca-5644280340fd\",\"to_version\":\"9342c121-cff0-4454-934f-d0f118508da1\"}}"
+                }
+            }
+        }
+    ]
+}

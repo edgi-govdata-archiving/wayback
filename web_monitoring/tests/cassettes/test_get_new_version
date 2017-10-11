@@ -1,0 +1,70 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "GET",
+                "uri": "http://localhost:3000/api/v0/versions/06620776-d347-4abd-a423-a871620299a9",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "python-requests/2.18.4"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Authorization": [
+                        "Basic c2VlZC1hZG1pbkBleGFtcGxlLmNvbTpQQVNTV09SRA=="
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "X-Frame-Options": [
+                        "SAMEORIGIN"
+                    ],
+                    "ETag": [
+                        "W/\"c9de0d2878924d63c071610dba9b1bd3\""
+                    ],
+                    "X-Content-Type-Options": [
+                        "nosniff"
+                    ],
+                    "X-Environment": [
+                        "development"
+                    ],
+                    "Cache-Control": [
+                        "max-age=0, private, must-revalidate"
+                    ],
+                    "Vary": [
+                        "Origin"
+                    ],
+                    "X-XSS-Protection": [
+                        "1; mode=block"
+                    ],
+                    "X-Runtime": [
+                        "0.010011"
+                    ],
+                    "X-Request-Id": [
+                        "d813d7ec-fdb2-4f5a-83e8-ad07edf97493"
+                    ],
+                    "Content-Type": [
+                        "application/json; charset=utf-8"
+                    ]
+                },
+                "body": {
+                    "string": "{\"links\":{\"page\":\"http://localhost:3000/api/v0/pages/6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8\",\"previous\":\"http://localhost:3000/api/v0/pages/6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8/versions/06620776-d347-4abd-a423-a871620299b4\"},\"data\":{\"uuid\":\"06620776-d347-4abd-a423-a871620299a9\",\"page_uuid\":\"6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8\",\"capture_time\":\"2017-11-15T00:00:00.000Z\",\"uri\":\"file:///Users/dallan/Documents/Repos/web-monitoring-db/tmp/storage/archive/3587cb776ce0e4e8237f215800b7dffba0f25865cb84550e87ea8bbac838c423\",\"version_hash\":\"3587cb776ce0e4e8237f215800b7dffba0f25865cb84550e87ea8bbac838c423\",\"source_type\":\"test\",\"source_metadata\":{},\"created_at\":\"2017-10-10T23:00:29.163Z\",\"updated_at\":\"2017-10-10T23:00:29.163Z\",\"title\":\"title_placeholder\"}}"
+                }
+            }
+        }
+    ]
+}

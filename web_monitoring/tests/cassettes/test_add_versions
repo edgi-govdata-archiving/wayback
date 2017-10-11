@@ -1,0 +1,147 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "POST",
+                "uri": "http://localhost:3000/api/v0/imports?update=skip",
+                "body": "{\"page_url\": \"http://example.com\", \"uuid\": \"d68c5521-0728-4098-96dd-e6330612f049\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}\n{\"page_url\": \"http://example.com\", \"uuid\": \"db2932c4-413b-41f6-b73d-602faccf2f49\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}\n{\"page_url\": \"http://example.com\", \"uuid\": \"4cfe3e9b-01b3-4a5f-bb45-e7657fc38849\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}\n{\"page_url\": \"http://example.com\", \"uuid\": \"e1731130-569a-45a5-8db9-e58764e72049\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}\n{\"page_url\": \"http://example.com\", \"uuid\": \"901feef4-91b8-4140-8dcc-a414f52bef49\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}\n{\"page_url\": \"http://example.com\", \"uuid\": \"4cd662bc-e322-463e-9fe1-12fbccb62a49\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}\n{\"page_url\": \"http://example.com\", \"uuid\": \"1d0e7eb7-4920-48b5-a810-d01e7ae27c49\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}\n{\"page_url\": \"http://example.com\", \"uuid\": \"8b420ce3-ecc5-43e2-865a-b02c854f6449\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}\n{\"page_url\": \"http://example.com\", \"uuid\": \"ae23d4f2-ab34-43da-b58f-57c4ab8bdd49\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}\n{\"page_url\": \"http://example.com\", \"uuid\": \"b8cc3d0f-f2eb-43ef-bfc7-d0b589ee7f49\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}",
+                "headers": {
+                    "User-Agent": [
+                        "python-requests/2.18.4"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Content-Type": [
+                        "application/x-json-stream"
+                    ],
+                    "Content-Length": [
+                        "2609"
+                    ],
+                    "Authorization": [
+                        "Basic c2VlZC1hZG1pbkBleGFtcGxlLmNvbTpQQVNTV09SRA=="
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 202,
+                    "message": "Accepted"
+                },
+                "headers": {
+                    "Content-Type": [
+                        "application/json; charset=utf-8"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Vary": [
+                        "Origin"
+                    ],
+                    "X-Runtime": [
+                        "0.576498"
+                    ],
+                    "X-Request-Id": [
+                        "0c76bf1d-147b-4c98-bd05-a60b7d515ee9"
+                    ],
+                    "X-Content-Type-Options": [
+                        "nosniff"
+                    ],
+                    "X-Frame-Options": [
+                        "SAMEORIGIN"
+                    ],
+                    "X-Environment": [
+                        "development"
+                    ],
+                    "Set-Cookie": [
+                        "_webpage-versions-db_session=WCtkV08wbk9kZmducEhJUHc3VHZXQjFwSnJoKzF4VDhyZG1TWER4ZnVrYVFUNXR2LytmK0FPVTdjNUZqWWhHcVRZbEsyWWxYcTBGNVpreWFScXJkQUE9PS0tYkMyYStpYTVCYWdlQUJsQlV3R3ZTZz09--4cb37287ed18fe988080a614c189b88bcfb27aa5; path=/; HttpOnly"
+                    ],
+                    "X-XSS-Protection": [
+                        "1; mode=block"
+                    ]
+                },
+                "body": {
+                    "string": "{\"data\":{\"id\":23,\"user_id\":1,\"status\":\"pending\",\"file\":\"6407b8ac-f6e7-4db3-a41c-96b8bfe1cba7\",\"processing_errors\":[],\"created_at\":\"2017-10-11T09:13:18.146Z\",\"updated_at\":\"2017-10-11T09:13:18.146Z\",\"update_behavior\":\"skip\"}}"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "http://localhost:3000/api/v0/imports?update=skip",
+                "body": "{\"page_url\": \"http://example.com\", \"uuid\": \"d68c5521-0728-4098-96dd-e6330612f049\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}\n{\"page_url\": \"http://example.com\", \"uuid\": \"db2932c4-413b-41f6-b73d-602faccf2f49\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}\n{\"page_url\": \"http://example.com\", \"uuid\": \"4cfe3e9b-01b3-4a5f-bb45-e7657fc38849\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}\n{\"page_url\": \"http://example.com\", \"uuid\": \"e1731130-569a-45a5-8db9-e58764e72049\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}\n{\"page_url\": \"http://example.com\", \"uuid\": \"901feef4-91b8-4140-8dcc-a414f52bef49\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}\n{\"page_url\": \"http://example.com\", \"uuid\": \"4cd662bc-e322-463e-9fe1-12fbccb62a49\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}\n{\"page_url\": \"http://example.com\", \"uuid\": \"1d0e7eb7-4920-48b5-a810-d01e7ae27c49\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}\n{\"page_url\": \"http://example.com\", \"uuid\": \"8b420ce3-ecc5-43e2-865a-b02c854f6449\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}\n{\"page_url\": \"http://example.com\", \"uuid\": \"ae23d4f2-ab34-43da-b58f-57c4ab8bdd49\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}\n{\"page_url\": \"http://example.com\", \"uuid\": \"b8cc3d0f-f2eb-43ef-bfc7-d0b589ee7f49\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}",
+                "headers": {
+                    "User-Agent": [
+                        "python-requests/2.18.4"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Content-Type": [
+                        "application/x-json-stream"
+                    ],
+                    "Content-Length": [
+                        "2609"
+                    ],
+                    "Authorization": [
+                        "Basic c2VlZC1hZG1pbkBleGFtcGxlLmNvbTpQQVNTV09SRA=="
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 202,
+                    "message": "Accepted"
+                },
+                "headers": {
+                    "Content-Type": [
+                        "application/json; charset=utf-8"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Vary": [
+                        "Origin"
+                    ],
+                    "X-Runtime": [
+                        "0.189588"
+                    ],
+                    "X-Request-Id": [
+                        "ac9ab1d3-331b-4477-b685-bab20e1d1122"
+                    ],
+                    "X-Content-Type-Options": [
+                        "nosniff"
+                    ],
+                    "X-Frame-Options": [
+                        "SAMEORIGIN"
+                    ],
+                    "X-Environment": [
+                        "development"
+                    ],
+                    "Set-Cookie": [
+                        "_webpage-versions-db_session=UGN5Qk5xb1MrWjdvbi9jRzV1OFh4dnNaeE9xdHJySVR5QkQwT2Y0ZTZ1Sks3aU1KQjBYL0VaUkRLR2ZvWWJhM1hWYTB6YVpYZW8wM0N0UTVnUmJNMnc9PS0tL0xEOTRPdkJkcTE3QkxjbjhYVGEvUT09--bf6321e19994531006dddc4cd13b9b6d0a60d705; path=/; HttpOnly"
+                    ],
+                    "X-XSS-Protection": [
+                        "1; mode=block"
+                    ]
+                },
+                "body": {
+                    "string": "{\"data\":{\"id\":24,\"user_id\":1,\"status\":\"pending\",\"file\":\"bbe8f359-4e58-44d5-be9b-fc1f6eacef45\",\"processing_errors\":[],\"created_at\":\"2017-10-11T09:13:18.427Z\",\"updated_at\":\"2017-10-11T09:13:18.427Z\",\"update_behavior\":\"skip\"}}"
+                }
+            }
+        }
+    ]
+}
