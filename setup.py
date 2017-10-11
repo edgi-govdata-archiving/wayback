@@ -24,5 +24,6 @@ setup(name='web_monitoring',
       packages=['web_monitoring'],
       scripts=glob.glob('scripts/*'),
       install_requires=read('requirements.txt').splitlines(),
+      package_data={'web_monitoring': ['web_monitoring/tests/cassettes/*']},
       long_description=read('README.md'),
      )
