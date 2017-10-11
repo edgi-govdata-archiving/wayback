@@ -99,3 +99,7 @@ __pycache__/
 .ipynb_checkpoints/
 
 .env
+
+# sphinx docs
+docs/build/*
+docs/source/generated/*

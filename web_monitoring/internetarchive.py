@@ -196,7 +196,7 @@ def list_versions(url, *, from_date=None, to_date=None, skip_repeats=True):
     >>> version.date
     datetime.datetime(1996, 12, 31, 23, 58, 47)
     >>> version.raw_url
-    'http://web.archive.org/web/19961231235847id_/http://www.nasa.gov:80/'
+    "http://web.archive.org/web/19961231235847id\_/http://www.nasa.gov:80/"
 
     Loop through all the snapshots.
     >>> for version in list_versions('nasa.gov'):
