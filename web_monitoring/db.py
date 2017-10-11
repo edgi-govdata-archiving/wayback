@@ -142,7 +142,7 @@ class Client:
               ``https://api.monitoring.envirodatagov.org``)
         """
         try:
-            url = os.environ['WEB_MONITORING_DB_URL']
+            url = os.environ.get('WEB_MONITORING_DB_URL', DEFAULT_URL)
             email = os.environ['WEB_MONITORING_DB_EMAIL']
             password = os.environ['WEB_MONITORING_DB_PASSWORD']
         except KeyError:
@@ -150,8 +150,9 @@ class Client:
 Before using this method, database credentials must be set via environmental
 variables:
 
-   WEB_MONITORING_DB_URL
+   WEB_MONITORING_DB_URL (optional)
    WEB_MONITORING_DB_EMAIL
+   WEB_MONITORING_DB_PASSWORD
 
 Alternatively, you can instaniate Client(user, password) directly.""")
         return cls(url, email, password)
@@ -368,7 +369,7 @@ Alternatively, you can instaniate Client(user, password) directly.""")
         _process_errors(res)
         return res.json()
 
-    def add_versions(self, versions, *, update='skip', batch_size=50000):
+    def add_versions(self, versions, *, update='skip', batch_size=1000):
         """
         Submit versions in bulk for importing into web-monitoring-db.
 
