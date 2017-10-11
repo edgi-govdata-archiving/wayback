@@ -14,8 +14,20 @@ from web_monitoring import pf_edgi as pf
 # better to use the underlying library code.
 
 
+def _add_and_monitor(versions):
+    cli = db.Client.from_env()  # will raise if env vars not set
+    # Wrap verions in a progress bar.
+    versions = tqdm(versions, desc='importing', unit=' versions')
+    print('Submitting Versions to web-monitoring-db...')
+    import_ids = cli.add_versions(versions)
+    print('Import jobs IDs: {}'.format(import_ids))
+    print('Polling web-monitoring-db until import jobs are finished...')
+    errors = cli.monitor_import_statuses(import_ids)
+    if errors:
+        print("Errors: {}".format(errors))
+
+
 def import_ia(url, agency, site, from_date=None, to_date=None):
-    cli = db.Client.from_env()  # will raise in env vars not set
     # Pulling on this generator does the work.
     versions = (ia.timestamped_uri_to_version(version.date, version.raw_url,
                                               url=version.url,
@@ -25,32 +37,15 @@ def import_ia(url, agency, site, from_date=None, to_date=None):
                 for version in ia.list_versions(url,
                                                 from_date=from_date,
                                                 to_date=to_date))
-    # Wrap it in a progress bar.
-    versions = tqdm(versions, desc='importing', unit=' versions')
-    print('Submitting Versions to web-monitoring-db...')
-    import_ids = cli.add_versions_batched(versions)
-    print('Import jobs IDs: {}'.format(import_ids))
-    print('Polling web-monitoring-db until import jobs are finished...')
-    errors = cli.monitor_batch_import_status(import_ids)
-    if errors:
-        print("Errors: {}".format(errors))
+    _add_and_monitor(versions)
 
 
 def import_pf_archive(cabinet_id, archive_id, *, agency, site):
-    cli = db.Client.from_env()  # will raise in env vars not set
     # Pulling on this generator does the work.
     versions = pf.archive_to_versions(cabinet_id, archive_id,
                                       agency=agency,
                                       site=site)
-    # Wrap it in a progress bar.
-    versions = tqdm(versions, desc='importing', unit=' versions')
-    print('Submitting Versions to web-monitoring-db...')
-    import_ids = cli.add_versions_batched(versions)
-    print('Import jobs IDs: {}'.format(import_ids))
-    print('Polling web-monitoring-db until import jobs are finished...')
-    errors = cli.monitor_batch_import_status(import_ids)
-    if errors:
-        print("Errors: {}".format(errors))
+    _add_and_monitor(versions)
 
 
 def parse_date_argument(date_string):
