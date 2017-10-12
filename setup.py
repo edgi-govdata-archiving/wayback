@@ -21,7 +21,7 @@ def read(fname):
 # Requirements not on PyPI can't be installed through `install_requires`.
 # They have to be installed manually or with `pip install -r requirements.txt`.
 requirements = [r for r in read('requirements.txt').splitlines()
-                if not r.startswith('git')]
+                if not r.startswith('git+https://')]
 
 
 setup(name='web_monitoring',
