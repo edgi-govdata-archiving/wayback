@@ -1,5 +1,9 @@
+from datetime import datetime
+import functools
 import htmltreediff
+import time
 import os
+from pathlib import Path
 from pkg_resources import resource_filename
 import pytest
 from web_monitoring.db import Client
@@ -86,15 +90,40 @@ staging_cli = Client(
     url=os.environ['WEB_MONITORING_DB_STAGING_URL'])
 
 
+CACHE_DIR = Path.home() / Path('cache', 'web-monitoring-processings', 'tests')
+os.makedirs(CACHE_DIR, exist_ok=True)
+
+
 def get_staging_content(version_id):
+    # Try our local cache, the on-disk cache, and finally the network.
     try:
         return version_content_cache[version_id]
     except KeyError:
-        content = staging_cli.get_version_content(version_id)
+        try:
+            with open(CACHE_DIR / Path(version_id), 'r') as f:
+                content = f.read()
+        except FileNotFoundError:
+            content = staging_cli.get_version_content(version_id)
+            with open(CACHE_DIR / Path(version_id), 'w') as f:
+                f.write(content)
         version_content_cache[version_id] = content
         return content
 
+OUTPUT_DIR = Path('diff_output_{}'.format(datetime.now().isoformat()))
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
+
+def export(func):
+    @functools.wraps(func)
+    def inner(*args, **kwargs):
+        d = func(*args, **kwargs)
+        with open(OUTPUT_DIR / Path(func.__name__), 'w') as file:
+            file.write(d)
+        return d
+    return inner
+
+
+@export
 @pytest.mark.parametrize('before_id, after_id', staging_version_ids)
 def test_real_examples_htmltreediff(before_id, after_id):
     before, after = map(get_staging_content, (before_id, after_id))
@@ -105,6 +134,7 @@ def test_real_examples_htmltreediff(before_id, after_id):
     return d
 
 
+@export
 @pytest.mark.parametrize('before_id, after_id', staging_version_ids)
 def test_real_examples_html_diff_render(before_id, after_id):
     before, after = map(get_staging_content, (before_id, after_id))
@@ -112,6 +142,7 @@ def test_real_examples_html_diff_render(before_id, after_id):
     return d
 
 
+@export
 @pytest.mark.parametrize('before_id, after_id', staging_version_ids)
 def test_real_examples_htmldiffer(before_id, after_id):
     before, after = map(get_staging_content, (before_id, after_id))
