@@ -10,7 +10,7 @@ This documentation addresses one software package among several that are used
 to support the
 `Environmental Data Governance Initiative <https://envirodatagov.org/>`_
 Website Monitoring project. This is in the very early stages of development. At
-the stage, the aim of this documentation is to support onboarding new
+this stage, the aim of this documentation is to support onboarding new
 developers. Contributions are welcome! See the
 `guidelines for contributing <https://github.com/edgi-govdata-archiving/overview/blob/master/CONTRIBUTING.md>`_.
 
