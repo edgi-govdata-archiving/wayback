@@ -217,3 +217,34 @@ def _diff_elements(old, new):
     result_element.clear()
     result_element.append(htmldiff(str(old), str(new)))
     return result_element
+
+
+def insert_diff_style(html, ins_tag, del_tag):
+    """
+    Insert a new <style> tag with CSS to color insertions and deletions.
+
+    Parameters
+    ----------
+    html : string
+    ins_tag : string
+    del_tag : string
+
+    Returns
+    -------
+    render : string
+    """
+    soup = BeautifulSoup(html, 'lxml')
+
+    # Ensure html includes a <head></head>.
+    if not soup.head:
+        head = soup.new_tag('head')
+        soup.html.insert(0, head)
+
+    style_tag = soup.new_tag("style", type="text/css")
+    style_tag.string = f"""
+{ins_tag} {{text-decoration : none; background-color: #d4fcbc;}}
+{del_tag} {{text-decoration : none; background-color: #fbb6c2;}}
+"""
+    soup.head.append(style_tag)
+    render = soup.prettify(formatter=None)
+    return render
