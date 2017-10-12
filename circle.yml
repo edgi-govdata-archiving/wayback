@@ -14,3 +14,5 @@ test:
     - coverage run run_tests.py -v web_monitoring/tests/
     - pyflakes web_monitoring
     - coverage report -m
+    - pip install -r docs-requirements.txt
+    - cd docs && make html
