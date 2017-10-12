@@ -1,6 +1,7 @@
 from distutils.core import setup
 import glob
 import os
+from pathlib import Path
 import setuptools
 import sys
 
@@ -13,7 +14,7 @@ if sys.version_info < (3, 6):
 
 
 def read(fname):
-    with open(os.path.join(os.path.dirname(__file__), fname)) as f:
+    with open(Path(__file__).parent / fname) as f:
         result = f.read()
     return result
 

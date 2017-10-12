@@ -5,6 +5,7 @@
 # API. It is not meant to thoroughly check the correctness of the REST API.
 from datetime import datetime, timedelta, timezone
 import os
+from pathlib import Path
 import pytest
 from web_monitoring.db import Client, MissingCredentials
 import vcr
@@ -12,7 +13,7 @@ import vcr
 
 # This stashes web-monitoring-dbserver responses in JSON files (one per test)
 # so that an actual server does not have to be running.
-cassette_library_dir = os.path.join(os.path.dirname(__file__), 'cassettes')
+cassette_library_dir = Path(__file__).parent / Path('cassettes')
 db_vcr = vcr.VCR(
          serializer='json',
          cassette_library_dir=cassette_library_dir,
