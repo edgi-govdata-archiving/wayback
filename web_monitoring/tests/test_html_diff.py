@@ -3,7 +3,7 @@ import os
 from pkg_resources import resource_filename
 import pytest
 from web_monitoring.db import Client
-from web_monitoring.differs import html_diff_render
+from web_monitoring.differs import html_diff_render, insert_diff_style
 from htmldiffer.diff import HTMLDiffer
 
 
@@ -98,18 +98,23 @@ def get_staging_content(version_id):
 @pytest.mark.parametrize('before_id, after_id', staging_version_ids)
 def test_real_examples_htmltreediff(before_id, after_id):
     before, after = map(get_staging_content, (before_id, after_id))
-    htmltreediff.diff(before, after,
-                      ins_tag='diffins',del_tag='diffdel',
-                      pretty=True)
+    d = htmltreediff.diff(before, after,
+                          ins_tag='diffins',del_tag='diffdel',
+                          pretty=True)
+    d = insert_diff_style(d, 'diffins', 'diffdel')
+    return d
 
 
 @pytest.mark.parametrize('before_id, after_id', staging_version_ids)
 def test_real_examples_html_diff_render(before_id, after_id):
     before, after = map(get_staging_content, (before_id, after_id))
-    html_diff_render(before, after)
+    d = html_diff_render(before, after)
+    return d
 
 
 @pytest.mark.parametrize('before_id, after_id', staging_version_ids)
 def test_real_examples_htmldiffer(before_id, after_id):
     before, after = map(get_staging_content, (before_id, after_id))
-    HTMLDiffer(before, after).combined_diff
+    d = HTMLDiffer(before, after).combined_diff
+    d = insert_diff_style(d, 'ins', 'del')
+    return d
