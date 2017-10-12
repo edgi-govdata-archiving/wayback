@@ -1,7 +1,8 @@
+import htmltreediff
+import os
 from pkg_resources import resource_filename
 import pytest
-import htmltreediff
-from web_monitoring.db import fetch_version_content
+from web_monitoring.db import Client
 from web_monitoring.differs import html_diff_render
 from htmldiffer.diff import HTMLDiffer
 
@@ -81,12 +82,14 @@ version_ids = [
 # Fetch content as we need it, and cache. This can potentially matter if a
 # subset of the tests are run.
 version_content_cache = {}
+os.environ['WEB_MONITORING_DB_URL'] = 'https://api-staging.monitoring.envirodatagov.org'
+cli = Client.from_env()
 
 def get_content(version_id):
     try:
         return version_content_cache[version_id]
     except KeyError:
-        content = fetch_version_content(version_id).decode()
+        content = cli.get_version_content(version_id)
         version_content_cache[version_id] = content
         return content
 
