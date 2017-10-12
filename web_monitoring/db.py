@@ -155,7 +155,7 @@ variables:
    WEB_MONITORING_DB_PASSWORD
 
 Alternatively, you can instaniate Client(user, password) directly.""")
-        return cls(url, email, password)
+        return cls(email=email, password=password, url=url)
 
     ### PAGES ###
 
