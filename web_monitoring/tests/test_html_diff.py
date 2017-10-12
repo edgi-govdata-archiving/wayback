@@ -65,9 +65,7 @@ def test_contrived_examples_htmldiffer(fn):
 
 ### TESTS ON MORE COMPLEX, REAL CASES
 
-# TODO These UUIDs refer to the staging app and therefore assume that the
-# env variable WEB_MONITORING_DB_URL is pointed at staging.
-version_ids = [
+staging_version_ids = [
     # @Mr0grog: "The “Survivor Impacts” text is in a `<p>` element between
     # two `<ul>` elements on this page, but in the diff, the `<p>` gets moved
     # _into_ the `<ul>`, so it renders like a list item instead of like the
@@ -82,34 +80,36 @@ version_ids = [
 # Fetch content as we need it, and cache. This can potentially matter if a
 # subset of the tests are run.
 version_content_cache = {}
-os.environ['WEB_MONITORING_DB_URL'] = 'https://api-staging.monitoring.envirodatagov.org'
-cli = Client.from_env()
+staging_cli = Client(
+    email=os.environ['WEB_MONITORING_DB_STAGING_EMAIL'],
+    password=os.environ['WEB_MONITORING_DB_STAGING_PASSWORD'],
+    url=os.environ['WEB_MONITORING_DB_STAGING_URL'])
 
-def get_content(version_id):
+
+def get_staging_content(version_id):
     try:
         return version_content_cache[version_id]
     except KeyError:
-        content = cli.get_version_content(version_id)
+        content = staging_cli.get_version_content(version_id)
         version_content_cache[version_id] = content
         return content
 
 
-@pytest.mark.skip(reason="exceeds recursion depth")
-@pytest.mark.parametrize('before_id, after_id', version_ids)
+@pytest.mark.parametrize('before_id, after_id', staging_version_ids)
 def test_real_examples_htmltreediff(before_id, after_id):
-    before, after = get_content(before_id), get_content(after_id)
+    before, after = map(get_staging_content, (before_id, after_id))
     htmltreediff.diff(before, after,
                       ins_tag='diffins',del_tag='diffdel',
                       pretty=True)
 
 
-@pytest.mark.parametrize('before_id, after_id', version_ids)
+@pytest.mark.parametrize('before_id, after_id', staging_version_ids)
 def test_real_examples_html_diff_render(before_id, after_id):
-    before, after = get_content(before_id), get_content(after_id)
+    before, after = map(get_staging_content, (before_id, after_id))
     html_diff_render(before, after)
 
 
-@pytest.mark.parametrize('before_id, after_id', version_ids)
+@pytest.mark.parametrize('before_id, after_id', staging_version_ids)
 def test_real_examples_htmldiffer(before_id, after_id):
-    before, after = get_content(before_id), get_content(after_id)
+    before, after = map(get_staging_content, (before_id, after_id))
     HTMLDiffer(before, after).combined_diff
