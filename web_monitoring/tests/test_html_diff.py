@@ -106,12 +106,12 @@ staging_cli = Client(
     url=os.environ['WEB_MONITORING_DB_STAGING_URL'])
 
 
-CACHE_DIR = Path.home() / Path('cache', 'web-monitoring-processings', 'tests')
+CACHE_DIR = Path.home() / Path('.cache', 'web-monitoring-processing', 'tests')
 os.makedirs(CACHE_DIR, exist_ok=True)
 
 
 def get_staging_content(version_id):
-    # Try our local cache, the on-disk cache, and finally the network.
+    # Try our in-memory cache, the on-disk cache, and finally the network.
     try:
         return version_content_cache[version_id]
     except KeyError:
