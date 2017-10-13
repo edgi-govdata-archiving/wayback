@@ -13,7 +13,7 @@ import vcr
 
 # This stashes web-monitoring-dbserver responses in JSON files (one per test)
 # so that an actual server does not have to be running.
-cassette_library_dir = Path(__file__).parent / Path('cassettes')
+cassette_library_dir = str(Path(__file__).parent / Path('cassettes'))
 db_vcr = vcr.VCR(
          serializer='json',
          cassette_library_dir=cassette_library_dir,

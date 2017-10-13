@@ -1,14 +1,13 @@
 from datetime import datetime
 import functools
-import htmltreediff
 import time
 import os
 from pathlib import Path
 from pkg_resources import resource_filename
 import pytest
 from web_monitoring.db import Client
-from web_monitoring.differs import html_diff_render, insert_diff_style
-from htmldiffer.diff import HTMLDiffer
+from web_monitoring.differs import (html_diff_render, html_tree_diff,
+                                    html_differ)
 
 
 def lookup_pair(fn):
@@ -41,16 +40,32 @@ cases = ['change-tag',
          'change-title',
         ]
 
+
+OUTPUT_DIR = Path('diff_output_{}'.format(datetime.now().isoformat()))
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+
+def export(func):
+    @functools.wraps(func)
+    def inner(**kwargs):
+        d = func(**kwargs)
+        filename = func.__name__ + '-'.join(kwargs.values()) + '.html'
+        with open(OUTPUT_DIR / Path(filename), 'w') as file:
+            file.write(d)
+        return d
+    return inner
+
 # For now it's unclear what the 'expected' results should be, so these
 # tests will never FAIL (but it can still ERROR). Run pytest with the -s
 # flag to see these outputs.
 
+@export
 @pytest.mark.parametrize('fn', cases)
 def test_contrived_examples_htmltreediff(fn):
     before, after = lookup_pair(fn)
-    d = htmltreediff.diff(before, after, ins_tag='diffins', del_tag='diffdel',
-                          pretty=True)
+    d = html_tree_diff(before, after)
     print(TEMPLATE.format(before, after, d))
+    return d
 
 
 @pytest.mark.parametrize('fn', cases)
@@ -58,13 +73,15 @@ def test_contrived_examples_html_diff_render(fn):
     before, after = lookup_pair(fn)
     d = html_diff_render(before, after)
     print(TEMPLATE.format(before, after, d))
+    return d
 
 
 @pytest.mark.parametrize('fn', cases)
 def test_contrived_examples_htmldiffer(fn):
     before, after = lookup_pair(fn)
-    d = HTMLDiffer(before, after).combined_diff
+    d = html_differ(before, after)
     print(TEMPLATE.format(before, after, d))
+    return d
 
 
 ### TESTS ON MORE COMPLEX, REAL CASES
@@ -109,43 +126,23 @@ def get_staging_content(version_id):
         version_content_cache[version_id] = content
         return content
 
-OUTPUT_DIR = Path('diff_output_{}'.format(datetime.now().isoformat()))
-os.makedirs(OUTPUT_DIR, exist_ok=True)
-
-
-def export(func):
-    @functools.wraps(func)
-    def inner(*args, **kwargs):
-        d = func(*args, **kwargs)
-        with open(OUTPUT_DIR / Path(func.__name__), 'w') as file:
-            file.write(d)
-        return d
-    return inner
-
 
 @export
 @pytest.mark.parametrize('before_id, after_id', staging_version_ids)
 def test_real_examples_htmltreediff(before_id, after_id):
     before, after = map(get_staging_content, (before_id, after_id))
-    d = htmltreediff.diff(before, after,
-                          ins_tag='diffins',del_tag='diffdel',
-                          pretty=True)
-    d = insert_diff_style(d, 'diffins', 'diffdel')
-    return d
+    return html_tree_diff(before, after)
 
 
 @export
 @pytest.mark.parametrize('before_id, after_id', staging_version_ids)
 def test_real_examples_html_diff_render(before_id, after_id):
     before, after = map(get_staging_content, (before_id, after_id))
-    d = html_diff_render(before, after)
-    return d
+    return html_diff_render(before, after)
 
 
 @export
 @pytest.mark.parametrize('before_id, after_id', staging_version_ids)
 def test_real_examples_htmldiffer(before_id, after_id):
     before, after = map(get_staging_content, (before_id, after_id))
-    d = HTMLDiffer(before, after).combined_diff
-    d = insert_diff_style(d, 'ins', 'del')
-    return d
+    return html_differ(before, after)

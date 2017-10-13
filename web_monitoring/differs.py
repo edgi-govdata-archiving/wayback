@@ -1,10 +1,13 @@
 from bs4 import BeautifulSoup, Comment
+import copy
 from diff_match_patch import diff, diff_bytes
+from htmldiffer.diff import HTMLDiffer
+import htmltreediff
 from lxml.html.diff import htmldiff
 import re
-import web_monitoring.pagefreezer
 import sys
-import copy
+import web_monitoring.pagefreezer
+
 
 # BeautifulSoup can sometimes exceed the default Python recursion limit (1000).
 sys.setrecursionlimit(10000)
@@ -74,6 +77,7 @@ def compute_dmp_diff(a_text, b_text, timelimit=4):
     result = [(diff_codes[change[0]], change[1]) for change in changes]
     return result
 
+
 def html_text_diff(a_text, b_text):
     """
     Diff the visible textual content of an HTML document.
@@ -90,6 +94,7 @@ def html_text_diff(a_text, b_text):
 
     TIMELIMIT = 2 #seconds
     return compute_dmp_diff(t1, t2, timelimit=TIMELIMIT)
+
 
 def html_source_diff(a_text, b_text):
     """
@@ -248,3 +253,15 @@ def insert_diff_style(html, ins_tag, del_tag):
     soup.head.append(style_tag)
     render = soup.prettify(formatter=None)
     return render
+
+
+def html_tree_diff(a_text, b_text):
+    d = htmltreediff.diff(a_text, b_text,
+                          ins_tag='diffins',del_tag='diffdel',
+                          pretty=True)
+    return insert_diff_style(d, 'diffins', 'diffdel')
+
+
+def html_differ(a_text, b_text):
+    d = HTMLDiffer(a_text, b_text).combined_diff
+    return insert_diff_style(d, 'ins', 'del')
