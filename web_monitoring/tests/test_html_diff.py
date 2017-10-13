@@ -1,6 +1,5 @@
 from datetime import datetime
 import functools
-import time
 import os
 from pathlib import Path
 from pkg_resources import resource_filename
