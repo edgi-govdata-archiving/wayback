@@ -224,15 +224,14 @@ def _diff_elements(old, new):
     return result_element
 
 
-def insert_diff_style(html, ins_tag, del_tag):
+def insert_style(html, css):
     """
-    Insert a new <style> tag with CSS to color insertions and deletions.
+    Insert a new <style> tag with CSS.
 
     Parameters
     ----------
     html : string
-    ins_tag : string
-    del_tag : string
+    css : string
 
     Returns
     -------
@@ -246,22 +245,31 @@ def insert_diff_style(html, ins_tag, del_tag):
         soup.html.insert(0, head)
 
     style_tag = soup.new_tag("style", type="text/css")
-    style_tag.string = f"""
-{ins_tag} {{text-decoration : none; background-color: #d4fcbc;}}
-{del_tag} {{text-decoration : none; background-color: #fbb6c2;}}
-"""
+    style_tag.string = css
     soup.head.append(style_tag)
     render = soup.prettify(formatter=None)
     return render
 
 
 def html_tree_diff(a_text, b_text):
+    css = """
+diffins {text-decoration : none; background-color: #d4fcbc;}
+diffdel {text-decoration : none; background-color: #fbb6c2;}
+diffins * {text-decoration : none; background-color: #d4fcbc;}
+diffdel * {text-decoration : none; background-color: #fbb6c2;}
+    """
     d = htmltreediff.diff(a_text, b_text,
                           ins_tag='diffins',del_tag='diffdel',
                           pretty=True)
-    return insert_diff_style(d, 'diffins', 'diffdel')
+    return insert_style(d, css)
 
 
 def html_differ(a_text, b_text):
+    css = """
+.htmldiffer_insert {text-decoration : none; background-color: #d4fcbc;}
+.htmldiffer_delete {text-decoration : none; background-color: #fbb6c2;}
+.htmldiffer_insert * {text-decoration : none; background-color: #d4fcbc;}
+.htmldiffer_delete * {text-decoration : none; background-color: #fbb6c2;}
+    """
     d = HTMLDiffer(a_text, b_text).combined_diff
-    return insert_diff_style(d, 'ins', 'del')
+    return insert_style(d, css)

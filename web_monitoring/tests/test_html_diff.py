@@ -48,7 +48,7 @@ def export(func):
     @functools.wraps(func)
     def inner(**kwargs):
         d = func(**kwargs)
-        filename = func.__name__ + '-'.join(kwargs.values()) + '.html'
+        filename = func.__name__ + '-' + '-'.join(kwargs.values()) + '.html'
         with open(OUTPUT_DIR / Path(filename), 'w') as file:
             file.write(d)
         return d
@@ -67,6 +67,7 @@ def test_contrived_examples_htmltreediff(fn):
     return d
 
 
+@export
 @pytest.mark.parametrize('fn', cases)
 def test_contrived_examples_html_diff_render(fn):
     before, after = lookup_pair(fn)
@@ -75,6 +76,7 @@ def test_contrived_examples_html_diff_render(fn):
     return d
 
 
+@export
 @pytest.mark.parametrize('fn', cases)
 def test_contrived_examples_htmldiffer(fn):
     before, after = lookup_pair(fn)
