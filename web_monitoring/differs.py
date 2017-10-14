@@ -1,10 +1,13 @@
 from bs4 import BeautifulSoup, Comment
+import copy
 from diff_match_patch import diff, diff_bytes
+from htmldiffer.diff import HTMLDiffer
+import htmltreediff
 from lxml.html.diff import htmldiff
 import re
-import web_monitoring.pagefreezer
 import sys
-import copy
+import web_monitoring.pagefreezer
+
 
 # BeautifulSoup can sometimes exceed the default Python recursion limit (1000).
 sys.setrecursionlimit(10000)
@@ -74,6 +77,7 @@ def compute_dmp_diff(a_text, b_text, timelimit=4):
     result = [(diff_codes[change[0]], change[1]) for change in changes]
     return result
 
+
 def html_text_diff(a_text, b_text):
     """
     Diff the visible textual content of an HTML document.
@@ -90,6 +94,7 @@ def html_text_diff(a_text, b_text):
 
     TIMELIMIT = 2 #seconds
     return compute_dmp_diff(t1, t2, timelimit=TIMELIMIT)
+
 
 def html_source_diff(a_text, b_text):
     """
@@ -217,3 +222,54 @@ def _diff_elements(old, new):
     result_element.clear()
     result_element.append(htmldiff(str(old), str(new)))
     return result_element
+
+
+def insert_style(html, css):
+    """
+    Insert a new <style> tag with CSS.
+
+    Parameters
+    ----------
+    html : string
+    css : string
+
+    Returns
+    -------
+    render : string
+    """
+    soup = BeautifulSoup(html, 'lxml')
+
+    # Ensure html includes a <head></head>.
+    if not soup.head:
+        head = soup.new_tag('head')
+        soup.html.insert(0, head)
+
+    style_tag = soup.new_tag("style", type="text/css")
+    style_tag.string = css
+    soup.head.append(style_tag)
+    render = soup.prettify(formatter=None)
+    return render
+
+
+def html_tree_diff(a_text, b_text):
+    css = """
+diffins {text-decoration : none; background-color: #d4fcbc;}
+diffdel {text-decoration : none; background-color: #fbb6c2;}
+diffins * {text-decoration : none; background-color: #d4fcbc;}
+diffdel * {text-decoration : none; background-color: #fbb6c2;}
+    """
+    d = htmltreediff.diff(a_text, b_text,
+                          ins_tag='diffins',del_tag='diffdel',
+                          pretty=True)
+    return insert_style(d, css)
+
+
+def html_differ(a_text, b_text):
+    css = """
+.htmldiffer_insert {text-decoration : none; background-color: #d4fcbc;}
+.htmldiffer_delete {text-decoration : none; background-color: #fbb6c2;}
+.htmldiffer_insert * {text-decoration : none; background-color: #d4fcbc;}
+.htmldiffer_delete * {text-decoration : none; background-color: #fbb6c2;}
+    """
+    d = HTMLDiffer(a_text, b_text).combined_diff
+    return insert_style(d, css)

@@ -18,7 +18,10 @@ DIFF_ROUTES = {
     "side_by_side_text": web_monitoring.differs.side_by_side_text,
     "html_text_diff": web_monitoring.differs.html_text_diff,
     "html_source_diff": web_monitoring.differs.html_source_diff,
+    # three different approaches to the same goal:
     "html_visual_diff": web_monitoring.differs.html_diff_render,
+    "html_tree_diff": web_monitoring.differs.html_tree_diff,
+    "html_differ": web_monitoring.differs.html_differ,
 }
 
 
