@@ -105,6 +105,7 @@ def _build_importable_version(*, page_url, uuid, capture_time, uri, hash,
                'source_metadata': source_metadata}
     return version
 
+
 class MissingCredentials(RuntimeError):
     ...
 
