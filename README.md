@@ -44,6 +44,7 @@ Legacy projects that may be revisited:
 2. Install the package.
 
     ```sh
+    pip install -r requirements.txt
     python setup.py develop
     ```
 
