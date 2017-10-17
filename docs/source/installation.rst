@@ -15,6 +15,7 @@ Instructions for a development installation:
     git clone https://github.com/edgi-govdata-archiving/web-monitoring-processing
     cd web-monitoring-processing
     pip install -r requirements.txt
+    pip install -r dev-requirements.txt
     pip install -e .
 
 The package is not yet distributed on PyPI.
