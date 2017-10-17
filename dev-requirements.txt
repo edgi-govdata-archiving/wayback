@@ -1,3 +1,7 @@
+coverage
+pyflakes
+pytest
+vcrpy
 doctr
 ipython
 matplotlib

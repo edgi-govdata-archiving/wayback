@@ -18,6 +18,8 @@ API Documentation
 .. autosummary::
     :toctree: generated
 
+    Client
+    Client.from_env
     Client.list_pages
     Client.get_page
     Client.list_versions
