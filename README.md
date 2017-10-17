@@ -44,6 +44,7 @@ Legacy projects that may be revisited:
 2. Install the package.
 
     ```sh
+    pip install -r requirements.txt
     python setup.py develop
     ```
 
@@ -61,4 +62,24 @@ Legacy projects that may be revisited:
    wm --help
    ```
 
-   There is not yet any published documentation.
+5. To run the tests or build the documentation, first install the development
+   requirements.
+
+   ```sh
+   pip install -r dev-requirements.txt
+   ```
+
+6. To build the docs:
+
+   ```sh
+   cd docs
+   make html
+   ```
+
+7. To run the tests:
+
+   ```sh
+   python run_tests.py
+   ```
+
+   Any additional arguments are passed through to `py.test`.
