@@ -83,8 +83,8 @@ def _build_version(*, page_id, uuid, capture_time, uri, hash, source_type, title
     return version
 
 
-def _build_importable_version(*, page_url, uuid, capture_time, uri, hash,
-                             source_type, title, source_metadata=None):
+def _build_importable_version(*, page_url, uuid=None, capture_time, uri, version_hash,
+                             source_type, page_title, site_agency, site_name, source_metadata=None):
     """
     Build a Version dict from parameters, performing some validation.
 
@@ -99,10 +99,12 @@ def _build_importable_version(*, page_url, uuid, capture_time, uri, hash,
                'uuid': uuid,
                'capture_time': capture_time,
                'uri': str(uri),
-               'hash': str(hash),
+               'hash': str(version_hash),
                'source_type': str(source_type),
-               'title': str(title),
-               'source_metadata': source_metadata}
+               'title': str(page_title),
+               'source_metadata': source_metadata,
+               'site_agency': site_agency,
+               'site_name': site_name}
     return version
 
 
@@ -405,7 +407,7 @@ Alternatively, you can instaniate Client(user, password) directly.""")
         for batch in toolz.partition_all(batch_size, versions):
             # versions might be a generator. This comprehension will pull on it
             validated_versions = [_build_importable_version(**v)
-                                  for v in versions]
+                                  for v in batch]
             res = requests.post(
                 url, auth=self._auth,
                 headers={'Content-Type': 'application/x-json-stream'},
