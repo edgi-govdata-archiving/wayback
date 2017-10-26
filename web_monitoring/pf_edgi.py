@@ -13,7 +13,7 @@ BASE = 'https://edgi.pagefreezer.com/'
 def list_cabinets():
     url = f'{BASE}/master/api/services/storage/library/all/cabinets'
     res = requests.get(url)
-    assert res.ok  # server is OK
+    res.raise_for_status()
     content = res.json()
     assert content['status'] == 'ok'  # business logic is OK
     return content['cabinets']
@@ -42,7 +42,7 @@ def get_cabinet_id(url):
 def list_archives(cabinet_id):
     url = f'{BASE}/master/api/services/storage/archive/{cabinet_id}'
     res = requests.get(url)
-    assert res.ok  # server is OK
+    res.raise_for_status()
     content = res.json()
     assert content['status'] == 'ok'  # business logic is OK
     assert content['cabinet'] == cabinet_id
@@ -54,7 +54,7 @@ def _command_archive(method, cabinet_id, archive_id, command, **kwargs):
     url = (f'{BASE}/master/api/services/storage/archive/{cabinet_id}/'
            f'{archive_id}/{command}')
     res = getattr(requests, method)(url, params=kwargs)
-    assert res.ok  # server is OK
+    res.raise_for_status()
     content = res.json()
     assert content['status'] == 'ok'  # business logic is OK
     return content
@@ -87,7 +87,7 @@ def file_command_uri(cabinet_id, archive_id, page_key, command):
 def get_file_metadata(cabinet_id, archive_id, page_key):
     uri = file_command_uri(cabinet_id, archive_id, page_key, 'meta')
     res = requests.get(uri)
-    assert res.ok  # server is OK
+    res.raise_for_status()
     content = res.json()
     assert content['status'] == 'ok'  # business logic is OK
     assert content['result']['status'] == 'ok'
@@ -97,7 +97,7 @@ def get_file_metadata(cabinet_id, archive_id, page_key):
 def get_file(cabinet_id, archive_id, page_key):
     uri = file_command_uri(cabinet_id, archive_id, page_key, 'file')
     res = requests.get(uri)
-    assert res.ok  # server is OK
+    res.raise_for_status()
     return res.content  # intentionally un-decoded bytes
 
 
