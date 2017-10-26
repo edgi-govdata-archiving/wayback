@@ -170,9 +170,13 @@ def test_add_versions():
                      page_url='http://example.com',
                      capture_time=TIME,
                      uri='http://example.com',
-                     hash='hash_placeholder',
-                     title='title_placeholder',
+                     version_hash='hash_placeholder',
+                     page_title='title_placeholder',
+                     site_agency='agency_placeholder',
+                     site_name='site_placeholder',
                      source_type='test') for version_id in new_version_ids]
+    # FIXME: need to spy on the data POSTed to DB and make sure the number of
+    # lines matches the number of new_version_ids
     import_ids = cli.add_versions(versions, batch_size=5)
     global_stash['import_ids'] = import_ids
 
