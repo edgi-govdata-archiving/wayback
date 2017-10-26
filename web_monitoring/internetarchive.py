@@ -17,7 +17,7 @@ from base64 import b32encode
 from collections import namedtuple
 from datetime import datetime
 import hashlib
-import urllib
+import urllib.parse
 import re
 import requests
 from web_monitoring import utils
@@ -38,6 +38,8 @@ ARCHIVE_VIEW_URL_TEMPLATE = 'http://web.archive.org/web/{timestamp}/{url}'
 URL_DATE_FORMAT = '%Y%m%d%H%M%S'
 MEMENTO_URL_PATTERN = re.compile(
     r'^http(?:s)?://web.archive.org/web/\d+(?:id_)?/(.*)$')
+REDUNDANT_HTTP_PORT = re.compile(r'^(http://[^:/]+):80(.*)$')
+REDUNDANT_HTTPS_PORT = re.compile(r'^(https://[^:/]+):443(.*)$')
 
 CdxRecord = namedtuple('CdxRecord', (
     # Raw CDX values
@@ -140,6 +142,12 @@ def search_cdx(params):
             capture_time = datetime.strptime(data.timestamp, URL_DATE_FORMAT)
         except Exception:
             raise UnexpectedResponseFormat(text)
+
+        clean_url = REDUNDANT_HTTPS_PORT.sub(
+            r'\1\2', REDUNDANT_HTTP_PORT.sub(
+                r'\1\2', data.url))
+        if clean_url != data.url:
+            data = data._replace(url=clean_url)
 
         # TODO: repeat captures have a status code of `-` and a mime type of
         # `warc/revisit`. These can only be resolved by requesting the content
