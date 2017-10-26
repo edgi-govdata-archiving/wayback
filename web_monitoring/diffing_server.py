@@ -7,6 +7,7 @@ import tornado.httpclient
 import tornado.ioloop
 import tornado.web
 import web_monitoring
+import web_monitoring.differs
 
 
 # Map tokens in the REST API to functions in modules.
