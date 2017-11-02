@@ -136,6 +136,24 @@ def html_diff_render(a_text, b_text):
     [element.extract() for element in
      soup_new.find_all(string=lambda text:isinstance(text, Comment))]
 
+    # htmldiff will unfortunately try to diff the content of elements like
+    # <script> or <style> that embed foreign cnontent that shouldn't be parsed
+    # as part of the DOM. We work around this by replacing those elements
+    # with placeholders, but a better upstream fix would be to have
+    # `flatten_el()` handle these cases by creating a special token, e.g:
+    #
+    #  class undiffable_tag(token):
+    #    def __new__(cls, html_repr, **kwargs):
+    #      # Make the value this represents for diffing an empty string
+    #      obj = token.__new__(cls, '', **kwargs)
+    #      # But keep the actual source around for serializing when done
+    #      obj.html_repr = html_repr
+    #
+    #    def html(obj):
+    #      return self.html_repr
+    soup_old, replacements_old = _remove_undiffable_content(soup_old, 'old')
+    soup_new, replacements_new = _remove_undiffable_content(soup_new, 'new')
+
     # htmldiff will normally extract the <body> and return only a diff of its
     # contents (without any of the surround code like a doctype, <html>, or
     # <head>). Because we want something a little more like a structured diff
@@ -163,6 +181,12 @@ def html_diff_render(a_text, b_text):
     change_styles.string = """ins {text-decoration : none; background-color: #d4fcbc;}
                         del {text-decoration : none; background-color: #fbb6c2;}"""
     soup_new.head.append(change_styles)
+
+    # The method we use above to append HTML strings (the diffs) to the soup
+    # results in a non-navigable soup. So we serialize and re-parse :(
+    soup_new = BeautifulSoup(soup_new.prettify(formatter=None), 'lxml')
+    replacements_new.update(replacements_old)
+    soup_new = _add_undiffable_content(soup_new, replacements_new)
 
     render = soup_new.prettify(formatter=None)
 
@@ -209,6 +233,47 @@ def _find_meaningful_nodes(soup):
         'body': body,
         'post_body': '\n'.join(post_body)
     }
+
+
+def _remove_undiffable_content(soup, prefix=''):
+    """
+    Find nodes that cannot be diffed (e.g. <script>, <style>) and replace them
+    with an empty node that has the attribute `wm-diff-replacement="some ID"`
+
+    Returns a tuple of the cleaned-up soup and a dict of replacements.
+    """
+    replacements = {}
+
+    # NOTE: we may want to consider treating <object> and <canvas> similarly.
+    # (They are "transparent" -- containing DOM, but only as a fallback.)
+    for index, element in enumerate(soup.find_all(['script', 'style'])):
+        replacement_id = f'{prefix}-{index}'
+        replacements[replacement_id] = element
+        replacement = soup.new_tag(element.name, **{
+            'wm-diff-replacement': replacement_id
+        })
+        # The replacement has to have text if we want to ensure both old and
+        # new versions of a script are included. Use a single word (so it
+        # can't be broken up) that is unlikely to appear in text.
+        replacement.append(f'$[{replacement_id}]$')
+        element.replace_with(replacement)
+
+    return (soup, replacements)
+
+
+def _add_undiffable_content(soup, replacements):
+    """
+    This is the opposite operation of `_remove_undiffable_content()`. It
+    takes a soup and a replacement dict and replaces nodes in the soup that
+    have the attribute `wm-diff-replacement"some ID"` with the original content
+    from the replacements dict.
+    """
+    for element in soup.select('[wm-diff-replacement]'):
+        replacement = replacements[element['wm-diff-replacement']]
+        if replacement:
+            element.replace_with(replacement)
+
+    return soup
 
 
 def _diff_elements(old, new):
