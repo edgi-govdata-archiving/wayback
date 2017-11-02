@@ -106,8 +106,9 @@ def test_html_diff_render_doesnt_move_script_content_into_page_text():
 
     # if we remove scripts from the result we should have an empty <div>
     body = re.search(r'(?s)<body>(.*)</body>', result)[1]
-    without_script = re.sub(r'(?s)<script>.*?</script>', '', body).strip()
-    assert re.match(r'<div>\s*</div>', without_script) is not None
+    without_script = re.sub(r'(?s)<script>.*?</script>', '', body)
+    text_only = re.sub(r'<[^>]+>', '', without_script).strip()
+    assert text_only == ''
 
 
 @pytest.mark.skip(reason='lxml parser does not support CDATA in html')
