@@ -103,3 +103,8 @@ __pycache__/
 # sphinx docs
 docs/build/*
 docs/source/generated/*
+
+# test caches (not sure if ignoring these is right, but useful for now)
+diff_output_*
+.cache
+.coverage
