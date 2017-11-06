@@ -3,7 +3,8 @@ import copy
 from diff_match_patch import diff, diff_bytes
 from htmldiffer.diff import HTMLDiffer
 import htmltreediff
-from lxml.html.diff import htmldiff
+from lxml.html.diff import (tokenize, htmldiff_tokens, fixup_ins_del_tags,
+                            href_token)
 import re
 import sys
 import web_monitoring.pagefreezer
@@ -162,11 +163,11 @@ def html_diff_render(a_text, b_text):
     old_content = _find_meaningful_nodes(soup_old)
     new_content = _find_meaningful_nodes(soup_new)
     diffs = [
-        htmldiff(old_content['pre_head'], new_content['pre_head']),
+        _htmldiff(old_content['pre_head'], new_content['pre_head']),
         _diff_elements(old_content['head'], new_content['head']),
-        htmldiff(old_content['pre_body'], new_content['pre_body']),
+        _htmldiff(old_content['pre_body'], new_content['pre_body']),
         _diff_elements(old_content['body'], new_content['body']),
-        htmldiff(old_content['post_body'], new_content['post_body'])
+        _htmldiff(old_content['post_body'], new_content['post_body'])
     ]
 
     soup_new.html.clear()
@@ -285,8 +286,47 @@ def _diff_elements(old, new):
         return ''
     result_element = copy.copy(new)
     result_element.clear()
-    result_element.append(htmldiff(str(old), str(new)))
+    result_element.append(_htmldiff(str(old), str(new)))
     return result_element
+
+
+def _htmldiff(old, new):
+    """
+    A slightly customized version of htmldiff that uses different tokens.
+    """
+    old_tokens = tokenize(old)
+    new_tokens = tokenize(new)
+    old_tokens = [customize_token(token) for token in old_tokens]
+    new_tokens = [customize_token(token) for token in new_tokens]
+    result = htmldiff_tokens(old_tokens, new_tokens)
+    result = ''.join(result).strip()
+    return fixup_ins_del_tags(result)
+
+
+class MinimalHrefToken(href_token):
+    """
+    A diffable token representing the URL of an <a> element. This allows the
+    URL of a link to be diffed. However, we don't actually want to *render*
+    the URL in the output (it's quite noisy in practice).
+
+    Future revisions may change this for more complex, useful output.
+    """
+    def html(self):
+        return ''
+
+
+def customize_token(token):
+    """
+    Replace existing diffing tokens with customized ones for better output.
+    """
+    if isinstance(token, href_token):
+        return MinimalHrefToken(
+            str(token),
+            pre_tags=token.pre_tags,
+            post_tags=token.post_tags,
+            trailing_whitespace=token.trailing_whitespace)
+    else:
+        return token
 
 
 def insert_style(html, css):
