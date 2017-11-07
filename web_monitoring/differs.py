@@ -296,8 +296,8 @@ def _htmldiff(old, new):
     """
     old_tokens = tokenize(old)
     new_tokens = tokenize(new)
-    old_tokens = [customize_token(token) for token in old_tokens]
-    new_tokens = [customize_token(token) for token in new_tokens]
+    old_tokens = [_customize_token(token) for token in old_tokens]
+    new_tokens = [_customize_token(token) for token in new_tokens]
     result = htmldiff_tokens(old_tokens, new_tokens)
     result = ''.join(result).strip()
     return fixup_ins_del_tags(result)
@@ -315,7 +315,7 @@ class MinimalHrefToken(href_token):
         return ''
 
 
-def customize_token(token):
+def _customize_token(token):
     """
     Replace existing diffing tokens with customized ones for better output.
     """
