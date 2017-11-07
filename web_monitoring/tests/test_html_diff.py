@@ -5,8 +5,8 @@ from pathlib import Path
 from pkg_resources import resource_filename
 import pytest
 from web_monitoring.db import Client
-from web_monitoring.differs import (html_diff_render, html_tree_diff,
-                                    html_differ)
+from web_monitoring.differs import html_tree_diff, html_differ
+from web_monitoring.html_diff_render import html_diff_render
 
 
 def lookup_pair(fn):
