@@ -2,7 +2,8 @@ from bs4 import BeautifulSoup, Comment
 import copy
 import html
 from lxml.html.diff import (tokenize, htmldiff_tokens, fixup_ins_del_tags,
-                            href_token)
+                            href_token, tag_token)
+from lxml.html.diff import token as DiffToken
 from .differs import compute_dmp_diff
 
 
@@ -199,9 +200,12 @@ def _htmldiff(old, new):
     """
     old_tokens = tokenize(old)
     new_tokens = tokenize(new)
-    old_tokens = [_customize_token(token) for token in old_tokens]
-    new_tokens = [_customize_token(token) for token in new_tokens]
-    result = htmldiff_tokens(old_tokens, new_tokens)
+    # old_tokens = [_customize_token(token) for token in old_tokens]
+    # new_tokens = [_customize_token(token) for token in new_tokens]
+    old_tokens = _customize_tokens(old_tokens)
+    new_tokens = _customize_tokens(new_tokens)
+    # result = htmldiff_tokens(old_tokens, new_tokens)
+    result = diff_tokens(old_tokens, new_tokens)
     result = ''.join(result).strip()
     return fixup_ins_del_tags(result)
 
@@ -215,9 +219,180 @@ class MinimalHrefToken(href_token):
     Future revisions may change this for more complex, useful output.
     """
     def html(self):
+        # FIXME: we really do need some kind of sentinel here, even if we
+        # only use it to track that there was a potential URL change. If the
+        # URL diff does not coalesce with the link text, this becomes an empty
+        # `<ins>/<del>` element and is probably not user-visible.
+        # On the flip side, these can often get spuriously rendered because of
+        # the same coalescing.
+        #
+        # Maybe: render a special tag, e.g. `<span class="wm-diff-url">`, then,
+        # when cleaning up the diff, find instances of that tag, examine the
+        # parent `<a>` element, and do something special if the link really
+        # did change. Otherwise, delete it.
+        #
+        # Also: any such sentinel element MUST be one the lxml diffr thinks is
+        # "empty" (i.e. self-closing). Otherwise, it may spuriously move a
+        # subsequent change back through the document *into* the sentinel when
+        # attempting to clean and "re-balance" the DOM tree. So, it must be one
+        # of: [param, img, area, br, basefont, input, base, meta, link, col]
         return ''
 
 
+# Explicitly designed to render repeatable crap so you can force-create
+# unchanged areas in the diff, but not render that crap to the final result.
+class SpacerToken(DiffToken):
+    # def __new__(cls, text, pre_tags=None, post_tags=None, trailing_whitespace=""):
+    #     obj = _unicode.__new__(cls, text)
+
+    #     if pre_tags is not None:
+    #         obj.pre_tags = pre_tags
+    #     else:
+    #         obj.pre_tags = []
+
+    #     if post_tags is not None:
+    #         obj.post_tags = post_tags
+    #     else:
+    #         obj.post_tags = []
+
+    #     obj.trailing_whitespace = trailing_whitespace
+    #     return obj
+
+    def html(self):
+        return ''
+
+
+# I had some weird concern that I needed to make this token a single word with
+# no spaces, but now that I know this differ more deeply, this is pointless.
+class ImgTagToken(tag_token):
+    def __new__(cls, tag, data, html_repr, pre_tags=None,
+                post_tags=None, trailing_whitespace=""):
+        obj = DiffToken.__new__(cls, "\n\nImg:%s\n\n" % data,
+                            pre_tags=pre_tags,
+                            post_tags=post_tags,
+                            trailing_whitespace=trailing_whitespace)
+        obj.tag = tag
+        obj.data = data
+        obj.html_repr = html_repr
+        return obj
+
+
+def _customize_tokens(tokens):
+    SPACER_STRING = '\nSPACER'
+    result = []
+    # for token in tokens:
+    for token_index, token in enumerate(tokens):
+        # if str(token).lower().startswith('impacts'):
+        if str(token).lower().startswith('although'):
+            print(f'SPECIAL TAG!\n  pre: {token.pre_tags}\n  token: "{token}"\n  post: {token.post_tags}')
+
+        # hahaha, this is crazy. But anyway, insert "spacers" that have
+        # identical text the diff algorithm can latch onto as an island of
+        # unchangedness. We do this anywhere a SEPARATABLE_TAG is opened.
+        # Basically, this lets us create a sort of "wall" between changes,
+        # ensuring a continuous insertion or deletion can't spread across
+        # list items, major page sections, etc.
+        # See farther down in this same method for a repeat of this with
+        # `post_tags`
+        try_splitting = len(token.pre_tags) > 0
+        while try_splitting:
+            for tag_index, tag in enumerate(token.pre_tags):
+                split_here = False
+                for name in SEPARATABLE_TAGS:
+                    if tag.startswith(f'<{name}'):
+                        split_here = True
+                        break
+                if split_here:
+                    new_token = SpacerToken(SPACER_STRING, pre_tags=token.pre_tags[0:tag_index + 1])
+                    token.pre_tags = token.pre_tags[tag_index + 1:]
+                    # tokens.insert(token_index + 1, token)
+                    # token = new_token
+                    result.append(new_token)
+                    result.append(SpacerToken(SPACER_STRING))
+                    result.append(SpacerToken(SPACER_STRING))
+                    try_splitting = len(token.pre_tags) > 0
+                    break
+                else:
+                    try_splitting = False
+
+
+
+
+        # This is a CRITICAL scenario, but should probably be generalized and
+        # a bit better understood. The case is empty elements that are fully
+        # nested inside something, so you have a structure like:
+        #
+        #   <div><span><a></a></span></div><div>Text!</div>
+        #
+        # All the tags preceeding `Text!` get set as pre_tags for `Text!` and,
+        # later, when stuff gets rebalanced, `Text!` gets moved down inside the
+        # <div> that completely precedes it.
+        for index, tag in enumerate(token.pre_tags):
+            if tag.startswith('<a') and len(token.pre_tags) > index + 1:
+                next_tag = token.pre_tags[index + 1]
+                if next_tag and next_tag.startswith('</a'):
+                    result.append(SpacerToken('~EMPTY~', pre_tags=token.pre_tags[0:index], post_tags=token.pre_tags[index:]))
+                    token.pre_tags = []
+
+        # if _has_separation_tags(token.pre_tags):
+        #     # result.append(SpacerToken(SPACER_STRING, token.pre_tags))
+        #     # token.pre_tags = []
+        #     result.append(SpacerToken(SPACER_STRING))
+        #     result.append(SpacerToken(SPACER_STRING))
+
+        customized = _customize_token(token)
+        result.append(customized)
+        # if isinstance(customized, ImgTagToken):
+        #     result.append(SpacerToken(SPACER_STRING))
+        #     result.append(SpacerToken(SPACER_STRING))
+        #     result.append(SpacerToken(SPACER_STRING))
+        #     print(f'IMAGE TOKEN:')
+        #     print(f'  pre: {customized.pre_tags}\n  token: "{customized}"\n  post: {customized.post_tags}')
+
+        # if len(customized.post_tags) > 0:
+        #     result.append(SpacerToken('', post_tags=customized.post_tags))
+        #     customized.post_tags = []
+
+        # if (_has_separation_tags(customized.post_tags)):
+        #     result.append(SpacerToken(SPACER_STRING, pre_tags=customized.post_tags))
+        #     # result.append(SpacerToken(SPACER_STRING, post_tags=customized.post_tags, trailing_whitespace=customized.trailing_whitespace))
+        #     customized.post_tags = []
+        #     # customized.trailing_whitespace = ''
+        for tag_index, tag in enumerate(customized.post_tags):
+            split_here = False
+            for name in SEPARATABLE_TAGS:
+                if tag.startswith(f'<{name}'):
+                    split_here = True
+                    break
+            if split_here:
+                new_token = SpacerToken(SPACER_STRING, pre_tags=customized.post_tags[tag_index + 1:])
+                customized.post_tags = customized.post_tags[0:tag_index + 1]
+                # tokens.insert(token_index + 1, token)
+                # token = new_token
+                result.append(new_token)
+                result.append(SpacerToken(SPACER_STRING))
+                result.append(SpacerToken(SPACER_STRING))
+                break
+
+    return result
+
+
+SEPARATABLE_TAGS = ['blockquote', 'section', 'article', 'header',
+                    'footer', 'pre', 'ul', 'ol', 'li', 'table']
+def _has_separation_tags(tag_list):
+    for index, tag in enumerate(tag_list):
+        for name in SEPARATABLE_TAGS:
+            if tag.startswith(f'<{name}') or tag.startswith(f'</{name}'):
+                print(f'Separating on: {name}')
+                return True
+        if 'id=' in tag:
+            return True
+    return False
+
+
+# Seemed so nice and clean! But should probably be merged into
+# `_customize_tokens()` now. Or otherwise it needs to be able to produce more
+# than one token to replace the given token in the stream.
 def _customize_token(token):
     """
     Replace existing diffing tokens with customized ones for better output.
@@ -228,5 +403,155 @@ def _customize_token(token):
             pre_tags=token.pre_tags,
             post_tags=token.post_tags,
             trailing_whitespace=token.trailing_whitespace)
+    elif isinstance(token, tag_token) and token.tag == 'img':
+        # print('TAG TOKEN: %s' % token)
+        return ImgTagToken(
+            'img',
+            data=token.data,
+            html_repr=token.html_repr,
+            pre_tags=token.pre_tags,
+            post_tags=token.post_tags,
+            trailing_whitespace=token.trailing_whitespace)
+        # return token
     else:
         return token
+
+
+# from lxml.html.diff import InsensitiveSequenceMatcher, expand_tokens, merge_insert, merge_delete, cleanup_delete
+from lxml.html.diff import InsensitiveSequenceMatcher, expand_tokens, merge_delete, cleanup_delete, split_unbalanced
+
+# Had a crazy thought that we could render only one "side" or the other of the
+# diff using this `include` keyword. Not sure it's a good idea or works well.
+def diff_tokens(html1_tokens, html2_tokens, include='both'):
+    """ Does a diff on the tokens themselves, returning a list of text
+    chunks (not tokens).
+    """
+    include_insert = include == 'both' or include == 'insert'
+    include_delete = include == 'both' or include == 'delete'
+
+    # There are several passes as we do the differences.  The tokens
+    # isolate the portion of the content we care to diff; difflib does
+    # all the actual hard work at that point.
+    #
+    # Then we must create a valid document from pieces of both the old
+    # document and the new document.  We generally prefer to take
+    # markup from the new document, and only do a best effort attempt
+    # to keep markup from the old document; anything that we can't
+    # resolve we throw away.  Also we try to put the deletes as close
+    # to the location where we think they would have been -- because
+    # we are only keeping the markup from the new document, it can be
+    # fuzzy where in the new document the old text would have gone.
+    # Again we just do a best effort attempt.
+
+    # HACK: The whole "spacer" token thing above in this code triggers the
+    # `autojunk` mechanism in SequenceMatcher, so we need to explicitly turn
+    # that off. That's probably not great, but I don't have a better approach.
+    s = InsensitiveSequenceMatcher(a=html1_tokens, b=html2_tokens, autojunk=False)
+    commands = s.get_opcodes()
+    result = []
+    # HACK: Check out this insane "buffer" mechanism! This seems to help get
+    # deletions properly located in cases where the trailing tag content on set
+    # of tokens differs between the old and new document.
+    buffer = []
+    for command, i1, i2, j1, j2 in commands:
+        # for index, command_data in enumerate(commands):
+        #     command, i1, i2, j1, j2 = command_data
+
+        if command == 'equal':
+            if buffer:
+                result.extend(buffer)
+                buffer = []
+            token = html2_tokens[j2 - 1]
+            token2 = html1_tokens[i2 - 1]
+            print(f'Ending equality with...')
+            print(f'  pre: {token.pre_tags}\n  token: "{token}"\n  post: {token.post_tags}')
+            print(f'  --vs--\n  pre: {token2.pre_tags}\n  token: "{token2}"\n  post: {token2.post_tags}')
+            if html2_tokens[j2 - 1].post_tags and not html1_tokens[i2 - 1].post_tags:
+                buffer.extend(html2_tokens[j2 - 1].post_tags)
+                html2_tokens[j2 - 1].post_tags = []
+                print('Buffering!')
+            result.extend(expand_tokens(html2_tokens[j1:j2], equal=True))
+            continue
+        if (command == 'insert' or command == 'replace') and include_insert:
+            if command == 'insert':
+                print(f'INSERTING at {j1}:{j2} (old doc {i1}:{i2})')
+            else:
+                print(f'REPLACING at {j1}:{j2} (old doc {i1}:{i2})')
+
+            print('Starting INSERTION with...')
+            for insert_token in html1_tokens[i1:i2]:
+                nice_token = insert_token.replace('\n', '\\n')
+                print(f'    {insert_token.pre_tags} "{nice_token}" {insert_token.post_tags}')
+            print(f'  --vs--')
+            for insert_token in html2_tokens[j1:j2]:
+                nice_token = insert_token.replace('\n', '\\n')
+                print(f'    {insert_token.pre_tags} "{nice_token}" {insert_token.post_tags}')
+
+            # token = html2_tokens[j1]
+            # token2 = html1_tokens[i1]
+            # print(f'Starting INSERTION with...')
+            # print(f'  pre: {token.pre_tags}\n  token: "{token}"\n  post: {token.post_tags}')
+            # print(f'  --vs--\n  pre: {token2.pre_tags}\n  token: "{token2}"\n  post: {token2.post_tags}')
+
+            # token = html2_tokens[j2 - 1]
+            # token2 = html1_tokens[i2 - 1]
+            # print(f'Ending INSERTION with...')
+            # print(f'  pre: {token.pre_tags}\n  token: "{token}"\n  post: {token.post_tags}')
+            # print(f'  --vs--\n  pre: {token2.pre_tags}\n  token: "{token2}"\n  post: {token2.post_tags}')
+
+            # if buffer:
+            #     print(f'Insert Unbuffering: {buffer}')
+            # result.extend(buffer)
+            # buffer = []
+            ins_tokens = expand_tokens(html2_tokens[j1:j2])
+            if buffer:
+                merge_insert(ins_tokens, buffer)
+            else:
+                merge_insert(ins_tokens, result)
+        if (command == 'delete' or command == 'replace') and include_delete:
+            # if command == 'replace' and html1_tokens[i1].pre_tags == html2_tokens[j1].pre_tags:
+            #     html1_tokens[i1].pre_tags = []
+            # if command == 'replace' and html1_tokens[i2 - 1].post_tags == html2_tokens[j2 - 1].post_tags:
+            #     html1_tokens[i2 - 1].post_tags = []
+
+            del_tokens = expand_tokens(html1_tokens[i1:i2])
+            if include_insert:
+                merge_delete(del_tokens, result)
+            else:
+                merge_insert(del_tokens, result, 'del')
+
+            if buffer:
+                print(f'Delete Unbuffering: {buffer}')
+            result.extend(buffer)
+            buffer = []
+    # If deletes were inserted directly as <del> then we'd have an
+    # invalid document at this point.  Instead we put in special
+    # markers, and when the complete diffed document has been created
+    # we try to move the deletes around and resolve any problems.
+    result.extend(buffer)
+    result = cleanup_delete(result)
+
+    return result
+
+# `tag_type` keyword here goes with the `include` keyword on `diff_tokens()`.
+# Needed to render deletions the way insertions normally are when only
+# rendering the deletions and not the insertions.
+def merge_insert(ins_chunks, doc, tag_type='ins'):
+    """ doc is the already-handled document (as a list of text chunks);
+    here we add <ins>ins_chunks</ins> to the end of that.  """
+    # Though we don't throw away unbalanced_start or unbalanced_end
+    # (we assume there is accompanying markup later or earlier in the
+    # document), we only put <ins> around the balanced portion.
+    unbalanced_start, balanced, unbalanced_end = split_unbalanced(ins_chunks)
+    doc.extend(unbalanced_start)
+    if doc and not doc[-1].endswith(' '):
+        # Fix up the case where the word before the insert didn't end with
+        # a space
+        doc[-1] += ' '
+    doc.append(f'<{tag_type}>')
+    if balanced and balanced[-1].endswith(' '):
+        # We move space outside of </ins>
+        balanced[-1] = balanced[-1][:-1]
+    doc.extend(balanced)
+    doc.append(f'</{tag_type}> ')
+    doc.extend(unbalanced_end)
