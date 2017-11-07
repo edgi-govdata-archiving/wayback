@@ -113,12 +113,24 @@ def html_source_diff(a_text, b_text):
 
 def html_diff_render(a_text, b_text):
     """
-    HTML Diff for rendering.
+    HTML Diff for rendering. This is focused on visually highlighting portions
+    of a page’s text that have been changed. It does not do much to show how
+    node types or attributes have been modified (save for link or image URLs).
 
-    Please note that the result of this should not be displayed as-is in a
-    browser -- because this contains added and removed sections of the
-    document’s <head>, it may cause a browser to load two different CSS or JS
-    files that are in conflict with each other.
+    The overall page returned primarily represents the structure of the "new"
+    or "B" version. However, it contains some useful metadata in the `<head>`:
+
+    1. A `<template id="wm-diff-old-head">` contains the contents of the "old"
+       or "A" version’s `<head>`.
+    2. A `<style id="wm-diff-style">` contains styling diff-specific styling.
+    3. A `<meta name="wm-diff-title" content="[diff]">` contains a renderable
+       HTML diff of the page’s `<title>`. For example:
+
+        `The <del>old</del><ins>new</ins> title`
+
+    NOTE: you may want to be careful with rendering this response as-is;
+    inline `<script>` and `<style>` elements may be included twice if they had
+    changes, which could have undesirable runtime effects.
 
     Example
     -------
@@ -136,6 +148,11 @@ def html_diff_render(a_text, b_text):
      soup_old.find_all(string=lambda text:isinstance(text, Comment))]
     [element.extract() for element in
      soup_new.find_all(string=lambda text:isinstance(text, Comment))]
+
+    # Ensure the new soup (which we will modify and return) has a `<head>`
+    if not soup_new.head:
+        head = soup_new.new_tag('head')
+        soup_new.html.insert(0, head)
 
     # htmldiff will unfortunately try to diff the content of elements like
     # <script> or <style> that embed foreign cnontent that shouldn't be parsed
@@ -155,85 +172,41 @@ def html_diff_render(a_text, b_text):
     soup_old, replacements_old = _remove_undiffable_content(soup_old, 'old')
     soup_new, replacements_new = _remove_undiffable_content(soup_new, 'new')
 
-    # htmldiff will normally extract the <body> and return only a diff of its
-    # contents (without any of the surround code like a doctype, <html>, or
-    # <head>). Because we want something a little more like a structured diff
-    # of the whole page, we work around the standard behavior by finding each
-    # part of the <html> element and diffing it individually.
-    old_content = _find_meaningful_nodes(soup_old)
-    new_content = _find_meaningful_nodes(soup_new)
-    diffs = [
-        _htmldiff(old_content['pre_head'], new_content['pre_head']),
-        _diff_elements(old_content['head'], new_content['head']),
-        _htmldiff(old_content['pre_body'], new_content['pre_body']),
-        _diff_elements(old_content['body'], new_content['body']),
-        _htmldiff(old_content['post_body'], new_content['post_body'])
-    ]
+    # htmldiff primarily diffs just *readable text*, so it doesn't really
+    # diff parts of the page outside the `<body>` (e.g. `<head>`). We don't
+    # have a great way to visualize metadata changes anyway.
+    soup_new.body.replace_with(_diff_elements(soup_old.body, soup_new.body))
 
-    soup_new.html.clear()
-    for index in range(len(diffs)):
-        soup_new.html.append(diffs[index])
+    # The `name` keyword sets the node name, not the `name` attribute
+    title_meta = soup_new.new_tag(
+        'meta',
+        content=_diff_title(soup_old, soup_new))
+    title_meta.attrs['name'] = 'wm-diff-title'
+    soup_new.head.append(title_meta)
 
-    if not soup_new.head:
-        head = soup_new.new_tag('head')
-        soup_new.html.insert(0, head)
+    old_head = soup_new.new_tag('template', id='wm-diff-old-head')
+    if soup_old.head:
+        for node in soup_old.head.contents.copy():
+            old_head.append(node)
+    soup_new.head.append(old_head)
 
-    change_styles = soup_new.new_tag("style", type="text/css")
+    change_styles = soup_new.new_tag(
+        "style",
+        type="text/css",
+        id='wm-diff-style')
     change_styles.string = """ins {text-decoration : none; background-color: #d4fcbc;}
                         del {text-decoration : none; background-color: #fbb6c2;}"""
     soup_new.head.append(change_styles)
 
     # The method we use above to append HTML strings (the diffs) to the soup
     # results in a non-navigable soup. So we serialize and re-parse :(
+    # (Note we use no formatter for this because proper encoding escape the
+    # tags our differ generated.)
     soup_new = BeautifulSoup(soup_new.prettify(formatter=None), 'lxml')
     replacements_new.update(replacements_old)
     soup_new = _add_undiffable_content(soup_new, replacements_new)
 
-    render = soup_new.prettify(formatter=None)
-
-    return render
-
-
-def _find_meaningful_nodes(soup):
-    """
-    Find meaningful content chunks from a Beautiful Soup document. Namely, this
-    is a dict of:
-    {
-        pre_head: string,
-        head: node,
-        pre_body: string,
-        body: node,
-        post_body: string
-    }
-    """
-    pre_head = []
-    head = None
-    pre_body = []
-    body = None
-    post_body = []
-    for node in soup.html.children:
-        if not head and not body:
-            if hasattr(node, 'name') and node.name == 'head':
-                head = node
-            elif hasattr(node, 'name') and node.name == 'body':
-                body = node
-            else:
-                pre_head.append(str(node))
-        elif not body:
-            if hasattr(node, 'name') and node.name == 'body':
-                body = node
-            else:
-                pre_body.append(str(node))
-        else:
-            post_body.append(str(node))
-
-    return {
-        'pre_head': '\n'.join(pre_head),
-        'head': head,
-        'pre_body': '\n'.join(pre_body),
-        'body': body,
-        'post_body': '\n'.join(post_body)
-    }
+    return soup_new.prettify(formatter='minimal')
 
 
 def _remove_undiffable_content(soup, prefix=''):
@@ -275,6 +248,18 @@ def _add_undiffable_content(soup, replacements):
             element.replace_with(replacement)
 
     return soup
+
+
+def _get_title(soup):
+    return soup.title and soup.title.string or ''
+
+
+def _diff_title(old, new):
+    return ''.join(map(
+        lambda change: ((change[0] == -1 and '<del>{}</del>')
+                        or (change[0] == 1 and '<ins>{}</ins>')
+                        or '{}').format(change[1]),
+        compute_dmp_diff(_get_title(old), _get_title(new))))
 
 
 def _diff_elements(old, new):
