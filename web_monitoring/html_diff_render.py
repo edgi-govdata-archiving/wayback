@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup, Comment
 import copy
+import html
 from lxml.html.diff import (tokenize, htmldiff_tokens, fixup_ins_del_tags,
                             href_token)
 from .differs import compute_dmp_diff
@@ -149,12 +150,24 @@ def _get_title(soup):
     return soup.title and soup.title.string or ''
 
 
+def _html_for_dmp_operation(operation):
+    "Convert a diff-match-patch operation to an HTML string."
+    html_value = html.escape(operation[1])
+    if operation[0] == -1:
+        return f'<del>{html_value}</del>'
+    elif operation[0] == 1:
+        return f'<ins>{html_value}</ins>'
+    else:
+        return html_value
+
+
 def _diff_title(old, new):
-    return ''.join(map(
-        lambda change: ((change[0] == -1 and '<del>{}</del>')
-                        or (change[0] == 1 and '<ins>{}</ins>')
-                        or '{}').format(change[1]),
-        compute_dmp_diff(_get_title(old), _get_title(new))))
+    """
+    Create an HTML diff (i.e. a string with `<ins>` and `<del>` tags) of the
+    title of two Beautiful Soup documents.
+    """
+    diff = compute_dmp_diff(_get_title(old), _get_title(new))
+    return ''.join(map(_html_for_dmp_operation, diff))
 
 
 def _diff_elements(old, new):
