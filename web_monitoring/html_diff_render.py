@@ -50,7 +50,7 @@ def html_diff_render(a_text, b_text):
         soup_new.html.insert(0, head)
 
     # htmldiff will unfortunately try to diff the content of elements like
-    # <script> or <style> that embed foreign cnontent that shouldn't be parsed
+    # <script> or <style> that embed foreign content that shouldn't be parsed
     # as part of the DOM. We work around this by replacing those elements
     # with placeholders, but a better upstream fix would be to have
     # `flatten_el()` handle these cases by creating a special token, e.g:

@@ -1,7 +1,7 @@
 """
 This module hosts tests for visual HTML diffs that check validity -- that is,
 they focus on whether the diff will render properly or outputs correct/working
-markup. Unlike the tests in `test-html_diff.py`, these tests can actually fail
+markup. Unlike the tests in `test_html_diff.py`, these tests can actually fail
 in the sense that the diff is “wrong” as opposed to just testing that the diff
 doesn’t break or throw exceptions.
 """
