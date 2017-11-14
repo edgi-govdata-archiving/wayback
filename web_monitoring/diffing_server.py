@@ -8,6 +8,7 @@ import tornado.ioloop
 import tornado.web
 import web_monitoring
 import web_monitoring.differs
+import web_monitoring.html_diff_render
 
 
 # Map tokens in the REST API to functions in modules.
@@ -20,7 +21,7 @@ DIFF_ROUTES = {
     "html_text_diff": web_monitoring.differs.html_text_diff,
     "html_source_diff": web_monitoring.differs.html_source_diff,
     # three different approaches to the same goal:
-    "html_visual_diff": web_monitoring.differs.html_diff_render,
+    "html_visual_diff": web_monitoring.html_diff_render.html_diff_render,
     "html_tree_diff": web_monitoring.differs.html_tree_diff,
     "html_differ": web_monitoring.differs.html_differ,
 }

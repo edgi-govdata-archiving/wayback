@@ -1,6 +1,7 @@
 import pytest
 import web_monitoring.differs as wd
 
+
 def test_side_by_side_text():
     actual = wd.side_by_side_text(a_text='<html><body>hi</body></html>',
                                   b_text='<html><body>bye</body></html>')
@@ -23,6 +24,7 @@ def test_identical_bytes():
     expected = False
     assert actual == expected
 
+
 def test_text_diff():
     actual = wd.html_text_diff('<p>Deleted</p><p>Unchanged</p>',
                                '<p>Added</p><p>Unchanged</p>')
@@ -31,6 +33,7 @@ def test_text_diff():
                 (1, 'Add'),
                 (0, 'ed Unchanged')]
     assert actual == expected
+
 
 def test_text_diff_omits_more_than_two_consecutive_blank_lines():
     actual = wd.html_text_diff('''<p>Deleted</p>
