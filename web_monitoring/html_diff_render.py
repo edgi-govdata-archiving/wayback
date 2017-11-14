@@ -139,8 +139,17 @@ def _add_undiffable_content(soup, replacements):
     from the replacements dict.
     """
     for element in soup.select('[wm-diff-replacement]'):
-        replacement = replacements[element['wm-diff-replacement']]
+        replacement_id = element['wm-diff-replacement']
+        replacement = replacements[replacement_id]
         if replacement:
+            if replacement_id.startswith('old-'):
+                replacement['class'] = 'wm-diff-deleted-active'
+                wrapper = soup.new_tag('template')
+                wrapper['class'] = 'wm-diff-deleted-inert'
+                wrapper.append(replacement)
+                replacement = wrapper
+            else:
+                replacement['class'] = 'wm-diff-inserted-active'
             element.replace_with(replacement)
 
     return soup
