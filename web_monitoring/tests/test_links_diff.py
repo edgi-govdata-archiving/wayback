@@ -26,3 +26,16 @@ def test_links_diff_only_has_outgoing_links():
              """
     result = links_diff(html_a, html_b)
     assert result.count('<a') == 1
+
+
+def test_links_diff_should_show_the_alt_text_for_images():
+    html_a = """
+             HTML with an <a href="http://google.com">
+             <img src="whatever.jpg" alt="Alt text!"></a> image in it.
+             """
+    html_b = """
+             HTML with an <a href="http://google.com">
+             <img src="whatever.jpg" alt="Alt text!"></a> image in it.
+             """
+    result = links_diff(html_a, html_b)
+    assert '[image: Alt text!]' in result
