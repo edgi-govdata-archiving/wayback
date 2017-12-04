@@ -32,10 +32,15 @@ def test_links_diff_should_show_the_alt_text_for_images():
     html_a = """
              HTML with an <a href="http://google.com">
              <img src="whatever.jpg" alt="Alt text!"></a> image in it.
+             Also an image with no alt text: <a href="/relative">
+             <img src="whatever.jpg"></a>.
              """
     html_b = """
              HTML with an <a href="http://google.com">
              <img src="whatever.jpg" alt="Alt text!"></a> image in it.
+             Also an image with no alt text: <a href="/relative">
+             <img src="whatever.jpg"></a>.
              """
     result = links_diff(html_a, html_b)
     assert '[image: Alt text!]' in result
+    assert '[image]' in result
