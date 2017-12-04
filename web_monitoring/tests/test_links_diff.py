@@ -1,5 +1,3 @@
-import pytest
-import re
 from web_monitoring.links_diff import links_diff
 
 
