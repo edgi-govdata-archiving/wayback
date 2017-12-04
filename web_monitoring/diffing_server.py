@@ -9,6 +9,7 @@ import tornado.web
 import web_monitoring
 import web_monitoring.differs
 import web_monitoring.html_diff_render
+import web_monitoring.links_diff
 
 
 # Map tokens in the REST API to functions in modules.
@@ -18,6 +19,7 @@ DIFF_ROUTES = {
     "identical_bytes": web_monitoring.differs.identical_bytes,
     "pagefreezer": web_monitoring.differs.pagefreezer,
     "side_by_side_text": web_monitoring.differs.side_by_side_text,
+    "links_diff": web_monitoring.links_diff.links_diff,
     "html_text_diff": web_monitoring.differs.html_text_diff,
     "html_source_diff": web_monitoring.differs.html_source_diff,
     # three different approaches to the same goal:

@@ -70,7 +70,7 @@ def html_diff_render(a_text, b_text):
     # htmldiff primarily diffs just *readable text*, so it doesn't really
     # diff parts of the page outside the `<body>` (e.g. `<head>`). We don't
     # have a great way to visualize metadata changes anyway.
-    soup_new.body.replace_with(_diff_elements(soup_old.body, soup_new.body))
+    soup_new.body.replace_with(diff_elements(soup_old.body, soup_new.body))
 
     # The `name` keyword sets the node name, not the `name` attribute
     title_meta = soup_new.new_tag(
@@ -155,7 +155,7 @@ def _add_undiffable_content(soup, replacements):
     return soup
 
 
-def _get_title(soup):
+def get_title(soup):
     return soup.title and soup.title.string or ''
 
 
@@ -175,11 +175,11 @@ def _diff_title(old, new):
     Create an HTML diff (i.e. a string with `<ins>` and `<del>` tags) of the
     title of two Beautiful Soup documents.
     """
-    diff = compute_dmp_diff(_get_title(old), _get_title(new))
+    diff = compute_dmp_diff(get_title(old), get_title(new))
     return ''.join(map(_html_for_dmp_operation, diff))
 
 
-def _diff_elements(old, new):
+def diff_elements(old, new):
     """
     Diff the contents of two Beatiful Soup elements. Note that this returns
     the "new" element with its content replaced by the diff.
