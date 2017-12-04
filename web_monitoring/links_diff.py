@@ -86,10 +86,20 @@ def _create_link_listing(link, soup):
     Create an element to display in the list of links.
     """
     listing = soup.new_tag('li')
-    listing.append(f'{link.text} ')
+    listing.append(_get_link_text(link) + ' ')
 
     url = link['href']
     url_link = soup.new_tag('a', href=url)
     url_link.string = f'({url})'
     listing.append(url_link)
     return listing
+
+
+def _get_link_text(link):
+    for image in link.find_all('img'):
+        alt = image.get('alt')
+        if alt:
+            image.replace_with(f'[image: {alt}]')
+        else:
+            image.replace_with('[image]')
+    return link.text
