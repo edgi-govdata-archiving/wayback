@@ -19,10 +19,19 @@ DIFF_ROUTES = {
     "identical_bytes": web_monitoring.differs.identical_bytes,
     "pagefreezer": web_monitoring.differs.pagefreezer,
     "side_by_side_text": web_monitoring.differs.side_by_side_text,
+    "links": web_monitoring.links_diff.links_diff,
+    # applying diff-match-patch (dmp) to strings (no tokenization)
+    "html_text_dmp": web_monitoring.differs.html_text_diff,
+    "html_source_dmp": web_monitoring.differs.html_source_diff,
+    # three different approaches to the same goal:
+    "html_token": web_monitoring.html_diff_render.html_diff_render,
+    "html_tree": web_monitoring.differs.html_tree_diff,
+    "html_perma_cc": web_monitoring.differs.html_differ,
+
+    # deprecated synonyms
     "links_diff": web_monitoring.links_diff.links_diff,
     "html_text_diff": web_monitoring.differs.html_text_diff,
     "html_source_diff": web_monitoring.differs.html_source_diff,
-    # three different approaches to the same goal:
     "html_visual_diff": web_monitoring.html_diff_render.html_diff_render,
     "html_tree_diff": web_monitoring.differs.html_tree_diff,
     "html_differ": web_monitoring.differs.html_differ,
