@@ -1,0 +1,10 @@
+<html>
+  <head>
+  </head>
+  <body>
+    <ul>
+    	<li><a href="/a">Link A</a></li>
+    	<li><a href="/b">Link b</a></li>
+    </ul>
+  </body>
+<html>
