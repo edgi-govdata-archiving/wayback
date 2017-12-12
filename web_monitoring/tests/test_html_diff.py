@@ -62,7 +62,7 @@ def export(func):
 @pytest.mark.parametrize('fn', cases)
 def test_contrived_examples_htmltreediff(fn):
     before, after = lookup_pair(fn)
-    d = html_tree_diff(before, after)
+    d = html_tree_diff(before, after)['diff']
     print(TEMPLATE.format(before, after, d))
     return d
 
@@ -71,7 +71,7 @@ def test_contrived_examples_htmltreediff(fn):
 @pytest.mark.parametrize('fn', cases)
 def test_contrived_examples_html_diff_render(fn):
     before, after = lookup_pair(fn)
-    d = html_diff_render(before, after)
+    d = html_diff_render(before, after)['diff']
     print(TEMPLATE.format(before, after, d))
     return d
 
@@ -80,7 +80,7 @@ def test_contrived_examples_html_diff_render(fn):
 @pytest.mark.parametrize('fn', cases)
 def test_contrived_examples_htmldiffer(fn):
     before, after = lookup_pair(fn)
-    d = html_differ(before, after)
+    d = html_differ(before, after)['diff']
     print(TEMPLATE.format(before, after, d))
     return d
 
@@ -132,18 +132,21 @@ def get_staging_content(version_id):
 @pytest.mark.parametrize('before_id, after_id', staging_version_ids)
 def test_real_examples_htmltreediff(before_id, after_id):
     before, after = map(get_staging_content, (before_id, after_id))
-    return html_tree_diff(before, after)
+    diff = html_tree_diff(before, after)['diff']
+    return diff
 
 
 @export
 @pytest.mark.parametrize('before_id, after_id', staging_version_ids)
 def test_real_examples_html_diff_render(before_id, after_id):
     before, after = map(get_staging_content, (before_id, after_id))
-    return html_diff_render(before, after)
+    diff = html_diff_render(before, after)['diff']
+    return diff
 
 
 @export
 @pytest.mark.parametrize('before_id, after_id', staging_version_ids)
 def test_real_examples_htmldiffer(before_id, after_id):
     before, after = map(get_staging_content, (before_id, after_id))
-    return html_differ(before, after)
+    diff = html_differ(before, after)['diff']
+    return diff
