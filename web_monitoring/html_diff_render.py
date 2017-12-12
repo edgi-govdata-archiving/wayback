@@ -154,8 +154,8 @@ def html_diff_render(a_text, b_text, include='combined'):
             type="text/css",
             id='wm-diff-style')
         change_styles.string = """
-            ins {text-decoration: none; background-color: #d4fcbc;}
-            del {text-decoration: none; background-color: #fbb6c2;}"""
+            ins, ins > * {text-decoration: none; background-color: #d4fcbc;}
+            del, del > * {text-decoration: none; background-color: #fbb6c2;}"""
         soup.head.append(change_styles)
 
         soup.body.replace_with(diff_body)
