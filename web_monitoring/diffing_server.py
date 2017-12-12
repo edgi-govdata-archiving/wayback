@@ -6,6 +6,7 @@ import tornado.gen
 import tornado.httpclient
 import tornado.ioloop
 import tornado.web
+import traceback
 import web_monitoring
 import web_monitoring.differs
 import web_monitoring.html_diff_render
@@ -82,6 +83,14 @@ class DiffHandler(tornado.web.RequestHandler):
         executor = concurrent.futures.ProcessPoolExecutor()
         res = yield executor.submit(caller, func, res_a, res_b, **query_params)
         self.write({'diff': res, 'version': web_monitoring.__version__})
+
+    def write_error(self, status_code, **kwargs):
+        response = {'code': status_code, 'error': self._reason}
+        if self.settings.get('serve_traceback') and 'exc_info' in kwargs:
+            stack_lines = traceback.format_exception(*kwargs['exc_info'])
+            response['stack'] = ''.join(stack_lines)
+
+        self.finish(response)
 
 
 def _extract_encoding(headers):
