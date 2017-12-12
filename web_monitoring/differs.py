@@ -18,12 +18,12 @@ REPEATED_BLANK_LINES = re.compile(r'([^\S\n]*\n\s*){2,}')
 
 def compare_length(a_body, b_body):
     "Compute difference in response body lengths. (Does not compare contents.)"
-    return len(b_body) - len(a_body)
+    return {'diff': len(b_body) - len(a_body)}
 
 
 def identical_bytes(a_body, b_body):
     "Compute whether response bodies are exactly identical."
-    return a_body == b_body
+    return {'diff': a_body == b_body}
 
 
 def _get_text(html):
@@ -52,8 +52,8 @@ def _get_visible_text(html):
 
 def side_by_side_text(a_text, b_text):
     "Extract the visible text from both response bodies."
-    return {'a_text': _get_visible_text(a_text),
-            'b_text': _get_visible_text(b_text)}
+    return {'diff': {'a_text': _get_visible_text(a_text),
+                     'b_text': _get_visible_text(b_text)}}
 
 
 def pagefreezer(a_url, b_url):
@@ -62,7 +62,7 @@ def pagefreezer(a_url, b_url):
     # It is still useful that we downloaded the body because we are able to
     # validate it against the expected hash.
     obj = web_monitoring.pagefreezer.PageFreezer(a_url, b_url)
-    return obj.query_result
+    return {'diff': obj.query_result}
 
 
 def compute_dmp_diff(a_text, b_text, timelimit=4):
@@ -93,7 +93,9 @@ def html_text_diff(a_text, b_text):
     t2 = _get_visible_text(b_text)
 
     TIMELIMIT = 2 #seconds
-    return compute_dmp_diff(t1, t2, timelimit=TIMELIMIT)
+    res = compute_dmp_diff(t1, t2, timelimit=TIMELIMIT)
+    count = len([[type_, string_] for type_, string_ in res if type_])
+    return {'change_count': count, 'diff': res}
 
 
 def html_source_diff(a_text, b_text):
@@ -107,7 +109,9 @@ def html_source_diff(a_text, b_text):
     [[0, '<p>'], [-1, 'Delet'], [1, 'Add'], [0, 'ed</p><p>Unchanged</p>']]
     """
     TIMELIMIT = 2 #seconds
-    return compute_dmp_diff(a_text, b_text, timelimit=TIMELIMIT)
+    res = compute_dmp_diff(a_text, b_text, timelimit=TIMELIMIT)
+    count = len([[type_, string_] for type_, string_ in res if type_])
+    return {'change_count': count, 'diff': res}
 
 
 def insert_style(html, css):
@@ -147,7 +151,8 @@ diffdel * {text-decoration : none; background-color: #fbb6c2;}
     d = htmltreediff.diff(a_text, b_text,
                           ins_tag='diffins',del_tag='diffdel',
                           pretty=True)
-    return insert_style(d, css)
+    # TODO Count number of changes.
+    return {'diff': insert_style(d, css)}
 
 
 def html_differ(a_text, b_text):
@@ -158,4 +163,5 @@ def html_differ(a_text, b_text):
 .htmldiffer_delete * {text-decoration : none; background-color: #fbb6c2;}
     """
     d = HTMLDiffer(a_text, b_text).combined_diff
-    return insert_style(d, css)
+    # TODO Count number of changes.
+    return {'diff': insert_style(d, css)}

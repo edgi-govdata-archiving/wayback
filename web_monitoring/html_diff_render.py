@@ -102,7 +102,8 @@ def html_diff_render(a_text, b_text):
     replacements_new.update(replacements_old)
     soup_new = _add_undiffable_content(soup_new, replacements_new)
 
-    return soup_new.prettify(formatter='minimal')
+    # TODO Count changes.
+    return {'diff': soup_new.prettify(formatter='minimal')}
 
 
 def _remove_undiffable_content(soup, prefix=''):

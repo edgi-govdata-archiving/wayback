@@ -3,31 +3,36 @@ import web_monitoring.differs as wd
 
 
 def test_side_by_side_text():
-    actual = wd.side_by_side_text(a_text='<html><body>hi</body></html>',
+    result = wd.side_by_side_text(a_text='<html><body>hi</body></html>',
                                   b_text='<html><body>bye</body></html>')
+    actual = result['diff']
     expected = {'a_text': 'hi', 'b_text': 'bye'}
     assert actual == expected
 
 
 def test_compare_length():
-    actual = wd.compare_length(a_body=b'asdf', b_body=b'asd')
+    result = wd.compare_length(a_body=b'asdf', b_body=b'asd')
+    actual = result['diff']
     expected = -1
     assert actual == expected
 
 
 def test_identical_bytes():
-    actual = wd.identical_bytes(a_body=b'asdf', b_body=b'asdf')
+    result = wd.identical_bytes(a_body=b'asdf', b_body=b'asdf')
+    actual = result['diff']
     expected = True
     assert actual == expected
 
-    actual = wd.identical_bytes(a_body=b'asdf', b_body=b'Asdf')
+    result = wd.identical_bytes(a_body=b'asdf', b_body=b'Asdf')
+    actual = result['diff']
     expected = False
     assert actual == expected
 
 
 def test_text_diff():
-    actual = wd.html_text_diff('<p>Deleted</p><p>Unchanged</p>',
+    result = wd.html_text_diff('<p>Deleted</p><p>Unchanged</p>',
                                '<p>Added</p><p>Unchanged</p>')
+    actual = result['diff']
     expected = [
                 (-1, 'Delet'),
                 (1, 'Add'),
@@ -36,7 +41,7 @@ def test_text_diff():
 
 
 def test_text_diff_omits_more_than_two_consecutive_blank_lines():
-    actual = wd.html_text_diff('''<p>Deleted</p>
+    result = wd.html_text_diff('''<p>Deleted</p>
                                   <script>whatever</script>
                                   <img src='something.jpg'>
                                   <p>Unchanged</p>''',
@@ -44,6 +49,7 @@ def test_text_diff_omits_more_than_two_consecutive_blank_lines():
                                   <script>some script</script>
                                   <img src='something.jpg'>
                                   <p>Unchanged</p>''')
+    actual = result['diff']
     expected = [(-1, 'Delet'),
                 (1, 'Add'),
                 (0, 'ed\n\nUnchanged')]
