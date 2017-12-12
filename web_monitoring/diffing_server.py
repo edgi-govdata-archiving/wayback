@@ -82,7 +82,12 @@ class DiffHandler(tornado.web.RequestHandler):
         # Pass the bytes and any remaining args to the diffing function.
         executor = concurrent.futures.ProcessPoolExecutor()
         res = yield executor.submit(caller, func, res_a, res_b, **query_params)
-        self.write({'diff': res, 'version': web_monitoring.__version__})
+        self.write({'diff': res,
+                    # Currently, 'type' is just an echo of the client's request
+                    # but it could conceivably be used to signal a redirect or
+                    # a normalization.
+                    'type': differ,
+                    'version': web_monitoring.__version__})
 
     def write_error(self, status_code, **kwargs):
         response = {'code': status_code, 'error': self._reason}
