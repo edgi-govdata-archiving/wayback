@@ -164,11 +164,13 @@ def html_diff_render(a_text, b_text, include='combined'):
         # (Note we use no formatter for this because proper encoding escape the
         # tags our differ generated.)
         soup = BeautifulSoup(soup.prettify(formatter=None), 'lxml')
-        soup = _add_undiffable_content(soup, replacements)
+        soup = _add_undiffable_content(
+            soup,
+            replacements,
+            diff_type == 'combined')
         results[diff_type] = soup.prettify(formatter='minimal')
 
     return results
-
 
 
 def _remove_undiffable_content(soup, prefix=''):
@@ -197,12 +199,16 @@ def _remove_undiffable_content(soup, prefix=''):
     return (soup, replacements)
 
 
-def _add_undiffable_content(soup, replacements):
+def _add_undiffable_content(soup, replacements, deactivate_old=True):
     """
     This is the opposite operation of `_remove_undiffable_content()`. It
     takes a soup and a replacement dict and replaces nodes in the soup that
     have the attribute `wm-diff-replacement"some ID"` with the original content
     from the replacements dict.
+
+    If `deactivate_old` is true, "old" replacements from the "before" version
+    of the page will be wrapped in `<template>` tags so that they are
+    non-functional.
     """
     for element in soup.select('[wm-diff-replacement]'):
         replacement_id = element['wm-diff-replacement']
@@ -210,10 +216,11 @@ def _add_undiffable_content(soup, replacements):
         if replacement:
             if replacement_id.startswith('old-'):
                 replacement['class'] = 'wm-diff-deleted-active'
-                wrapper = soup.new_tag('template')
-                wrapper['class'] = 'wm-diff-deleted-inert'
-                wrapper.append(replacement)
-                replacement = wrapper
+                if deactivate_old:
+                    wrapper = soup.new_tag('template')
+                    wrapper['class'] = 'wm-diff-deleted-inert'
+                    wrapper.append(replacement)
+                    replacement = wrapper
             else:
                 replacement['class'] = 'wm-diff-inserted-active'
             element.replace_with(replacement)
