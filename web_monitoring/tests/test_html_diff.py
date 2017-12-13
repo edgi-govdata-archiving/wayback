@@ -37,6 +37,10 @@ cases = ['change-tag',
          'add-paragraph',
          'change-word-in-paragraph',
          'change-title',
+         'add-list',
+         'remove-list',
+         'change-list-href',
+         'change-list-text',
         ]
 
 
