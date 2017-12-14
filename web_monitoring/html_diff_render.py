@@ -29,7 +29,10 @@ from .differs import compute_dmp_diff
 block_level_tags = list(block_level_tags)
 block_level_tags.extend(['section', 'article', 'nav', 'header', 'footer', 'aside', 'hgroup'])
 
-
+# Active elements are those that don't render, but affect other elements on the
+# page. When viewing a combined diff, these elements need to be "deactivated"
+# so their old and new versions don't compete.
+ACTIVE_ELEMENTS = ('script', 'style')
 
 # This diff is fundamentally a word-by-word diff, which attempts to re-assemble
 # the tags that were present before or after a word after diffing the text.
@@ -202,7 +205,7 @@ def _add_undiffable_content(soup, replacements, deactivate_old=True):
             css_class = replacement.get('class', [])
             if replacement_id.startswith('old-'):
                 replacement['class'] = css_class + ['wm-diff-deleted-active']
-                if deactivate_old:
+                if replacement.name in ACTIVE_ELEMENTS and deactivate_old:
                     wrapper = soup.new_tag('template')
                     wrapper['class'] = 'wm-diff-deleted-inert'
                     wrapper.append(replacement)
