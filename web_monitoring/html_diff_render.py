@@ -198,15 +198,17 @@ def _add_undiffable_content(soup, replacements, deactivate_old=True):
         replacement_id = element['wm-diff-replacement']
         replacement = replacements[replacement_id]
         if replacement:
+            replacement = copy.copy(replacement)
+            css_class = replacement.get('class', [])
             if replacement_id.startswith('old-'):
-                replacement['class'] = 'wm-diff-deleted-active'
+                replacement['class'] = css_class + ['wm-diff-deleted-active']
                 if deactivate_old:
                     wrapper = soup.new_tag('template')
                     wrapper['class'] = 'wm-diff-deleted-inert'
                     wrapper.append(replacement)
                     replacement = wrapper
             else:
-                replacement['class'] = 'wm-diff-inserted-active'
+                replacement['class'] = css_class + ['wm-diff-inserted-active']
             element.replace_with(replacement)
 
     return soup
