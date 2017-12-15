@@ -20,14 +20,125 @@ import copy
 import html
 from lxml.html.diff import (tokenize, htmldiff_tokens, fixup_ins_del_tags,
                             href_token, tag_token, InsensitiveSequenceMatcher,
-                            expand_tokens, merge_delete, cleanup_delete,
-                            split_unbalanced, empty_tags, block_level_tags,
-                            block_level_container_tags)
+                            expand_tokens, merge_delete,
+                            split_unbalanced, empty_tags)
 from lxml.html.diff import token as DiffToken
 from .differs import compute_dmp_diff
 
-block_level_tags = list(block_level_tags)
-block_level_tags.extend(['section', 'article', 'nav', 'header', 'footer', 'aside', 'hgroup'])
+# This *really* means don't cross the boundaries of these elements with insertion/deletion elements. Instead, break the insertions and deletions in two.
+# TODO: custom elements are iffy here. Maybe include them? (any tag with a `-` in the name)
+block_level_tags = (
+    'address',
+    'article',
+    'aside',
+    'blockquote',
+    'caption',
+    'center',  # historic
+    'dd',
+    'details',
+    'dialog',
+    'dir',  # historic
+    'div',
+    'dl',
+    'dt',
+    'fieldset',
+    'figcaption',
+    'figure',
+    'frameset',  # historic
+    'footer',
+    'form',
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    'h5',
+    'h6',
+    'header',
+    'hgroup',
+    'hr',
+    'isindex',  # historic
+    'li',
+    'main',
+    'menu',
+    'nav',
+    'noframes',  # historic
+    'ol',
+    'p',
+    'pre',
+    'section',
+    'summary',
+    'table',
+    'ul',
+
+    # Not "block" exactly, but don't cross its boundary
+    'colgroup',
+    'tbody',
+    'thead',
+    'tfoot',
+    'tr',
+    'td',
+    'th',
+    'noscript',
+    'canvas',
+
+    # These are "transparent", which means they *can* be a block
+    'a',
+    'del',
+    'ins',
+    'slot',
+)
+
+empty_tags = (
+    'area',
+    'base',
+    'basefont',
+    'br',
+    'col',
+    'embed',
+    'img',
+    'iframe',  # TODO: make sure we treat these right -- they still need a closing tag
+    'input',
+    'link',
+    'meta',
+    'param',
+    'source',
+    'track',
+    'wbr'
+)
+
+# Should be treated as a single unit for diffing purposes -- their content is not HTML
+undiffable_content_tags = (
+    'datalist',  # Still HTML content, but we can’t really diff inside
+    'math',
+    'option',
+    'rp',
+    'script',
+    'select',  # Still HTML content, but we can’t really diff inside
+    'style',
+    'svg',
+    'template',
+    'textarea'
+)
+
+# Elements that are not allowed to have our change elements as direct children
+no_change_children_tags = (
+    'colgroup',
+    'dl',
+    'hgroup',
+    'menu',
+    'ol',
+    'optgroup',
+    'picture',
+    'select',
+    'table',
+    'tbody',
+    'thead',
+    'tfoot',
+    'tr',
+    'ul',
+)
+
+# TODO: do we need special treatment for `<picture>`? Kind of like `<img>`
 
 # Active elements are those that don't render, but affect other elements on the
 # page. When viewing a combined diff, these elements need to be "deactivated"
@@ -662,7 +773,9 @@ def assemble_diff(html1_tokens, html2_tokens, commands, include='combined'):
     # markers, and when the complete diffed document has been created
     # we try to move the deletes around and resolve any problems.
     result.extend(buffer)
-    result = cleanup_delete(result)
+
+    if include_insert and include_delete:
+        result = cleanup_delete(result)
 
     return result
 
@@ -746,11 +859,13 @@ def merge_changes(change_chunks, doc, tag_type='ins'):
         if chunk == '':
             continue
 
+        # FIXME: explicitly handle elements that can't have our markers as
+        # direct children.
         if chunk[0] == '<':
             name = chunk.split()[0].strip('<>/')
             # Also treat `a` tags as block in this context, because they *can*
             # contain block elements, like `h1`, etc.
-            is_block = name in block_level_tags or name in block_level_container_tags or name == 'a'
+            is_block = name in block_level_tags or name == 'a'
 
             if chunk[1] == '/':
                 if depth > 0:
@@ -809,6 +924,8 @@ def merge_changes(change_chunks, doc, tag_type='ins'):
 
         doc.append(chunk)
         if inline_tag and inline_tag_name not in empty_tags:
+            # FIXME: track the original start tag for when we need to break
+            # these elements around boundaries.
             current_content.insert(0, inline_tag_name)
 
     if depth > 0:
@@ -835,3 +952,85 @@ def merge_speculative_deletions(change_chunks, doc):
     duplicated tags later.
     """
     return merge_delete(change_chunks, doc)
+
+
+from lxml.html.diff import split_delete, NoDeletes, locate_unbalanced_start, locate_unbalanced_end
+
+
+def cleanup_delete(chunks):
+    """ Cleans up any DEL_START/DEL_END markers in the document, replacing
+    them with <del></del>.  To do this while keeping the document
+    valid, it may need to drop some tags (either start or end tags).
+
+    It may also move the del into adjacent tags to try to move it to a
+    similar location where it was originally located (e.g., moving a
+    delete into preceding <div> tag, if the del looks like (DEL_START,
+    'Text</div>', DEL_END)"""
+    while 1:
+        # Find a pending DEL_START/DEL_END, splitting the document
+        # into stuff-preceding-DEL_START, stuff-inside, and
+        # stuff-following-DEL_END
+        try:
+            pre_delete, delete, post_delete = split_delete(chunks)
+        except NoDeletes:
+            # Nothing found, we've cleaned up the entire doc
+            break
+        # The stuff-inside-DEL_START/END may not be well balanced
+        # markup.  First we figure out what unbalanced portions there are:
+        unbalanced_start, balanced, unbalanced_end = split_unbalanced(delete)
+        # Then we move the span forward and/or backward based on these
+        # unbalanced portions:
+        locate_unbalanced_start(unbalanced_start, pre_delete, post_delete)
+        locate_unbalanced_end(unbalanced_end, pre_delete, post_delete)
+        doc = pre_delete
+        if doc and not doc[-1].endswith(' '):
+            # Fix up case where the word before us didn't have a trailing space
+            doc[-1] += ' '
+
+        # doc.extend(balanced)
+        merge_changes(balanced, doc, 'del')
+
+        doc.extend(post_delete)
+        chunks = doc
+    return chunks
+
+
+def new_split_unbalanced(chunks):
+    """Return (unbalanced_start, balanced, unbalanced_end), where each is
+    a list of text and tag chunks.
+
+    unbalanced_start is a list of all the tags that are opened, but
+    not closed in this span.  Similarly, unbalanced_end is a list of
+    tags that are closed but were not opened.  Extracting these might
+    mean some reordering of the chunks."""
+    start = []
+    end = []
+    tag_stack = []
+    balanced = []
+    for chunk in chunks:
+        if not chunk.startswith('<'):
+            balanced.append(chunk)
+            continue
+        endtag = chunk[1] == '/'
+        name = chunk.split()[0].strip('<>/')
+        if name in empty_tags:
+            balanced.append(chunk)
+            continue
+        if endtag:
+            if tag_stack and tag_stack[-1][0] == name:
+                balanced.append(chunk)
+                name, pos, tag = tag_stack.pop()
+                balanced[pos] = tag
+            elif tag_stack:
+                start.extend([tag for name, pos, tag in tag_stack])
+                tag_stack = []
+                end.append(chunk)
+            else:
+                end.append(chunk)
+        else:
+            tag_stack.append((name, len(balanced), chunk))
+            balanced.append(None)
+    start.extend(
+        [chunk for name, pos, chunk in tag_stack])
+    balanced = [chunk for chunk in balanced if chunk is not None]
+    return start, balanced, end
