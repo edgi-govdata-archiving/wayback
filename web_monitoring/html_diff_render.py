@@ -702,14 +702,14 @@ def merge_changes(change_chunks, doc, tag_type='ins'):
     #
     #   2. split_unbalanced can *really* screw up the DOM! Take this example:
     #
-    #      >>> split_unbalanced(['<div1>','hello','</div1>','<div2>','there','</div1>','more'])
-    #      (['<div2>'], ['<div1>', 'hello', '</div1>', 'there', 'more'], ['</div1>'])
+    #      >>> diff.split_unbalanced(['<div1>','hello','</div1>','</div2>','there','</div1>','more'])
+    #      ([], ['<div1>', 'hello', '</div1>', 'there', 'more'], ['</div2>', '</div1>'])
     #
     #      See how content got totally moved around? This even that contrived;
     #      we could have totally valid markup like the above because we are
     #      working with random fragments of source (not the tree). In the
     #      example above, the change we're working with could have come right
-    #      after the markup `<div1>Some prefixed text` and it would be fine.
+    #      after the markup `<div1><div2>Some prefixed text` and it’d be fine.
     #
     #   3. This method winds up with `ins/del` elements surrounding block-level
     #      elements when they should be inside them. The fixup_ins_del_tags
