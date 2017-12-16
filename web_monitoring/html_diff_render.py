@@ -23,6 +23,7 @@ from lxml.html.diff import (tokenize, htmldiff_tokens, fixup_ins_del_tags,
                             expand_tokens, merge_delete,
                             split_unbalanced, empty_tags)
 from lxml.html.diff import token as DiffToken
+from difflib import SequenceMatcher
 from .differs import compute_dmp_diff
 
 # This *really* means don't cross the boundaries of these elements with insertion/deletion elements. Instead, break the insertions and deletions in two.
@@ -261,12 +262,15 @@ def html_diff_render(a_text, b_text, include='combined'):
         # results in a non-navigable soup. So we serialize and re-parse :(
         # (Note we use no formatter for this because proper encoding escape the
         # tags our differ generated.)
+        # print('PRE-RE-PARSE YO:::::::::\n' + soup.prettify(formatter=None) + '\n\n\n')
         soup = BeautifulSoup(soup.prettify(formatter=None), 'lxml')
         soup = _add_undiffable_content(
             soup,
             replacements,
             diff_type == 'combined')
         results[diff_type] = soup.prettify(formatter='minimal')
+        # print('UNFORMATTED YO:::::::::\n' + soup.prettify(formatter=None) + '\n\n\n')
+        # print('FINAL YO::::::::::\n' + soup.prettify(formatter='minimal'))
 
     return results
 
@@ -402,13 +406,16 @@ def _htmldiff(old, new, include='all'):
     # `autojunk` mechanism in SequenceMatcher, so we need to explicitly turn
     # that off. That's probably not great, but I don't have a better approach.
     matcher = InsensitiveSequenceMatcher(a=old_tokens, b=new_tokens, autojunk=False)
+    # matcher = SequenceMatcher(a=old_tokens, b=new_tokens, autojunk=False)
     opcodes = matcher.get_opcodes()
 
     results = {}
 
     def render_diff(diff_type):
-        diff = assemble_diff(old_tokens, new_tokens, opcodes, diff_type)
-        return fixup_ins_del_tags(''.join(diff).strip())
+        diff = new_assemble_diff(old_tokens, new_tokens, opcodes, diff_type)
+        # return fixup_ins_del_tags(''.join(diff).strip())
+        result = ''.join(diff).strip().replace('</li> ', '</li>')
+        return result
 
     if include == 'all' or include == 'combined':
         results['combined'] = render_diff('combined')
@@ -636,8 +643,6 @@ def _customize_token(token):
         # return token
     else:
         return token
-
-
 
 
 def assemble_diff(html1_tokens, html2_tokens, commands, include='combined'):
@@ -905,7 +910,7 @@ def merge_changes(change_chunks, doc, tag_type='ins'):
                 entering_inline_tag = not is_block
 
                 if is_block:
-                    if depth > 1:
+                    if depth > 0:
                         for nested_tag in current_content:
                             doc.append(f'</{nested_tag}>')
                         doc.append(f'</{tag_type}>')
@@ -1034,3 +1039,413 @@ def new_split_unbalanced(chunks):
         [chunk for name, pos, chunk in tag_stack])
     balanced = [chunk for chunk in balanced if chunk is not None]
     return start, balanced, end
+
+
+def new_assemble_diff(html1_tokens, html2_tokens, commands, include='combined'):
+    """
+    Assembles a renderable HTML string from a set of old and new tokens and a
+    list of operations to perform agains them.
+    """
+    include_insert = include == 'combined' or include == 'insertions'
+    include_delete = include == 'combined' or include == 'deletions'
+
+    # There are several passes as we do the differences.  The tokens
+    # isolate the portion of the content we care to diff; difflib does
+    # all the actual hard work at that point.
+    #
+    # Then we must create a valid document from pieces of both the old
+    # document and the new document.  We generally prefer to take
+    # markup from the new document, and only do a best effort attempt
+    # to keep markup from the old document; anything that we can't
+    # resolve we throw away.  Also we try to put the deletes as close
+    # to the location where we think they would have been -- because
+    # we are only keeping the markup from the new document, it can be
+    # fuzzy where in the new document the old text would have gone.
+    # Again we just do a best effort attempt.
+    result = []
+    # HACK: Check out this insane "buffer" mechanism! This seems to help get
+    # deletions properly located in cases where the trailing tag content on set
+    # of tokens differs between the old and new document.
+    insert_buffer = []
+    delete_buffer = []
+
+    for command, i1, i2, j1, j2 in commands:
+        if command == 'equal':
+            if insert_buffer or delete_buffer:
+                reconcile_change_groups(insert_buffer, delete_buffer, result)
+
+            # WHOA. EXPERIMENTAL. MOVE POST TAGS ON EQUALITY TO PRE TAGS ON NEXT OP
+            if include_insert and include_delete:
+                inserts = html2_tokens[j1:j2]
+                inserts.reverse()
+                blank_inserts = []
+                for insert in inserts:
+                    if str(insert) == '' or str(insert) == ' ' or isinstance(insert, SpacerToken) or str(insert) == '\nSPACER':
+                        blank_inserts.append(insert)
+                    else:
+                        blank_inserts.append(insert)
+                        print(f'STOPPING AT:::::::: {insert}')
+                        break
+                blank_inserts.reverse()
+                for insert in blank_inserts:
+                    if str(insert) == '' or str(insert) == ' ' or isinstance(insert, SpacerToken) or str(insert) == '\nSPACER':
+                        insert_buffer.extend(insert.pre_tags)
+                        insert.pre_tags = []
+                    insert_buffer.extend(insert.post_tags)
+                    insert.post_tags = []
+
+                inserts = html1_tokens[i1:i2]
+                inserts.reverse()
+                blank_inserts = []
+                for insert in inserts:
+                    if str(insert) == '' or str(insert) == ' ' or isinstance(insert, SpacerToken) or str(insert) == '\nSPACER':
+                        blank_inserts.append(insert)
+                    else:
+                        blank_inserts.append(insert)
+                        break
+                blank_inserts.reverse()
+                for insert in blank_inserts:
+                    if str(insert) == '' or str(insert) == ' ' or isinstance(insert, SpacerToken) or str(insert) == '\nSPACER':
+                        delete_buffer.extend(insert.pre_tags)
+                        insert.pre_tags = []
+                    delete_buffer.extend(insert.post_tags)
+                    insert.post_tags = []
+
+
+                # last_insert = html2_tokens[j2 - 1]
+                # insert_buffer.extend(last_insert.post_tags)
+                # last_insert.post_tags = []
+                # last_delete = html1_tokens[i2 - 1]
+                # delete_buffer.extend(last_delete.post_tags)
+                # last_delete.post_tags = []
+
+            if include_insert:
+                expanded = list(expand_tokens(html2_tokens[j1:j2], equal=True))
+                tokenset = html2_tokens[j1:j2]
+                print('------------------ EQUALITY --------------------')
+                print(f'  {expanded}\n')
+                print(f'  FROM {tokenset}\n')
+                result.extend(expand_tokens(html2_tokens[j1:j2], equal=True))
+            else:
+                result.extend(expand_tokens(html1_tokens[i1:i2], equal=True))
+            continue
+        if (command == 'insert' or command == 'replace') and include_insert:
+            ins_tokens = expand_tokens(html2_tokens[j1:j2])
+            if include_delete:
+                merge_change_groups(ins_tokens, insert_buffer, 'ins')
+            else:
+                merge_changes(ins_tokens, result, 'ins')
+        if (command == 'delete' or command == 'replace') and include_delete:
+            del_tokens = expand_tokens(html1_tokens[i1:i2])
+            if include_insert:
+                merge_change_groups(del_tokens, delete_buffer, 'del')
+            else:
+                merge_changes(del_tokens, result, 'del')
+
+    reconcile_change_groups(insert_buffer, delete_buffer, result)
+    # result.extend(flatten_groups(insert_buffer, include_non_groups=True))
+    # result.extend(flatten_groups(insert_buffer, include_non_groups=False))
+    # if include_insert and include_delete:
+    #     result = cleanup_delete(result)
+
+    return result
+
+
+def merge_change_groups(change_chunks, doc, tag_type='ins'):
+    """
+    Merge tokens that were changed into a list of tokens (that represents the
+    whole document) and wrap them with a tag.
+
+    This is largely the same as lxml.html.diff.merge_insert, but allows any
+    tag to be used, since we need to be able to also merge deletions this way,
+    not just insertions.
+
+    Parameters
+    ----------
+    change_chunks : list of token
+        The changes to merge.
+    doc : list of token
+        The "document" to merge `change_chunks` into.
+    tag_type : str
+        The type of HTML tag to wrap the changes with.
+    """
+    # HOLY MOLY WHAT IS HAPPENING HERE???????? WELL...
+    # The commented out implementation below is basically the same as the
+    # implementation in LXML (with the tweak that you can specify a tag name).
+    # However, it turns out to have had a few big problems:
+    #   1. Because it doesn't include "unbalanced" parts of the change, the
+    #      marked-up content might not actually match the whole change!
+    #
+    #   2. split_unbalanced can *really* screw up the DOM! Take this example:
+    #
+    #      >>> diff.split_unbalanced(['<div1>','hello','</div1>','</div2>','there','</div1>','more'])
+    #      ([], ['<div1>', 'hello', '</div1>', 'there', 'more'], ['</div2>', '</div1>'])
+    #
+    #      See how content got totally moved around? This even that contrived;
+    #      we could have totally valid markup like the above because we are
+    #      working with random fragments of source (not the tree). In the
+    #      example above, the change we're working with could have come right
+    #      after the markup `<div1><div2>Some prefixed text` and it’d be fine.
+    #
+    #   3. This method winds up with `ins/del` elements surrounding block-level
+    #      elements when they should be inside them. The fixup_ins_del_tags
+    #      function that gets run later tries to fix this, but does it poorly:
+    #      It parses and serializes the whole document, which is expensive,
+    #      then it frequently shoves `ins/del` tags in places they aren't
+    #      allowed (e.g. as a child of a `<ul>`), which then causes a browser
+    #      viewing the output to break elements up and destroy the rendering.
+    #
+    # The implementation below solves a bunch of these issues, but is still a
+    # work in progress AND it needs to be implemented for
+    # merge_speculative_deletions, too.
+
+
+    # doc.extend(unbalanced_start)
+    # if doc and not doc[-1].endswith(' '):
+    #     # Fix up the case where the word before the insert didn't end with
+    #     # a space
+    #     doc[-1] += ' '
+    # doc.append(f'<{tag_type}>')
+    # if balanced and balanced[-1].endswith(' '):
+    #     # We move space outside of </ins>
+    #     balanced[-1] = balanced[-1][:-1]
+    # doc.extend(balanced)
+    # doc.append(f'</{tag_type}> ')
+    # doc.extend(unbalanced_end)
+
+    depth = 0
+    current_content = None
+    group = doc
+    for chunk in change_chunks:
+        inline_tag = False
+        inline_tag_name = None
+
+        if chunk == '' or chunk == ' ':
+            continue
+
+        # FIXME: explicitly handle elements that can't have our markers as
+        # direct children.
+        if chunk[0] == '<':
+            name = chunk.split()[0].strip('<>/')
+            # Also treat `a` tags as block in this context, because they *can*
+            # contain block elements, like `h1`, etc.
+            is_block = name in block_level_tags or name == 'a'
+
+            if chunk[1] == '/':
+                if depth > 0:
+                    if is_block:
+                        for nested_tag in current_content:
+                            group.append(f'</{nested_tag}>')
+                        group.append(f'</{tag_type}>')
+                        current_content = None
+                        depth -= 1
+                        group = doc
+                        group.append(chunk)
+                    else:
+                        if name in current_content:
+                            index = current_content.index(name)
+                            current_content = current_content[index + 1:]
+                            group.append(chunk)
+                        else:
+                            # only a malformed document should hit this case
+                            # where tags aren't properly nested ¯\_(ツ)_/¯
+                            for nested_tag in current_content:
+                                group.append(f'</{nested_tag}>')
+
+                            group.append(f'</{tag_type}>')
+                            # <start> not sure if we should break the group
+                            # group = doc
+                            # <end> not sure if we should break the group
+                            group.append(chunk)
+                            # <start> not sure if we should break the group
+                            # group = []
+                            # doc.append(group)
+                            # <end> not sure if we should break the group
+                            group.append(f'<{tag_type}>')
+
+                            # other side of the malformed document case from above
+                            current_content.reverse()
+                            for nested_tag in current_content:
+                                group.append(f'<{nested_tag}>')
+                            current_content.reverse()
+                else:
+                    group.append(chunk)
+                # There is no case for a closing tag where aren't doen with the chunk
+                continue
+            else:
+                entering_tag = name
+                entering_inline_tag = not is_block
+
+                if is_block:
+                    if depth > 0:
+                        for nested_tag in current_content:
+                            group.append(f'</{nested_tag}>')
+                        group.append(f'</{tag_type}>')
+                        current_content = None
+                        depth -= 1
+                        group = doc
+                    group.append(chunk)
+                    continue
+                else:
+                    inline_tag = True
+                    inline_tag_name = name
+
+        if depth == 0:
+            group = []
+            doc.append(group)
+            group.append(f'<{tag_type}>')
+            depth += 1
+            current_content = []
+
+        group.append(chunk)
+        if inline_tag and inline_tag_name not in empty_tags:
+            # FIXME: track the original start tag for when we need to break
+            # these elements around boundaries.
+            current_content.insert(0, inline_tag_name)
+
+    if depth > 0:
+        for nested_tag in current_content:
+            group.append(f'</{nested_tag}>')
+
+        group.append(f'</{tag_type}>')
+        group = doc
+
+        current_content.reverse()
+        for nested_tag in current_content:
+            group.append(f'<{nested_tag}>')
+
+
+def reconcile_change_groups(insert_groups, delete_groups, document):
+    print('------------------ RECONCILING ----------------------')
+    print(f'  INSERT:\n  {insert_groups}\n')
+    print(f'  DELETE:\n  {delete_groups}\n')
+    start_index = len(document)
+    insert_index = 0
+    delete_index = 0
+    insert_count = len(insert_groups)
+    delete_count = len(delete_groups)
+    # tag_stack = []
+    insert_tag_stack = []
+    delete_tag_stack = []
+    delete_unstack = []
+    delete_unstack_buffer = []
+
+    def tag_record(token):
+        if not token.startswith('<'):
+            return None
+        name = token.split()[0].strip('<>/')
+        return (name, not token.startswith('</'), token)
+
+    def update_tag_stack(token):
+        tag = tag_record(token)
+        if tag:
+            if tag[1]:
+                tag_stack.append(tag)
+            elif tag_stack:
+                last_open = tag_stack.pop()
+                # If we closed a tag that wasn't the last to open, ignore for now (should we unwind the stack until we find a match?)
+                if last_open[0] != tag[0]:
+                    tag_stack.append(last_open)
+
+    while True:
+        insertion = insert_index < insert_count and insert_groups[insert_index] or None
+        deletion = delete_index < delete_count and delete_groups[delete_index] or None
+        if not insertion and not deletion:
+            break
+
+        if insertion == deletion:
+            document.append(insertion)
+            insert_index += 1
+            delete_index += 1
+            # update_tag_stack(token)
+            continue
+        elif isinstance(insertion, list):
+            document.extend(insertion)
+            insert_index += 1
+            continue
+        elif isinstance(deletion, list):
+            document.extend(deletion)
+            delete_index += 1
+            continue
+        elif insertion:
+            tag = tag_record(insertion)
+            if tag:
+                if tag[1]:
+                    insert_tag_stack.append(tag)
+                    document.append(insertion)
+                    insert_index += 1
+                    continue
+                else:
+                    if insert_tag_stack:
+                        last_open = insert_tag_stack.pop()
+                        if tag[0] == last_open[0]:
+                            document.append(insertion)
+                            insert_index += 1
+                            continue
+                        else:
+                            tag_stack = []
+            else:
+                document.append(insertion)
+                insert_index += 1
+                continue
+
+            if deletion is None:
+                document.append(insertion)
+                insert_index += 1
+
+        if deletion:
+            tag = tag_record(deletion)
+            print(f'  Tag ({tag}) for item: {deletion}')
+            if tag:
+                if tag[1]:
+                    if delete_unstack:
+                        last_closed = delete_unstack.pop()
+                        if last_closed[0] == tag[0]:
+                            delete_unstack_buffer.append(deletion)
+                        else:
+                            # BAIL OUT!!!
+                            break
+                        if not delete_unstack:
+                            document.extend(delete_unstack_buffer)
+                    else:
+                        delete_tag_stack.append(tag)
+                        document.append(deletion)
+                elif delete_tag_stack:
+                    last_open = delete_tag_stack.pop()
+                    # If we closed a tag that wasn't the last to open, ignore for now (should we unwind the stack until we find a match?)
+                    if last_open[0] == tag[0]:
+                        document.append(deletion)
+                    else:
+                        delete_tag_stack.append(last_open)
+                else:
+                    delete_unstack_buffer.append(deletion)
+                    delete_unstack.append(tag)
+            else:
+                if delete_unstack_buffer:
+                    delete_unstack_buffer.append(deletion)
+                else:
+                    document.append(deletion)
+            delete_index += 1
+
+    delete_tag_stack.reverse()
+    for tag in delete_tag_stack:
+        document.append(f'</{tag[0]}>')
+
+    insert_groups.clear()
+    delete_groups.clear()
+
+    result = document[start_index:]
+    print(f'  RESULT:\n  {result}\n')
+
+    return document
+
+
+def flatten_groups(groups, include_non_groups=True):
+    flat = []
+    for item in groups:
+        if isinstance(item, list):
+            flat.extend(item)
+        elif include_non_groups:
+            flat.append(item)
+
+    return flat
