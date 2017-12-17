@@ -158,6 +158,7 @@ ACTIVE_ELEMENTS = ('script', 'style')
 # markup, making them cause frequent problems if included here.
 SEPARATABLE_TAGS = ['blockquote', 'section', 'article', 'header', 'footer',
                     'pre', 'ul', 'ol', 'li', 'table', 'p']
+# SEPARATABLE_TAGS = block_level_tags
 
 
 def html_diff_render(a_text, b_text, include='combined'):
@@ -401,6 +402,7 @@ def _htmldiff(old, new, include='all'):
     new_tokens = _customize_tokens(new_tokens)
     # result = htmldiff_tokens(old_tokens, new_tokens)
     # result = diff_tokens(old_tokens, new_tokens) #, include='delete')
+    print('CUSTOMIZED!')
 
     # HACK: The whole "spacer" token thing above in this code triggers the
     # `autojunk` mechanism in SequenceMatcher, so we need to explicitly turn
@@ -496,12 +498,61 @@ class ImgTagToken(tag_token):
 
 def _customize_tokens(tokens):
     SPACER_STRING = '\nSPACER'
+
+    # Balance out pre- and post-tags so that a token of text is surrounded by
+    # the opening and closing tags of the element it's in. For example:
+    #
+    #    <p><a>Hello!</a></p><div>…there.</div>
+    #
+    # Currently parses as:
+    #    [('Hello!', pre=['<p>','<a>'], post=[]),
+    #     ('…there.', pre=['</a>','</p>','<div>'], post=['</div>'])]
+    #    (Note the '</div>' post tag is only present at the end of the doc)
+    #
+    # But this attempts make it more like:
+    #
+    #    [('Hello!', pre=['<p>','<a>'], post=['</a>','</p>']),
+    #     ('…there.', pre=[<div>'], post=['</div>'])]
+    #
+    # TODO: when we get around to also forking the parse/tokenize part of this
+    # diff, do this as part of the original tokenization instead.
+    for token_index, token in enumerate(tokens):
+        # print(f'Handling token {token_index}: {token}')
+        if token_index == 0:
+            continue
+        previous = tokens[token_index - 1]
+        previous_post_complete = False
+        for post_index, tag in enumerate(previous.post_tags):
+            if not tag.startswith('</'):
+                # TODO: should we attempt to fill pure-structure tags here with
+                # spacers? e.g. should we take the "<p><em></em></p>" here and
+                # wrap a spacer token in it instead of moving to "next-text's"
+                # pre_tags? "text</p><p><em></em></p><p>next-text"
+                token.pre_tags = previous.post_tags[post_index:] + token.pre_tags
+                previous.post_tags = previous.post_tags[:post_index]
+                previous_post_complete = True
+                break
+
+        if not previous_post_complete:
+            for pre_index, tag in enumerate(token.pre_tags):
+                if not tag.startswith('</'):
+                    if pre_index > 0:
+                        previous.post_tags.extend(token.pre_tags[:pre_index])
+                        token.pre_tags = token.pre_tags[pre_index:]
+                    break
+            else:
+                previous.post_tags.extend(token.pre_tags)
+                token.pre_tags = []
+
+
+        # print(f'  Result...\n    pre: {token.pre_tags}\n    token: "{token}"\n    post: {token.post_tags}')
+
     result = []
     # for token in tokens:
     for token_index, token in enumerate(tokens):
         # if str(token).lower().startswith('impacts'):
-        if str(token).lower().startswith('although'):
-            print(f'SPECIAL TAG!\n  pre: {token.pre_tags}\n  token: "{token}"\n  post: {token.post_tags}')
+        # if str(token).lower().startswith('although'):
+        #     print(f'SPECIAL TAG!\n  pre: {token.pre_tags}\n  token: "{token}"\n  post: {token.post_tags}')
 
         # hahaha, this is crazy. But anyway, insert "spacers" that have
         # identical text the diff algorithm can latch onto as an island of
@@ -512,27 +563,31 @@ def _customize_tokens(tokens):
         # See farther down in this same method for a repeat of this with
         # `post_tags`
         try_splitting = len(token.pre_tags) > 0
+        split_start = 0
         while try_splitting:
-            for tag_index, tag in enumerate(token.pre_tags):
+            for tag_index, tag in enumerate(token.pre_tags[split_start:]):
                 split_here = False
                 for name in SEPARATABLE_TAGS:
                     if tag.startswith(f'<{name}'):
                         split_here = True
                         break
                 if split_here:
-                    new_token = SpacerToken(SPACER_STRING, pre_tags=token.pre_tags[0:tag_index + 1])
-                    token.pre_tags = token.pre_tags[tag_index + 1:]
+                    # new_token = SpacerToken(SPACER_STRING, pre_tags=token.pre_tags[0:tag_index + 1])
+                    # token.pre_tags = token.pre_tags[tag_index + 1:]
+
+                    new_token = SpacerToken(SPACER_STRING, pre_tags=token.pre_tags[0:tag_index + split_start])
+                    token.pre_tags = token.pre_tags[tag_index + split_start:]
+
                     # tokens.insert(token_index + 1, token)
                     # token = new_token
                     result.append(new_token)
                     result.append(SpacerToken(SPACER_STRING))
                     result.append(SpacerToken(SPACER_STRING))
-                    try_splitting = len(token.pre_tags) > 0
+                    try_splitting = len(token.pre_tags) > 1
+                    split_start = 1
                     break
                 else:
                     try_splitting = False
-
-
 
 
         # This is a CRITICAL scenario, but should probably be generalized and
@@ -559,6 +614,19 @@ def _customize_tokens(tokens):
 
         customized = _customize_token(token)
         result.append(customized)
+
+        if str(customized) == "Posts" and str(tokens[token_index - 1]) == 'Other' and str(tokens[token_index - 2]) == 'and': # and str(tokens[token_index - 3]) == 'posts':
+            print(f'SPECIAL TAG!\n  pre: {token.pre_tags}\n  token: "{token}"\n  post: {token.post_tags}')
+            next_token = tokens[token_index + 1]
+            print(f'SPECIAL TAG!\n  pre: {next_token.pre_tags}\n  token: "{next_token}"\n  post: {next_token.post_tags}')
+            for tag_index, tag in enumerate(customized.post_tags):
+                if tag.startswith('</ul>'):
+                    new_token = SpacerToken(SPACER_STRING)
+                    result.append(new_token)
+                    new_token = SpacerToken(SPACER_STRING, pre_tags=customized.post_tags[tag_index:])
+                    result.append(new_token)
+                    customized.post_tags = customized.post_tags[:tag_index]
+
         # if isinstance(customized, ImgTagToken):
         #     result.append(SpacerToken(SPACER_STRING))
         #     result.append(SpacerToken(SPACER_STRING))
@@ -582,8 +650,15 @@ def _customize_tokens(tokens):
                     split_here = True
                     break
             if split_here:
-                new_token = SpacerToken(SPACER_STRING, pre_tags=customized.post_tags[tag_index + 1:])
-                customized.post_tags = customized.post_tags[0:tag_index + 1]
+                # new_token = SpacerToken(SPACER_STRING, pre_tags=customized.post_tags[tag_index + 1:])
+                # customized.post_tags = customized.post_tags[0:tag_index + 1]
+
+                # new_token = SpacerToken(SPACER_STRING, pre_tags=customized.post_tags[tag_index:])
+                # customized.post_tags = customized.post_tags[0:tag_index]
+
+                new_token = SpacerToken(SPACER_STRING, post_tags=customized.post_tags[tag_index:])
+                customized.post_tags = customized.post_tags[0:tag_index]
+
                 # tokens.insert(token_index + 1, token)
                 # token = new_token
                 result.append(new_token)
@@ -1071,45 +1146,177 @@ def new_assemble_diff(html1_tokens, html2_tokens, commands, include='combined'):
 
     for command, i1, i2, j1, j2 in commands:
         if command == 'equal':
+            equal_buffer_delete = []
+            equal_buffer_insert = []
+            equal_buffer_delete_next = []
+            equal_buffer_insert_next = []
+            if include_insert and include_delete:
+                merge_change_groups(expand_tokens(html1_tokens[i1:i2], equal=True), equal_buffer_delete, tag_type=None)
+                merge_change_groups(expand_tokens(html2_tokens[j1:j2], equal=True), equal_buffer_insert, tag_type=None)
+
+                print('---------------------- EQUAL SETUP --------------------------')
+                print(f'PRE-MUNGE DELETE: {equal_buffer_delete}\n')
+                print(f'PRE-MUNGE INSERT: {equal_buffer_insert}\n')
+
+                first_delete_group = -1
+                first_insert_group = -1
+                for token_index, token in enumerate(equal_buffer_delete):
+                    if isinstance(token, list):
+                        first_delete_group = token_index
+                        break
+                for token_index, token in enumerate(equal_buffer_insert):
+                    if isinstance(token, list):
+                        first_insert_group = token_index
+                        break
+                # In theory we should always find both, but sanity check anyway
+                if first_delete_group > -1 and first_insert_group > -1:
+                    max_index = min(first_delete_group, first_insert_group)
+                    unequal_reverse_index = max_index
+                    for reverse_index in range(max_index):
+                        delete_token = equal_buffer_delete[first_delete_group - 1 - reverse_index]
+                        insert_token = equal_buffer_insert[first_insert_group - 1 - reverse_index]
+                        if delete_token != insert_token:
+                            unequal_reverse_index = reverse_index
+                            break
+                    delete_buffer.extend(equal_buffer_delete[:first_delete_group - unequal_reverse_index])
+                    equal_buffer_delete = equal_buffer_delete[first_delete_group - unequal_reverse_index:]
+                    insert_buffer.extend(equal_buffer_insert[:first_insert_group - unequal_reverse_index])
+                    equal_buffer_insert = equal_buffer_insert[first_insert_group - unequal_reverse_index:]
+
+                last_delete_group = -1
+                last_insert_group = -1
+                # FIXME: totally inefficient; should go backward
+                for token_index, token in enumerate(equal_buffer_delete):
+                    if isinstance(token, list):
+                        last_delete_group = token_index
+                for token_index, token in enumerate(equal_buffer_insert):
+                    if isinstance(token, list):
+                        last_insert_group = token_index
+
+                # In theory we should always find both, but sanity check anyway
+                if last_delete_group > -1 and last_insert_group > -1:
+                    max_range = min(len(equal_buffer_delete) - last_delete_group, len(equal_buffer_insert) - last_insert_group)
+                    unequal_index = max(1, max_range)
+                    for index in range(1, max_range):
+                        delete_token = equal_buffer_delete[last_delete_group + index]
+                        insert_token = equal_buffer_insert[last_insert_group + index]
+                        if delete_token != insert_token:
+                            unequal_index = index
+                            break
+                    equal_buffer_delete_next = equal_buffer_delete[last_delete_group + unequal_index:]
+                    equal_buffer_delete = equal_buffer_delete[:last_delete_group + unequal_index]
+                    equal_buffer_insert_next = equal_buffer_insert[last_insert_group + unequal_index:]
+                    equal_buffer_insert = equal_buffer_insert[:last_insert_group + unequal_index]
+
+
+
+            # # This almost works! Take the markup before and after the textual insertion and spread it to the changes
+            # # that are before and after.
+            # equal_buffer_delete = []
+            # equal_buffer_insert = []
+            # equal_buffer_delete_next = []
+            # equal_buffer_insert_next = []
+            # if include_insert and include_delete:
+            #     merge_change_groups(expand_tokens(html1_tokens[i1:i2], equal=True), equal_buffer_delete, tag_type=None)
+            #     merge_change_groups(expand_tokens(html2_tokens[j1:j2], equal=True), equal_buffer_insert, tag_type=None)
+
+            #     first_group = -1
+            #     last_group = -1
+            #     for token_index, token in enumerate(equal_buffer_delete):
+            #         if isinstance(token, list):
+            #             if first_group < 0:
+            #                 first_group = token_index
+            #             last_group = token_index
+            #     if last_group > -1:
+            #         equal_buffer_delete_next = equal_buffer_delete[last_group + 1:]
+            #         equal_buffer_delete = equal_buffer_delete[:last_group + 1]
+            #     if first_group > -1 and delete_buffer:
+            #         delete_buffer.extend(equal_buffer_delete[:first_group])
+            #         equal_buffer_delete = equal_buffer_delete[first_group:]
+
+            #     first_group = -1
+            #     last_group = -1
+            #     for token_index, token in enumerate(equal_buffer_insert):
+            #         if isinstance(token, list):
+            #             if first_group < 0:
+            #                 first_group = token_index
+            #             last_group = token_index
+            #     if last_group > -1:
+            #         equal_buffer_insert_next = equal_buffer_insert[last_group + 1:]
+            #         equal_buffer_insert = equal_buffer_insert[:last_group + 1]
+            #     if first_group > -1 and insert_buffer:
+            #         insert_buffer.extend(equal_buffer_insert[:first_group])
+            #         equal_buffer_insert = equal_buffer_insert[first_group:]
+
+
+            # # What if we took the pre- and post-tags off equal ranges and put
+            # # them on the adjacent changes?
+            # if include_insert and include_delete:
+            #     if delete_buffer and insert_buffer:
+            #         # last_buffered_delete = delete_buffer[-1]
+            #         # last_buffered_delete.post_tags.extend(html1_tokens[i1].pre_tags)
+            #         delete_buffer.extend(html1_tokens[i1].pre_tags)
+            #         html1_tokens[i1].pre_tags = []
+            #         # last_buffered_insert = insert_buffer[-1]
+            #         # last_buffered_insert.post_tags.extend(html2_tokens[j1].pre_tags)
+            #         insert_buffer.extend(html2_tokens[j1].pre_tags)
+            #         html2_tokens[j1].pre_tags = []
+            #     if len(html1_tokens) > i2 + 1:
+            #         html1_tokens[i2].pre_tags.extend(html1_tokens[i2 - 1].post_tags)
+            #         html1_tokens[i2 - 1].post_tags = []
+            #     if len(html2_tokens) > j2 + 1:
+            #         html2_tokens[j2].pre_tags.extend(html2_tokens[j2 - 1].post_tags)
+            #         html2_tokens[j2 - 1].post_tags = []
+
             if insert_buffer or delete_buffer:
                 reconcile_change_groups(insert_buffer, delete_buffer, result)
 
-            # WHOA. EXPERIMENTAL. MOVE POST TAGS ON EQUALITY TO PRE TAGS ON NEXT OP
             if include_insert and include_delete:
-                inserts = html2_tokens[j1:j2]
-                inserts.reverse()
-                blank_inserts = []
-                for insert in inserts:
-                    if str(insert) == '' or str(insert) == ' ' or isinstance(insert, SpacerToken) or str(insert) == '\nSPACER':
-                        blank_inserts.append(insert)
-                    else:
-                        blank_inserts.append(insert)
-                        print(f'STOPPING AT:::::::: {insert}')
-                        break
-                blank_inserts.reverse()
-                for insert in blank_inserts:
-                    if str(insert) == '' or str(insert) == ' ' or isinstance(insert, SpacerToken) or str(insert) == '\nSPACER':
-                        insert_buffer.extend(insert.pre_tags)
-                        insert.pre_tags = []
-                    insert_buffer.extend(insert.post_tags)
-                    insert.post_tags = []
+                print('------------------ EQUALITY ----------------------')
+                reconcile_change_groups(equal_buffer_insert, [], result)
+                delete_buffer.extend(equal_buffer_delete_next)
+                insert_buffer.extend(equal_buffer_insert_next)
+                continue
 
-                inserts = html1_tokens[i1:i2]
-                inserts.reverse()
-                blank_inserts = []
-                for insert in inserts:
-                    if str(insert) == '' or str(insert) == ' ' or isinstance(insert, SpacerToken) or str(insert) == '\nSPACER':
-                        blank_inserts.append(insert)
-                    else:
-                        blank_inserts.append(insert)
-                        break
-                blank_inserts.reverse()
-                for insert in blank_inserts:
-                    if str(insert) == '' or str(insert) == ' ' or isinstance(insert, SpacerToken) or str(insert) == '\nSPACER':
-                        delete_buffer.extend(insert.pre_tags)
-                        insert.pre_tags = []
-                    delete_buffer.extend(insert.post_tags)
-                    insert.post_tags = []
+            # # WHOA. EXPERIMENTAL. MOVE POST TAGS ON EQUALITY TO PRE TAGS ON NEXT OP
+            # if include_insert and include_delete:
+            #     inserts = html2_tokens[j1:j2]
+            #     inserts.reverse()
+            #     blank_inserts = []
+            #     for insert in inserts:
+            #         if str(insert) == '' or str(insert) == ' ' or isinstance(insert, SpacerToken) or str(insert) == '\nSPACER':
+            #             blank_inserts.append(insert)
+            #         else:
+            #             blank_inserts.append(insert)
+            #             print(f'STOPPING AT:::::::: {insert}')
+            #             break
+            #     blank_inserts.reverse()
+            #     for insert in blank_inserts:
+            #         if str(insert) == '' or str(insert) == ' ' or isinstance(insert, SpacerToken) or str(insert) == '\nSPACER':
+            #             insert_buffer.extend(insert.pre_tags)
+            #             insert.pre_tags = []
+            #         insert_buffer.extend(insert.post_tags)
+            #         insert.post_tags = []
+
+            #     inserts = html1_tokens[i1:i2]
+            #     inserts.reverse()
+            #     blank_inserts = []
+            #     for insert in inserts:
+            #         if str(insert) == '' or str(insert) == ' ' or isinstance(insert, SpacerToken) or str(insert) == '\nSPACER':
+            #             blank_inserts.append(insert)
+            #         else:
+            #             blank_inserts.append(insert)
+            #             break
+            #     blank_inserts.reverse()
+            #     for insert in blank_inserts:
+            #         if str(insert) == '' or str(insert) == ' ' or isinstance(insert, SpacerToken) or str(insert) == '\nSPACER':
+            #             delete_buffer.extend(insert.pre_tags)
+            #             insert.pre_tags = []
+            #         delete_buffer.extend(insert.post_tags)
+            #         insert.post_tags = []
+
+
+
 
 
                 # last_insert = html2_tokens[j2 - 1]
@@ -1151,7 +1358,7 @@ def new_assemble_diff(html1_tokens, html2_tokens, commands, include='combined'):
     return result
 
 
-def merge_change_groups(change_chunks, doc, tag_type='ins'):
+def merge_change_groups(change_chunks, doc, tag_type=None):
     """
     Merge tokens that were changed into a list of tokens (that represents the
     whole document) and wrap them with a tag.
@@ -1236,7 +1443,8 @@ def merge_change_groups(change_chunks, doc, tag_type='ins'):
                     if is_block:
                         for nested_tag in current_content:
                             group.append(f'</{nested_tag}>')
-                        group.append(f'</{tag_type}>')
+                        if tag_type:
+                            group.append(f'</{tag_type}>')
                         current_content = None
                         depth -= 1
                         group = doc
@@ -1252,7 +1460,8 @@ def merge_change_groups(change_chunks, doc, tag_type='ins'):
                             for nested_tag in current_content:
                                 group.append(f'</{nested_tag}>')
 
-                            group.append(f'</{tag_type}>')
+                            if tag_type:
+                                group.append(f'</{tag_type}>')
                             # <start> not sure if we should break the group
                             # group = doc
                             # <end> not sure if we should break the group
@@ -1261,7 +1470,8 @@ def merge_change_groups(change_chunks, doc, tag_type='ins'):
                             # group = []
                             # doc.append(group)
                             # <end> not sure if we should break the group
-                            group.append(f'<{tag_type}>')
+                            if tag_type:
+                                group.append(f'<{tag_type}>')
 
                             # other side of the malformed document case from above
                             current_content.reverse()
@@ -1280,7 +1490,8 @@ def merge_change_groups(change_chunks, doc, tag_type='ins'):
                     if depth > 0:
                         for nested_tag in current_content:
                             group.append(f'</{nested_tag}>')
-                        group.append(f'</{tag_type}>')
+                        if tag_type:
+                            group.append(f'</{tag_type}>')
                         current_content = None
                         depth -= 1
                         group = doc
@@ -1293,7 +1504,8 @@ def merge_change_groups(change_chunks, doc, tag_type='ins'):
         if depth == 0:
             group = []
             doc.append(group)
-            group.append(f'<{tag_type}>')
+            if tag_type:
+                group.append(f'<{tag_type}>')
             depth += 1
             current_content = []
 
@@ -1307,12 +1519,17 @@ def merge_change_groups(change_chunks, doc, tag_type='ins'):
         for nested_tag in current_content:
             group.append(f'</{nested_tag}>')
 
-        group.append(f'</{tag_type}>')
+        if tag_type:
+            group.append(f'</{tag_type}>')
         group = doc
 
         current_content.reverse()
         for nested_tag in current_content:
             group.append(f'<{nested_tag}>')
+
+
+from collections import namedtuple
+TagInfo = namedtuple('TagInfo', ('name', 'open', 'source'))
 
 
 def reconcile_change_groups(insert_groups, delete_groups, document):
@@ -1324,28 +1541,20 @@ def reconcile_change_groups(insert_groups, delete_groups, document):
     delete_index = 0
     insert_count = len(insert_groups)
     delete_count = len(delete_groups)
-    # tag_stack = []
+
+    tag_stack = []
     insert_tag_stack = []
     delete_tag_stack = []
-    delete_unstack = []
-    delete_unstack_buffer = []
+    delete_tag_unstack = []
+    insert_buffer = []
+    delete_buffer = []
+    buffer = document
 
-    def tag_record(token):
+    def tag_info(token):
         if not token.startswith('<'):
             return None
         name = token.split()[0].strip('<>/')
-        return (name, not token.startswith('</'), token)
-
-    def update_tag_stack(token):
-        tag = tag_record(token)
-        if tag:
-            if tag[1]:
-                tag_stack.append(tag)
-            elif tag_stack:
-                last_open = tag_stack.pop()
-                # If we closed a tag that wasn't the last to open, ignore for now (should we unwind the stack until we find a match?)
-                if last_open[0] != tag[0]:
-                    tag_stack.append(last_open)
+        return TagInfo(name, not token.startswith('</'), token)
 
     while True:
         insertion = insert_index < insert_count and insert_groups[insert_index] or None
@@ -1353,83 +1562,138 @@ def reconcile_change_groups(insert_groups, delete_groups, document):
         if not insertion and not deletion:
             break
 
-        if insertion == deletion:
+        # Strip here because tags can have whitespace attached to the end :\
+        equal_items = insertion == deletion or (
+            isinstance(insertion, str) and
+            isinstance(deletion, str) and
+            insertion.strip() == deletion.strip())
+
+        if equal_items and buffer is document:
             document.append(insertion)
             insert_index += 1
             delete_index += 1
-            # update_tag_stack(token)
-            continue
-        elif isinstance(insertion, list):
-            document.extend(insertion)
-            insert_index += 1
-            continue
         elif isinstance(deletion, list):
-            document.extend(deletion)
+            buffer.extend(deletion)
             delete_index += 1
-            continue
-        elif insertion:
-            tag = tag_record(insertion)
+        elif isinstance(insertion, list):
+            buffer.extend(insertion)
+            insert_index += 1
+        elif deletion:
+            tag = tag_info(deletion)
             if tag:
-                if tag[1]:
+                if tag.open:
+                    if delete_tag_unstack:
+                        delete_buffer.append(deletion)
+                        delete_index += 1
+                        active_tag = delete_tag_unstack.pop()
+                        if tag.name != active_tag.name:
+                            delete_tag_unstack.append(active_tag)
+                            delete_tag_unstack.append(tag)
+                        if not delete_tag_unstack:
+                            print(f'INSERTING DELETE UNSTACK BUFFER: {delete_buffer}')
+                            document.extend(delete_buffer)
+                            delete_buffer.clear()
+                            buffer = document
+                    else:
+                        buffer = delete_buffer
+                        delete_tag_stack.append(tag)
+                        delete_buffer.append(deletion)
+                        delete_index += 1
+                else:
+                    if delete_tag_stack:
+                        active_tag = delete_tag_stack.pop()
+                        while delete_tag_stack and active_tag.name != tag.name:
+                            active_tag = delete_tag_stack.pop()
+                        if active_tag.name != tag.name:
+                            print(f'WARN:::Close tag with no corresponding open tag found in deletions ({tag})')
+                            break
+                        delete_buffer.append(deletion)
+                        delete_index += 1
+                        if not delete_tag_stack:
+                            print(f'INSERTING DELETE BUFFER: {delete_buffer}')
+                            document.extend(delete_buffer)
+                            delete_buffer.clear()
+                            buffer = document
+                    else:
+                        # Speculatively go the opposite direction
+                        buffer = delete_buffer
+                        if delete_tag_unstack:
+                            active_tag = delete_tag_unstack.pop()
+                            if not active_tag.open:
+                                delete_tag_unstack.append(active_tag)
+                                delete_tag_unstack.append(tag)
+                                delete_buffer.append(deletion)
+                                delete_index += 1
+                            elif active_tag.open and active_tag.name == tag.name:
+                                delete_buffer.append(deletion)
+                                delete_index += 1
+                            else:
+                                print('WARN:::Close tag with no corresponding open tag found in unstacking deletions')
+                                break
+                        else:
+                            delete_tag_unstack.append(tag)
+                            delete_buffer.append(deletion)
+                            delete_index += 1
+                            # pass
+            else:
+                # NOTE: not sure we can ever reach this case (unwrapped change
+                # that is not an element).
+                buffer.append(deletion)
+                delete_index += 1
+
+        elif insertion:
+            # if we have a hanging delete buffer (with content, not just HTML
+            # DOM structure), clean it up and insert it before moving on.
+            if '<del>' in delete_buffer:
+                for tag in delete_tag_stack:
+                    delete_buffer.append(f'</{tag[0]}>')
+                document.extend(delete_buffer)
+                delete_tag_stack.clear()
+                delete_buffer.clear()
+
+            tag = tag_info(insertion)
+            if tag:
+                if tag.open:
+                    buffer = insert_buffer
                     insert_tag_stack.append(tag)
-                    document.append(insertion)
+                    insert_buffer.append(insertion)
                     insert_index += 1
-                    continue
                 else:
                     if insert_tag_stack:
-                        last_open = insert_tag_stack.pop()
-                        if tag[0] == last_open[0]:
+                        active_tag = insert_tag_stack.pop()
+                        while insert_tag_stack and active_tag.name != tag.name:
+                            active_tag = insert_tag_stack.pop()
+                        if active_tag.name != tag.name:
+                            print('WARN:::Close tag with no corresponding open tag found in insertions')
+                            break
+                        insert_buffer.append(insertion)
+                        insert_index += 1
+                        if not insert_tag_stack:
+                            document.extend(insert_buffer)
+                            insert_buffer.clear()
+                            buffer = document
+                    else:
+                        # Insertions control the overall structure of the
+                        # document. Don't move up a level until we are out of
+                        # deletions at this level.
+                        if not deletion:
                             document.append(insertion)
                             insert_index += 1
-                            continue
-                        else:
-                            tag_stack = []
-            else:
-                document.append(insertion)
-                insert_index += 1
-                continue
 
-            if deletion is None:
-                document.append(insertion)
+            else:
+                # NOTE: not sure we can ever reach this case (unwrapped change
+                # that is not an element).
+                buffer.append(insertion)
                 insert_index += 1
 
-        if deletion:
-            tag = tag_record(deletion)
-            print(f'  Tag ({tag}) for item: {deletion}')
-            if tag:
-                if tag[1]:
-                    if delete_unstack:
-                        last_closed = delete_unstack.pop()
-                        if last_closed[0] == tag[0]:
-                            delete_unstack_buffer.append(deletion)
-                        else:
-                            # BAIL OUT!!!
-                            break
-                        if not delete_unstack:
-                            document.extend(delete_unstack_buffer)
-                    else:
-                        delete_tag_stack.append(tag)
-                        document.append(deletion)
-                elif delete_tag_stack:
-                    last_open = delete_tag_stack.pop()
-                    # If we closed a tag that wasn't the last to open, ignore for now (should we unwind the stack until we find a match?)
-                    if last_open[0] == tag[0]:
-                        document.append(deletion)
-                    else:
-                        delete_tag_stack.append(last_open)
-                else:
-                    delete_unstack_buffer.append(deletion)
-                    delete_unstack.append(tag)
-            else:
-                if delete_unstack_buffer:
-                    delete_unstack_buffer.append(deletion)
-                else:
-                    document.append(deletion)
-            delete_index += 1
+    # Add any hanging buffer of deletes that never got completed, but only if
+    # it has salient changes in it.
+    if '<del>' in delete_buffer:
+        for tag in delete_tag_stack:
+            delete_buffer.append(f'</{tag[0]}>')
+        document.extend(delete_buffer)
 
-    delete_tag_stack.reverse()
-    for tag in delete_tag_stack:
-        document.append(f'</{tag[0]}>')
+    document.extend(insert_buffer)
 
     insert_groups.clear()
     delete_groups.clear()
