@@ -75,7 +75,7 @@ def test_contrived_examples_htmltreediff(fn):
 @pytest.mark.parametrize('fn', cases)
 def test_contrived_examples_html_diff_render(fn):
     before, after = lookup_pair(fn)
-    d = html_diff_render(before, after)['diff']
+    d = html_diff_render(before, after)['combined']
     print(TEMPLATE.format(before, after, d))
     return d
 
@@ -144,8 +144,7 @@ def test_real_examples_htmltreediff(before_id, after_id):
 @pytest.mark.parametrize('before_id, after_id', staging_version_ids)
 def test_real_examples_html_diff_render(before_id, after_id):
     before, after = map(get_staging_content, (before_id, after_id))
-    diff = html_diff_render(before, after)['diff']
-    return diff
+    return html_diff_render(before, after)['combined']
 
 
 @export
