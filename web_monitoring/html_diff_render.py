@@ -807,9 +807,6 @@ def merge_changes(change_chunks, doc, tag_type='ins'):
                 # There is no case for a closing tag where aren't doen with the chunk
                 continue
             else:
-                entering_tag = name
-                entering_inline_tag = not is_block
-
                 if is_block:
                     if depth > 0:
                         for nested_tag in current_content:
@@ -1074,9 +1071,6 @@ def merge_change_groups(change_chunks, doc, tag_type=None):
                 # There is no case for a closing tag where aren't doen with the chunk
                 continue
             else:
-                entering_tag = name
-                entering_inline_tag = not is_block
-
                 if is_block:
                     if depth > 0:
                         for nested_tag in current_content:
