@@ -227,8 +227,9 @@ def html_diff_render(a_text, b_text, include='combined'):
     soup_old, replacements_old = _remove_undiffable_content(soup_old, 'old')
     soup_new, replacements_new = _remove_undiffable_content(soup_new, 'new')
 
-    diff_bodies = diff_elements_multiply(soup_old.body, soup_new.body, include)
-    results = {}
+    metadata, diff_bodies = diff_elements_multiply(soup_old.body, soup_new.body, include)
+    results = metadata.copy()
+
     for diff_type, diff_body in diff_bodies.items():
         soup = None
         replacements = None
@@ -384,12 +385,12 @@ def diff_elements_multiply(old, new, include='all'):
         result_element.append(diff)
         return result_element
 
-    diffs = {}
-    for diff_type, diff in _htmldiff(str(old), str(new), include).items():
+    metadata, raw_diffs = _htmldiff(str(old), str(new), include)
+    for diff_type, diff in raw_diffs.items():
         element = diff_type == 'deletions' and old or new
-        diffs[diff_type] = fill_element(element, diff)
+        results[diff_type] = fill_element(element, diff)
 
-    return diffs
+    return metadata, results
 
 
 def _htmldiff(old, new, include='all'):
@@ -413,7 +414,8 @@ def _htmldiff(old, new, include='all'):
     # matcher = SequenceMatcher(a=old_tokens, b=new_tokens, autojunk=False)
     opcodes = matcher.get_opcodes()
 
-    results = {}
+    metadata = _count_changes(opcodes)
+    diffs = {}
 
     def render_diff(diff_type):
         diff = assemble_diff(old_tokens, new_tokens, opcodes, diff_type)
@@ -422,11 +424,29 @@ def _htmldiff(old, new, include='all'):
         return result
 
     if include == 'all' or include == 'combined':
-        results['combined'] = render_diff('combined')
+        diffs['combined'] = render_diff('combined')
     if include == 'all' or include == 'insertions':
-        results['insertions'] = render_diff('insertions')
+        diffs['insertions'] = render_diff('insertions')
     if include == 'all' or include == 'deletions':
-        results['deletions'] = render_diff('deletions')
+        diffs['deletions'] = render_diff('deletions')
+
+    return metadata, diffs
+
+
+def _count_changes(opcodes):
+    results = {
+        'change_count': 0,
+        'deletion_count': 0,
+        'insertion_count': 0,
+    }
+
+    for command, *rest in opcodes:
+        if command == 'insert' or command == 'replace':
+            results['insertion_count'] += 1
+            results['change_count'] += 1
+        if command == 'delete' or command == 'replace':
+            results['deletion_count'] += 1
+            results['change_count'] += 1
 
     return results
 
