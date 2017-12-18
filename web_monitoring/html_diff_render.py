@@ -227,7 +227,7 @@ def html_diff_render(a_text, b_text, include='combined'):
     soup_old, replacements_old = _remove_undiffable_content(soup_old, 'old')
     soup_new, replacements_new = _remove_undiffable_content(soup_new, 'new')
 
-    metadata, diff_bodies = diff_elements_multiply(soup_old.body, soup_new.body, include)
+    metadata, diff_bodies = diff_elements(soup_old.body, soup_new.body, include)
     results = metadata.copy()
 
     for diff_type, diff_body in diff_bodies.items():
@@ -361,20 +361,7 @@ def _diff_title(old, new):
     return ''.join(map(_html_for_dmp_operation, diff))
 
 
-def diff_elements(old, new, include='combined'):
-    """
-    Diff the contents of two Beatiful Soup elements. Note that this returns
-    the "new" element with its content replaced by the diff.
-    """
-    if not old or not new:
-        return ''
-    result_element = copy.copy(new)
-    result_element.clear()
-    result_element.append(_htmldiff(str(old), str(new), include)[include])
-    return result_element
-
-
-def diff_elements_multiply(old, new, include='all'):
+def diff_elements(old, new, include='all'):
     results = {}
     if not old or not new:
         return results
