@@ -16,21 +16,21 @@ For now, you can mentally divide this module into two sections:
 """
 
 from bs4 import BeautifulSoup, Comment
+from collections import namedtuple
 import copy
 import html
 import logging
-from lxml.html.diff import (tokenize, htmldiff_tokens, fixup_ins_del_tags,
-                            href_token, tag_token, InsensitiveSequenceMatcher,
-                            expand_tokens, merge_delete,
-                            split_unbalanced, empty_tags)
+from lxml.html.diff import (tokenize, href_token, tag_token, expand_tokens,
+                            InsensitiveSequenceMatcher)
 from lxml.html.diff import token as DiffToken
-from difflib import SequenceMatcher
 from .differs import compute_dmp_diff
 
 logger = logging.getLogger(__name__)
 
-# This *really* means don't cross the boundaries of these elements with insertion/deletion elements. Instead, break the insertions and deletions in two.
-# TODO: custom elements are iffy here. Maybe include them? (any tag with a `-` in the name)
+# This *really* means don't cross the boundaries of these elements with
+# insertion/deletion elements. Instead, break the insertions/deletions in two.
+# TODO: custom elements are iffy here. Maybe include them? (any tag with a `-`
+# in the name)
 block_level_tags = (
     'address',
     'article',
@@ -100,7 +100,7 @@ empty_tags = (
     'col',
     'embed',
     'img',
-    'iframe',  # TODO: make sure we treat these right -- they still need a closing tag
+    'iframe',  # TODO: make sure we treat these right -- they need closing tags
     'input',
     'link',
     'meta',
@@ -111,6 +111,7 @@ empty_tags = (
 )
 
 # Should be treated as a single unit for diffing purposes -- their content is not HTML
+# TODO: fork the tokenization part of lxml.html.diff and use this list!
 undiffable_content_tags = (
     'datalist',  # Still HTML content, but we can’t really diff inside
     'math',
@@ -125,6 +126,7 @@ undiffable_content_tags = (
 )
 
 # Elements that are not allowed to have our change elements as direct children
+# TODO: add a cleanup step that respects this situation
 no_change_children_tags = (
     'colgroup',
     'dl',
@@ -264,17 +266,14 @@ def html_diff_render(a_text, b_text, include='combined'):
         soup.body.replace_with(diff_body)
         # The method we use above to append HTML strings (the diffs) to the soup
         # results in a non-navigable soup. So we serialize and re-parse :(
-        # (Note we use no formatter for this because proper encoding escape the
-        # tags our differ generated.)
-        # logger.debug('PRE-RE-PARSE YO:::::::::\n' + soup.prettify(formatter=None) + '\n\n\n')
+        # (Note we use no formatter for this because proper encoding escapes
+        # the tags our differ generated.)
         soup = BeautifulSoup(soup.prettify(formatter=None), 'lxml')
         soup = _add_undiffable_content(
             soup,
             replacements,
             diff_type == 'combined')
         results[diff_type] = soup.prettify(formatter='minimal')
-        # logger.debug('UNFORMATTED YO:::::::::\n' + soup.prettify(formatter=None) + '\n\n\n')
-        # logger.debug('FINAL YO::::::::::\n' + soup.prettify(formatter='minimal'))
 
     return results
 
@@ -417,7 +416,7 @@ def _htmldiff(old, new, include='all'):
     results = {}
 
     def render_diff(diff_type):
-        diff = new_assemble_diff(old_tokens, new_tokens, opcodes, diff_type)
+        diff = assemble_diff(old_tokens, new_tokens, opcodes, diff_type)
         # return fixup_ins_del_tags(''.join(diff).strip())
         result = ''.join(diff).strip().replace('</li> ', '</li>')
         return result
@@ -723,154 +722,18 @@ def _customize_token(token):
         return token
 
 
-def assemble_diff(html1_tokens, html2_tokens, commands, include='combined'):
-    """
-    Assembles a renderable HTML string from a set of old and new tokens and a
-    list of operations to perform agains them.
-    """
-    include_insert = include == 'combined' or include == 'insertions'
-    include_delete = include == 'combined' or include == 'deletions'
-
-    # There are several passes as we do the differences.  The tokens
-    # isolate the portion of the content we care to diff; difflib does
-    # all the actual hard work at that point.
-    #
-    # Then we must create a valid document from pieces of both the old
-    # document and the new document.  We generally prefer to take
-    # markup from the new document, and only do a best effort attempt
-    # to keep markup from the old document; anything that we can't
-    # resolve we throw away.  Also we try to put the deletes as close
-    # to the location where we think they would have been -- because
-    # we are only keeping the markup from the new document, it can be
-    # fuzzy where in the new document the old text would have gone.
-    # Again we just do a best effort attempt.
-    result = []
-    # HACK: Check out this insane "buffer" mechanism! This seems to help get
-    # deletions properly located in cases where the trailing tag content on set
-    # of tokens differs between the old and new document.
-    buffer = []
-    post_equality = []
-    for command, i1, i2, j1, j2 in commands:
-        # for index, command_data in enumerate(commands):
-        #     command, i1, i2, j1, j2 = command_data
-
-        if command == 'equal':
-            if post_equality:
-                result.extend(post_equality)
-                post_equality = []
-            if buffer:
-                result.extend(buffer)
-                buffer = []
-
-            if include_insert:
-                token = html2_tokens[j2 - 1]
-                token2 = html1_tokens[i2 - 1]
-                logger.debug(f'Ending equality with...')
-                logger.debug(f'  pre: {token2.pre_tags}\n  token: "{token2}"\n  post: {token2.post_tags}')
-                logger.debug(f'  --vs--\n  pre: {token.pre_tags}\n  token: "{token}"\n  post: {token.post_tags}')
-                if html2_tokens[j2 - 1].post_tags and not html1_tokens[i2 - 1].post_tags:
-                    buffer.extend(html2_tokens[j2 - 1].post_tags)
-                    html2_tokens[j2 - 1].post_tags = []
-                    logger.debug('Buffering!')
-                # else:
-                #     last_delete = html1_tokens[i2 - 1]
-                #     last_insert = html2_tokens[j2 - 1]
-                #     if (_has_heading_tags(last_insert.post_tags) or _has_separation_tags(last_insert.post_tags)) \
-                #        and not (_has_heading_tags(last_delete.post_tags) or _has_separation_tags(last_delete.post_tags)):
-                #         post_equality.extend(html2_tokens[j2 - 1].post_tags)
-                #         html2_tokens[j2 - 1].post_tags = []
-                #         logger.debug('POST_EQUALIZING')
-                result.extend(expand_tokens(html2_tokens[j1:j2], equal=True))
-            else:
-                result.extend(expand_tokens(html1_tokens[i1:i2], equal=True))
-            continue
-        if (command == 'insert' or command == 'replace') and include_insert:
-            if post_equality:
-                result.extend(post_equality)
-                post_equality = []
-            if command == 'insert':
-                logger.debug(f'INSERTING at {j1}:{j2} (old doc {i1}:{i2})')
-            else:
-                logger.debug(f'REPLACING at {j1}:{j2} (old doc {i1}:{i2})')
-
-            logger.debug('Starting INSERTION with...')
-            for insert_token in html1_tokens[i1:i2]:
-                nice_token = insert_token.replace('\n', '\\n')
-                logger.debug(f'    {insert_token.pre_tags} "{nice_token}" {insert_token.post_tags}')
-            logger.debug(f'  --vs--')
-            for insert_token in html2_tokens[j1:j2]:
-                nice_token = insert_token.replace('\n', '\\n')
-                logger.debug(f'    {insert_token.pre_tags} "{nice_token}" {insert_token.post_tags}')
-
-            should_buffer = False
-            # if command == 'replace':
-            #     last_delete = html1_tokens[i2 - 1]
-            #     last_insert = html2_tokens[j2 - 1]
-            #     if (_has_heading_tags(last_insert.post_tags) or _has_separation_tags(last_insert.post_tags)) \
-            #        and not (_has_heading_tags(last_delete.post_tags) or _has_separation_tags(last_delete.post_tags)):
-            #         logger.debug('BUFFERING')
-            #         should_buffer = True
-
-            # token = html2_tokens[j1]
-            # token2 = html1_tokens[i1]
-            # logger.debug(f'Starting INSERTION with...')
-            # logger.debug(f'  pre: {token.pre_tags}\n  token: "{token}"\n  post: {token.post_tags}')
-            # logger.debug(f'  --vs--\n  pre: {token2.pre_tags}\n  token: "{token2}"\n  post: {token2.post_tags}')
-
-            # token = html2_tokens[j2 - 1]
-            # token2 = html1_tokens[i2 - 1]
-            # logger.debug(f'Ending INSERTION with...')
-            # logger.debug(f'  pre: {token.pre_tags}\n  token: "{token}"\n  post: {token.post_tags}')
-            # logger.debug(f'  --vs--\n  pre: {token2.pre_tags}\n  token: "{token2}"\n  post: {token2.post_tags}')
-
-            # if buffer:
-            #     logger.debug(f'Insert Unbuffering: {buffer}')
-            # result.extend(buffer)
-            # buffer = []
-            ins_tokens = expand_tokens(html2_tokens[j1:j2])
-            if buffer or should_buffer:
-                merge_changes(ins_tokens, buffer)
-            else:
-                merge_changes(ins_tokens, result)
-        if (command == 'delete' or command == 'replace') and include_delete:
-            # if command == 'replace' and html1_tokens[i1].pre_tags == html2_tokens[j1].pre_tags:
-            #     html1_tokens[i1].pre_tags = []
-            # if command == 'replace' and html1_tokens[i2 - 1].post_tags == html2_tokens[j2 - 1].post_tags:
-            #     html1_tokens[i2 - 1].post_tags = []
-
-            del_tokens = expand_tokens(html1_tokens[i1:i2])
-            if include_insert:
-                merge_speculative_deletions(del_tokens, result)
-            else:
-                merge_changes(del_tokens, result, 'del')
-
-            if buffer:
-                logger.debug(f'Delete Unbuffering: {buffer}')
-            result.extend(buffer)
-            buffer = []
-            if post_equality:
-                result.extend(post_equality)
-                post_equality = []
-    # If deletes were inserted directly as <del> then we'd have an
-    # invalid document at this point.  Instead we put in special
-    # markers, and when the complete diffed document has been created
-    # we try to move the deletes around and resolve any problems.
-    result.extend(buffer)
-
-    if include_insert and include_delete:
-        result = cleanup_delete(result)
-
-    return result
-
-
+# TODO: merge and reconcile this with `merge_change_groups()`, which is 90%
+# the same thing; it outputs the change elements as nested lists of tokens.
 def merge_changes(change_chunks, doc, tag_type='ins'):
     """
     Merge tokens that were changed into a list of tokens (that represents the
     whole document) and wrap them with a tag.
 
-    This is largely the same as lxml.html.diff.merge_insert, but allows any
-    tag to be used, since we need to be able to also merge deletions this way,
-    not just insertions.
+    This will break the changed sections into multiple elements as needed to
+    ensure that changes don't cross the boundaries of some elements, like
+    `<header>` or `<p>`. For example, you'd get three `<ins>` elements here:
+
+        <ins>Some</ins><p><ins>inserted</ins></p><ins>text</ins>
 
     Parameters
     ----------
@@ -881,58 +744,18 @@ def merge_changes(change_chunks, doc, tag_type='ins'):
     tag_type : str
         The type of HTML tag to wrap the changes with.
     """
-    # # Though we don't throw away unbalanced_start or unbalanced_end
-    # # (we assume there is accompanying markup later or earlier in the
-    # # document), we only put <ins> around the balanced portion.
-    change_chunks = list(change_chunks)
-    unbalanced_start, balanced, unbalanced_end = split_unbalanced(change_chunks)
-    logger.debug('------------- INSERTING CHANGE ---------------')
-    logger.debug(f'  [START] {unbalanced_start}\n  <{tag_type}>\n  {balanced}\n  </{tag_type}>\n  {unbalanced_end}')
-
-    # HOLY MOLY WHAT IS HAPPENING HERE???????? WELL...
-    # The commented out implementation below is basically the same as the
-    # implementation in LXML (with the tweak that you can specify a tag name).
-    # However, it turns out to have had a few big problems:
-    #   1. Because it doesn't include "unbalanced" parts of the change, the
-    #      marked-up content might not actually match the whole change!
+    # NOTE: this serves a similar purpose to LXML's html.diff.merge_insert
+    # function, though this is much more complicated. LXML's version takes a
+    # simpler approach to placing tags, then later runs the whole thing through
+    # an XML parser, manipulates the tree, and re-serializes. We don't do that
+    # here because it turns out to exacerbate some errors in the placement of
+    # insert and delete tags. Think of it like splinting a broken bone without
+    # setting it first.
     #
-    #   2. split_unbalanced can *really* screw up the DOM! Take this example:
-    #
-    #      >>> diff.split_unbalanced(['<div1>','hello','</div1>','</div2>','there','</div1>','more'])
-    #      ([], ['<div1>', 'hello', '</div1>', 'there', 'more'], ['</div2>', '</div1>'])
-    #
-    #      See how content got totally moved around? This even that contrived;
-    #      we could have totally valid markup like the above because we are
-    #      working with random fragments of source (not the tree). In the
-    #      example above, the change we're working with could have come right
-    #      after the markup `<div1><div2>Some prefixed text` and it’d be fine.
-    #
-    #   3. This method winds up with `ins/del` elements surrounding block-level
-    #      elements when they should be inside them. The fixup_ins_del_tags
-    #      function that gets run later tries to fix this, but does it poorly:
-    #      It parses and serializes the whole document, which is expensive,
-    #      then it frequently shoves `ins/del` tags in places they aren't
-    #      allowed (e.g. as a child of a `<ul>`), which then causes a browser
-    #      viewing the output to break elements up and destroy the rendering.
-    #
-    # The implementation below solves a bunch of these issues, but is still a
-    # work in progress AND it needs to be implemented for
-    # merge_speculative_deletions, too.
-
-
-    # doc.extend(unbalanced_start)
-    # if doc and not doc[-1].endswith(' '):
-    #     # Fix up the case where the word before the insert didn't end with
-    #     # a space
-    #     doc[-1] += ' '
-    # doc.append(f'<{tag_type}>')
-    # if balanced and balanced[-1].endswith(' '):
-    #     # We move space outside of </ins>
-    #     balanced[-1] = balanced[-1][:-1]
-    # doc.extend(balanced)
-    # doc.append(f'</{tag_type}> ')
-    # doc.extend(unbalanced_end)
-
+    # Here, we actually attempt to keep track of the stack of elements and
+    # proactively put tags in the right place and break them up so the
+    # resulting token stream represents valid markup. Happily, that also means
+    # we don't also have to do the expensive parse-then-serialize step later!
     depth = 0
     current_content = None
     for chunk in change_chunks:
@@ -1022,104 +845,7 @@ def merge_changes(change_chunks, doc, tag_type='ins'):
             doc.append(f'<{nested_tag}>')
 
 
-def merge_speculative_deletions(change_chunks, doc):
-    """
-    Merge tokens that were deleted into a list of tokens (that represents the
-    whole document) and surround them with markers that must later be replaced
-    with HTML tags.
-
-    This is used instead of `merge_changes` when the document *also* contains
-    insertions. If a token was replaced, there may be duplicative HTML tags
-    inserted (since they were attached to be the inserted and deleted tokens).
-    The markers indicate areas that need cleanup sensitive to possible
-    duplicated tags later.
-    """
-    return merge_delete(change_chunks, doc)
-
-
-from lxml.html.diff import split_delete, NoDeletes, locate_unbalanced_start, locate_unbalanced_end
-
-
-def cleanup_delete(chunks):
-    """ Cleans up any DEL_START/DEL_END markers in the document, replacing
-    them with <del></del>.  To do this while keeping the document
-    valid, it may need to drop some tags (either start or end tags).
-
-    It may also move the del into adjacent tags to try to move it to a
-    similar location where it was originally located (e.g., moving a
-    delete into preceding <div> tag, if the del looks like (DEL_START,
-    'Text</div>', DEL_END)"""
-    while 1:
-        # Find a pending DEL_START/DEL_END, splitting the document
-        # into stuff-preceding-DEL_START, stuff-inside, and
-        # stuff-following-DEL_END
-        try:
-            pre_delete, delete, post_delete = split_delete(chunks)
-        except NoDeletes:
-            # Nothing found, we've cleaned up the entire doc
-            break
-        # The stuff-inside-DEL_START/END may not be well balanced
-        # markup.  First we figure out what unbalanced portions there are:
-        unbalanced_start, balanced, unbalanced_end = split_unbalanced(delete)
-        # Then we move the span forward and/or backward based on these
-        # unbalanced portions:
-        locate_unbalanced_start(unbalanced_start, pre_delete, post_delete)
-        locate_unbalanced_end(unbalanced_end, pre_delete, post_delete)
-        doc = pre_delete
-        if doc and not doc[-1].endswith(' '):
-            # Fix up case where the word before us didn't have a trailing space
-            doc[-1] += ' '
-
-        # doc.extend(balanced)
-        merge_changes(balanced, doc, 'del')
-
-        doc.extend(post_delete)
-        chunks = doc
-    return chunks
-
-
-def new_split_unbalanced(chunks):
-    """Return (unbalanced_start, balanced, unbalanced_end), where each is
-    a list of text and tag chunks.
-
-    unbalanced_start is a list of all the tags that are opened, but
-    not closed in this span.  Similarly, unbalanced_end is a list of
-    tags that are closed but were not opened.  Extracting these might
-    mean some reordering of the chunks."""
-    start = []
-    end = []
-    tag_stack = []
-    balanced = []
-    for chunk in chunks:
-        if not chunk.startswith('<'):
-            balanced.append(chunk)
-            continue
-        endtag = chunk[1] == '/'
-        name = chunk.split()[0].strip('<>/')
-        if name in empty_tags:
-            balanced.append(chunk)
-            continue
-        if endtag:
-            if tag_stack and tag_stack[-1][0] == name:
-                balanced.append(chunk)
-                name, pos, tag = tag_stack.pop()
-                balanced[pos] = tag
-            elif tag_stack:
-                start.extend([tag for name, pos, tag in tag_stack])
-                tag_stack = []
-                end.append(chunk)
-            else:
-                end.append(chunk)
-        else:
-            tag_stack.append((name, len(balanced), chunk))
-            balanced.append(None)
-    start.extend(
-        [chunk for name, pos, chunk in tag_stack])
-    balanced = [chunk for chunk in balanced if chunk is not None]
-    return start, balanced, end
-
-
-def new_assemble_diff(html1_tokens, html2_tokens, commands, include='combined'):
+def assemble_diff(html1_tokens, html2_tokens, commands, include='combined'):
     """
     Assembles a renderable HTML string from a set of old and new tokens and a
     list of operations to perform agains them.
@@ -1127,39 +853,43 @@ def new_assemble_diff(html1_tokens, html2_tokens, commands, include='combined'):
     include_insert = include == 'combined' or include == 'insertions'
     include_delete = include == 'combined' or include == 'deletions'
 
-    # There are several passes as we do the differences.  The tokens
-    # isolate the portion of the content we care to diff; difflib does
-    # all the actual hard work at that point.
-    #
-    # Then we must create a valid document from pieces of both the old
-    # document and the new document.  We generally prefer to take
-    # markup from the new document, and only do a best effort attempt
-    # to keep markup from the old document; anything that we can't
-    # resolve we throw away.  Also we try to put the deletes as close
-    # to the location where we think they would have been -- because
-    # we are only keeping the markup from the new document, it can be
-    # fuzzy where in the new document the old text would have gone.
-    # Again we just do a best effort attempt.
+    # Generating a combined diff view is a relatively complicated affair. We
+    # keep track of all the consecutive insertions and deletions in buffers
+    # until we find a portion of the document that is unchanged, at which point
+    # we reconcile the DOM structures of the changes before inserting the
+    # unchanged parts.
     result = []
-    # HACK: Check out this insane "buffer" mechanism! This seems to help get
-    # deletions properly located in cases where the trailing tag content on set
-    # of tokens differs between the old and new document.
     insert_buffer = []
     delete_buffer = []
 
     for command, i1, i2, j1, j2 in commands:
         if command == 'equal':
+            # When encountering an unchanged series of tokens, we first expand
+            # them to include the HTML elements that are attached to the
+            # tokenized text. Then we find the changed HTML tags before and
+            # after the unchanged text and add them to the previous buffer of
+            # changes and the next buffer of changes, respectively. This
+            # ensures that the reconciliation routine that handles differences
+            # in DOM structure is used on them, while portions that are exactly
+            # the same are simply inserted as-is.
+            #
+            # TODO: this splitting approach could probably be handled better if
+            # it was part of or better integrated with expanding the tokens, so
+            # we could just look at the first token's `pre_tags` and the last
+            # token's `post_tags` instead of having to reverse engineer them.
             equal_buffer_delete = []
             equal_buffer_insert = []
             equal_buffer_delete_next = []
             equal_buffer_insert_next = []
             if include_insert and include_delete:
-                merge_change_groups(expand_tokens(html1_tokens[i1:i2], equal=True), equal_buffer_delete, tag_type=None)
-                merge_change_groups(expand_tokens(html2_tokens[j1:j2], equal=True), equal_buffer_insert, tag_type=None)
-
-                logger.debug('---------------------- EQUAL SETUP --------------------------')
-                logger.debug(f'PRE-MUNGE DELETE: {equal_buffer_delete}\n')
-                logger.debug(f'PRE-MUNGE INSERT: {equal_buffer_insert}\n')
+                merge_change_groups(
+                    expand_tokens(html1_tokens[i1:i2], equal=True),
+                    equal_buffer_delete,
+                    tag_type=None)
+                merge_change_groups(
+                    expand_tokens(html2_tokens[j1:j2], equal=True),
+                    equal_buffer_insert,
+                    tag_type=None)
 
                 first_delete_group = -1
                 first_insert_group = -1
@@ -1211,130 +941,14 @@ def new_assemble_diff(html1_tokens, html2_tokens, commands, include='combined'):
                     equal_buffer_insert_next = equal_buffer_insert[last_insert_group + unequal_index:]
                     equal_buffer_insert = equal_buffer_insert[:last_insert_group + unequal_index]
 
-
-
-            # # This almost works! Take the markup before and after the textual insertion and spread it to the changes
-            # # that are before and after.
-            # equal_buffer_delete = []
-            # equal_buffer_insert = []
-            # equal_buffer_delete_next = []
-            # equal_buffer_insert_next = []
-            # if include_insert and include_delete:
-            #     merge_change_groups(expand_tokens(html1_tokens[i1:i2], equal=True), equal_buffer_delete, tag_type=None)
-            #     merge_change_groups(expand_tokens(html2_tokens[j1:j2], equal=True), equal_buffer_insert, tag_type=None)
-
-            #     first_group = -1
-            #     last_group = -1
-            #     for token_index, token in enumerate(equal_buffer_delete):
-            #         if isinstance(token, list):
-            #             if first_group < 0:
-            #                 first_group = token_index
-            #             last_group = token_index
-            #     if last_group > -1:
-            #         equal_buffer_delete_next = equal_buffer_delete[last_group + 1:]
-            #         equal_buffer_delete = equal_buffer_delete[:last_group + 1]
-            #     if first_group > -1 and delete_buffer:
-            #         delete_buffer.extend(equal_buffer_delete[:first_group])
-            #         equal_buffer_delete = equal_buffer_delete[first_group:]
-
-            #     first_group = -1
-            #     last_group = -1
-            #     for token_index, token in enumerate(equal_buffer_insert):
-            #         if isinstance(token, list):
-            #             if first_group < 0:
-            #                 first_group = token_index
-            #             last_group = token_index
-            #     if last_group > -1:
-            #         equal_buffer_insert_next = equal_buffer_insert[last_group + 1:]
-            #         equal_buffer_insert = equal_buffer_insert[:last_group + 1]
-            #     if first_group > -1 and insert_buffer:
-            #         insert_buffer.extend(equal_buffer_insert[:first_group])
-            #         equal_buffer_insert = equal_buffer_insert[first_group:]
-
-
-            # # What if we took the pre- and post-tags off equal ranges and put
-            # # them on the adjacent changes?
-            # if include_insert and include_delete:
-            #     if delete_buffer and insert_buffer:
-            #         # last_buffered_delete = delete_buffer[-1]
-            #         # last_buffered_delete.post_tags.extend(html1_tokens[i1].pre_tags)
-            #         delete_buffer.extend(html1_tokens[i1].pre_tags)
-            #         html1_tokens[i1].pre_tags = []
-            #         # last_buffered_insert = insert_buffer[-1]
-            #         # last_buffered_insert.post_tags.extend(html2_tokens[j1].pre_tags)
-            #         insert_buffer.extend(html2_tokens[j1].pre_tags)
-            #         html2_tokens[j1].pre_tags = []
-            #     if len(html1_tokens) > i2 + 1:
-            #         html1_tokens[i2].pre_tags.extend(html1_tokens[i2 - 1].post_tags)
-            #         html1_tokens[i2 - 1].post_tags = []
-            #     if len(html2_tokens) > j2 + 1:
-            #         html2_tokens[j2].pre_tags.extend(html2_tokens[j2 - 1].post_tags)
-            #         html2_tokens[j2 - 1].post_tags = []
-
             if insert_buffer or delete_buffer:
                 reconcile_change_groups(insert_buffer, delete_buffer, result)
 
             if include_insert and include_delete:
-                logger.debug('------------------ EQUALITY ----------------------')
                 result.extend(flatten_groups(equal_buffer_insert))
                 delete_buffer.extend(equal_buffer_delete_next)
                 insert_buffer.extend(equal_buffer_insert_next)
-                continue
-
-            # # WHOA. EXPERIMENTAL. MOVE POST TAGS ON EQUALITY TO PRE TAGS ON NEXT OP
-            # if include_insert and include_delete:
-            #     inserts = html2_tokens[j1:j2]
-            #     inserts.reverse()
-            #     blank_inserts = []
-            #     for insert in inserts:
-            #         if str(insert) == '' or str(insert) == ' ' or isinstance(insert, SpacerToken) or str(insert) == '\nSPACER':
-            #             blank_inserts.append(insert)
-            #         else:
-            #             blank_inserts.append(insert)
-            #             logger.debug(f'STOPPING AT:::::::: {insert}')
-            #             break
-            #     blank_inserts.reverse()
-            #     for insert in blank_inserts:
-            #         if str(insert) == '' or str(insert) == ' ' or isinstance(insert, SpacerToken) or str(insert) == '\nSPACER':
-            #             insert_buffer.extend(insert.pre_tags)
-            #             insert.pre_tags = []
-            #         insert_buffer.extend(insert.post_tags)
-            #         insert.post_tags = []
-
-            #     inserts = html1_tokens[i1:i2]
-            #     inserts.reverse()
-            #     blank_inserts = []
-            #     for insert in inserts:
-            #         if str(insert) == '' or str(insert) == ' ' or isinstance(insert, SpacerToken) or str(insert) == '\nSPACER':
-            #             blank_inserts.append(insert)
-            #         else:
-            #             blank_inserts.append(insert)
-            #             break
-            #     blank_inserts.reverse()
-            #     for insert in blank_inserts:
-            #         if str(insert) == '' or str(insert) == ' ' or isinstance(insert, SpacerToken) or str(insert) == '\nSPACER':
-            #             delete_buffer.extend(insert.pre_tags)
-            #             insert.pre_tags = []
-            #         delete_buffer.extend(insert.post_tags)
-            #         insert.post_tags = []
-
-
-
-
-
-                # last_insert = html2_tokens[j2 - 1]
-                # insert_buffer.extend(last_insert.post_tags)
-                # last_insert.post_tags = []
-                # last_delete = html1_tokens[i2 - 1]
-                # delete_buffer.extend(last_delete.post_tags)
-                # last_delete.post_tags = []
-
-            if include_insert:
-                expanded = list(expand_tokens(html2_tokens[j1:j2], equal=True))
-                tokenset = html2_tokens[j1:j2]
-                logger.debug('------------------ EQUALITY --------------------')
-                logger.debug(f'  {expanded}\n')
-                logger.debug(f'  FROM {tokenset}\n')
+            elif include_insert:
                 result.extend(expand_tokens(html2_tokens[j1:j2], equal=True))
             else:
                 result.extend(expand_tokens(html1_tokens[i1:i2], equal=True))
@@ -1353,22 +967,40 @@ def new_assemble_diff(html1_tokens, html2_tokens, commands, include='combined'):
                 merge_changes(del_tokens, result, 'del')
 
     reconcile_change_groups(insert_buffer, delete_buffer, result)
-    # result.extend(flatten_groups(insert_buffer, include_non_groups=True))
-    # result.extend(flatten_groups(insert_buffer, include_non_groups=False))
-    # if include_insert and include_delete:
-    #     result = cleanup_delete(result)
-
     return result
 
 
+# TODO: merge and reconcile this with `merge_changes()`, which is 90% the same
+# thing; it just outputs a flat instead of nested list.
 def merge_change_groups(change_chunks, doc, tag_type=None):
     """
-    Merge tokens that were changed into a list of tokens (that represents the
-    whole document) and wrap them with a tag.
+    Group tokens from a flat list of tokens into continuous mark-up-able
+    groups. This mainly means being sensitive to HTML elements that we don't
+    want tags representing changes to intersect with.
 
-    This is largely the same as lxml.html.diff.merge_insert, but allows any
-    tag to be used, since we need to be able to also merge deletions this way,
-    not just insertions.
+    For example, a change element shouldn't cross the boundaries of a `<p>`
+    element. Instead, it should end before the `<p>`, restart again inside the
+    `<p>`, and end and restart again before and after the `</p>` closing tag:
+
+        <ins>Some</ins><p><ins>inserted</ins></p><ins>text</ins>
+
+    While the input to this method is a flat list of tokens, the output is a
+    mixed list of tokens (e.g. the `<p>`) and lists of tokens, which represent
+    runs of tokens that can be fully wrapped in an element to represent changes
+    (like `<ins>`). Note also that the output is not returned, but appended to
+    the second argument (a document, or list of tokens, to output to). So the
+    corresponding data structure to the above would be:
+
+        Input:  ['Some','<p>','inserted','</p>','text']
+        Output: [['<ins>','Some','</ins>'],
+                 '<p>',
+                 ['<ins>','inserted','</ins>'],
+                 '</p>',
+                 ['<ins>','text','</ins>']]
+
+    The last argument, `tag_type` is the name of the tag to wrap the changes
+    in, e.g. `ins`. If set to `None`, changes will still be grouped, but groups
+    will not include wrapping tags.
 
     Parameters
     ----------
@@ -1379,50 +1011,6 @@ def merge_change_groups(change_chunks, doc, tag_type=None):
     tag_type : str
         The type of HTML tag to wrap the changes with.
     """
-    # HOLY MOLY WHAT IS HAPPENING HERE???????? WELL...
-    # The commented out implementation below is basically the same as the
-    # implementation in LXML (with the tweak that you can specify a tag name).
-    # However, it turns out to have had a few big problems:
-    #   1. Because it doesn't include "unbalanced" parts of the change, the
-    #      marked-up content might not actually match the whole change!
-    #
-    #   2. split_unbalanced can *really* screw up the DOM! Take this example:
-    #
-    #      >>> diff.split_unbalanced(['<div1>','hello','</div1>','</div2>','there','</div1>','more'])
-    #      ([], ['<div1>', 'hello', '</div1>', 'there', 'more'], ['</div2>', '</div1>'])
-    #
-    #      See how content got totally moved around? This even that contrived;
-    #      we could have totally valid markup like the above because we are
-    #      working with random fragments of source (not the tree). In the
-    #      example above, the change we're working with could have come right
-    #      after the markup `<div1><div2>Some prefixed text` and it’d be fine.
-    #
-    #   3. This method winds up with `ins/del` elements surrounding block-level
-    #      elements when they should be inside them. The fixup_ins_del_tags
-    #      function that gets run later tries to fix this, but does it poorly:
-    #      It parses and serializes the whole document, which is expensive,
-    #      then it frequently shoves `ins/del` tags in places they aren't
-    #      allowed (e.g. as a child of a `<ul>`), which then causes a browser
-    #      viewing the output to break elements up and destroy the rendering.
-    #
-    # The implementation below solves a bunch of these issues, but is still a
-    # work in progress AND it needs to be implemented for
-    # merge_speculative_deletions, too.
-
-
-    # doc.extend(unbalanced_start)
-    # if doc and not doc[-1].endswith(' '):
-    #     # Fix up the case where the word before the insert didn't end with
-    #     # a space
-    #     doc[-1] += ' '
-    # doc.append(f'<{tag_type}>')
-    # if balanced and balanced[-1].endswith(' '):
-    #     # We move space outside of </ins>
-    #     balanced[-1] = balanced[-1][:-1]
-    # doc.extend(balanced)
-    # doc.append(f'</{tag_type}> ')
-    # doc.extend(unbalanced_end)
-
     depth = 0
     current_content = None
     group = doc
@@ -1531,11 +1119,29 @@ def merge_change_groups(change_chunks, doc, tag_type=None):
             group.append(f'<{nested_tag}>')
 
 
-from collections import namedtuple
 TagInfo = namedtuple('TagInfo', ('name', 'open', 'source'))
 
 
+# TODO: rewrite this in a way that doesn't mutate the input?
 def reconcile_change_groups(insert_groups, delete_groups, document):
+    """
+    Attempt to reconcile a list of grouped tokens (see merge_change_groups())
+    that were deleted with another list of those that were inserted in roughly
+    the same place, resulting in a single, merged list of tokens that displays
+    the two adjacent to each other in a correctly structured DOM.
+
+    The merged list of tokens is appended to `document`, then each list of
+    tokens is cleared.
+
+    The basic idea here is that, where the two lists of tokens diverge, we
+    create speculative branches. When the tokens added to a branch result in a
+    complete tree, we add it to the resulting document. Incomplete insertion
+    branches are added as-is at the end (because the overall combined document
+    follows the structure of the new version of the HTML, not the old), while
+    incomplete deletion branches are either synthetically completed by closing
+    all their open tags (if they contain meaningful changes) or are simply
+    thrown out (if they do not contain meaningful changes).
+    """
     logger.debug('------------------ RECONCILING ----------------------')
     logger.debug(f'  INSERT:\n  {insert_groups}\n')
     logger.debug(f'  DELETE:\n  {delete_groups}\n')
@@ -1545,7 +1151,6 @@ def reconcile_change_groups(insert_groups, delete_groups, document):
     insert_count = len(insert_groups)
     delete_count = len(delete_groups)
 
-    tag_stack = []
     insert_tag_stack = []
     delete_tag_stack = []
     delete_tag_unstack = []
