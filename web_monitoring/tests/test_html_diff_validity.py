@@ -18,7 +18,7 @@ from web_monitoring.html_diff_render import html_diff_render
 def test_html_diff_render_does_not_encode_embedded_content():
     html = '<script>console.log("uhoh");</script> ok ' \
            '<style>body {font-family: "arial";}</style>'
-    result = html_diff_render(f'Hi! {html}', f'Bye {html}')['diff']
+    result = html_diff_render(f'Hi! {html}', f'Bye {html}')['combined']
     assert '&quot;' not in result
 
 
@@ -47,7 +47,7 @@ def test_html_diff_render_doesnt_move_script_content_into_page_text():
     #     <del>{json: 'old data};</del>
     #   </div>
     # Note how the deleted script code got extracted out into page text.
-    result = html_diff_render(a, b)['diff']
+    result = html_diff_render(a, b)['combined']
 
     # if we remove scripts from the result we should have an empty <div>
     body = re.search(r'(?s)<body>(.*)</body>', result)[1]
@@ -59,5 +59,6 @@ def test_html_diff_render_doesnt_move_script_content_into_page_text():
 @pytest.mark.skip(reason='lxml parser does not support CDATA in html')
 def test_html_diff_render_preserves_cdata_content():
     html = '<foo>A CDATA section: <![CDATA[ <hi>yes</hi> ]]> {}.</foo>'
-    result = html_diff_render(html.format('old'), html.format('new'))['diff']
+    results = html_diff_render(html.format('old'), html.format('new'))
+    result = results['combined']
     assert re.match(r'(&lt;hi&gt;)|(<!\[CDATA\[\s*<hi>)', result) is not None
