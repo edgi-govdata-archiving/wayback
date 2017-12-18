@@ -18,6 +18,7 @@ For now, you can mentally divide this module into two sections:
 from bs4 import BeautifulSoup, Comment
 import copy
 import html
+import logging
 from lxml.html.diff import (tokenize, htmldiff_tokens, fixup_ins_del_tags,
                             href_token, tag_token, InsensitiveSequenceMatcher,
                             expand_tokens, merge_delete,
@@ -25,6 +26,8 @@ from lxml.html.diff import (tokenize, htmldiff_tokens, fixup_ins_del_tags,
 from lxml.html.diff import token as DiffToken
 from difflib import SequenceMatcher
 from .differs import compute_dmp_diff
+
+logger = logging.getLogger(__name__)
 
 # This *really* means don't cross the boundaries of these elements with insertion/deletion elements. Instead, break the insertions and deletions in two.
 # TODO: custom elements are iffy here. Maybe include them? (any tag with a `-` in the name)
@@ -263,15 +266,15 @@ def html_diff_render(a_text, b_text, include='combined'):
         # results in a non-navigable soup. So we serialize and re-parse :(
         # (Note we use no formatter for this because proper encoding escape the
         # tags our differ generated.)
-        # print('PRE-RE-PARSE YO:::::::::\n' + soup.prettify(formatter=None) + '\n\n\n')
+        # logger.debug('PRE-RE-PARSE YO:::::::::\n' + soup.prettify(formatter=None) + '\n\n\n')
         soup = BeautifulSoup(soup.prettify(formatter=None), 'lxml')
         soup = _add_undiffable_content(
             soup,
             replacements,
             diff_type == 'combined')
         results[diff_type] = soup.prettify(formatter='minimal')
-        # print('UNFORMATTED YO:::::::::\n' + soup.prettify(formatter=None) + '\n\n\n')
-        # print('FINAL YO::::::::::\n' + soup.prettify(formatter='minimal'))
+        # logger.debug('UNFORMATTED YO:::::::::\n' + soup.prettify(formatter=None) + '\n\n\n')
+        # logger.debug('FINAL YO::::::::::\n' + soup.prettify(formatter='minimal'))
 
     return results
 
@@ -402,7 +405,7 @@ def _htmldiff(old, new, include='all'):
     new_tokens = _customize_tokens(new_tokens)
     # result = htmldiff_tokens(old_tokens, new_tokens)
     # result = diff_tokens(old_tokens, new_tokens) #, include='delete')
-    print('CUSTOMIZED!')
+    logger.debug('CUSTOMIZED!')
 
     # HACK: The whole "spacer" token thing above in this code triggers the
     # `autojunk` mechanism in SequenceMatcher, so we need to explicitly turn
@@ -517,7 +520,7 @@ def _customize_tokens(tokens):
     # TODO: when we get around to also forking the parse/tokenize part of this
     # diff, do this as part of the original tokenization instead.
     for token_index, token in enumerate(tokens):
-        # print(f'Handling token {token_index}: {token}')
+        # logger.debug(f'Handling token {token_index}: {token}')
         if token_index == 0:
             continue
         previous = tokens[token_index - 1]
@@ -545,14 +548,14 @@ def _customize_tokens(tokens):
                 token.pre_tags = []
 
 
-        # print(f'  Result...\n    pre: {token.pre_tags}\n    token: "{token}"\n    post: {token.post_tags}')
+        # logger.debug(f'  Result...\n    pre: {token.pre_tags}\n    token: "{token}"\n    post: {token.post_tags}')
 
     result = []
     # for token in tokens:
     for token_index, token in enumerate(tokens):
         # if str(token).lower().startswith('impacts'):
         # if str(token).lower().startswith('although'):
-        #     print(f'SPECIAL TAG!\n  pre: {token.pre_tags}\n  token: "{token}"\n  post: {token.post_tags}')
+        #     logger.debug(f'SPECIAL TAG!\n  pre: {token.pre_tags}\n  token: "{token}"\n  post: {token.post_tags}')
 
         # hahaha, this is crazy. But anyway, insert "spacers" that have
         # identical text the diff algorithm can latch onto as an island of
@@ -616,9 +619,9 @@ def _customize_tokens(tokens):
         result.append(customized)
 
         if str(customized) == "Posts" and str(tokens[token_index - 1]) == 'Other' and str(tokens[token_index - 2]) == 'and': # and str(tokens[token_index - 3]) == 'posts':
-            print(f'SPECIAL TAG!\n  pre: {token.pre_tags}\n  token: "{token}"\n  post: {token.post_tags}')
+            logger.debug(f'SPECIAL TAG!\n  pre: {token.pre_tags}\n  token: "{token}"\n  post: {token.post_tags}')
             next_token = tokens[token_index + 1]
-            print(f'SPECIAL TAG!\n  pre: {next_token.pre_tags}\n  token: "{next_token}"\n  post: {next_token.post_tags}')
+            logger.debug(f'SPECIAL TAG!\n  pre: {next_token.pre_tags}\n  token: "{next_token}"\n  post: {next_token.post_tags}')
             for tag_index, tag in enumerate(customized.post_tags):
                 if tag.startswith('</ul>'):
                     new_token = SpacerToken(SPACER_STRING)
@@ -631,8 +634,8 @@ def _customize_tokens(tokens):
         #     result.append(SpacerToken(SPACER_STRING))
         #     result.append(SpacerToken(SPACER_STRING))
         #     result.append(SpacerToken(SPACER_STRING))
-        #     print(f'IMAGE TOKEN:')
-        #     print(f'  pre: {customized.pre_tags}\n  token: "{customized}"\n  post: {customized.post_tags}')
+        #     logger.debug(f'IMAGE TOKEN:')
+        #     logger.debug(f'  pre: {customized.pre_tags}\n  token: "{customized}"\n  post: {customized.post_tags}')
 
         # if len(customized.post_tags) > 0:
         #     result.append(SpacerToken('', post_tags=customized.post_tags))
@@ -680,7 +683,7 @@ def _has_separation_tags(tag_list):
     for index, tag in enumerate(tag_list):
         for name in SEPARATABLE_TAGS:
             if tag.startswith(f'<{name}') or tag.startswith(f'</{name}'):
-                print(f'Separating on: {name}')
+                logger.debug(f'Separating on: {name}')
                 return True
         if 'id=' in tag:
             return True
@@ -707,7 +710,7 @@ def _customize_token(token):
             post_tags=token.post_tags,
             trailing_whitespace=token.trailing_whitespace)
     elif isinstance(token, tag_token) and token.tag == 'img':
-        # print('TAG TOKEN: %s' % token)
+        # logger.debug('TAG TOKEN: %s' % token)
         return ImgTagToken(
             'img',
             data=token.data,
@@ -762,13 +765,13 @@ def assemble_diff(html1_tokens, html2_tokens, commands, include='combined'):
             if include_insert:
                 token = html2_tokens[j2 - 1]
                 token2 = html1_tokens[i2 - 1]
-                print(f'Ending equality with...')
-                print(f'  pre: {token2.pre_tags}\n  token: "{token2}"\n  post: {token2.post_tags}')
-                print(f'  --vs--\n  pre: {token.pre_tags}\n  token: "{token}"\n  post: {token.post_tags}')
+                logger.debug(f'Ending equality with...')
+                logger.debug(f'  pre: {token2.pre_tags}\n  token: "{token2}"\n  post: {token2.post_tags}')
+                logger.debug(f'  --vs--\n  pre: {token.pre_tags}\n  token: "{token}"\n  post: {token.post_tags}')
                 if html2_tokens[j2 - 1].post_tags and not html1_tokens[i2 - 1].post_tags:
                     buffer.extend(html2_tokens[j2 - 1].post_tags)
                     html2_tokens[j2 - 1].post_tags = []
-                    print('Buffering!')
+                    logger.debug('Buffering!')
                 # else:
                 #     last_delete = html1_tokens[i2 - 1]
                 #     last_insert = html2_tokens[j2 - 1]
@@ -776,7 +779,7 @@ def assemble_diff(html1_tokens, html2_tokens, commands, include='combined'):
                 #        and not (_has_heading_tags(last_delete.post_tags) or _has_separation_tags(last_delete.post_tags)):
                 #         post_equality.extend(html2_tokens[j2 - 1].post_tags)
                 #         html2_tokens[j2 - 1].post_tags = []
-                #         print('POST_EQUALIZING')
+                #         logger.debug('POST_EQUALIZING')
                 result.extend(expand_tokens(html2_tokens[j1:j2], equal=True))
             else:
                 result.extend(expand_tokens(html1_tokens[i1:i2], equal=True))
@@ -786,18 +789,18 @@ def assemble_diff(html1_tokens, html2_tokens, commands, include='combined'):
                 result.extend(post_equality)
                 post_equality = []
             if command == 'insert':
-                print(f'INSERTING at {j1}:{j2} (old doc {i1}:{i2})')
+                logger.debug(f'INSERTING at {j1}:{j2} (old doc {i1}:{i2})')
             else:
-                print(f'REPLACING at {j1}:{j2} (old doc {i1}:{i2})')
+                logger.debug(f'REPLACING at {j1}:{j2} (old doc {i1}:{i2})')
 
-            print('Starting INSERTION with...')
+            logger.debug('Starting INSERTION with...')
             for insert_token in html1_tokens[i1:i2]:
                 nice_token = insert_token.replace('\n', '\\n')
-                print(f'    {insert_token.pre_tags} "{nice_token}" {insert_token.post_tags}')
-            print(f'  --vs--')
+                logger.debug(f'    {insert_token.pre_tags} "{nice_token}" {insert_token.post_tags}')
+            logger.debug(f'  --vs--')
             for insert_token in html2_tokens[j1:j2]:
                 nice_token = insert_token.replace('\n', '\\n')
-                print(f'    {insert_token.pre_tags} "{nice_token}" {insert_token.post_tags}')
+                logger.debug(f'    {insert_token.pre_tags} "{nice_token}" {insert_token.post_tags}')
 
             should_buffer = False
             # if command == 'replace':
@@ -805,23 +808,23 @@ def assemble_diff(html1_tokens, html2_tokens, commands, include='combined'):
             #     last_insert = html2_tokens[j2 - 1]
             #     if (_has_heading_tags(last_insert.post_tags) or _has_separation_tags(last_insert.post_tags)) \
             #        and not (_has_heading_tags(last_delete.post_tags) or _has_separation_tags(last_delete.post_tags)):
-            #         print('BUFFERING')
+            #         logger.debug('BUFFERING')
             #         should_buffer = True
 
             # token = html2_tokens[j1]
             # token2 = html1_tokens[i1]
-            # print(f'Starting INSERTION with...')
-            # print(f'  pre: {token.pre_tags}\n  token: "{token}"\n  post: {token.post_tags}')
-            # print(f'  --vs--\n  pre: {token2.pre_tags}\n  token: "{token2}"\n  post: {token2.post_tags}')
+            # logger.debug(f'Starting INSERTION with...')
+            # logger.debug(f'  pre: {token.pre_tags}\n  token: "{token}"\n  post: {token.post_tags}')
+            # logger.debug(f'  --vs--\n  pre: {token2.pre_tags}\n  token: "{token2}"\n  post: {token2.post_tags}')
 
             # token = html2_tokens[j2 - 1]
             # token2 = html1_tokens[i2 - 1]
-            # print(f'Ending INSERTION with...')
-            # print(f'  pre: {token.pre_tags}\n  token: "{token}"\n  post: {token.post_tags}')
-            # print(f'  --vs--\n  pre: {token2.pre_tags}\n  token: "{token2}"\n  post: {token2.post_tags}')
+            # logger.debug(f'Ending INSERTION with...')
+            # logger.debug(f'  pre: {token.pre_tags}\n  token: "{token}"\n  post: {token.post_tags}')
+            # logger.debug(f'  --vs--\n  pre: {token2.pre_tags}\n  token: "{token2}"\n  post: {token2.post_tags}')
 
             # if buffer:
-            #     print(f'Insert Unbuffering: {buffer}')
+            #     logger.debug(f'Insert Unbuffering: {buffer}')
             # result.extend(buffer)
             # buffer = []
             ins_tokens = expand_tokens(html2_tokens[j1:j2])
@@ -842,7 +845,7 @@ def assemble_diff(html1_tokens, html2_tokens, commands, include='combined'):
                 merge_changes(del_tokens, result, 'del')
 
             if buffer:
-                print(f'Delete Unbuffering: {buffer}')
+                logger.debug(f'Delete Unbuffering: {buffer}')
             result.extend(buffer)
             buffer = []
             if post_equality:
@@ -883,8 +886,8 @@ def merge_changes(change_chunks, doc, tag_type='ins'):
     # # document), we only put <ins> around the balanced portion.
     change_chunks = list(change_chunks)
     unbalanced_start, balanced, unbalanced_end = split_unbalanced(change_chunks)
-    print('------------- INSERTING CHANGE ---------------')
-    print(f'  [START] {unbalanced_start}\n  <{tag_type}>\n  {balanced}\n  </{tag_type}>\n  {unbalanced_end}')
+    logger.debug('------------- INSERTING CHANGE ---------------')
+    logger.debug(f'  [START] {unbalanced_start}\n  <{tag_type}>\n  {balanced}\n  </{tag_type}>\n  {unbalanced_end}')
 
     # HOLY MOLY WHAT IS HAPPENING HERE???????? WELL...
     # The commented out implementation below is basically the same as the
@@ -1154,9 +1157,9 @@ def new_assemble_diff(html1_tokens, html2_tokens, commands, include='combined'):
                 merge_change_groups(expand_tokens(html1_tokens[i1:i2], equal=True), equal_buffer_delete, tag_type=None)
                 merge_change_groups(expand_tokens(html2_tokens[j1:j2], equal=True), equal_buffer_insert, tag_type=None)
 
-                print('---------------------- EQUAL SETUP --------------------------')
-                print(f'PRE-MUNGE DELETE: {equal_buffer_delete}\n')
-                print(f'PRE-MUNGE INSERT: {equal_buffer_insert}\n')
+                logger.debug('---------------------- EQUAL SETUP --------------------------')
+                logger.debug(f'PRE-MUNGE DELETE: {equal_buffer_delete}\n')
+                logger.debug(f'PRE-MUNGE INSERT: {equal_buffer_insert}\n')
 
                 first_delete_group = -1
                 first_insert_group = -1
@@ -1272,8 +1275,8 @@ def new_assemble_diff(html1_tokens, html2_tokens, commands, include='combined'):
                 reconcile_change_groups(insert_buffer, delete_buffer, result)
 
             if include_insert and include_delete:
-                print('------------------ EQUALITY ----------------------')
-                reconcile_change_groups(equal_buffer_insert, [], result)
+                logger.debug('------------------ EQUALITY ----------------------')
+                result.extend(flatten_groups(equal_buffer_insert))
                 delete_buffer.extend(equal_buffer_delete_next)
                 insert_buffer.extend(equal_buffer_insert_next)
                 continue
@@ -1288,7 +1291,7 @@ def new_assemble_diff(html1_tokens, html2_tokens, commands, include='combined'):
             #             blank_inserts.append(insert)
             #         else:
             #             blank_inserts.append(insert)
-            #             print(f'STOPPING AT:::::::: {insert}')
+            #             logger.debug(f'STOPPING AT:::::::: {insert}')
             #             break
             #     blank_inserts.reverse()
             #     for insert in blank_inserts:
@@ -1329,9 +1332,9 @@ def new_assemble_diff(html1_tokens, html2_tokens, commands, include='combined'):
             if include_insert:
                 expanded = list(expand_tokens(html2_tokens[j1:j2], equal=True))
                 tokenset = html2_tokens[j1:j2]
-                print('------------------ EQUALITY --------------------')
-                print(f'  {expanded}\n')
-                print(f'  FROM {tokenset}\n')
+                logger.debug('------------------ EQUALITY --------------------')
+                logger.debug(f'  {expanded}\n')
+                logger.debug(f'  FROM {tokenset}\n')
                 result.extend(expand_tokens(html2_tokens[j1:j2], equal=True))
             else:
                 result.extend(expand_tokens(html1_tokens[i1:i2], equal=True))
@@ -1533,9 +1536,9 @@ TagInfo = namedtuple('TagInfo', ('name', 'open', 'source'))
 
 
 def reconcile_change_groups(insert_groups, delete_groups, document):
-    print('------------------ RECONCILING ----------------------')
-    print(f'  INSERT:\n  {insert_groups}\n')
-    print(f'  DELETE:\n  {delete_groups}\n')
+    logger.debug('------------------ RECONCILING ----------------------')
+    logger.debug(f'  INSERT:\n  {insert_groups}\n')
+    logger.debug(f'  DELETE:\n  {delete_groups}\n')
     start_index = len(document)
     insert_index = 0
     delete_index = 0
@@ -1590,7 +1593,7 @@ def reconcile_change_groups(insert_groups, delete_groups, document):
                             delete_tag_unstack.append(active_tag)
                             delete_tag_unstack.append(tag)
                         if not delete_tag_unstack:
-                            print(f'INSERTING DELETE UNSTACK BUFFER: {delete_buffer}')
+                            logger.debug(f'INSERTING DELETE UNSTACK BUFFER: {delete_buffer}')
                             document.extend(delete_buffer)
                             delete_buffer.clear()
                             buffer = document
@@ -1605,12 +1608,12 @@ def reconcile_change_groups(insert_groups, delete_groups, document):
                         while delete_tag_stack and active_tag.name != tag.name:
                             active_tag = delete_tag_stack.pop()
                         if active_tag.name != tag.name:
-                            print(f'WARN:::Close tag with no corresponding open tag found in deletions ({tag})')
+                            logger.warning(f'Close tag with no corresponding open tag found in deletions ({tag})')
                             break
                         delete_buffer.append(deletion)
                         delete_index += 1
                         if not delete_tag_stack:
-                            print(f'INSERTING DELETE BUFFER: {delete_buffer}')
+                            logger.debug(f'INSERTING DELETE BUFFER: {delete_buffer}')
                             document.extend(delete_buffer)
                             delete_buffer.clear()
                             buffer = document
@@ -1628,7 +1631,7 @@ def reconcile_change_groups(insert_groups, delete_groups, document):
                                 delete_buffer.append(deletion)
                                 delete_index += 1
                             else:
-                                print('WARN:::Close tag with no corresponding open tag found in unstacking deletions')
+                                logger.warning('Close tag with no corresponding open tag found in unstacking deletions')
                                 break
                         else:
                             delete_tag_unstack.append(tag)
@@ -1644,6 +1647,7 @@ def reconcile_change_groups(insert_groups, delete_groups, document):
         elif insertion:
             # if we have a hanging delete buffer (with content, not just HTML
             # DOM structure), clean it up and insert it before moving on.
+            # FIXME: this should not look explicitly for `<del>`
             if '<del>' in delete_buffer:
                 for tag in delete_tag_stack:
                     delete_buffer.append(f'</{tag[0]}>')
@@ -1664,7 +1668,7 @@ def reconcile_change_groups(insert_groups, delete_groups, document):
                         while insert_tag_stack and active_tag.name != tag.name:
                             active_tag = insert_tag_stack.pop()
                         if active_tag.name != tag.name:
-                            print('WARN:::Close tag with no corresponding open tag found in insertions')
+                            logger.warning('Close tag with no corresponding open tag found in insertions')
                             break
                         insert_buffer.append(insertion)
                         insert_index += 1
@@ -1688,6 +1692,7 @@ def reconcile_change_groups(insert_groups, delete_groups, document):
 
     # Add any hanging buffer of deletes that never got completed, but only if
     # it has salient changes in it.
+    # FIXME: this should not look explicitly for `<del>`
     if '<del>' in delete_buffer:
         for tag in delete_tag_stack:
             delete_buffer.append(f'</{tag[0]}>')
@@ -1699,7 +1704,7 @@ def reconcile_change_groups(insert_groups, delete_groups, document):
     delete_groups.clear()
 
     result = document[start_index:]
-    print(f'  RESULT:\n  {result}\n')
+    logger.debug(f'  RESULT:\n  {result}\n')
 
     return document
 

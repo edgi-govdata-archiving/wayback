@@ -2,6 +2,8 @@ import concurrent.futures
 from docopt import docopt
 import hashlib
 import inspect
+import logging
+import os
 import tornado.gen
 import tornado.httpclient
 import tornado.ioloop
@@ -12,6 +14,9 @@ import web_monitoring.differs
 import web_monitoring.html_diff_render
 import web_monitoring.links_diff
 
+if os.environ.get('LOG_LEVEL'):
+    level = os.environ['LOG_LEVEL'].upper()
+    logging.basicConfig(level=getattr(logging, level))
 
 # Map tokens in the REST API to functions in modules.
 # The modules do not have to be part of the web_monitoring package.
