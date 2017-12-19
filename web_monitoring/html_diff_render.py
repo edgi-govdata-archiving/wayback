@@ -270,6 +270,9 @@ def html_diff_render(a_text, b_text, include='combined'):
         # (Note we use no formatter for this because proper encoding escapes
         # the tags our differ generated.)
         soup = BeautifulSoup(soup.prettify(formatter=None), 'lxml')
+        runtime_scripts = soup.new_tag('script', id='wm-diff-script')
+        runtime_scripts.string = UPDATE_CONTRAST_SCRIPT
+        soup.body.append(runtime_scripts)
         soup = _add_undiffable_content(
             soup,
             replacements,
@@ -1324,3 +1327,50 @@ def flatten_groups(groups, include_non_groups=True):
             flat.append(item)
 
     return flat
+
+
+UPDATE_CONTRAST_SCRIPT = """
+    (function () {
+        // Update the text color of change elements to ensure a readable level
+        // of contrast with the background color
+        function parseColor (colorString) {
+            const components = colorString.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*(\d+)\s*)?\)/);
+            return {
+                red: Number(components[1]),
+                green: Number(components[2]),
+                blue: Number(components[3]),
+                alpha: components[4] == null ? 1 : Number(components[4])
+            };
+        }
+
+        function normalizeChannel (integerValue) {
+            const scaled = integerValue / 255;
+            if (scaled < 0.03928) {
+                return scaled / 12.92;
+            }
+            return Math.pow((scaled + 0.055) / 1.055, 2.4);
+        }
+
+        // See https://www.w3.org/TR/WCAG/#relativeluminancedef
+        function srgbRelativeLuminance (color) {
+            return 0.2126 * normalizeChannel(color.red)
+                + 0.7152 * normalizeChannel(color.green)
+                + 0.0722 * normalizeChannel(color.blue);
+        }
+
+        // See https://www.w3.org/TR/WCAG/#contrast-ratiodef
+        function contrastRatio (a, b) {
+            const luminanceA = srgbRelativeLuminance(a) + 0.05;
+            const luminanceB = srgbRelativeLuminance(b) + 0.05;
+            return Math.max(luminanceA, luminanceB) / Math.min(luminanceA, luminanceB);
+        }
+
+        document.querySelectorAll('ins,del').forEach(element => {
+            const color = parseColor(getComputedStyle(element).color);
+            const background = parseColor(getComputedStyle(element).backgroundColor);
+            if (contrastRatio(color, background) < 4) {
+                element.style.color = '#000';
+            }
+        });
+    })();
+"""
