@@ -32,7 +32,8 @@ def links_diff(a_text, b_text):
         del {text-decoration: none; background-color: #fbb6c2;}"""
     new_links.head.append(change_styles)
 
-    return new_links.prettify(formatter=None)
+    # TODO Count changes.
+    return {'diff': new_links.prettify(formatter=None)}
 
 
 def _find_outgoing_links(soup):
