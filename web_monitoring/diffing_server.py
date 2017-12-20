@@ -15,8 +15,7 @@ import web_monitoring.html_diff_render
 import web_monitoring.links_diff
 
 if os.environ.get('LOG_LEVEL'):
-    level = os.environ['LOG_LEVEL'].upper()
-    logging.basicConfig(level=getattr(logging, level))
+    logging.basicConfig(level=os.environ['LOG_LEVEL'].upper())
 
 # Map tokens in the REST API to functions in modules.
 # The modules do not have to be part of the web_monitoring package.
