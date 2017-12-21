@@ -16,7 +16,7 @@ For now, you can mentally divide this module into two sections:
 """
 
 from bs4 import BeautifulSoup, Comment
-from collections import namedtuple
+from collections import Counter, namedtuple
 import copy
 import html
 import logging
@@ -161,8 +161,8 @@ ACTIVE_ELEMENTS = ('script', 'style')
 # out we've seen a variety of real-world situations where tags flip from inline
 # markup to headings or headings nested by themselves (!) in other structural
 # markup, making them cause frequent problems if included here.
-SEPARATABLE_TAGS = ['blockquote', 'section', 'article', 'header', 'footer',
-                    'pre', 'ul', 'ol', 'li', 'table', 'p']
+SEPARATABLE_TAGS = ('blockquote', 'section', 'article', 'header', 'footer',
+                    'pre', 'ul', 'ol', 'li', 'table', 'p')
 # SEPARATABLE_TAGS = block_level_tags
 
 
@@ -424,21 +424,12 @@ def _htmldiff(old, new, include='all'):
 
 
 def _count_changes(opcodes):
-    results = {
-        'change_count': 0,
-        'deletion_count': 0,
-        'insertion_count': 0,
+    counts = Counter(map(lambda operation: operation[0], opcodes))
+    return {
+        'change_count': counts['insert'] + counts['delete'] + 2 * counts['replace'],
+        'deletion_count': counts['delete'] + counts['replace'],
+        'insertion_count': counts['insert'] + counts['replace'],
     }
-
-    for command, *rest in opcodes:
-        if command == 'insert' or command == 'replace':
-            results['insertion_count'] += 1
-            results['change_count'] += 1
-        if command == 'delete' or command == 'replace':
-            results['deletion_count'] += 1
-            results['change_count'] += 1
-
-    return results
 
 
 class MinimalHrefToken(href_token):
