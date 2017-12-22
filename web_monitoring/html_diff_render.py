@@ -427,8 +427,8 @@ def _count_changes(opcodes):
     counts = Counter(map(lambda operation: operation[0], opcodes))
     return {
         'change_count': counts['insert'] + counts['delete'] + 2 * counts['replace'],
-        'deletion_count': counts['delete'] + counts['replace'],
-        'insertion_count': counts['insert'] + counts['replace'],
+        'deletions_count': counts['delete'] + counts['replace'],
+        'insertions_count': counts['insert'] + counts['replace'],
     }
 
 

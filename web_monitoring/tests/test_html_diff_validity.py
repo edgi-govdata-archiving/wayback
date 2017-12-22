@@ -62,3 +62,14 @@ def test_html_diff_render_preserves_cdata_content():
     results = html_diff_render(html.format('old'), html.format('new'))
     result = results['combined']
     assert re.match(r'(&lt;hi&gt;)|(<!\[CDATA\[\s*<hi>)', result) is not None
+
+
+def test_html_diff_render_should_count_changes():
+    results = html_diff_render(
+        'Here is some HTML that really has been <em>changed</em>.',
+        'Here is some HTML; it really has definitely been <em>changed</em>!')
+
+    assert isinstance(results['change_count'], int)
+    assert isinstance(results['insertions_count'], int)
+    assert isinstance(results['deletions_count'], int)
+    assert results['change_count'] == results['insertions_count'] + results['deletions_count']
