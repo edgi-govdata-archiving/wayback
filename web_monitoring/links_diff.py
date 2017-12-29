@@ -21,7 +21,8 @@ def links_diff(a_text, b_text):
     old_links = _create_link_soup(soup_old)
     new_links = _create_link_soup(soup_new)
 
-    new_links.body.replace_with(diff_elements(old_links.body, new_links.body))
+    metadata, diffs = diff_elements(old_links.body, new_links.body, 'combined')
+    new_links.body.replace_with(diffs['combined'])
 
     change_styles = new_links.new_tag(
         'style',
@@ -32,8 +33,8 @@ def links_diff(a_text, b_text):
         del {text-decoration: none; background-color: #fbb6c2;}"""
     new_links.head.append(change_styles)
 
-    # TODO Count changes.
-    return {'diff': new_links.prettify(formatter=None)}
+    metadata['diff'] = new_links.prettify(formatter=None)
+    return metadata
 
 
 def _find_outgoing_links(soup):

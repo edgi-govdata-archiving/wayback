@@ -12,7 +12,6 @@ import web_monitoring.differs
 import web_monitoring.html_diff_render
 import web_monitoring.links_diff
 
-
 # Map tokens in the REST API to functions in modules.
 # The modules do not have to be part of the web_monitoring package.
 DIFF_ROUTES = {
