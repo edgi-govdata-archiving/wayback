@@ -7,11 +7,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Set the working directory to /app
 WORKDIR /app
 
-# Copy the current directory contents into the container at /app
-ADD . /app
+# Copy the requirements.txt alone into the container at /app
+# so that they can be cached more aggressively than the rest of the source.
+ADD requirements.txt /app
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
+
+# Copy the rest of the source.
+ADD . /app
 
 # Install package.
 RUN pip install .
