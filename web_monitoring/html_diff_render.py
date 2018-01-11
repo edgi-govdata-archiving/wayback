@@ -204,7 +204,10 @@ def html_diff_render(a_text, b_text, include='combined'):
     [element.extract() for element in
      soup_new.find_all(string=lambda text:isinstance(text, Comment))]
 
-    # Ensure the new soup (which we will modify and return) has a `<head>`
+    # Ensure the soups (which we will modify and return) each have a `<head>`
+    if not soup_old.head:
+        head = soup_old.new_tag('head')
+        soup_old.html.insert(0, head)
     if not soup_new.head:
         head = soup_new.new_tag('head')
         soup_new.html.insert(0, head)

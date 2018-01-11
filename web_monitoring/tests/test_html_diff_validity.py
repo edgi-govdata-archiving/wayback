@@ -15,6 +15,13 @@ from web_monitoring.html_diff_render import html_diff_render
 # `test_html_diff.py`. Most of these are written generically enough they could
 # feasibly work with any visual HTML diff routine.
 
+def test_html_diff_render_works_on_pages_with_no_head():
+    result = html_diff_render('<html><body>Hello</body></html>',
+                              '<html><body>Goodbye</body></html>',
+                              include='deletions')
+    assert result
+
+
 def test_html_diff_render_does_not_encode_embedded_content():
     html = '<script>console.log("uhoh");</script> ok ' \
            '<style>body {font-family: "arial";}</style>'
