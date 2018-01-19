@@ -30,8 +30,6 @@ Working and Under Active Development:
 
 Legacy projects that may be revisited:
 * [Example HTML](https://github.com/edgi-govdata-archiving/web-monitoring-processing/tree/master/archives) providing useful test cases.
-* An experiment with the [newspaper
-  module](https://github.com/edgi-govdata-archiving/web-monitoring-processing/tree/master/get_article_text).
 
 ## Installation Instructions
 
@@ -83,3 +81,15 @@ Legacy projects that may be revisited:
    ```
 
    Any additional arguments are passed through to `py.test`.
+
+## Docker
+
+The Dockerfile runs ``wm-diffing-server`` on port 80 in the container. To build
+and run:
+
+```
+docker build -t processing .
+docker run -p 4000:80 processing
+```
+
+Point your browser or ``curl`` at ``http://localhost:4000``.
