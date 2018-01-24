@@ -1,7 +1,10 @@
 from bs4 import BeautifulSoup
 from .content_type import raise_if_not_diffable_html
+from collections import Counter
+from .differs import compute_dmp_diff
 from difflib import SequenceMatcher
-from .html_diff_render import get_title
+from .html_diff_render import get_title, _html_for_dmp_operation
+import re
 
 
 def links_diff(a_text, b_text, a_headers=None, b_headers=None,
@@ -45,8 +48,16 @@ def links_diff(a_text, b_text, a_headers=None, b_headers=None,
         type='text/css',
         id='wm-diff-style')
     change_styles.string = """
-        ins {text-decoration: none; background-color: #d4fcbc;}
-        del {text-decoration: none; background-color: #fbb6c2;}"""
+        body { margin: 0; }
+        ul { margin: 0; padding: 0; }
+        li { opacity: 0.5; padding: 0.2em 1.5em; }
+        li::before { content: "•"; position: absolute; left: 0.5em; }
+        [wm-has-deletions], [wm-has-insertions] { opacity: 1; }
+        [wm-has-deletions] { background-color: #ffeef0; }
+        [wm-has-insertions] { background-color: #e6ffed; }
+        [wm-has-deletions][wm-has-insertions] { background-color: #eee; }
+        ins { text-decoration: none; background-color: #acf2bd; }
+        del { text-decoration: none; background-color: #fdb8c0; }"""
     soup.head.append(change_styles)
     soup.title.string = get_title(soup_new)
 
@@ -70,15 +81,26 @@ class Link:
         return cls(element['href'], _get_link_text(element))
 
     def __init__(self, href, text):
-        self.href = href
+        # TODO: add a `url` so we can differentiate the href and the actual
+        # target of the link (in the case of paths rather than URLs)
+        # This requires knowing the base origin and path for the link.
+        self.href = self._clean_href(href)
         self.text = text.strip()
 
     def __hash__(self):
-        # TODO: compare lower-cased origin for href part
         return hash((self.href, self.text.lower()))
 
     def __eq__(self, other):
-        return self.href == other.href and self.text == other.text
+        # This is actually a "rough" equality check -- trying to get a sense
+        # of whether two links are the same "thing" even if they have
+        # internal differences in their text or href.
+        return self.href == other.href or self.text.lower() == other.text.lower()
+
+    def _clean_href(self, href):
+        origin_match = re.match(r'^([\w+\-]+:)?//[^/]+', href)
+        if origin_match:
+            return origin_match.group(0).lower() + href[origin_match.end(0):]
+        return href
 
 
 def _find_outgoing_links(soup):
@@ -113,21 +135,57 @@ def _create_empty_soup(title=''):
         """, 'lxml')
 
 
-def _create_link_listing(link, soup, wrap=None):
+def _create_link_listing(link, soup, change_type=None):
     """
     Create an element to display in the list of links.
     """
     listing = soup.new_tag('li')
-    container = wrap or listing
+    container = listing
+    if change_type:
+        if change_type == 'insertion':
+            container = soup.new_tag('ins')
+            listing['wm-has-insertions'] = 'true'
+            listing['wm-inserted'] = 'true'
+        else:
+            container = soup.new_tag('del')
+            listing['wm-has-deletions'] = 'true'
+            listing['wm-deleted'] = 'true'
+        listing.append(container)
 
     container.append(link.text + ' ')
-
     url_link = soup.new_tag('a', href=link.href)
     url_link.string = f'({link.href})'
     container.append(url_link)
 
-    if wrap:
-        listing.append(wrap)
+    return listing
+
+
+def _create_link_diff_listing(text_diff, href_diff, hrefs, soup):
+    """
+    Create an element to display in the list of links.
+    """
+    listing = soup.new_tag('li')
+
+    text = ''.join(map(_html_for_dmp_operation, text_diff))
+    listing.append(text + ' ')
+
+    link_text = ''.join(map(_html_for_dmp_operation, href_diff))
+    url_link = soup.new_tag('a', href=hrefs[1])
+    url_link.string = f'({link_text})'
+    listing.append(url_link)
+
+    if len(href_diff) > 1:
+        original_link = soup.new_tag('a', href=hrefs[0])
+        original_link.string = f'(original link)'
+        listing.append(' ')
+        listing.append(original_link)
+
+    text_counts = Counter(map(lambda operation: operation[0], text_diff))
+    href_counts = Counter(map(lambda operation: operation[0], href_diff))
+    if text_counts[1] > 0 or href_counts[1] > 0:
+        listing['wm-has-insertions'] = 'true'
+    if text_counts[-1] > 0 or href_counts[-1] > 0:
+        listing['wm-has-deletions'] = 'true'
 
     return listing
 
@@ -169,21 +227,31 @@ def _assemble_diff(a, b, opcodes):
 
     for command, a_start, a_end, b_start, b_end in opcodes:
         if command == 'equal':
-            for link in b[b_start:b_end]:
-                result_list.append(_create_link_listing(link, result))
+            for index, a_link in enumerate(a[a_start:a_end]):
+                b_link = b[b_start + index]
+                if hash(a_link) == hash(b_link):
+                    result_list.append(_create_link_listing(b_link, result))
+                else:
+                    text_diff = compute_dmp_diff(a_link.text, b_link.text)
+                    href_diff = compute_dmp_diff(a_link.href, b_link.href)
+                    result_list.append(_create_link_diff_listing(
+                        text_diff,
+                        href_diff,
+                        (a_link.href, b_link.href),
+                        result))
 
         if (command == 'insert' or command == 'replace'):
             for link in b[b_start:b_end]:
                 result_list.append(_create_link_listing(
                     link,
                     result,
-                    wrap=result.new_tag('ins')))
+                    change_type='insertion'))
 
         if (command == 'delete' or command == 'replace'):
             for link in a[a_start:a_end]:
                 result_list.append(_create_link_listing(
                     link,
                     result,
-                    wrap=result.new_tag('del')))
+                    change_type='deletion'))
 
     return result
