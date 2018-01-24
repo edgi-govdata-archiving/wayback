@@ -220,39 +220,16 @@ def html_diff_render(a_text, b_text, include='combined'):
         head = soup_new.new_tag('head')
         soup_new.html.insert(0, head)
 
-    # htmldiff will unfortunately try to diff the content of elements like
-    # <script> or <style> that embed foreign content that shouldn't be parsed
-    # as part of the DOM. We work around this by replacing those elements
-    # with placeholders, but a better upstream fix would be to have
-    # `flatten_el()` handle these cases by creating a special token, e.g:
-    #
-    #  class undiffable_tag(token):
-    #    def __new__(cls, html_repr, **kwargs):
-    #      # Make the value this represents for diffing an empty string
-    #      obj = token.__new__(cls, '', **kwargs)
-    #      # But keep the actual source around for serializing when done
-    #      obj.html_repr = html_repr
-    #
-    #    def html(obj):
-    #      return self.html_repr
-    soup_old, replacements_old = _remove_undiffable_content(soup_old, 'old')
-    soup_new, replacements_new = _remove_undiffable_content(soup_new, 'new')
-
     metadata, diff_bodies = diff_elements(soup_old.body, soup_new.body, include)
     results = metadata.copy()
 
     for diff_type, diff_body in diff_bodies.items():
         soup = None
-        replacements = None
         if diff_type == 'deletions':
             soup = copy.copy(soup_old)
-            replacements = copy.copy(replacements_old)
         elif diff_type == 'insertions':
             soup = copy.copy(soup_new)
-            replacements = copy.copy(replacements_new)
         else:
-            replacements = copy.copy(replacements_new)
-            replacements.update(replacements_old)
             soup = copy.copy(soup_new)
             title_meta = soup.new_tag(
                 'meta',
@@ -284,68 +261,19 @@ def html_diff_render(a_text, b_text, include='combined'):
         runtime_scripts = soup.new_tag('script', id='wm-diff-script')
         runtime_scripts.string = UPDATE_CONTRAST_SCRIPT
         soup.body.append(runtime_scripts)
-        soup = _add_undiffable_content(
-            soup,
-            replacements,
-            diff_type == 'combined')
+        if diff_type == 'combined':
+            _deactivate_deleted_active_elements(soup)
         results[diff_type] = soup.prettify(formatter='minimal')
 
     return results
 
 
-def _remove_undiffable_content(soup, prefix=''):
-    """
-    Find nodes that cannot be diffed (e.g. <script>, <style>) and replace them
-    with an empty node that has the attribute `wm-diff-replacement="some ID"`
-
-    Returns a tuple of the cleaned-up soup and a dict of replacements.
-    """
-    replacements = {}
-
-    # NOTE: we may want to consider treating <object> and <canvas> similarly.
-    # (They are "transparent" -- containing DOM, but only as a fallback.)
-    for index, element in enumerate(soup.find_all(['script', 'style', 'svg', 'math'])):
-        replacement_id = f'{prefix}-{index}'
-        replacements[replacement_id] = element
-        replacement = soup.new_tag(element.name, **{
-            'wm-diff-replacement': replacement_id
-        })
-        # The replacement has to have text if we want to ensure both old and
-        # new versions of a script are included. Use a single word (so it
-        # can't be broken up) that is unlikely to appear in text.
-        replacement.append(f'$[{replacement_id}]$')
-        element.replace_with(replacement)
-
-    return (soup, replacements)
-
-
-def _add_undiffable_content(soup, replacements, deactivate_old=True):
-    """
-    This is the opposite operation of `_remove_undiffable_content()`. It
-    takes a soup and a replacement dict and replaces nodes in the soup that
-    have the attribute `wm-diff-replacement"some ID"` with the original content
-    from the replacements dict.
-
-    If `deactivate_old` is true, "old" replacements from the "before" version
-    of the page will be wrapped in `<template>` tags so that they are
-    non-functional.
-    """
-    for element in soup.select('[wm-diff-replacement]'):
-        replacement_id = element['wm-diff-replacement']
-        replacement = replacements[replacement_id]
-        if replacement:
-            replacement = copy.copy(replacement)
-            css_class = replacement.get('class', [])
-            if replacement_id.startswith('old-'):
-                replacement['class'] = css_class + ['wm-diff-deleted-active']
-                if replacement.name in ACTIVE_ELEMENTS and deactivate_old:
-                    wrapper = soup.new_tag('template')
-                    wrapper['class'] = 'wm-diff-deleted-inert'
-                    wrapper.append(replacement)
-                    replacement = wrapper
-            else:
-                replacement['class'] = css_class + ['wm-diff-inserted-active']
-            element.replace_with(replacement)
+def _deactivate_deleted_active_elements(soup):
+    for index, element in enumerate(soup.find_all(ACTIVE_ELEMENTS)):
+        if element.find_parent('del'):
+            wrapper = soup.new_tag('template')
+            wrapper['class'] = 'wm-diff-deleted-inert'
+            element.wrap(wrapper)
 
     return soup
 
@@ -542,6 +470,11 @@ class href_token(DiffToken):
     def html(self):
         return ' Link: %s' % self
 
+
+class UndiffableContentToken(DiffToken):
+    pass
+
+
 def tokenize(html, include_hrefs=True):
     """
     Parse the given HTML and returns token objects (words with attached tags).
@@ -627,6 +560,12 @@ def fixup_chunks(chunks):
                 cur_word = href_token(href, pre_tags=tag_accum, trailing_whitespace=" ")
                 tag_accum = []
                 result.append(cur_word)
+
+            elif chunk[0] == 'UNDIFFABLE':
+                cur_word = UndiffableContentToken(chunk[1], pre_tags=tag_accum)
+                tag_accum = []
+                result.append(cur_word)
+
             continue
 
         if is_word(chunk):
@@ -666,6 +605,10 @@ def flatten_el(el, include_hrefs, skip_tag=False):
     if not skip_tag:
         if el.tag == 'img':
             yield ('img', el.get('src'), start_tag(el))
+        elif el.tag in undiffable_content_tags:
+            element_source = etree.tostring(el, encoding=str, method='html')
+            yield ('UNDIFFABLE', element_source)
+            return
         else:
             yield start_tag(el)
     if el.tag in void_tags and not el.text and not len(el) and not el.tail:
@@ -1063,7 +1006,9 @@ def merge_changes(change_chunks, doc, tag_type='ins'):
         # FIXME: explicitly handle elements that can't have our markers as
         # direct children.
         if chunk[0] == '<':
-            name = chunk.split()[0].strip('<>/')
+            # NOTE: split first by `>` because we could have undiffable items
+            # with content here, i.e. more than one tag.
+            name = chunk.split('>')[0].split()[0].strip('<>/')
             # Also treat `a` tags as block in this context, because they *can*
             # contain block elements, like `h1`, etc.
             is_block = name in block_level_tags or name == 'a'
@@ -1121,7 +1066,10 @@ def merge_changes(change_chunks, doc, tag_type='ins'):
             current_content = []
 
         doc.append(chunk)
-        if inline_tag and inline_tag_name not in empty_tags:
+        # Note the undiffable_content_tags check here. We assume tokens for
+        # those tags represent a whole element, not just a start or end tag,
+        # so we don't consider them "open" as part of `current_content`.
+        if inline_tag and inline_tag_name not in undiffable_content_tags and inline_tag_name not in empty_tags:
             # FIXME: track the original start tag for when we need to break
             # these elements around boundaries.
             current_content.insert(0, inline_tag_name)
@@ -1316,7 +1264,9 @@ def merge_change_groups(change_chunks, doc, tag_type=None):
         # FIXME: explicitly handle elements that can't have our markers as
         # direct children.
         if chunk[0] == '<':
-            name = chunk.split()[0].strip('<>/')
+            # NOTE: split first by `>` because we could have undiffable items
+            # with content here, i.e. more than one tag.
+            name = chunk.split('>')[0].split()[0].strip('<>/')
             # Also treat `a` tags as block in this context, because they *can*
             # contain block elements, like `h1`, etc.
             is_block = name in block_level_tags or name == 'a'
@@ -1390,7 +1340,10 @@ def merge_change_groups(change_chunks, doc, tag_type=None):
             current_content = []
 
         group.append(chunk)
-        if inline_tag and inline_tag_name not in empty_tags:
+        # Note the undiffable_content_tags check here. We assume tokens for
+        # those tags represent a whole element, not just a start or end tag,
+        # so we don't consider them "open" as part of `current_content`.
+        if inline_tag and inline_tag_name not in empty_tags and inline_tag_name not in undiffable_content_tags:
             # FIXME: track the original start tag for when we need to break
             # these elements around boundaries.
             current_content.insert(0, inline_tag_name)
