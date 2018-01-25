@@ -16,7 +16,7 @@ def test_links_diff_only_includes_links():
              """
     result = links_diff(html_a, html_b)['diff']
     assert 'Here is some' not in result
-    assert '<li>go places' in result
+    assert 'go places' in result
 
 
 def test_links_diff_only_has_outgoing_links():
