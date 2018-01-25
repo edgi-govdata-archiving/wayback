@@ -1008,7 +1008,7 @@ def merge_changes(change_chunks, doc, tag_type='ins'):
         if chunk[0] == '<':
             # NOTE: split first by `>` because we could have undiffable items
             # with content here, i.e. more than one tag.
-            name = chunk.split('>')[0].split()[0].strip('<>/')
+            name = chunk.split('>', 1)[0].split(None, 1)[0].strip('<>/')
             # Also treat `a` tags as block in this context, because they *can*
             # contain block elements, like `h1`, etc.
             is_block = name in block_level_tags or name == 'a'
@@ -1069,7 +1069,9 @@ def merge_changes(change_chunks, doc, tag_type='ins'):
         # Note the undiffable_content_tags check here. We assume tokens for
         # those tags represent a whole element, not just a start or end tag,
         # so we don't consider them "open" as part of `current_content`.
-        if inline_tag and inline_tag_name not in undiffable_content_tags and inline_tag_name not in empty_tags:
+        if (inline_tag and
+                (inline_tag_name not in undiffable_content_tags) and
+                (inline_tag_name not in empty_tags)):
             # FIXME: track the original start tag for when we need to break
             # these elements around boundaries.
             current_content.insert(0, inline_tag_name)
@@ -1266,7 +1268,7 @@ def merge_change_groups(change_chunks, doc, tag_type=None):
         if chunk[0] == '<':
             # NOTE: split first by `>` because we could have undiffable items
             # with content here, i.e. more than one tag.
-            name = chunk.split('>')[0].split()[0].strip('<>/')
+            name = chunk.split('>', 1)[0].split(None, 1)[0].strip('<>/')
             # Also treat `a` tags as block in this context, because they *can*
             # contain block elements, like `h1`, etc.
             is_block = name in block_level_tags or name == 'a'
@@ -1343,7 +1345,9 @@ def merge_change_groups(change_chunks, doc, tag_type=None):
         # Note the undiffable_content_tags check here. We assume tokens for
         # those tags represent a whole element, not just a start or end tag,
         # so we don't consider them "open" as part of `current_content`.
-        if inline_tag and inline_tag_name not in empty_tags and inline_tag_name not in undiffable_content_tags:
+        if (inline_tag and
+                (inline_tag_name not in undiffable_content_tags) and
+                (inline_tag_name not in empty_tags)):
             # FIXME: track the original start tag for when we need to break
             # these elements around boundaries.
             current_content.insert(0, inline_tag_name)
@@ -1576,7 +1580,7 @@ class InsensitiveSequenceMatcher(difflib.SequenceMatcher):
     threshold = 2
 
     def get_matching_blocks(self):
-        size = min(len(self.b), len(self.b))
+        size = min(len(self.a), len(self.b))
         threshold = min(self.threshold, size / 4)
         actual = difflib.SequenceMatcher.get_matching_blocks(self)
         return [item for item in actual
