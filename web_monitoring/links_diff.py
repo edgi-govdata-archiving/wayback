@@ -8,7 +8,7 @@ import re
 
 
 def links_diff(a_text, b_text, a_headers=None, b_headers=None,
-               content_type_options='normal'):
+               content_type_options='normal', json=False):
     """
     Extracts all the outgoing links from a page and produces a diff of an
     HTML document that is simply a list of the text and URL of those links.
@@ -41,29 +41,35 @@ def links_diff(a_text, b_text, a_headers=None, b_headers=None,
     matcher = SequenceMatcher(a=old_links, b=new_links)
     opcodes = matcher.get_opcodes()
     change_count = _count_changes(opcodes)
-    soup = _assemble_diff(old_links, new_links, opcodes)
+    diff = None
 
-    change_styles = soup.new_tag(
-        'style',
-        type='text/css',
-        id='wm-diff-style')
-    change_styles.string = """
-        body { margin: 0; }
-        ul { margin: 0; padding: 0; }
-        li { opacity: 0.5; padding: 0.2em 1.5em; }
-        li::before { content: "•"; position: absolute; left: 0.5em; }
-        [wm-has-deletions], [wm-has-insertions] { opacity: 1; }
-        [wm-has-deletions] { background-color: #ffeef0; }
-        [wm-has-insertions] { background-color: #e6ffed; }
-        [wm-has-deletions][wm-has-insertions] { background-color: #eee; }
-        ins { text-decoration: none; background-color: #acf2bd; }
-        del { text-decoration: none; background-color: #fdb8c0; }"""
-    soup.head.append(change_styles)
-    soup.title.string = get_title(soup_new)
+    if json:
+        diff = list(_assemble_diff(old_links, new_links, opcodes))
+    else:
+        soup = _assemble_html_diff(old_links, new_links, opcodes)
+
+        change_styles = soup.new_tag(
+            'style',
+            type='text/css',
+            id='wm-diff-style')
+        change_styles.string = """
+            body { margin: 0; }
+            ul { margin: 0; padding: 0; }
+            li { opacity: 0.5; padding: 0.2em 1.5em; }
+            li::before { content: "•"; position: absolute; left: 0.5em; }
+            [wm-has-deletions], [wm-has-insertions] { opacity: 1; }
+            [wm-has-deletions] { background-color: #ffeef0; }
+            [wm-has-insertions] { background-color: #e6ffed; }
+            [wm-has-deletions][wm-has-insertions] { background-color: #eee; }
+            ins { text-decoration: none; background-color: #acf2bd; }
+            del { text-decoration: none; background-color: #fdb8c0; }"""
+        soup.head.append(change_styles)
+        soup.title.string = get_title(soup_new)
+        diff = soup.prettify(formatter=None)
 
     return {
         'change_count': change_count,
-        'diff': soup.prettify(formatter=None)
+        'diff': diff
     }
 
 
@@ -95,6 +101,9 @@ class Link:
         # of whether two links are the same "thing" even if they have
         # internal differences in their text or href.
         return self.href == other.href or self.text.lower() == other.text.lower()
+
+    def json(self):
+        return {'text': self.text, 'href': self.href}
 
     def _clean_href(self, href):
         origin_match = re.match(r'^([\w+\-]+:)?//[^/]+', href)
@@ -152,9 +161,10 @@ def _create_link_listing(link, soup, change_type=None):
             listing['wm-deleted'] = 'true'
         listing.append(container)
 
-    container.append(link.text + ' ')
-    url_link = soup.new_tag('a', href=link.href)
-    url_link.string = f'({link.href})'
+    container.append(link['text'] + ' ')
+    url = link['href']
+    url_link = soup.new_tag('a', href=url)
+    url_link.string = f'({url})'
     container.append(url_link)
 
     return listing
@@ -209,6 +219,45 @@ def _count_changes(opcodes):
 
 def _assemble_diff(a, b, opcodes):
     """
+    Yield each link in the diff with a code for addition (1), removal (-1),
+    unchanged (0), or nested diff (100).
+
+    Parameters
+    ----------
+    a : list
+        The list of links in the previous verson of a document.
+    b : list
+        The list of links in the new version of a document.
+    opcodes : list
+        List of opcodes from SequenceMatcher that defines what to do with each
+        item in the lists of links.
+    """
+    for command, a_start, a_end, b_start, b_end in opcodes:
+        if command == 'equal':
+            for index, a_link in enumerate(a[a_start:a_end]):
+                b_link = b[b_start + index]
+                if hash(a_link) == hash(b_link):
+                    yield (0, b_link.json())
+                else:
+                    text_diff = compute_dmp_diff(a_link.text, b_link.text)
+                    href_diff = compute_dmp_diff(a_link.href, b_link.href)
+                    yield (100, {
+                        'text': text_diff,
+                        'href': href_diff,
+                        'hrefs': (a_link.href, b_link.href)
+                    })
+
+        if (command == 'insert' or command == 'replace'):
+            for link in b[b_start:b_end]:
+                yield (1, link.json())
+
+        if (command == 'delete' or command == 'replace'):
+            for link in a[a_start:a_end]:
+                yield (-1, link.json())
+
+
+def _assemble_html_diff(a, b, opcodes):
+    """
     Create a Beautiful Soup document representing a diff.
 
     Parameters
@@ -221,37 +270,20 @@ def _assemble_diff(a, b, opcodes):
         List of opcodes from SequenceMatcher that defines what to do with each
         item in the lists of links.
     """
+    change_types = {-1: 'deletion', 0: None, 1: 'insertion'}
     result = _create_empty_soup()
     result_list = result.new_tag('ul')
     result.body.append(result_list)
 
-    for command, a_start, a_end, b_start, b_end in opcodes:
-        if command == 'equal':
-            for index, a_link in enumerate(a[a_start:a_end]):
-                b_link = b[b_start + index]
-                if hash(a_link) == hash(b_link):
-                    result_list.append(_create_link_listing(b_link, result))
-                else:
-                    text_diff = compute_dmp_diff(a_link.text, b_link.text)
-                    href_diff = compute_dmp_diff(a_link.href, b_link.href)
-                    result_list.append(_create_link_diff_listing(
-                        text_diff,
-                        href_diff,
-                        (a_link.href, b_link.href),
-                        result))
-
-        if (command == 'insert' or command == 'replace'):
-            for link in b[b_start:b_end]:
-                result_list.append(_create_link_listing(
-                    link,
-                    result,
-                    change_type='insertion'))
-
-        if (command == 'delete' or command == 'replace'):
-            for link in a[a_start:a_end]:
-                result_list.append(_create_link_listing(
-                    link,
-                    result,
-                    change_type='deletion'))
+    for code, link in _assemble_diff(a, b, opcodes):
+        if code == 100:
+                result_list.append(_create_link_diff_listing(
+                    link['text'],
+                    link['href'],
+                    link['hrefs'],
+                    result))
+        else:
+            change_type = change_types[code]
+            result_list.append(_create_link_listing(link, result, change_type))
 
     return result
