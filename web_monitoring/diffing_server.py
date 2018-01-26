@@ -24,7 +24,8 @@ DIFF_ROUTES = {
     "identical_bytes": web_monitoring.differs.identical_bytes,
     "pagefreezer": web_monitoring.differs.pagefreezer,
     "side_by_side_text": web_monitoring.differs.side_by_side_text,
-    "links": web_monitoring.links_diff.links_diff,
+    "links": web_monitoring.links_diff.links_diff_html,
+    "links_json": web_monitoring.links_diff.links_diff_json,
     # applying diff-match-patch (dmp) to strings (no tokenization)
     "html_text_dmp": web_monitoring.differs.html_text_diff,
     "html_source_dmp": web_monitoring.differs.html_source_diff,
