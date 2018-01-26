@@ -8,7 +8,7 @@ import re
 
 
 def links_diff(a_text, b_text, a_headers=None, b_headers=None,
-               content_type_options='normal', json=False):
+               content_type_options='normal'):
     """
     Extracts all the outgoing links from a page and produces a diff of an
     HTML document that is simply a list of the text and URL of those links.
@@ -28,48 +28,73 @@ def links_diff(a_text, b_text, a_headers=None, b_headers=None,
         b_headers,
         content_type_options)
 
-    soup_old = BeautifulSoup(a_text, 'lxml')
-    soup_new = BeautifulSoup(b_text, 'lxml')
+    a_soup = BeautifulSoup(a_text, 'lxml')
+    b_soup = BeautifulSoup(b_text, 'lxml')
 
-    old_links = sorted(
-        set([Link.from_element(element) for element in _find_outgoing_links(soup_old)]),
+    a_links = sorted(
+        set([Link.from_element(element) for element in _find_outgoing_links(a_soup)]),
         key=lambda link: link.text.lower())
-    new_links = sorted(
-        set([Link.from_element(element) for element in _find_outgoing_links(soup_new)]),
+    b_links = sorted(
+        set([Link.from_element(element) for element in _find_outgoing_links(b_soup)]),
         key=lambda link: link.text.lower())
 
-    matcher = SequenceMatcher(a=old_links, b=new_links)
+    matcher = SequenceMatcher(a=a_links, b=b_links)
     opcodes = matcher.get_opcodes()
-    change_count = _count_changes(opcodes)
-    diff = None
-
-    if json:
-        diff = list(_assemble_diff(old_links, new_links, opcodes))
-    else:
-        soup = _assemble_html_diff(old_links, new_links, opcodes)
-
-        change_styles = soup.new_tag(
-            'style',
-            type='text/css',
-            id='wm-diff-style')
-        change_styles.string = """
-            body { margin: 0; }
-            ul { margin: 0; padding: 0; }
-            li { opacity: 0.5; padding: 0.2em 1.5em; }
-            li::before { content: "•"; position: absolute; left: 0.5em; }
-            [wm-has-deletions], [wm-has-insertions] { opacity: 1; }
-            [wm-has-deletions] { background-color: #ffeef0; }
-            [wm-has-insertions] { background-color: #e6ffed; }
-            [wm-has-deletions][wm-has-insertions] { background-color: #eee; }
-            ins { text-decoration: none; background-color: #acf2bd; }
-            del { text-decoration: none; background-color: #fdb8c0; }"""
-        soup.head.append(change_styles)
-        soup.title.string = get_title(soup_new)
-        diff = soup.prettify(formatter=None)
 
     return {
-        'change_count': change_count,
-        'diff': diff
+        'change_count': _count_changes(opcodes),
+        'diff': _assemble_diff(a_links, b_links, opcodes),
+        'a_parsed': a_soup,
+        'b_parsed': b_soup
+    }
+
+
+def links_diff_json(a_text, b_text, a_headers=None, b_headers=None,
+                    content_type_options='normal'):
+    """
+    Generate a diff of all outgoing links (see `links_diff()`) where the `diff`
+    property is formatted as a list of change codes and values.
+    """
+    diff = links_diff(a_text, b_text, a_headers, b_headers,
+                      content_type_options)
+    return {
+        'change_count': diff['change_count'],
+        'diff': list(diff['diff'])
+    }
+
+
+def links_diff_html(a_text, b_text, a_headers=None, b_headers=None,
+                    content_type_options='normal'):
+    """
+    Generate a diff of all outgoing links (see `links_diff()`) where the `diff`
+    property is an HTML string. Note the actual return type is still JSON.
+    """
+    diff = links_diff(a_text, b_text, a_headers, b_headers,
+                      content_type_options)
+    soup = _assemble_html_diff(diff['diff'])
+
+    # Add styling and metadata
+    change_styles = soup.new_tag(
+        'style',
+        type='text/css',
+        id='wm-diff-style')
+    change_styles.string = """
+        body { margin: 0; }
+        ul { margin: 0; padding: 0; }
+        li { opacity: 0.5; padding: 0.2em 1.5em; }
+        li::before { content: "•"; position: absolute; left: 0.5em; }
+        [wm-has-deletions], [wm-has-insertions] { opacity: 1; }
+        [wm-has-deletions] { background-color: #ffeef0; }
+        [wm-has-insertions] { background-color: #e6ffed; }
+        [wm-has-deletions][wm-has-insertions] { background-color: #eee; }
+        ins { text-decoration: none; background-color: #acf2bd; }
+        del { text-decoration: none; background-color: #fdb8c0; }"""
+    soup.head.append(change_styles)
+    soup.title.string = get_title(diff['b_parsed'])
+
+    return {
+        'change_count': diff['change_count'],
+        'diff': soup.prettify(formatter=None)
     }
 
 
@@ -256,26 +281,21 @@ def _assemble_diff(a, b, opcodes):
                 yield (-1, link.json())
 
 
-def _assemble_html_diff(a, b, opcodes):
+def _assemble_html_diff(raw_diff):
     """
     Create a Beautiful Soup document representing a diff.
 
     Parameters
     ----------
-    a : list
-        The list of links in the previous verson of a document.
-    b : list
-        The list of links in the new version of a document.
-    opcodes : list
-        List of opcodes from SequenceMatcher that defines what to do with each
-        item in the lists of links.
+    raw_diff : sequence
+        The basic diff as a sequence of opcodes and links.
     """
     change_types = {-1: 'deletion', 0: None, 1: 'insertion'}
     result = _create_empty_soup()
     result_list = result.new_tag('ul')
     result.body.append(result_list)
 
-    for code, link in _assemble_diff(a, b, opcodes):
+    for code, link in raw_diff:
         if code == 100:
                 result_list.append(_create_link_diff_listing(
                     link['text'],
