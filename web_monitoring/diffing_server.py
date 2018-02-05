@@ -9,6 +9,7 @@ import tornado.web
 import traceback
 import web_monitoring
 import web_monitoring.differs
+from web_monitoring.diff_errors import UndiffableContentError
 import web_monitoring.html_diff_render
 import web_monitoring.links_diff
 
@@ -89,10 +90,21 @@ class DiffHandler(tornado.web.RequestHandler):
 
     def write_error(self, status_code, **kwargs):
         response = {'code': status_code, 'error': self._reason}
+
+        # Handle errors that are allowed to be public
+        actual_error = 'exc_info' in kwargs and kwargs['exc_info'][1] or None
+        if isinstance(actual_error, UndiffableContentError):
+            response['code'] = 422
+            response['error'] = str(actual_error)
+
+        # Fill in full info if configured to do so
         if self.settings.get('serve_traceback') and 'exc_info' in kwargs:
+            response['error'] = str(kwargs['exc_info'][1])
             stack_lines = traceback.format_exception(*kwargs['exc_info'])
             response['stack'] = ''.join(stack_lines)
 
+        if response['code'] != status_code:
+            self.set_status(response['code'])
         self.finish(response)
 
 
