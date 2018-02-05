@@ -23,6 +23,7 @@ import html
 import logging
 import re
 from .differs import compute_dmp_diff
+from .diff_errors import UndiffableContentError
 
 # Imports only used in forked tokenization code; may be ripe for removal:
 from lxml import etree
@@ -181,6 +182,23 @@ EMPTY_HTML = '''<html>
     </body>
 </html>'''
 
+# Matches content strings that are probably not HTML.
+# See also https://dev.w3.org/html5/cts/html5-type-sniffing.html and
+# https://mimesniff.spec.whatwg.org/#rules-for-identifying-an-unknown-mime-type
+NON_HTML_PATTERN = re.compile(r'^[\s\n\r]*(%s)' % '|'.join((
+    # PDF
+    r'%PDF-',
+    # PostScript
+    r'%!PS-Adobe-',
+    # Various types of GIF
+    r'GIF87a',
+    r'GIF89a',
+    # BMP images
+    r'BM',
+    # JPG images
+    r'\u0089\u0050\u004E\u0047\u000D\u000A\u001A\u000A|\u00FF\u00D8\u00FF',
+)))
+
 
 def html_diff_render(a_text, b_text, include='combined'):
     """
@@ -209,6 +227,15 @@ def html_diff_render(a_text, b_text, include='combined'):
     text2 = '<!DOCTYPE html><html><head></head><body><h1>Header</h1></body></html>'
     test_diff_render = html_diff_render(text1,text2)
     """
+    html_error_a = is_not_html(a_text)
+    html_error_b = is_not_html(b_text)
+    if html_error_a and html_error_b:
+        raise UndiffableContentError('`a` and `b` are not HTML documents')
+    elif html_error_a:
+        raise UndiffableContentError('`a` is not an HTML document')
+    elif html_error_b:
+        raise UndiffableContentError('`b` is not an HTML document')
+
     soup_old = BeautifulSoup(a_text.strip() or EMPTY_HTML, 'lxml')
     soup_new = BeautifulSoup(b_text.strip() or EMPTY_HTML, 'lxml')
 
@@ -274,6 +301,15 @@ def html_diff_render(a_text, b_text, include='combined'):
         results[diff_type] = soup.prettify(formatter='minimal')
 
     return results
+
+
+def is_not_html(text):
+    """
+    Determine whether a string is not HTML. In general, this errs on the side
+    of leniency; it should have few false positives, but many false negatives.
+    """
+    stripped = text.lstrip()
+    return bool(NON_HTML_PATTERN.match(stripped))
 
 
 def _deactivate_deleted_active_elements(soup):

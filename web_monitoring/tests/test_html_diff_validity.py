@@ -6,8 +6,11 @@ in the sense that the diff is “wrong” as opposed to just testing that the di
 doesn’t break or throw exceptions.
 """
 
+from pathlib import Path
+from pkg_resources import resource_filename
 import pytest
 import re
+from web_monitoring.diff_errors import UndiffableContentError
 from web_monitoring.html_diff_render import html_diff_render
 
 
@@ -87,3 +90,15 @@ def test_html_diff_render_should_not_break_with_empty_content():
         ' \n ',
         'Here is some actual content!')
     assert results
+
+
+def test_html_diff_render_should_raise_for_non_html_content():
+    pdf_file = resource_filename('web_monitoring', 'example_data/empty.pdf')
+    # Ignore errors here because it matches the diff server, which similarly
+    # ignores decoding errors when getting text
+    pdf_content = Path(pdf_file).read_text(errors='ignore')
+
+    with pytest.raises(UndiffableContentError):
+        html_diff_render(
+            '<p>Just a little HTML</p>',
+            pdf_content)
