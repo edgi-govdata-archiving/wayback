@@ -80,3 +80,10 @@ def test_html_diff_render_should_count_changes():
     assert isinstance(results['insertions_count'], int)
     assert isinstance(results['deletions_count'], int)
     assert results['change_count'] == results['insertions_count'] + results['deletions_count']
+
+
+def test_html_diff_render_should_not_break_with_empty_content():
+    results = html_diff_render(
+        ' \n ',
+        'Here is some actual content!')
+    assert results
