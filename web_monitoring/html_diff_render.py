@@ -173,6 +173,14 @@ SEPARATABLE_TAGS = ('blockquote', 'section', 'article', 'header', 'footer',
                     'pre', 'ul', 'ol', 'li', 'table', 'p')
 # SEPARATABLE_TAGS = block_level_tags
 
+# A simplistic, empty HTML document to use in place of totally empty content
+EMPTY_HTML = '''<html>
+    <head></head>
+    <body>
+        <p style="text-align: center;">[No Content]</p>
+    </body>
+</html>'''
+
 
 def html_diff_render(a_text, b_text, include='combined'):
     """
@@ -201,8 +209,8 @@ def html_diff_render(a_text, b_text, include='combined'):
     text2 = '<!DOCTYPE html><html><head></head><body><h1>Header</h1></body></html>'
     test_diff_render = html_diff_render(text1,text2)
     """
-    soup_old = BeautifulSoup(a_text, 'lxml')
-    soup_new = BeautifulSoup(b_text, 'lxml')
+    soup_old = BeautifulSoup(a_text.strip() or EMPTY_HTML, 'lxml')
+    soup_new = BeautifulSoup(b_text.strip() or EMPTY_HTML, 'lxml')
 
     # Remove comment nodes since they generally don't affect display.
     # NOTE: This could affect display if the removed are conditional comments,
