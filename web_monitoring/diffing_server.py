@@ -119,10 +119,11 @@ def _extract_encoding(headers):
         return None
 
 
-def _decode_body(response, name):
+def _decode_body(response, name, ignore_errors=False):
     encoding = _extract_encoding(response.headers) or 'UTF-8'
     try:
-        return response.body.decode(encoding)
+        errors = ignore_errors and 'ignore' or 'strict'
+        return response.body.decode(encoding, errors=errors)
     except UnicodeError as error:
         raise UndecodableContentError(
             'The response body of `{}` could not be decoded as {}.'.format(
@@ -165,10 +166,18 @@ def caller(func, a, b, **query_params):
     # The differ's signature is a dependency injection scheme.
     sig = inspect.signature(func)
 
+    ignore_decoding_errors = query_params.get(
+        'ignore_decoding_errors', 'false'
+    ).lower() != 'false'
+
     if 'a_text' in sig.parameters:
-        query_params.setdefault('a_text', _decode_body(a, 'a'))
+        query_params.setdefault(
+            'a_text',
+            _decode_body(a, 'a', ignore_decoding_errors))
     if 'b_text' in sig.parameters:
-        query_params.setdefault('b_text', _decode_body(b, 'b'))
+        query_params.setdefault(
+            'b_text',
+            _decode_body(b, 'b', ignore_decoding_errors))
 
     kwargs = dict()
     for name, param in sig.parameters.items():
