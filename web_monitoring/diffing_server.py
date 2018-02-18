@@ -9,7 +9,9 @@ import tornado.web
 import traceback
 import web_monitoring
 import web_monitoring.differs
-from web_monitoring.diff_errors import UndiffableContentError
+from web_monitoring.diff_errors import (
+    UndiffableContentError, UndecodableContentError
+)
 import web_monitoring.html_diff_render
 import web_monitoring.links_diff
 
@@ -93,7 +95,8 @@ class DiffHandler(tornado.web.RequestHandler):
 
         # Handle errors that are allowed to be public
         actual_error = 'exc_info' in kwargs and kwargs['exc_info'][1] or None
-        if isinstance(actual_error, UndiffableContentError):
+        if (isinstance(actual_error, UndiffableContentError) or
+                isinstance(actual_error, UndecodableContentError)):
             response['code'] = 422
             response['error'] = str(actual_error)
 
@@ -114,6 +117,17 @@ def _extract_encoding(headers):
         return content_type.split('charset=')[-1]
     else:
         return None
+
+
+def _decode_body(response, name):
+    encoding = _extract_encoding(response.headers) or 'UTF-8'
+    try:
+        return response.body.decode(encoding)
+    except UnicodeError as error:
+        raise UndecodableContentError(
+            'The response body of `{}` could not be decoded as {}.'.format(
+                name, error.encoding))
+
 
 def caller(func, a, b, **query_params):
     """
@@ -147,14 +161,16 @@ def caller(func, a, b, **query_params):
     query_params.setdefault('b_url', b.request.url)
     query_params.setdefault('a_body', a.body)
     query_params.setdefault('b_body', b.body)
-    a_encoding = _extract_encoding(a.headers) or 'UTF-8'
-    b_encoding = _extract_encoding(a.headers) or 'UTF-8'
-    query_params.setdefault('a_text', a.body.decode(a_encoding, errors='ignore'))
-    query_params.setdefault('b_text', b.body.decode(b_encoding, errors='ignore'))
 
     # The differ's signature is a dependency injection scheme.
-    kwargs = dict()
     sig = inspect.signature(func)
+
+    if 'a_text' in sig.parameters:
+        query_params.setdefault('a_text', _decode_body(a, 'a'))
+    if 'b_text' in sig.parameters:
+        query_params.setdefault('b_text', _decode_body(b, 'b'))
+
+    kwargs = dict()
     for name, param in sig.parameters.items():
         try:
             kwargs[name] = query_params[name]
@@ -165,6 +181,7 @@ def caller(func, a, b, **query_params):
                                "provided in the query"
                                "".format(func.__name__, name))
     return func(**kwargs)
+
 
 class IndexHandler(tornado.web.RequestHandler):
 
@@ -184,6 +201,7 @@ def make_app():
         (r"/([A-Za-z0-9_]+)", BoundDiffHandler),
         (r"/", IndexHandler),
     ])
+
 
 def start_app(port):
     app = make_app()
