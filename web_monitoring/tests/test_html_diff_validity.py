@@ -94,11 +94,49 @@ def test_html_diff_render_should_not_break_with_empty_content():
 
 def test_html_diff_render_should_raise_for_non_html_content():
     pdf_file = resource_filename('web_monitoring', 'example_data/empty.pdf')
-    # Ignore errors here because it matches the diff server, which similarly
-    # ignores decoding errors when getting text
     pdf_content = Path(pdf_file).read_text(errors='ignore')
 
     with pytest.raises(UndiffableContentError):
         html_diff_render(
             '<p>Just a little HTML</p>',
             pdf_content)
+
+
+def test_html_diff_render_should_check_content_type_header():
+    with pytest.raises(UndiffableContentError):
+        html_diff_render(
+            '<p>Just a little HTML</p>',
+            'Some other text',
+            a_headers={'Content-Type': 'text/html'},
+            b_headers={'Content-Type': 'image/jpeg'})
+
+
+def test_html_diff_render_should_not_check_content_type_header_if_content_type_options_is_nocheck():
+    html_diff_render(
+        '<p>Just a little HTML</p>',
+        'Some other text',
+        a_headers={'Content-Type': 'text/html'},
+        b_headers={'Content-Type': 'image/jpeg'},
+        content_type_options='nocheck')
+
+
+def test_html_diff_render_should_not_raise_for_non_html_content_if_content_type_options_is_nosniff():
+    pdf_file = resource_filename('web_monitoring', 'example_data/empty.pdf')
+    pdf_content = Path(pdf_file).read_text(errors='ignore')
+
+    html_diff_render(
+        '<p>Just a little HTML</p>',
+        pdf_content,
+        content_type_options='nosniff')
+
+
+def test_html_diff_render_should_not_check_content_if_content_type_options_is_ignore():
+    pdf_file = resource_filename('web_monitoring', 'example_data/empty.pdf')
+    pdf_content = Path(pdf_file).read_text(errors='ignore')
+
+    html_diff_render(
+        '<p>Just a little HTML</p>',
+        pdf_content,
+        a_headers={'Content-Type': 'text/html'},
+        b_headers={'Content-Type': 'application/pdf'},
+        content_type_options='ignore')

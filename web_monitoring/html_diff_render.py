@@ -199,8 +199,29 @@ NON_HTML_PATTERN = re.compile(r'^[\s\n\r]*(%s)' % '|'.join((
     r'\u0089\u0050\u004E\u0047\u000D\u000A\u001A\u000A|\u00FF\u00D8\u00FF',
 )))
 
+# Content Types that we know represent HTML
+ACCEPTABLE_CONTENT_TYPES = (
+    'appliction/html',
+    'application/xhtml',
+    'application/xhtml+xml',
+    'application/xml',
+    'application/xml+html',
+    'application/xml+xhtml',
+    'text/webviewhtml',
+    'text/html',
+    'text/x-server-parsed-html',
+    'text/xhtml',
+)
 
-def html_diff_render(a_text, b_text, include='combined'):
+# Matches Content Types that *could* be acceptable for diffing as HTML
+UNKNOWN_CONTENT_TYPE_PATTERN = re.compile(r'^(%s)$' % '|'.join((
+    r'application/octet-stream',
+    r'text/.+'
+)))
+
+
+def html_diff_render(a_text, b_text, a_headers=None, b_headers=None,
+                     include='combined', content_type_options='normal'):
     """
     HTML Diff for rendering. This is focused on visually highlighting portions
     of a page’s text that have been changed. It does not do much to show how
@@ -221,14 +242,47 @@ def html_diff_render(a_text, b_text, include='combined'):
     inline `<script>` and `<style>` elements may be included twice if they had
     changes, which could have undesirable runtime effects.
 
+    Parameters
+    ----------
+    a_text : string
+        Source HTML of one document to compare
+    b_text : string
+        Source HTML of the other document to compare
+    a_headers : dict
+        Any HTTP headers associated with the `a` document
+    b_headers : dict
+        Any HTTP headers associated with the `b` document
+    include : string
+        Which comparisons to include in output. Options are:
+        - `combined` returns an HTML document with insertions and deletions
+          together.
+        - `insertions` returns an HTML document with only the unchanged text
+          and text inserted in the `b` document.
+        - `deletions` returns an HTML document with only the unchanged text and
+          text that was deleted from the `a` document.
+        - `all` returns all of the above documents. You might use this for
+          efficiency -- the most expensive part of the diff is only performed
+          once and reused for all three return types.
+    content_type_options : string
+        Change how content type detection is handled. It doesn’t make a lot of
+        sense to apply an HTML-focused diffing algorithm to, say, a JPEG image,
+        so this function uses a combination of headers and content sniffing to
+        determine whether a document is not HTML (it’s lenient; if it's not
+        pretty clear that it's not HTML, it’ll try and diff). Options are:
+        - `normal` uses the `Content-Type` header and then falls back to
+          sniffing to determine content type.
+        - `nocheck` ignores the `Content-Type` header but still sniffs.
+        - `nosniff` uses the `Content-Type` header but does not sniff.
+        - `ignore` doesn’t do any checking at all.
+
     Example
     -------
     text1 = '<!DOCTYPE html><html><head></head><body><p>Paragraph</p></body></html>'
     text2 = '<!DOCTYPE html><html><head></head><body><h1>Header</h1></body></html>'
     test_diff_render = html_diff_render(text1,text2)
     """
-    html_error_a = is_not_html(a_text)
-    html_error_b = is_not_html(b_text)
+    html_error_a = is_not_html(a_text, a_headers, content_type_options)
+    html_error_b = is_not_html(b_text, b_headers, content_type_options)
     if html_error_a and html_error_b:
         raise UndiffableContentError('`a` and `b` are not HTML documents')
     elif html_error_a:
@@ -303,13 +357,24 @@ def html_diff_render(a_text, b_text, include='combined'):
     return results
 
 
-def is_not_html(text):
+def is_not_html(text, headers=None, check_options='normal'):
     """
     Determine whether a string is not HTML. In general, this errs on the side
     of leniency; it should have few false positives, but many false negatives.
     """
-    stripped = text.lstrip()
-    return bool(NON_HTML_PATTERN.match(stripped))
+    if headers and (check_options == 'normal' or check_options == 'nosniff'):
+        content_type = headers.get('Content-Type', '').split(';', 1)[0].strip()
+        if content_type:
+            if content_type in ACCEPTABLE_CONTENT_TYPES:
+                return False
+            elif not UNKNOWN_CONTENT_TYPE_PATTERN.match(content_type):
+                return True
+
+    if check_options == 'normal' or check_options == 'nocheck':
+        stripped = text.lstrip()
+        return bool(NON_HTML_PATTERN.match(stripped))
+
+    return False
 
 
 def _deactivate_deleted_active_elements(soup):

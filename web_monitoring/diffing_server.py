@@ -162,6 +162,8 @@ def caller(func, a, b, **query_params):
     query_params.setdefault('b_url', b.request.url)
     query_params.setdefault('a_body', a.body)
     query_params.setdefault('b_body', b.body)
+    query_params.setdefault('a_headers', a.headers)
+    query_params.setdefault('b_headers', b.headers)
 
     # The differ's signature is a dependency injection scheme.
     sig = inspect.signature(func)
