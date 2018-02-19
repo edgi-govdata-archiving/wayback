@@ -22,8 +22,8 @@ import difflib
 import html
 import logging
 import re
+from .content_type import raise_if_not_diffable_html
 from .differs import compute_dmp_diff
-from .diff_errors import UndiffableContentError
 
 # Imports only used in forked tokenization code; may be ripe for removal:
 from lxml import etree
@@ -182,43 +182,6 @@ EMPTY_HTML = '''<html>
     </body>
 </html>'''
 
-# Matches content strings that are probably not HTML.
-# See also https://dev.w3.org/html5/cts/html5-type-sniffing.html and
-# https://mimesniff.spec.whatwg.org/#rules-for-identifying-an-unknown-mime-type
-NON_HTML_PATTERN = re.compile(r'^[\s\n\r]*(%s)' % '|'.join((
-    # PDF
-    r'%PDF-',
-    # PostScript
-    r'%!PS-Adobe-',
-    # Various types of GIF
-    r'GIF87a',
-    r'GIF89a',
-    # BMP images
-    r'BM',
-    # JPG images
-    r'\u0089\u0050\u004E\u0047\u000D\u000A\u001A\u000A|\u00FF\u00D8\u00FF',
-)))
-
-# Content Types that we know represent HTML
-ACCEPTABLE_CONTENT_TYPES = (
-    'appliction/html',
-    'application/xhtml',
-    'application/xhtml+xml',
-    'application/xml',
-    'application/xml+html',
-    'application/xml+xhtml',
-    'text/webviewhtml',
-    'text/html',
-    'text/x-server-parsed-html',
-    'text/xhtml',
-)
-
-# Matches Content Types that *could* be acceptable for diffing as HTML
-UNKNOWN_CONTENT_TYPE_PATTERN = re.compile(r'^(%s)$' % '|'.join((
-    r'application/octet-stream',
-    r'text/.+'
-)))
-
 
 def html_diff_render(a_text, b_text, a_headers=None, b_headers=None,
                      include='combined', content_type_options='normal'):
@@ -281,14 +244,12 @@ def html_diff_render(a_text, b_text, a_headers=None, b_headers=None,
     text2 = '<!DOCTYPE html><html><head></head><body><h1>Header</h1></body></html>'
     test_diff_render = html_diff_render(text1,text2)
     """
-    html_error_a = is_not_html(a_text, a_headers, content_type_options)
-    html_error_b = is_not_html(b_text, b_headers, content_type_options)
-    if html_error_a and html_error_b:
-        raise UndiffableContentError('`a` and `b` are not HTML documents')
-    elif html_error_a:
-        raise UndiffableContentError('`a` is not an HTML document')
-    elif html_error_b:
-        raise UndiffableContentError('`b` is not an HTML document')
+    raise_if_not_diffable_html(
+        a_text,
+        b_text,
+        a_headers,
+        b_headers,
+        content_type_options)
 
     soup_old = BeautifulSoup(a_text.strip() or EMPTY_HTML, 'lxml')
     soup_new = BeautifulSoup(b_text.strip() or EMPTY_HTML, 'lxml')
@@ -355,26 +316,6 @@ def html_diff_render(a_text, b_text, a_headers=None, b_headers=None,
         results[diff_type] = soup.prettify(formatter='minimal')
 
     return results
-
-
-def is_not_html(text, headers=None, check_options='normal'):
-    """
-    Determine whether a string is not HTML. In general, this errs on the side
-    of leniency; it should have few false positives, but many false negatives.
-    """
-    if headers and (check_options == 'normal' or check_options == 'nosniff'):
-        content_type = headers.get('Content-Type', '').split(';', 1)[0].strip()
-        if content_type:
-            if content_type in ACCEPTABLE_CONTENT_TYPES:
-                return False
-            elif not UNKNOWN_CONTENT_TYPE_PATTERN.match(content_type):
-                return True
-
-    if check_options == 'normal' or check_options == 'nocheck':
-        stripped = text.lstrip()
-        return bool(NON_HTML_PATTERN.match(stripped))
-
-    return False
 
 
 def _deactivate_deleted_active_elements(soup):
