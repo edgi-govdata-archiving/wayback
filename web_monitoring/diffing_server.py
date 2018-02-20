@@ -95,8 +95,8 @@ class DiffHandler(tornado.web.RequestHandler):
 
         # Handle errors that are allowed to be public
         actual_error = 'exc_info' in kwargs and kwargs['exc_info'][1] or None
-        if (isinstance(actual_error, UndiffableContentError) or
-                isinstance(actual_error, UndecodableContentError)):
+        if isinstance(actual_error, (UndiffableContentError,
+                                     UndecodableContentError)):
             response['code'] = 422
             response['error'] = str(actual_error)
 
