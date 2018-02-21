@@ -1,8 +1,10 @@
 from bs4 import BeautifulSoup
+from .content_type import raise_if_not_diffable_html
 from .html_diff_render import diff_elements, get_title
 
 
-def links_diff(a_text, b_text):
+def links_diff(a_text, b_text, a_headers=None, b_headers=None,
+               content_type_options='normal'):
     """
     Extracts all the outgoing links from a page and produces a diff of an
     HTML document that is simply a list of the text and URL of those links.
@@ -15,6 +17,13 @@ def links_diff(a_text, b_text):
     as an internal link, but not:
         <a href="http://this.domain.com/this/page#anchor-in-this-page">Text</a>
     """
+    raise_if_not_diffable_html(
+        a_text,
+        b_text,
+        a_headers,
+        b_headers,
+        content_type_options)
+
     soup_old = BeautifulSoup(a_text, 'lxml')
     soup_new = BeautifulSoup(b_text, 'lxml')
 
