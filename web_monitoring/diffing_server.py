@@ -2,6 +2,7 @@ import concurrent.futures
 from docopt import docopt
 import hashlib
 import inspect
+import re
 import tornado.gen
 import tornado.httpclient
 import tornado.ioloop
@@ -39,6 +40,19 @@ DIFF_ROUTES = {
     "html_tree_diff": web_monitoring.differs.html_tree_diff,
     "html_differ": web_monitoring.differs.html_differ,
 }
+
+# Matches a <meta> tag in HTML used to specify the character encoding:
+# <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+# <meta charset="utf-8" />
+META_TAG_PATTERN = re.compile(
+    b'<meta[^>]+charset\\s*=\\s*[\'"]?([^>]*?)[ /;\'">]',
+    re.IGNORECASE)
+
+# Matches an XML prolog that specifies character encoding:
+# <?xml version="1.0" encoding="ISO-8859-1"?>
+XML_PROLOG_PATTERN = re.compile(
+    b'<?xml\\s[^>]*encoding=[\'"]([^\'"]+)[\'"].*\?>',
+    re.IGNORECASE)
 
 
 client = tornado.httpclient.AsyncHTTPClient()
@@ -111,16 +125,24 @@ class DiffHandler(tornado.web.RequestHandler):
         self.finish(response)
 
 
-def _extract_encoding(headers):
+def _extract_encoding(headers, content):
+    encoding = None
     content_type = headers["Content-Type"]
     if 'charset=' in content_type:
-        return content_type.split('charset=')[-1]
-    else:
-        return None
+        encoding = content_type.split('charset=')[-1]
+    if not encoding:
+        meta_tag_match = META_TAG_PATTERN.search(content, endpos=2048)
+        if meta_tag_match:
+            encoding = meta_tag_match.group(1).decode('ascii', errors='ignore')
+    if not encoding:
+        prolog_match = XML_PROLOG_PATTERN.search(content, endpos=2048)
+        if prolog_match:
+            encoding = prolog_match.group(1).decode('ascii', errors='ignore')
+    return encoding
 
 
 def _decode_body(response, name, ignore_errors=False):
-    encoding = _extract_encoding(response.headers) or 'UTF-8'
+    encoding = _extract_encoding(response.headers, response.body) or 'UTF-8'
     try:
         errors = ignore_errors and 'ignore' or 'strict'
         return response.body.decode(encoding, errors=errors)
