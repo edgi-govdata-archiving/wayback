@@ -4,11 +4,11 @@
         {
             "request": {
                 "method": "POST",
-                "uri": "http://localhost:3000/api/v0/pages/6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8/versions",
-                "body": "{\"page_id\": \"6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8\", \"uuid\": \"06620776-d347-4abd-a423-a871620299a9\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}",
+                "uri": "http://localhost:3000/api/v0/pages/3d068c64-967a-4ec7-af49-f8fa0f19e6f1/versions",
+                "body": "{\"page_id\": \"3d068c64-967a-4ec7-af49-f8fa0f19e6f1\", \"uuid\": \"06620776-d347-4abd-a423-a871620299a9\", \"capture_time\": \"2017-11-15T00:00:00+00:00\", \"uri\": \"http://example.com\", \"hash\": \"hash_placeholder\", \"source_type\": \"test\", \"title\": \"title_placeholder\", \"source_metadata\": {}}",
                 "headers": {
                     "User-Agent": [
-                        "python-requests/2.18.4"
+                        "python-requests/2.17.3"
                     ],
                     "Accept-Encoding": [
                         "gzip, deflate"
@@ -26,7 +26,78 @@
                         "277"
                     ],
                     "Authorization": [
-                        "Basic c2VlZC1hZG1pbkBleGFtcGxlLmNvbTpQQVNTV09SRA=="
+                        "Basic cm9iK3Rlc3QxQHJvYmJyYWNrZXR0LmNvbTptaW5zaXg="
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 302,
+                    "message": "Found"
+                },
+                "headers": {
+                    "X-Request-Id": [
+                        "8e9f8048-acbc-4b0c-a581-3ead9ae22dae"
+                    ],
+                    "X-XSS-Protection": [
+                        "1; mode=block"
+                    ],
+                    "X-Content-Type-Options": [
+                        "nosniff"
+                    ],
+                    "Location": [
+                        "http://localhost:3000/api/v0/pages/3d068c64-967a-4ec7-af49-f8fa0f19e6f1/versions/06620776-d347-4abd-a423-a871620299a9"
+                    ],
+                    "Set-Cookie": [
+                        "_webpage-versions-db_session=VnhKVnR1L3ZSZUFBMEp5czlIaThBWWxCOHJDTlhFb0hDeVZFUmdvemFoc0t4Y2NOK1JKL3NwdzNBU2xlZnlUUnNTVEJ6MkRsVXowVkg2bGtzK2R1REE9PS0tSFBPVGh3WFlER0lVNUJjZ0MzVkx1Zz09--107626cdd0d22455153601e0fd8b7e8b3a089ee8; path=/; HttpOnly"
+                    ],
+                    "Content-Type": [
+                        "text/html; charset=utf-8"
+                    ],
+                    "Vary": [
+                        "Origin"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "X-Runtime": [
+                        "0.209512"
+                    ],
+                    "X-Environment": [
+                        "development"
+                    ],
+                    "X-Frame-Options": [
+                        "SAMEORIGIN"
+                    ]
+                },
+                "body": {
+                    "string": "<html><body>You are being <a href=\"http://localhost:3000/api/v0/pages/3d068c64-967a-4ec7-af49-f8fa0f19e6f1/versions/06620776-d347-4abd-a423-a871620299a9\">redirected</a>.</body></html>"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "http://localhost:3000/api/v0/pages/3d068c64-967a-4ec7-af49-f8fa0f19e6f1/versions/06620776-d347-4abd-a423-a871620299a9",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "python-requests/2.17.3"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Authorization": [
+                        "Basic cm9iK3Rlc3QxQHJvYmJyYWNrZXR0LmNvbTptaW5zaXg="
+                    ],
+                    "Cookie": [
+                        "_webpage-versions-db_session=VnhKVnR1L3ZSZUFBMEp5czlIaThBWWxCOHJDTlhFb0hDeVZFUmdvemFoc0t4Y2NOK1JKL3NwdzNBU2xlZnlUUnNTVEJ6MkRsVXowVkg2bGtzK2R1REE9PS0tSFBPVGh3WFlER0lVNUJjZ0MzVkx1Zz09--107626cdd0d22455153601e0fd8b7e8b3a089ee8"
                     ]
                 }
             },
@@ -36,42 +107,42 @@
                     "message": "OK"
                 },
                 "headers": {
-                    "X-Frame-Options": [
-                        "SAMEORIGIN"
-                    ],
-                    "ETag": [
-                        "W/\"c9de0d2878924d63c071610dba9b1bd3\""
-                    ],
-                    "X-Content-Type-Options": [
-                        "nosniff"
-                    ],
-                    "X-Environment": [
-                        "development"
-                    ],
-                    "Cache-Control": [
-                        "max-age=0, private, must-revalidate"
-                    ],
-                    "Vary": [
-                        "Origin"
-                    ],
-                    "Set-Cookie": [
-                        "_webpage-versions-db_session=d2MvSFRocEt0RDVURkRLOENVNmkwRzVsTldjektVVm1TRXd0cVlPb2tFdFhWZkthTEk3S1hselc1K1o3czM4ck0yUG81Z1Fad21yN2ZBeTh5eVl2QVE9PS0tcU9sTmwyc2tubmIwVC9IL3l0RUhPdz09--4b0b1a384c9ae97a853de785f4d421a6a71956b3; path=/; HttpOnly"
+                    "X-Request-Id": [
+                        "50a8a963-7552-4d5e-a195-3f98d7f03c8f"
                     ],
                     "X-XSS-Protection": [
                         "1; mode=block"
                     ],
-                    "X-Runtime": [
-                        "0.384596"
+                    "X-Content-Type-Options": [
+                        "nosniff"
                     ],
-                    "X-Request-Id": [
-                        "d803984c-b4a6-430e-9ea8-ec1b397fc3db"
+                    "Set-Cookie": [
+                        "_webpage-versions-db_session=WlVja1E3NTJpOVFHZ2oxNTJublU2ay9JM2VHY3dxV0lLQzMyOFFFeDE4a2ZPb2ZUdDUvNkUwZmNTVDBvQUJFRnhWejM1QmlvczA0aURRNDhuMFRkb3c9PS0tenhpejNZbjgxSVMrUjRoL2I3N0Z3dz09--ce0814b9d2dee6bf5d86c1985cd14c5e859b8a31; path=/; HttpOnly"
                     ],
                     "Content-Type": [
                         "application/json; charset=utf-8"
+                    ],
+                    "Vary": [
+                        "Origin"
+                    ],
+                    "Cache-Control": [
+                        "max-age=0, private, must-revalidate"
+                    ],
+                    "X-Runtime": [
+                        "0.142298"
+                    ],
+                    "X-Environment": [
+                        "development"
+                    ],
+                    "X-Frame-Options": [
+                        "SAMEORIGIN"
+                    ],
+                    "ETag": [
+                        "W/\"6fa4a5c48f0a518d6db92b292d1fe10c\""
                     ]
                 },
                 "body": {
-                    "string": "{\"links\":{\"page\":\"http://localhost:3000/api/v0/pages/6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8\",\"previous\":\"http://localhost:3000/api/v0/pages/6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8/versions/06620776-d347-4abd-a423-a871620299b4\"},\"data\":{\"uuid\":\"06620776-d347-4abd-a423-a871620299a9\",\"page_uuid\":\"6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8\",\"capture_time\":\"2017-11-15T00:00:00.000Z\",\"uri\":\"file:///Users/dallan/Documents/Repos/web-monitoring-db/tmp/storage/archive/3587cb776ce0e4e8237f215800b7dffba0f25865cb84550e87ea8bbac838c423\",\"version_hash\":\"3587cb776ce0e4e8237f215800b7dffba0f25865cb84550e87ea8bbac838c423\",\"source_type\":\"test\",\"source_metadata\":{},\"created_at\":\"2017-10-10T23:00:29.163Z\",\"updated_at\":\"2017-10-10T23:00:29.163Z\",\"title\":\"title_placeholder\"}}"
+                    "string": "{\"links\":{\"page\":\"http://localhost:3000/api/v0/pages/3d068c64-967a-4ec7-af49-f8fa0f19e6f1\",\"previous\":\"http://localhost:3000/api/v0/versions/74bc3155-58d7-4c30-b4aa-7d86f8cc83dd\",\"next\":\"http://localhost:3000/api/v0/versions/795e6ff4-fcc0-444c-9f31-2b156f7dd4d4\"},\"data\":{\"uuid\":\"06620776-d347-4abd-a423-a871620299a9\",\"page_uuid\":\"3d068c64-967a-4ec7-af49-f8fa0f19e6f1\",\"capture_time\":\"2017-11-15T00:00:00.000Z\",\"uri\":\"file:///Users/rbrackett/Dev/datarescue/web-monitoring-db/tmp/storage/archive/3587cb776ce0e4e8237f215800b7dffba0f25865cb84550e87ea8bbac838c423\",\"version_hash\":\"3587cb776ce0e4e8237f215800b7dffba0f25865cb84550e87ea8bbac838c423\",\"source_type\":\"test\",\"source_metadata\":{},\"created_at\":\"2018-03-02T07:06:01.656Z\",\"updated_at\":\"2018-03-02T07:06:01.656Z\",\"title\":\"title_placeholder\",\"capture_url\":null}}"
                 }
             }
         }

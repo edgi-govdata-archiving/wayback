@@ -27,12 +27,12 @@ def _add_and_monitor(versions):
         print("Errors: {}".format(errors))
 
 
-def import_ia(url, agency, site, from_date=None, to_date=None):
+def import_ia(url, from_date=None, to_date=None, maintainers=None, tags=None):
     # Pulling on this generator does the work.
     versions = (ia.timestamped_uri_to_version(version.date, version.raw_url,
                                               url=version.url,
-                                              site=site,
-                                              agency=agency,
+                                              maintainers=maintainers,
+                                              tags=tags,
                                               view_url=version.view_url)
                 for version in ia.list_versions(url,
                                                 from_date=from_date,
@@ -40,11 +40,11 @@ def import_ia(url, agency, site, from_date=None, to_date=None):
     _add_and_monitor(versions)
 
 
-def import_pf_archive(cabinet_id, archive_id, *, agency, site):
+def import_pf_archive(cabinet_id, archive_id, *, maintainers=None, tags=None):
     # Pulling on this generator does the work.
     versions = pf.archive_to_versions(cabinet_id, archive_id,
-                                      agency=agency,
-                                      site=site)
+                                      maintainers=maintainers,
+                                      tags=tags)
     _add_and_monitor(versions)
 
 
@@ -67,25 +67,26 @@ def main():
     doc = """Command Line Interface to the web_monitoring Python package
 
 Usage:
-wm import ia <url> --site <site> --agency <agency>
-             [--from <from_date>]
-             [--to <to_date>]
-wm import pf <cabinet_id> <archive_id> --site <site> --agency <agency>
+wm import ia <url> [--from <from_date>] [--to <to_date>] [options]
+wm import pf <cabinet_id> <archive_id> [options]
 
 Options:
--h --help     Show this screen.
---version     Show version.
+-h --help                    Show this screen.
+--version                    Show version.
+--maintainers <maintainers>  Comma-separated list of entities that maintain the
+                             imported pages.
+--tags <tags>                Comma-separated list of tags to apply to pages
 """
     arguments = docopt(doc, version='0.0.1')
     if arguments['import']:
         if arguments['ia']:
             import_ia(url=arguments['<url>'],
-                      agency=arguments['<agency>'],
-                      site=arguments['<site>'],
+                      maintainers=arguments.get('<maintainers>'),
+                      tags=arguments.get('<tags>'),
                       from_date=parse_date_argument(arguments['<from_date>']),
                       to_date=parse_date_argument(arguments['<to_date>']))
         elif arguments['pf']:
             import_pf_archive(cabinet_id=arguments['<cabinet_id>'],
                               archive_id=arguments['<archive_id>'],
-                              agency=arguments['<agency>'],
-                              site=arguments['<site>'])
+                              maintainers=arguments.get('<maintainers>'),
+                              tags=arguments.get('<tags>'))

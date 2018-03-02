@@ -4,11 +4,11 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "http://localhost:3000/api/v0/pages/6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8/changes/..9342c121-cff0-4454-934f-d0f118508da1/annotations/2bf14db1-1336-47ab-897e-72bf0d89f870",
+                "uri": "http://localhost:3000/api/v0/pages/3d068c64-967a-4ec7-af49-f8fa0f19e6f1/changes/..795e6ff4-fcc0-444c-9f31-2b156f7dd4d4/annotations/503400d9-c200-4373-926c-c7c5d6dd29f5",
                 "body": null,
                 "headers": {
                     "User-Agent": [
-                        "python-requests/2.18.4"
+                        "python-requests/2.17.3"
                     ],
                     "Accept-Encoding": [
                         "gzip, deflate"
@@ -20,7 +20,7 @@
                         "keep-alive"
                     ],
                     "Authorization": [
-                        "Basic c2VlZC1hZG1pbkBleGFtcGxlLmNvbTpQQVNTV09SRA=="
+                        "Basic cm9iK3Rlc3QxQHJvYmJyYWNrZXR0LmNvbTptaW5zaXg="
                     ]
                 }
             },
@@ -30,39 +30,42 @@
                     "message": "OK"
                 },
                 "headers": {
-                    "X-Frame-Options": [
-                        "SAMEORIGIN"
-                    ],
-                    "ETag": [
-                        "W/\"b203e184549e9f2e2b1d9b27256ccebe\""
-                    ],
-                    "X-Content-Type-Options": [
-                        "nosniff"
-                    ],
-                    "X-Environment": [
-                        "development"
-                    ],
-                    "Cache-Control": [
-                        "max-age=0, private, must-revalidate"
-                    ],
-                    "Vary": [
-                        "Origin"
+                    "X-Request-Id": [
+                        "9ff3c847-5024-4e51-9cf5-7dff47dae559"
                     ],
                     "X-XSS-Protection": [
                         "1; mode=block"
                     ],
-                    "X-Runtime": [
-                        "0.014153"
+                    "X-Content-Type-Options": [
+                        "nosniff"
                     ],
-                    "X-Request-Id": [
-                        "deefe16b-4f39-4df8-b9b6-03d9d1ca825e"
+                    "Set-Cookie": [
+                        "_webpage-versions-db_session=dXcreEovNXZRclJrNFFETUFIOFI5dTlIVm4yY1BCVlZpQWYxVk9NVXhpV3l2ZWdHbkJBYTBDUzNjclBGZStJWG5tV2N3eVBwcXJhVzcxQnF1VHcvS0E9PS0tUWUzSlVISmZmYUY4Tm1qQ20weHhNQT09--56ddee076c7ba5ddc853a73f141dbf57da8ec08a; path=/; HttpOnly"
                     ],
                     "Content-Type": [
                         "application/json; charset=utf-8"
+                    ],
+                    "Vary": [
+                        "Origin"
+                    ],
+                    "Cache-Control": [
+                        "max-age=0, private, must-revalidate"
+                    ],
+                    "X-Runtime": [
+                        "0.133522"
+                    ],
+                    "X-Environment": [
+                        "development"
+                    ],
+                    "X-Frame-Options": [
+                        "SAMEORIGIN"
+                    ],
+                    "ETag": [
+                        "W/\"8cc571445e3e5f3338904f1868e010bf\""
                     ]
                 },
                 "body": {
-                    "string": "{\"links\":{\"version\":\"http://localhost:3000/api/v0/pages/6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8/versions/9342c121-cff0-4454-934f-d0f118508da1\",\"from_version\":\"http://localhost:3000/api/v0/pages/6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8/versions/f343bf02-9aef-46c5-96ca-5644280340fd\"},\"data\":{\"uuid\":\"2bf14db1-1336-47ab-897e-72bf0d89f870\",\"annotation\":{\"foo\":\"bar\"},\"created_at\":\"2017-10-09T20:27:44.252Z\",\"updated_at\":\"2017-10-09T20:27:44.252Z\",\"author\":{\"id\":1,\"email\":\"seed-admin@example.com\"},\"from_version\":\"f343bf02-9aef-46c5-96ca-5644280340fd\",\"to_version\":\"9342c121-cff0-4454-934f-d0f118508da1\"}}"
+                    "string": "{\"links\":{\"version\":\"http://localhost:3000/api/v0/pages/3d068c64-967a-4ec7-af49-f8fa0f19e6f1/versions/795e6ff4-fcc0-444c-9f31-2b156f7dd4d4\",\"from_version\":\"http://localhost:3000/api/v0/pages/3d068c64-967a-4ec7-af49-f8fa0f19e6f1/versions/06620776-d347-4abd-a423-a871620299a9\"},\"data\":{\"uuid\":\"503400d9-c200-4373-926c-c7c5d6dd29f5\",\"annotation\":{\"foo\":\"bar\"},\"created_at\":\"2018-03-02T07:07:27.288Z\",\"updated_at\":\"2018-03-02T07:07:27.288Z\",\"author\":{\"id\":2,\"email\":\"rob+test1@robbrackett.com\"},\"from_version\":\"06620776-d347-4abd-a423-a871620299a9\",\"to_version\":\"795e6ff4-fcc0-444c-9f31-2b156f7dd4d4\"}}"
                 }
             }
         }
