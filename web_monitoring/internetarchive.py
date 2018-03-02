@@ -232,9 +232,9 @@ def list_versions(url, *, from_date=None, to_date=None, skip_repeats=True):
                          "versions of {}".format(url))
 
 
-def format_version(*, url, dt, uri, version_hash, title, agency, site, status,
-                   mime_type, encoding, headers=None, view_url=None,
-                   redirected_url=None, redirects=None):
+def format_version(*, url, dt, uri, version_hash, title, status, mime_type,
+                   encoding, maintainers=None, tags=None, headers=None,
+                   view_url=None, redirected_url=None, redirects=None):
     """
     Format version info in preparation for submitting it to web-monitoring-db.
 
@@ -250,24 +250,24 @@ def format_version(*, url, dt, uri, version_hash, title, agency, site, status,
         sha256 hash of version content
     title : string
         primer metadata (likely to change in the future)
-    agency : string
-        primer metadata (likely to change in the future)
-    site : string
-        primer metadata (likely to change in the future)
     status : int
         HTTP status code
     mime_type : string
         Mime type of HTTP response
     encoding : string
         Character encoding of HTTP response
-    headers : dict
+    maintainers : list of string, optional
+        Entities responsible for maintaining the page, as a list of strings
+    tags : list of string, optional
+        Any arbitrary "tags" to apply to the page for categorization
+    headers : dict, optional
         Any relevant HTTP headers from response
-    view_url : string
+    view_url : string, optional
         The archive.org URL for viewing the page (with rewritten links, etc.)
-    redirected_url : string
+    redirected_url : string, optional
         If getting `url` resulted in a redirect, this should be the URL
         that was ultimately redirected to.
-    redirects : string
+    redirects : string, optional
         If getting `url` resulted in any redirects this should be a sequence
         of all the URLs that were retrieved, starting with the originally
         requested URL and ending with the value of the `redirected_url` arg.
@@ -298,9 +298,9 @@ def format_version(*, url, dt, uri, version_hash, title, agency, site, status,
 
     return dict(
          page_url=url,
-         page_title=title,
-         site_agency=agency,
-         site_name=site,
+         page_maintainers=maintainers,
+         page_tags=tags,
+         title=title,
          capture_time=dt.isoformat(),
          uri=uri,
          version_hash=version_hash,
@@ -309,7 +309,8 @@ def format_version(*, url, dt, uri, version_hash, title, agency, site, status,
     )
 
 
-def timestamped_uri_to_version(dt, uri, *, url, agency, site, view_url=None):
+def timestamped_uri_to_version(dt, uri, *, url, maintainers=None, tags=None,
+                               view_url=None):
     """
     Fetch version content and combine it with metadata to build a Version.
 
@@ -321,10 +322,10 @@ def timestamped_uri_to_version(dt, uri, *, url, agency, site, view_url=None):
         URI of version
     url : string
         page URL
-    agency : string
-        primer metadata (likely to change in the future)
-    site : string
-        primer metadata (likely to change in the future)
+    maintainers : list of string, optional
+        Entities responsible for maintaining the page, as a list of strings
+    tags : list of string, optional
+        Any arbitrary "tags" to apply to the page for categorization
     view_url : string, optional
         The archive.org URL for viewing the page (with rewritten links, etc.)
 
@@ -362,8 +363,8 @@ def timestamped_uri_to_version(dt, uri, *, url, agency, site, view_url=None):
         redirects.append(redirected_url)
 
     return format_version(url=url, dt=dt, uri=uri,
-                          version_hash=version_hash, title=title,
-                          agency=agency, site=site, status=res.status_code,
+                          version_hash=version_hash, title=title, tags=tags,
+                          maintainers=maintainers, status=res.status_code,
                           mime_type=content_type[0], encoding=res.encoding,
                           headers=original_headers, view_url=view_url,
                           redirected_url=redirected_url, redirects=redirects)

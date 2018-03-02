@@ -83,8 +83,10 @@ def _build_version(*, page_id, uuid, capture_time, uri, hash, source_type, title
     return version
 
 
-def _build_importable_version(*, page_url, uuid=None, capture_time, uri, version_hash,
-                             source_type, page_title, site_agency, site_name, source_metadata=None):
+def _build_importable_version(*, page_url, uuid=None, capture_time, uri,
+                              version_hash, source_type, title,
+                              page_maintainers=None, page_tags=None,
+                              source_metadata=None):
     """
     Build a Version dict from parameters, performing some validation.
 
@@ -101,10 +103,10 @@ def _build_importable_version(*, page_url, uuid=None, capture_time, uri, version
                'uri': str(uri),
                'hash': str(version_hash),
                'source_type': str(source_type),
-               'title': str(page_title),
+               'title': str(title),
                'source_metadata': source_metadata,
-               'site_agency': site_agency,
-               'site_name': site_name}
+               'page_maintainers': page_maintainers,
+               'page_tags': page_tags}
     return version
 
 
@@ -163,7 +165,7 @@ Alternatively, you can instaniate Client(user, password) directly.""")
     ### PAGES ###
 
     def list_pages(self, *, chunk=None, chunk_size=None,
-                   site=None, agency=None, url=None, title=None,
+                   tags=None, maintainers=None, url=None, title=None,
                    include_versions=None, include_latest=None,
                    source_type=None, hash=None,
                    start_date=None, end_date=None):
@@ -176,8 +178,8 @@ Alternatively, you can instaniate Client(user, password) directly.""")
             pagination parameter
         chunk_size : integer, optional
             number of items per chunk
-        site : string, optional
-        agency : string, optional
+        tags : list of string, optional
+        maintainers : list of string, optional
         url : string, optional
         title : string, optional
         include_versions : boolean, optional
@@ -195,8 +197,8 @@ Alternatively, you can instaniate Client(user, password) directly.""")
         """
         params = {'chunk': chunk,
                   'chunk_size': chunk_size,
-                  'site': site,
-                  'agency': agency,
+                  'tags[]': tags,
+                  'maintainers[]': maintainers,
                   'url': url,
                   'title': title,
                   'include_versions': include_versions,

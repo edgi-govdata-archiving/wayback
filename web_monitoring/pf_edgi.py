@@ -101,8 +101,8 @@ def get_file(cabinet_id, archive_id, page_key):
     return res.content  # intentionally un-decoded bytes
 
 
-def format_version(*, url, dt, uri, version_hash, title, agency, site,
-                   metadata):
+def format_version(*, url, dt, uri, version_hash, title, metadata,
+                   maintainers=None, tags=None):
     """
     Format version info in preparation for submitting it to web-monitoring-db.
 
@@ -118,10 +118,10 @@ def format_version(*, url, dt, uri, version_hash, title, agency, site,
         sha256 hash of version content
     title : string
         primer metadata (likely to change in the future)
-    agency : string
-        primer metadata (likely to change in the future)
-    site : string
-        primer metadata (likely to change in the future)
+    maintainers : list of string, optional
+        Entities responsible for maintaining the page, as a list of strings
+    tags : list of string, optional
+        Any arbitrary "tags" to apply to the page for categorization
 
     Returns
     -------
@@ -132,9 +132,9 @@ def format_version(*, url, dt, uri, version_hash, title, agency, site,
     # https://github.com/edgi-govdata-archiving/web-monitoring-db/pull/32
     return dict(
          page_url=url,
-         page_title=title,
-         site_agency=agency,
-         site_name=site,
+         page_maintainers=maintainers,
+         page_tags=tags,
+         title=title,
          capture_time=dt.isoformat(),
          uri=uri,
          version_hash=version_hash,
@@ -143,8 +143,8 @@ def format_version(*, url, dt, uri, version_hash, title, agency, site,
     )
 
 
-def page_to_version(url, cabinet_id, archive_id, page_key, *,
-                    agency, site):
+def page_to_version(url, cabinet_id, archive_id, page_key, *, maintainers=None,
+                    tags=None):
     """
     Obtain URI, timestamp, metadata, hash, and title and return a Version.
     """
@@ -169,12 +169,13 @@ def page_to_version(url, cabinet_id, archive_id, page_key, *,
         title = ''
     version = format_version(url=url, dt=dt, uri=uri,
                              version_hash=version_hash, title=title,
-                             agency=agency, site=site,
+                             maintainers=maintainers, tags=tags,
                              metadata=metadata)
     return version
 
 
-def archive_to_versions(cabinet_id, archive_id, *, agency, site):
+def archive_to_versions(cabinet_id, archive_id, *, maintainers=None,
+                        tags=None):
     """
     Yield formatted Versions for every page in a PF archive.
     """
@@ -182,7 +183,8 @@ def archive_to_versions(cabinet_id, archive_id, *, agency, site):
     results = search_archive(cabinet_id, archive_id, '')['founds']
     for result in results:
         yield page_to_version(result['url'], cabinet_id, archive_id,
-                              result['key'], agency=agency, site=site)
+                              result['key'], maintainers=maintainers,
+                              tags=tags)
     unload_archive(cabinet_id, archive_id)
 
 
