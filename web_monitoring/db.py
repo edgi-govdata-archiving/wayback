@@ -63,8 +63,8 @@ def _time_range_string(start_date, end_date):
     return f'{start_str}..{end_str}'
 
 
-def _build_version(*, page_id, uuid, capture_time, uri, hash, source_type, title,
-                   source_metadata=None):
+def _build_version(*, page_id, uuid, capture_time, uri, hash, source_type,
+                   title, source_metadata=None):
     """
     Build a Version dict from parameters, performing some validation.
     """

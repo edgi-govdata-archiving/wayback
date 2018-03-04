@@ -137,7 +137,6 @@ def test_add_version():
                     source_type='test')
 
 
-
 @db_vcr.use_cassette()
 def test_get_new_version():
     cli = Client(**AUTH)
@@ -218,7 +217,6 @@ def test_list_annotations():
     # smoke test
     cli.list_annotations(page_id=PAGE_ID,
                          to_version_id=TO_VERSION_ID)
-
 
 
 @db_vcr.use_cassette()
