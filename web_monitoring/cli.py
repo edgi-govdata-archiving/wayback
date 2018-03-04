@@ -27,7 +27,8 @@ def _add_and_monitor(versions):
         print("Errors: {}".format(errors))
 
 
-def import_ia(url, from_date=None, to_date=None, maintainers=None, tags=None):
+def import_ia(url, *, from_date=None, to_date=None, maintainers=None,
+              tags=None):
     # Pulling on this generator does the work.
     versions = (ia.timestamped_uri_to_version(version.date, version.raw_url,
                                               url=version.url,
