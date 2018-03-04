@@ -10,6 +10,7 @@ from urllib.parse import urlparse
 
 BASE = 'https://edgi.pagefreezer.com/'
 
+
 def list_cabinets():
     url = f'{BASE}/master/api/services/storage/library/all/cabinets'
     res = requests.get(url)
@@ -18,23 +19,26 @@ def list_cabinets():
     assert content['status'] == 'ok'  # business logic is OK
     return content['cabinets']
 
+
 def get_cabinet_id(url):
     cabinets = list_cabinets()
     cabinet_id = ''
 
     if(url.find('://') == -1):
-        try_urls = ['https://' + url,'http://' + url]
+        try_urls = ['https://' + url, 'http://' + url]
     elif(url.find('://') == 4):
-        try_urls = [url , 'https' + url[4:]]
+        try_urls = [url, 'https' + url[4:]]
     else:
         try_urls = [url, 'http' + url[5:]]
 
-    for key,value in cabinets.items():
+    for key, value in cabinets.items():
         for dictionary in value:
-            if(str(urlparse(dictionary['url']).scheme + '://' + urlparse(dictionary['url']).netloc) in try_urls):
+            parsed = urlparse(dictionary['url'])
+            if(str(parsed.scheme + '://' + parsed.netloc) in try_urls):
                 cabinet_id = dictionary['name']
 
-    if not cabinet_id != '' : raise ValueError("No such url found in the cabinets.")
+    if not cabinet_id != '':
+        raise ValueError("No such url found in the cabinets.")
 
     return cabinet_id
 
