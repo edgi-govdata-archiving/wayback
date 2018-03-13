@@ -25,11 +25,11 @@ global_stash = {}  # used to pass info between tests
 
 # Refers to real data that is part of the 'seed' dataset in web-monitoring-db
 URL = 'https://www3.epa.gov/climatechange/impacts/society.html'
-SITE = 'EPA - www3.epa.gov'
+SITE = 'site:EPA - www3.epa.gov'
 AGENCY = 'EPA'
-PAGE_ID = '6c880bdd-c7a6-4bbf-a574-7d6479cc4fe8'
-TO_VERSION_ID = '9342c121-cff0-4454-934f-d0f118508da1'
-VERSIONISTA_ID = '10329339'
+PAGE_ID = '3d068c64-967a-4ec7-af49-f8fa0f19e6f1'
+TO_VERSION_ID = '795e6ff4-fcc0-444c-9f31-2b156f7dd4d4'
+VERSIONISTA_ID = '13708349'
 
 # This is used in new Versions that we add.
 TIME = datetime(2017, 11, 15, tzinfo=timezone.utc)
@@ -72,13 +72,13 @@ def test_list_pages():
     assert len(res['data']) == 0
     res = cli.list_pages(url=URL)
     assert len(res['data']) > 0
-    res = cli.list_pages(site='__nonexistent__')
+    res = cli.list_pages(tags=['__nonexistent__'])
     assert len(res['data']) == 0
-    res = cli.list_pages(site=SITE)
+    res = cli.list_pages(tags=[SITE])
     assert len(res['data']) > 0
-    res = cli.list_pages(agency='__nonexistent__')
+    res = cli.list_pages(maintainers=['__nonexistent__'])
     assert len(res['data']) == 0
-    res = cli.list_pages(agency=AGENCY)
+    res = cli.list_pages(maintainers=[AGENCY])
     assert len(res['data']) > 0
 
 
@@ -137,7 +137,6 @@ def test_add_version():
                     source_type='test')
 
 
-
 @db_vcr.use_cassette()
 def test_get_new_version():
     cli = Client(**AUTH)
@@ -171,9 +170,9 @@ def test_add_versions():
                      capture_time=TIME,
                      uri='http://example.com',
                      version_hash='hash_placeholder',
-                     page_title='title_placeholder',
-                     site_agency='agency_placeholder',
-                     site_name='site_placeholder',
+                     title='title_placeholder',
+                     page_maintainers=['agency_placeholder'],
+                     page_tags=['site:site_placeholder'],
                      source_type='test') for version_id in new_version_ids]
     # FIXME: need to spy on the data POSTed to DB and make sure the number of
     # lines matches the number of new_version_ids
@@ -218,7 +217,6 @@ def test_list_annotations():
     # smoke test
     cli.list_annotations(page_id=PAGE_ID,
                          to_version_id=TO_VERSION_ID)
-
 
 
 @db_vcr.use_cassette()
