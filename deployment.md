@@ -24,10 +24,10 @@ $ curl <conda_url> > conda_installer.sh
 # e.g: curl https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh > conda_installer.sh
 ```
 
-Then run the installer. Follow the prompts, but instead of the default install location, choose `/opt/conda`. (This gets us a system-wide install so the web server can use it.)
+Then run the installer. (These parameters get us a system-wide install so the web server can use it.)
 
 ```sh
-$ sudo bash conda_installer.sh
+$ sudo bash conda_installer.sh -b -p /opt/conda
 ```
 
 Finally, ensure that you can access conda by creating a new conda group and adding yourself to it.
@@ -63,16 +63,15 @@ Run the actual installer:
 ```sh
 $ cd web-monitoring-processing
 
-# Install any packages available through conda as pre-built binaries
-$ while read requirement; do conda install --yes $requirement; done < requirements.txt
+# Install packages into new conda environment.
+$ /opt/conda/bin/conda-env create --force -f environment.yml -p /opt/conda/envs/web-monitoring-processing
 
-# Actually install the project
-$ python setup.py install
 ```
 
 Now, test that your installation actually works by running the diffing server on port 8000:
 
 ```sh
+$ conda activate web-monitoring-processing
 $ wm-diffing-server --port 8000
 ```
 
@@ -107,25 +106,25 @@ The content of this file should look like:
 ; To take advantage of multiple cores, you'll need multiple processes.
 
 [program:wm-diffing-server-8000]
-command=/opt/conda/bin/wm-diffing-server --port 8000
+command=/opt/conda/envs/web-monitoring-processing/bin/wm-diffing-server --port 8000
 stderr_logfile = /var/log/supervisor/tornado-stderr.log
 stdout_logfile = /var/log/supervisor/tornado-stdout.log
 environment=PAGE_FREEZER_API_KEY=<page_freezer_key>
 
 [program:wm-diffing-server-8001]
-command=/opt/conda/bin/wm-diffing-server --port 8001
+command=/opt/conda/envs/web-monitoring-processing/bin/wm-diffing-server --port 8001
 stderr_logfile = /var/log/supervisor/tornado-stderr.log
 stdout_logfile = /var/log/supervisor/tornado-stdout.log
 environment=PAGE_FREEZER_API_KEY=<page_freezer_key>
 
 [program:wm-diffing-server-8002]
-command=/opt/conda/bin/wm-diffing-server --port 8002
+command=/opt/conda/envs/web-monitoring-processing/bin/wm-diffing-server --port 8002
 stderr_logfile = /var/log/supervisor/tornado-stderr.log
 stdout_logfile = /var/log/supervisor/tornado-stdout.log
 environment=PAGE_FREEZER_API_KEY=<page_freezer_key>
 
 [program:wm-diffing-server-8003]
-command=/opt/conda/bin/wm-diffing-server --port 8003
+command=/opt/conda/envs/web-monitoring-processing/bin/wm-diffing-server --port 8003
 stderr_logfile = /var/log/supervisor/tornado-stderr.log
 stdout_logfile = /var/log/supervisor/tornado-stdout.log
 environment=PAGE_FREEZER_API_KEY=<page_freezer_key>
