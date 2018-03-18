@@ -6,7 +6,6 @@ import pandas
 from tqdm import tqdm
 from web_monitoring import db
 from web_monitoring import internetarchive as ia
-from web_monitoring import pf_edgi as pf
 
 
 # These functions lump together library code into monolithic operations for the
