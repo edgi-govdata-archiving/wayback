@@ -24,7 +24,6 @@ Working and Under Active Development:
 * A Python API to the Internet Archive Wayback Machine's archived webpage
   snapshots in ``web_monitoring.internetarchive``
 * A Python API to the web-monitoring-db Rails app in ``web_monitoring.db``
-* A Python API to PageFreezer's archived snapshots in ``web_monitoring.pf_edgi``
 * Python functions and a command-line tool for importing snapshots from PF and
   IA into web-monitoring-db.
 
