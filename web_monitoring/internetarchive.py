@@ -334,7 +334,8 @@ def timestamped_uri_to_version(dt, uri, *, url, maintainers=None, tags=None,
     dict : Version
         suitable for passing to :class:`Client.add_versions`
     """
-    res = requests.get(uri)
+    with utils.rate_limited(group='timestamped_uri_to_version'):
+        res = utils.retryable_request('GET', uri)
 
     # IA's memento server responds with the status of the original request, so
     # use the presence of the 'Memento-Datetime' header to determine if we
