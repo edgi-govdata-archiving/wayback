@@ -6,5 +6,6 @@ doctr
 ipython
 matplotlib
 numpydoc
+requests-mock
 sphinx
 sphinx_rtd_theme
