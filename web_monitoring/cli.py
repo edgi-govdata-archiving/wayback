@@ -27,8 +27,9 @@ def _add_and_monitor(versions):
 
 
 def import_ia(url, *, from_date=None, to_date=None, maintainers=None,
-              tags=None):
+              tags=None, skip_unchanged='resolved-response'):
     # Pulling on this generator does the work.
+    skip_responses = skip_unchanged == 'response'
     versions = (ia.timestamped_uri_to_version(version.date, version.raw_url,
                                               url=version.url,
                                               maintainers=maintainers,
@@ -36,11 +37,28 @@ def import_ia(url, *, from_date=None, to_date=None, maintainers=None,
                                               view_url=version.view_url)
                 for version in ia.list_versions(url,
                                                 from_date=from_date,
-                                                to_date=to_date))
+                                                to_date=to_date,
+                                                skip_repeats=skip_responses))
+
+    if skip_unchanged == 'resolved-response':
+        versions = _filter_unchanged_versions(versions)
+
     _add_and_monitor(versions)
 
 
-def parse_date_argument(date_string):
+def _filter_unchanged_versions(versions):
+    """
+    Take an iteratable of importable version dicts and yield only versions that
+    differ from the previous version of the same page.
+    """
+    last_hashes = {}
+    for version in versions:
+        if last_hashes.get(version['page_url']) != version['version_hash']:
+            last_hashes[version['page_url']] = version['version_hash']
+            yield version
+
+
+def _parse_date_argument(date_string):
     """Parse a CLI argument that should represent a date into a datetime"""
     if not date_string:
         return None
@@ -62,17 +80,31 @@ Usage:
 wm import ia <url> [--from <from_date>] [--to <to_date>] [options]
 
 Options:
--h --help                    Show this screen.
---version                    Show version.
---maintainers <maintainers>  Comma-separated list of entities that maintain the
-                             imported pages.
---tags <tags>                Comma-separated list of tags to apply to pages
+-h --help                     Show this screen.
+--version                     Show version.
+--maintainers <maintainers>   Comma-separated list of entities that maintain
+                              the imported pages.
+--tags <tags>                 Comma-separated list of tags to apply to pages
+--skip-unchanged <skip_type>  Skip consecutive captures of the same content.
+                              Can be:
+                                `none` (no skipping),
+                                `response` (if the response is unchanged), or
+                                `resolved-response` (if the final response
+                                    after redirects is unchanged)
+                              [default: resolved-response]
 """
     arguments = docopt(doc, version='0.0.1')
     if arguments['import']:
+        skip_unchanged = arguments['--skip-unchanged']
+        if skip_unchanged not in ('none', 'response', 'resolved-response'):
+            print('--skip-unchanged must be one of `none`, `response`, '
+                  'or `resolved-response`')
+            return
+
         if arguments['ia']:
             import_ia(url=arguments['<url>'],
-                      maintainers=arguments.get('<maintainers>'),
-                      tags=arguments.get('<tags>'),
-                      from_date=parse_date_argument(arguments['<from_date>']),
-                      to_date=parse_date_argument(arguments['<to_date>']))
+                      maintainers=arguments.get('--maintainers'),
+                      tags=arguments.get('--tags'),
+                      from_date=_parse_date_argument(arguments['<from_date>']),
+                      to_date=_parse_date_argument(arguments['<to_date>']),
+                      skip_unchanged=skip_unchanged)
