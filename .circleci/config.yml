@@ -7,7 +7,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: web-monitoring-processing-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "dev-requirements.txt" }}
+          key: processing-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "dev-requirements.txt" }}
 
       # Bundle install dependencies
       - run:
@@ -21,9 +21,9 @@ jobs:
 
       # Store bundle cache
       - save_cache:
-          key: web-monitoring-processing-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "dev-requirements.txt" }}
+          key: processing-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "dev-requirements.txt" }}
           paths:
-            - vendor/bundle
+            - venv
             
       - run:
           name: Tests
