@@ -1,0 +1,86 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/web-monitoring-processing
+    docker:
+      - image: circleci/python:3.6
+    steps:
+      - checkout
+      - restore_cache:
+          key: processing-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "dev-requirements.txt" }}
+
+      # Bundle install dependencies
+      - run:
+          name: Install Dependencies
+          command: |
+            python -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+            pip install -r dev-requirements.txt
+            python setup.py install
+
+      # Store bundle cache
+      - save_cache:
+          key: processing-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "dev-requirements.txt" }}
+          paths:
+            - venv
+            
+      - run:
+          name: Tests
+          command: |
+            . venv/bin/activate
+            coverage run run_tests.py -v web_monitoring/tests/
+      - run:
+          name: Coverage
+          command: |
+            . venv/bin/activate
+            coverage report -m
+      - run:
+          name: Code linting
+          command: |
+            . venv/bin/activate
+            pyflakes web_monitoring
+      - run:
+          name: Build docs
+          command: |
+            . venv/bin/activate
+            cd docs && make html
+
+  publish_docker:
+    machine: true
+    steps:
+      - checkout
+      - run: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: |
+          docker build -t envirodgi/processing:$CIRCLE_SHA1 .
+          docker build -t envirodgi/processing:latest .
+      - run: |
+          docker push envirodgi/processing:$CIRCLE_SHA1
+          docker push envirodgi/processing:latest
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build:
+          context: web-monitoring-staging-access
+          filters:
+            branches:
+              ignore: master
+
+  build-and-publish:
+    jobs:
+      - build:
+          context: web-monitoring-staging-access
+          filters:
+            branches:
+              only:
+                - master
+      - hold:
+          type: approval
+          requires:
+            - build
+      - publish_docker:
+          requires:
+            - hold
