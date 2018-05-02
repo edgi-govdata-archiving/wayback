@@ -7,6 +7,7 @@ import tornado.gen
 import tornado.httpclient
 import tornado.ioloop
 import tornado.web
+from tornado.stack_context import ExceptionStackContext
 import traceback
 import web_monitoring
 import web_monitoring.differs
@@ -15,6 +16,9 @@ from web_monitoring.diff_errors import (
 )
 import web_monitoring.html_diff_render
 import web_monitoring.links_diff
+import json
+
+import pdb
 
 # Map tokens in the REST API to functions in modules.
 # The modules do not have to be part of the web_monitoring package.
@@ -57,6 +61,15 @@ XML_PROLOG_PATTERN = re.compile(
 
 client = tornado.httpclient.AsyncHTTPClient()
 
+def handle_request(response):
+    if response.error is not None:
+        try:
+            response.rethrow()
+        except ValueError:
+            print("This is a value error")
+            
+    else:
+         print('Handle request')
 
 class DiffHandler(tornado.web.RequestHandler):
     # subclass must define `differs` attribute
@@ -77,7 +90,35 @@ class DiffHandler(tornado.web.RequestHandler):
         b = query_params.pop('b')
 
         # Fetch server response for URLs a and b.
-        res_a, res_b = yield [client.fetch(a), client.fetch(b)]
+        res_a, res_b = yield [client.fetch(a, raise_error=False), client.fetch(b, raise_error=False)]
+        
+        #Check if the HTTP requests were successfull and handle exeptions
+        if res_a.error is not None:
+            try:
+                res_a.rethrow()
+            except (ValueError, IOError):
+                pdb.set_trace()
+                data = {}
+                data['code'] = res_a.code
+                data['error'] = str(res_a.error)
+                data['parameter'] = 'a'
+                json_data = json.dumps(data)
+                self.write(json_data)
+                return
+
+        if res_b.error is not None:
+            try:
+                res_b.rethrow()
+            except (ValueError, IOError):
+                pdb.set_trace()
+                data = {}
+                data['code'] = res_b.code
+                data['error'] = str(res_b.error)
+                data['parameter'] = 'b'
+                json_data = json.dumps(data)
+                self.write(json_data)
+                return
+
 
         # Validate response bytes against hash, if provided.
         for query_param, res in zip(('a_hash', 'b_hash'), (res_a, res_b)):
