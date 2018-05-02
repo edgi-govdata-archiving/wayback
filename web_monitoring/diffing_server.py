@@ -17,8 +17,7 @@ from web_monitoring.diff_errors import (
 import web_monitoring.html_diff_render
 import web_monitoring.links_diff
 import json
-
-import pdb
+import sys
 
 # Map tokens in the REST API to functions in modules.
 # The modules do not have to be part of the web_monitoring package.
@@ -70,15 +69,19 @@ class DiffHandler(tornado.web.RequestHandler):
         try:
             func = self.differs[differ]
         except KeyError:
-            self.send_error(404)
+            self.send_error(404, reason="Diffing method not found.")
             return
 
         # If params repeat, take last one. Decode bytes into unicode strings.
         query_params = {k: v[-1].decode() for k, v in
                         self.request.arguments.items()}
-        a = query_params.pop('a')
-        b = query_params.pop('b')
-
+        try:
+            a = query_params.pop('a')
+            b = query_params.pop('b')
+        except KeyError:
+            self.send_error(
+                        400, reason="Malformed request. A URL parameter is missing.")
+            return
         # Fetch server response for URLs a and b.
         res_a, res_b = yield [client.fetch(a, raise_error=False), client.fetch(b, raise_error=False)]
         
@@ -87,16 +90,23 @@ class DiffHandler(tornado.web.RequestHandler):
             try:
                 res_a.rethrow()
             except (ValueError, IOError):
-                self.send_error(
-                        res_a.code, reason=str(res_a.error))
-                
+                if res_a.code == 599:
+                    self.send_error(
+                        400, reason=str(res_a.error))
+                else:
+                    self.send_error(
+                        400, reason=str(res_a.error))
                 return
 
         if res_b.error is not None:
             try:
                 res_b.rethrow()
             except (ValueError, IOError):
-                self.send_error(
+                if res_b.code == 599:
+                    self.send_error(
+                        400, reason=str(res_b.error))
+                else:
+                    self.send_error(
                         res_b.code, reason=str(res_b.error))
                 return
 
@@ -119,7 +129,17 @@ class DiffHandler(tornado.web.RequestHandler):
 
         # Pass the bytes and any remaining args to the diffing function.
         executor = concurrent.futures.ProcessPoolExecutor()
-        res = yield executor.submit(caller, func, res_a, res_b, **query_params)
+        try:
+            res = yield executor.submit(caller, func, res_a, res_b, **query_params)
+        except KeyError:
+            exceptionMessage = str(sys.exc_info()[1])
+            exceptionMessage = exceptionMessage[1:-1]
+            self.send_error(400, reason="Malformed request. "+exceptionMessage)
+            return
+        except UndecodableContentError:
+            exceptionMessage = str(sys.exc_info()[1])
+            self.send_error(422, reason=exceptionMessage)
+            return
         res['version'] = web_monitoring.__version__
         # Echo the client's request unless the differ func has specified
         # somethine else.
