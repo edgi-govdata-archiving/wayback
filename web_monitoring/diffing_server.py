@@ -61,16 +61,6 @@ XML_PROLOG_PATTERN = re.compile(
 
 client = tornado.httpclient.AsyncHTTPClient()
 
-def handle_request(response):
-    if response.error is not None:
-        try:
-            response.rethrow()
-        except ValueError:
-            print("This is a value error")
-            
-    else:
-         print('Handle request')
-
 class DiffHandler(tornado.web.RequestHandler):
     # subclass must define `differs` attribute
 
@@ -97,26 +87,17 @@ class DiffHandler(tornado.web.RequestHandler):
             try:
                 res_a.rethrow()
             except (ValueError, IOError):
-                pdb.set_trace()
-                data = {}
-                data['code'] = res_a.code
-                data['error'] = str(res_a.error)
-                data['parameter'] = 'a'
-                json_data = json.dumps(data)
-                self.write(json_data)
+                self.send_error(
+                        res_a.code, reason=str(res_a.error))
+                
                 return
 
         if res_b.error is not None:
             try:
                 res_b.rethrow()
             except (ValueError, IOError):
-                pdb.set_trace()
-                data = {}
-                data['code'] = res_b.code
-                data['error'] = str(res_b.error)
-                data['parameter'] = 'b'
-                json_data = json.dumps(data)
-                self.write(json_data)
+                self.send_error(
+                        res_b.code, reason=str(res_b.error))
                 return
 
 
