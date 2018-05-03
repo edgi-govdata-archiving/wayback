@@ -95,7 +95,7 @@ class DiffHandler(tornado.web.RequestHandler):
                         400, reason=str(res_a.error))
                 else:
                     self.send_error(
-                        400, reason=str(res_a.error))
+                        res_a.code, reason=str(res_a.error))
                 return
 
         if res_b.error is not None:
