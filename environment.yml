@@ -1,0 +1,16 @@
+name: "web-monitoring-processing"
+dependencies:
+- beautifulsoup4
+- python-dateutil
+- docopt
+- lxml
+- pandas
+- requests
+- toolz
+- tornado
+- tqdm
+- pip:
+  - diff_match_patch_python
+  - tzlocal
+  - git+https://github.com/anastasia/htmldiffer@develop
+  - git+https://github.com/danielballan/htmltreediff@customize
