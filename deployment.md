@@ -214,6 +214,7 @@ When new versions of `web-monitoring-processing` are ready to deploy, use `git` 
 ```sh
 $ cd /var/www/web-monitoring-processing
 $ git pull
+$ conda activate web-monitoring-processing
 $ python setup.py install
 $ sudo supervisorctl restart wm-diffing-server-8000
 $ sudo supervisorctl restart wm-diffing-server-8001
