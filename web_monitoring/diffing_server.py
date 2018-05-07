@@ -61,6 +61,16 @@ DEBUG_MODE = os.environ.get('DIFFING_SERVER_DEBUG', 'False').strip().lower() == 
 class DiffHandler(tornado.web.RequestHandler):
     # subclass must define `differs` attribute
 
+    def set_default_headers(self):
+        self.set_header("Access-Control-Allow-Origin", "*")
+        self.set_header("Access-Control-Allow-Headers", "x-requested-with")
+        self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+
+    def options(self, other):
+        # no body
+        self.set_status(204)
+        self.finish()
+
     @tornado.gen.coroutine
     def get(self, differ):
         # Find the diffing function registered with the name given by `differ`.
