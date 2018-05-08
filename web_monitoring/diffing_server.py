@@ -109,17 +109,7 @@ class DiffHandler(tornado.web.RequestHandler):
 
         # Pass the bytes and any remaining args to the diffing function.
         executor = concurrent.futures.ProcessPoolExecutor()
-        try:
-            res = yield executor.submit(caller, func, res_a, res_b, **query_params)
-        except KeyError:
-            exceptionMessage = str(sys.exc_info()[1])
-            exceptionMessage = exceptionMessage[1:-1]
-            self.send_error(400, reason = 'Malformed request. {}'.format(exceptionMessage))
-            return
-        except UndecodableContentError:
-            exceptionMessage = str(sys.exc_info()[1])
-            self.send_error(422, reason = exceptionMessage)
-            return
+        res = yield executor.submit(caller, func, res_a, res_b, **query_params)
         res['version'] = web_monitoring.__version__
         # Echo the client's request unless the differ func has specified
         # somethine else.
