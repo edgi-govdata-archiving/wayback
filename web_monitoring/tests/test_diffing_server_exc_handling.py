@@ -9,47 +9,56 @@ class DiffingServerExceptionHandlingTest(AsyncHTTPTestCase):
         app.listen(str(self.get_http_port()))
         return
 
-    def testInvalidURLaFormat(self):
-        response = self.fetch('http://localhost:'+str(self.get_http_port())+'/html_token?format=json&include=all&a=example.org&b=https://example.org', method='GET')
+    def test_invalid_url_a_format(self):
+        port = self.get_http_port()
+        response = self.fetch(f'http://localhost:{port}/html_token?format=json&include=all&a=example.org&b=https://example.org')
         self.assertEqual(response.code, 400)
 
-    def testInvalidURLbFormat(self):
-        response = self.fetch('http://localhost:'+str(self.get_http_port())+'/html_token?format=json&include=all&a=https://example.org&b=example.org', method='GET')
+    def test_invalid_url_b_format(self):
+        port = self.get_http_port()
+        response = self.fetch(f'http://localhost:{port}/html_token?format=json&include=all&a=https://example.org&b=example.org')
         self.assertEqual(response.code, 400)
 
-    def testInvalidDiffingMethod(self):
-        response = self.fetch('http://localhost:'+str(self.get_http_port())+'/non_existing?format=json&include=all&a=example.org&b=https://example.org', method='GET')
+    def test_invalid_diffing_method(self):
+        port = self.get_http_port()
+        response = self.fetch(f'http://localhost:{port}/non_existing?format=json&include=all&a=example.org&b=https://example.org')
         self.assertEqual(response.code, 404)
     
-    def testMissingURLa(self):
-        response = self.fetch('http://localhost:'+str(self.get_http_port())+'/html_token?format=json&include=all&b=https://example.org', method='GET')
+    def test_missing_url_a(self):
+        port = self.get_http_port()
+        response = self.fetch(f'http://localhost:{port}/html_token?format=json&include=all&b=https://example.org')
         self.assertEqual(response.code, 400)
 
-    def testMissingURLb(self):
-        response = self.fetch('http://localhost:'+str(self.get_http_port())+'/html_token?format=json&include=all&a=https://example.org', method='GET')
+    def test_missing_url_b(self):
+        port = self.get_http_port()
+        response = self.fetch(f'http://localhost:{port}/html_token?format=json&include=all&a=https://example.org')
         self.assertEqual(response.code, 400)
 
-    def testNotReachableURLa(self):
-        response = self.fetch('http://localhost:'+str(self.get_http_port())+'/html_token?format=json&include=all&a=https://eeexample.org&b=https://example.org', method='GET')
+    def test_not_reachable_url_a(self):
+        port = self.get_http_port()
+        response = self.fetch(f'http://localhost:{port}/html_token?format=json&include=all&a=https://eeexample.org&b=https://example.org')
         self.assertEqual(response.code, 400)
 
-    def testNotReachableURLb(self):
-        response = self.fetch('http://localhost:'+str(self.get_http_port())+'/html_token?format=json&include=all&a=https://example.org&b=https://eeexample.org', method='GET')
+    def test_not_reachable_url_b(self):
+        port = self.get_http_port()
+        response = self.fetch(f'http://localhost:{port}/html_token?format=json&include=all&a=https://example.org&b=https://eeexample.org')
         self.assertEqual(response.code, 400)
 
-    def testMissingParamsCallerFunc(self):
+    def test_missing_params_caller_func(self):
         response = self.fetch('http://example.org/')
         with self.assertRaises(KeyError):  
             df.caller(mockDiffingMethod, response, response)
 
-    def testUndecodableContent(self):
+    def test_undecodable_content(self):
         response = self.fetch('https://www.cl.cam.ac.uk/~mgk25/ucs/examples/UTF-8-test.txt')
         with self.assertRaises(UndecodableContentError):
             df._decode_body(response,'a',False)
 
-    def testFetchUndecodableContent(self):
-        response = self.fetch('http://localhost:'+str(self.get_http_port())+'/html_token?format=json&include=all&a=https://example.org&b=https://www.cl.cam.ac.uk/~mgk25/ucs/examples/UTF-8-test.txt')
+    def test_fetch_undecodable_content(self):
+        port = self.get_http_port()
+        response = self.fetch(f'http://localhost:{port}/html_token?format=json&include=all&a=https://example.org&b=https://www.cl.cam.ac.uk/~mgk25/ucs/examples/UTF-8-test.txt')
         self.assertEqual(response.code, 422)
 
-def mockDiffingMethod(c_body):
+def mock_diffing_method(c_body):
         return
+
