@@ -2,7 +2,9 @@ import concurrent.futures
 from docopt import docopt
 import hashlib
 import inspect
+import json
 import re
+import sys
 import tornado.gen
 import tornado.httpclient
 import tornado.ioloop
@@ -16,8 +18,6 @@ from web_monitoring.diff_errors import (
 )
 import web_monitoring.html_diff_render
 import web_monitoring.links_diff
-import json
-import sys
 
 # Map tokens in the REST API to functions in modules.
 # The modules do not have to be part of the web_monitoring package.
@@ -69,7 +69,7 @@ class DiffHandler(tornado.web.RequestHandler):
         try:
             func = self.differs[differ]
         except KeyError:
-            self.send_error(404, reason="Diffing method not found.")
+            self.send_error(404, reason = f'Unknown diffing method: `{differ}`. You can get a list of supported differs from the `/` endpoint.')
             return
 
         # If params repeat, take last one. Decode bytes into unicode strings.
@@ -80,36 +80,16 @@ class DiffHandler(tornado.web.RequestHandler):
             b = query_params.pop('b')
         except KeyError:
             self.send_error(
-                        400, reason="Malformed request. A URL parameter is missing.")
+                        400, reason = 'Malformed request. You must provide a URL as the value for both `a` and `b` query parameters.')
             return
         # Fetch server response for URLs a and b.
         res_a, res_b = yield [client.fetch(a, raise_error=False), client.fetch(b, raise_error=False)]
-        
-        #Check if the HTTP requests were successfull and handle exeptions
-        if res_a.error is not None:
-            try:
-                res_a.rethrow()
-            except (ValueError, IOError):
-                if res_a.code == 599:
-                    self.send_error(
-                        400, reason=str(res_a.error))
-                else:
-                    self.send_error(
-                        res_a.code, reason=str(res_a.error))
-                return
 
-        if res_b.error is not None:
-            try:
-                res_b.rethrow()
-            except (ValueError, IOError):
-                if res_b.code == 599:
-                    self.send_error(
-                        400, reason=str(res_b.error))
-                else:
-                    self.send_error(
-                        res_b.code, reason=str(res_b.error))
-                return
-
+        try:
+            self.check_response_for_error(res_a)
+            self.check_response_for_error(res_b)
+        except tornado.httpclient.HTTPError:
+            return
 
         # Validate response bytes against hash, if provided.
         for query_param, res in zip(('a_hash', 'b_hash'), (res_a, res_b)):
@@ -122,7 +102,7 @@ class DiffHandler(tornado.web.RequestHandler):
                 actual_hash = hashlib.sha256(res.body).hexdigest()
                 if actual_hash != expected_hash:
                     self.send_error(
-                        500, reason="Fetched content does not match hash.")
+                        500, reason = 'Fetched content does not match hash.')
                     return
 
         # TODO Add caching of fetched URIs.
@@ -134,11 +114,11 @@ class DiffHandler(tornado.web.RequestHandler):
         except KeyError:
             exceptionMessage = str(sys.exc_info()[1])
             exceptionMessage = exceptionMessage[1:-1]
-            self.send_error(400, reason="Malformed request. "+exceptionMessage)
+            self.send_error(400, reason = 'Malformed request. {}'.format(exceptionMessage))
             return
         except UndecodableContentError:
             exceptionMessage = str(sys.exc_info()[1])
-            self.send_error(422, reason=exceptionMessage)
+            self.send_error(422, reason = exceptionMessage)
             return
         res['version'] = web_monitoring.__version__
         # Echo the client's request unless the differ func has specified
@@ -165,6 +145,23 @@ class DiffHandler(tornado.web.RequestHandler):
         if response['code'] != status_code:
             self.set_status(response['code'])
         self.finish(response)
+
+    def check_response_for_error(self, response):
+        #Check if the HTTP requests were successfull and handle exeptions
+        if response.error is not None:
+            try:
+                response.rethrow()
+            except (ValueError, IOError):
+                #Response code == 599 means that no HTTP response was received.
+                #In this case the error code should become 400 indicating that the error was
+                #raised because of a bad request parameter.
+                if response.code == 599:
+                    self.send_error( 
+                        400, reason = str(response.error))
+                else:
+                    self.send_error(
+                        response.code, reason = str(response.error))
+                raise tornado.httpclient.HTTPError(0)
 
 
 def _extract_encoding(headers, content):
