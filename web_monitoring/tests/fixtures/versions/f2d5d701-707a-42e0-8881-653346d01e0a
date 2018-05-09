@@ -1,0 +1,412 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN"
+  "//www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
+<html lang="en" dir="ltr">
+<head profile="http://www.w3.org/1999/xhtml/vocab">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" href="//www.fema.gov/profiles/fema_gov/themes/unicorn/favicon.ico" type="image/vnd.microsoft.icon" />
+<meta name="description" content="This is the main page for up-to-date resources and information on the federal response to Hurricane Maria.Follow the direction of state, local, and tribal officials. (Español) " />
+<link rel="canonical" href="//www.fema.gov/hurricane-maria" />
+<link rel="shortlink" href="//www.fema.gov/hurricane-maria" />
+  <title>Hurricane Maria | FEMA.gov</title>
+  <link type="text/css" rel="stylesheet" href="//www.fema.gov/sites/default/files/css/css_lQaZfjVpwP_oGNqdtWCSpJT1EMqXdMiU84ekLLxQnc4.css" media="all" />
+<link type="text/css" rel="stylesheet" href="//www.fema.gov/sites/default/files/css/css__LeQxW73LSYscb1O__H6f-j_jdAzhZBaesGL19KEB6U.css" media="all" />
+<link type="text/css" rel="stylesheet" href="//www.fema.gov/sites/default/files/css/css_2xIW1IpUWng78091LzPsPXymxLMidts3lbbb9KZibWE.css" media="all" />
+<link type="text/css" rel="stylesheet" href="//www.fema.gov/sites/default/files/css/css_g1h7Nl9-p95WQ-MsLSC6s6f4Ihg9aidwnpywdeKBAqQ.css" media="all" />
+<link type="text/css" rel="stylesheet" href="//www.fema.gov/sites/default/files/css/css_-w0pbrs7-nruEPQTSwXQ4_9HSkbl3qT-Ex7c5prUQs0.css" media="all" />
+<link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&subset=latin,cyrillic-ext,vietnamese,latin-ext,greek-ext,cyrillic' rel='stylesheet' type='text/css'>
+  <script language="javascript" type="text/javascript">
+    var ExpandAllSectionsText = "Expand All Sections";
+    var CollapseAllSectionsText = "Collapse All Sections";
+    var NoResultsFoundText = "";
+    var advancedSearchText = "Search for";
+    var NavigationPlaceholderText = "Start typing here to filter…";
+    var SearchPlaceholderText = "Search anything on fema.gov";
+    var closeText = "Close";
+    var downloadAppLabel = "Install the FEMA App";
+    var inThisSectionLabel = "In this Section";
+    var inThisSectionText = "In this Section";
+    var AppAuthSubText = "Remember to plug in your PIV/CAC card.";
+    var PivH2 = "PIV Card Login";
+    //MediaElement variables
+    var playButton = "Play.";
+    var progressBar = "Progress Bar.";
+    var closedCaptionButton = "Closed caption button.";
+    var volumeButton = "Volume button.";
+    var fullScreenButton = "Fullscreen button.";
+  </script>
+    <script src="//www.fema.gov/sites/default/files/js/js_lZ9kpQqrFO9iMOrWRPD2c5I8gI7-sX7TO_pTARrQEMU.js"></script>
+<script src="//www.fema.gov/sites/default/files/js/js_THcwq4G882w3Eb1HklHrvzGAKa_-1g_0QbuBqjMhaV4.js"></script>
+<script src="//www.fema.gov/sites/default/files/js/js_NpX2cwCeepkWZZ194B6-ViyVBHleaYLOx5R9EWBOMRU.js"></script>
+<script src="//www.fema.gov/sites/default/files/js/js_Js4lOJ0_Am6ebnC0EP-psjO8Yu5gmlcOhu72hrxvi2s.js"></script>
+<script>window.CKEDITOR_BASEPATH = '/sites/all/libraries/ckeditor/'</script>
+<script src="//www.fema.gov/sites/default/files/js/js_gPqjYq7fqdMzw8-29XWQIVoDSWTmZCGy9OqaHppNxuQ.js"></script>
+<script>(function(i,s,o,g,r,a,m){i["GoogleAnalyticsObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,"script","//www.fema.gov/sites/default/files/googleanalytics/analytics.js?ox9uo3","ga");ga("create", "UA-29391347-1", {"cookieDomain":".fema.gov"});ga("set", "anonymizeIp", true);ga("send", "pageview");</script>
+<script src="//www.fema.gov/sites/default/files/js/js_x1Asg_paR91u1arDvF7gS_xR7fthnVj3L414MbNvdNU.js"></script>
+<script src="//www.fema.gov/sites/default/files/js/js_7E18bMLOJVTzOcxdValVlyzHz_k7NhhgkX2FcSMA2HA.js"></script>
+<script>jQuery.extend(Drupal.settings, {"basePath":"\/","pathPrefix":"","ajaxPageState":{"theme":"unicorn","theme_token":"_tXLLu-_5eEhIsoQGQ_MK5sESyWh7eFQxYu2BZ8-2zc","js":{"profiles\/fema_gov\/modules\/contrib\/extlink_extra\/extlink_extra.js":1,"profiles\/fema_gov\/themes\/bootstrap\/js\/bootstrap.js":1,"sites\/all\/modules\/jquery_update\/replace\/jquery\/1.9\/jquery.min.js":1,"misc\/jquery.once.js":1,"misc\/drupal.js":1,"sites\/all\/modules\/jquery_update\/replace\/ui\/external\/jquery.cookie.js":1,"sites\/all\/modules\/jquery_update\/replace\/ui\/ui\/minified\/jquery.ui.core.min.js":1,"sites\/all\/modules\/jquery_update\/replace\/ui\/ui\/minified\/jquery.ui.widget.min.js":1,"profiles\/fema_gov\/modules\/contrib\/extlink\/extlink.js":1,"profiles\/fema_gov\/libraries\/colorbox\/jquery.colorbox-min.js":1,"sites\/all\/modules\/colorbox\/js\/colorbox.js":1,"sites\/all\/modules\/colorbox\/styles\/default\/colorbox_style.js":1,"sites\/all\/modules\/colorbox\/js\/colorbox_load.js":1,"sites\/all\/modules\/colorbox\/js\/colorbox_inline.js":1,"profiles\/fema_gov\/modules\/custom\/wcm_survey\/js\/wcm_survey.js":1,"profiles\/fema_gov\/modules\/custom\/wcm_survey\/js\/json3.min.js":1,"profiles\/fema_gov\/modules\/custom\/wcm_survey\/js\/jquery.cookie.js":1,"0":1,"sites\/all\/modules\/google_analytics\/googleanalytics.js":1,"1":1,"profiles\/fema_gov\/themes\/unicorn\/js\/mediaelement\/build\/mediaelement-and-player.min.js":1,"profiles\/fema_gov\/themes\/unicorn\/js\/unicorn_mediaelement_fixes.js":1,"profiles\/fema_gov\/themes\/unicorn\/js\/unicorn_image_rotator.js":1,"profiles\/fema_gov\/themes\/unicorn\/..\/bootstrap\/bootstrap\/js\/affix.js":1,"profiles\/fema_gov\/themes\/unicorn\/..\/bootstrap\/bootstrap\/js\/alert.js":1,"profiles\/fema_gov\/themes\/unicorn\/..\/bootstrap\/bootstrap\/js\/button.js":1,"profiles\/fema_gov\/themes\/unicorn\/..\/bootstrap\/bootstrap\/js\/carousel.js":1,"profiles\/fema_gov\/themes\/unicorn\/..\/bootstrap\/bootstrap\/js\/collapse.js":1,"profiles\/fema_gov\/themes\/unicorn\/..\/bootstrap\/bootstrap\/js\/dropdown.js":1,"profiles\/fema_gov\/themes\/unicorn\/..\/bootstrap\/bootstrap\/js\/modal.js":1,"profiles\/fema_gov\/themes\/unicorn\/..\/bootstrap\/bootstrap\/js\/tooltip.js":1,"profiles\/fema_gov\/themes\/unicorn\/..\/bootstrap\/bootstrap\/js\/popover.js":1,"profiles\/fema_gov\/themes\/unicorn\/..\/bootstrap\/bootstrap\/js\/scrollspy.js":1,"profiles\/fema_gov\/themes\/unicorn\/..\/bootstrap\/bootstrap\/js\/tab.js":1,"profiles\/fema_gov\/themes\/unicorn\/..\/bootstrap\/bootstrap\/js\/transition.js":1,"profiles\/fema_gov\/themes\/unicorn\/js\/unicorn_content_collapse.js":1,"profiles\/fema_gov\/themes\/unicorn\/js\/unicorn_nav_filter.js":1,"profiles\/fema_gov\/themes\/unicorn\/js\/unicorn_site_wide_fixes.js":1,"profiles\/fema_gov\/themes\/unicorn\/js\/unicorn_social_images.js":1,"profiles\/fema_gov\/themes\/unicorn\/js\/unicorn_download_app.js":1,"profiles\/fema_gov\/themes\/unicorn\/js\/tablesorter.js":1,"profiles\/fema_gov\/themes\/unicorn\/js\/unicorn_tables.js":1,"profiles\/fema_gov\/themes\/unicorn\/js\/stacktable.js":1,"profiles\/fema_gov\/themes\/unicorn\/js\/unicorn_mobile_fixes.js":1,"profiles\/fema_gov\/themes\/unicorn\/js\/left_menu_collapse.js":1,"profiles\/fema_gov\/themes\/unicorn\/js\/unicorn_is_useful_fixes.js":1,"profiles\/fema_gov\/themes\/unicorn\/js\/jquery.dataTables.min.js":1},"css":{"modules\/system\/system.base.css":1,"misc\/ui\/jquery.ui.core.css":1,"misc\/ui\/jquery.ui.theme.css":1,"profiles\/fema_gov\/modules\/features\/fema_diamond\/fema_diamond.css":1,"sites\/all\/modules\/date\/date_api\/date.css":1,"sites\/all\/modules\/date\/date_popup\/themes\/datepicker.1.7.css":1,"sites\/all\/modules\/date\/date_repeat_field\/date_repeat_field.css":1,"profiles\/fema_gov\/modules\/custom\/diamond\/diamond.css":1,"profiles\/fema_gov\/modules\/custom\/fema_faq\/css\/fema_faq.css":1,"modules\/field\/theme\/field.css":1,"profiles\/fema_gov\/modules\/custom\/wcm_survey\/wcm_survey.css":1,"profiles\/fema_gov\/modules\/custom\/workbench_notification\/workbench_notification.css":1,"profiles\/fema_gov\/modules\/custom\/diamond\/diamond_medialibrary\/diamond_medialibrary.css":1,"profiles\/fema_gov\/modules\/contrib\/extlink\/extlink.css":1,"sites\/all\/modules\/views\/css\/views.css":1,"sites\/all\/modules\/colorbox\/styles\/default\/colorbox_style.css":1,"sites\/all\/modules\/ctools\/css\/ctools.css":1,"profiles\/fema_gov\/modules\/contrib\/extlink_extra\/extlink_extra.508.css":1,"profiles\/fema_gov\/themes\/unicorn\/js\/mediaelement\/build\/mediaelementplayer.css":1,"profiles\/fema_gov\/themes\/unicorn\/css\/style.css":1,"profiles\/fema_gov\/themes\/unicorn\/css\/jquery.dataTables.min.css":1}},"colorbox":{"opacity":"0.85","current":"{current} of {total}","previous":"\u00ab Prev","next":"Next \u00bb","close":"Close","maxWidth":"98%","maxHeight":"98%","fixed":true,"mobiledetect":true,"mobiledevicewidth":"480px"},"wcmSurvey":{"userPercentage":"25","pageDepth":"4","url":"\/\/www.surveymonkey.com\/s\/FEMAgov","force":false,"surveyRetakeTimeout":"90","surveyPopup":"\u003Cdiv id=\u0022wcm-survey-popup\u0022 class=\u0022unicorn\u0022\u003E\n  \u003Cdiv class=\u0022logo\u0022\u003E\n    \u003Cimg alt=\u0022Federal Emergency Management Agency Seal\u0022 src=\u0022\/\/www.fema.gov\/sites\/default\/files\/images\/fema_surveypopup.png\u0022\/\u003E\n  \u003C\/div\u003E\n  \u003Cdiv class=\u0022message\u0022\u003E\n    \u003Cp\u003EYou have been selected to participate in a brief survey about your experience today with FEMA.gov.\u003C\/p\u003E  \u003C\/div\u003E\n  \u003Cdiv class=\u0022choices\u0022\u003E\n    \u003Cspan class=\u0022button yes\u0022\u003E\u003Ca title=\u0022Yes, I\u0027ll give feedback\u0022 href=\u0022\/\/www.surveymonkey.com\/s\/FEMAgov\u0022 class=\u0022accept\u0022 target=\u0022_blank\u0022 id=\u0022external_link\u0022\u003EYes, I\u0027ll give feedback\u003C\/a\u003E\u003C\/span\u003E\n    \u003Cspan class=\u0022button no\u0022\u003E\u003Ca title=\u0022No Thanks, I do not want to give feedback\u0022 href=\u0022#\u0022 class=\u0022decline\u0022\u003ENo, thanks\u003C\/a\u003E\u003C\/span\u003E\n  \u003C\/div\u003E\n\u003C\/div\u003E\n","debugMode":1,"position":"top","offset":"65px","height":"250px","width":"631px","maxHeight":"75%","maxWidth":"75%"},"diamondMedialibrary":{"path":"media-library"},"extlink":{"extTarget":0,"extClass":0,"extLabel":"(link is external)","extImgClass":0,"extSubdomains":1,"extExclude":"(.*\\.gov)|(.*\\.mil)|(\\.addthis.com)|(.*\\.fema.net)|(s3-us-gov-west-1\\.amazonaws\\.com)|(surveymonkey\\.com)","extInclude":"","extCssExclude":"","extCssExplicit":"","extAlert":0,"extAlertText":{"value":"You are now leaving an official website of the Federal Emergency Management Agency. Links to non-FEMA sites are provided for the visitor\u0027s convenience and do not represent an endorsement by FEMA of any commercial or private issues, products or services. Note that the privacy policy of the linked site may differ from that of FEMA.","format":"untouched_html"},"mailtoClass":0,"mailtoLabel":"(link sends e-mail)"},"extlink_extra":{"extlink_alert_type":"confirm","extlink_alert_timer":"0","extlink_alert_url":"\/now-leaving","extlink_cache_fix":0,"extlink_exclude_warning":"","extlink_508_fix":1,"extlink_508_text":" [external link]","extlink_url_override":0,"extlink_url_params":{"external_url":null,"back_url":null}},"googleanalytics":{"trackOutbound":1,"trackMailto":1,"trackDownload":1,"trackDownloadExtensions":"7z|aac|arc|arj|asf|asx|avi|bin|csv|doc(x|m)?|exe|flv|gif|gz|gzip|hqx|jar|jpe?g|js|mp(2|3|4|e?g)|mov(ie)?|msi|msp|pdf|phps|png|ppt(x|m)?|qtm?|ra(m|r)?|sea|sit|tar|tgz|torrent|txt|wav|wma|wmv|wpd|xls(x|m)?|xml|z|zip","trackColorbox":1,"trackDomainMode":"1"},"bootstrap":{"anchorsFix":1,"anchorsSmoothScrolling":1,"popoverEnabled":1,"popoverOptions":{"animation":1,"html":0,"placement":"right","selector":"","trigger":"click","title":"","content":"","delay":0,"container":"body"},"tooltipEnabled":1,"tooltipOptions":{"animation":1,"html":0,"placement":"auto left","selector":"","trigger":"hover focus","delay":0,"container":"body"}}});</script>
+  <!-- We participate in the US government's analytics program. See the data at analytics.usa.gov. -->
+  <script async type="text/javascript" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=FEMA" id="_fed_an_ua_tag"></script>
+<!--[if lt IE 9]>
+	  <link rel="stylesheet" href="/profiles/fema_gov/themes/unicorn/css/ie8.css">
+  <![endif]-->
+</head>
+<body class="html not-front not-logged-in one-sidebar sidebar-first page-node page-node- page-node-315781 node-type-site-page i18n-en unicorn" >
+<div id="skip-link">
+  <a href="#main-content" class="element-invisible element-focusable">Skip to main content</a>
+</div>
+
+
+
+<!-- this holds the mobile nag in desktop view -->
+<div id="dialog-download-app"></div>
+
+<div class="main-container container">
+  <div class="dg-bg"></div>
+  <div class="block-left">
+    <div class="global-nav-wrapper">
+      <div class="logo">
+
+                <a class="logo" href="/"><img src="//www.fema.gov/profiles/fema_gov/themes/unicorn/img/fema-logo-main.png" alt="US Department of Homeland Security - Federal Emergency Management Agency" lang="en" /></a>
+      </div><!-- .logo -->
+
+      <div class="global-nav">
+
+        <!-- Global Navigation -->
+        <div type="" class="global-nav-modal" data-toggle="modal" data-target="#navigation" tabindex="0">
+          Navigation        </div>
+
+        <div class="modal fade" id="navigation" tabindex="-1" role="dialog" aria-labelledby="navigationLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                  <span aria-hidden="true"><div class="close-icon">&times;</div></span>
+                  <div class="close-text">Close</div>
+                </button>
+                <div class="modal-title" id="navigationLabel">Navigation</div>
+                <label for="unicornNavSearchBox">Enter Search Term(s):</label>
+                <input placeholder="Start typing here to filter…" id="unicornNavSearchBox" type="text" size="31" />
+              </div><!-- .modal-header -->
+              <div class="modal-body">
+                <div id="navigationItems">
+                  <div id="noResults"> </div>
+                  <ul id="unicornNavFilter"><li class="first collapsed"><a href="/about-agency">About the Agency</a></li>
+<li class="leaf"><a href="/volunteer-donate-responsibly">Volunteer &amp; Donate Responsibly</a></li>
+<li class="collapsed"><a href="/apply-assistance">Apply for Assistance</a></li>
+<li class="collapsed"><a href="/welcome-assistance-firefighters-grant-program" title="Assistance To Firefighters Grant Program">Assistance To Firefighters Grant Program</a></li>
+<li class="leaf"><a href="/authorized-equipment-list" title="">Authorized Equipment List</a></li>
+<li class="collapsed"><a href="/blog">Blog</a></li>
+<li class="leaf"><a href="https://careers.fema.gov" title="">Careers</a></li>
+<li class="collapsed"><a href="/faith">Center for Faith-Based &amp; Neighborhood Partnerships</a></li>
+<li class="leaf"><a href="/children-and-disasters">Children and Disasters</a></li>
+<li class="leaf"><a href="/climate-change">Climate Change</a></li>
+<li class="collapsed"><a href="/community-resilience-indicators">Community Resilience Indicators and National-Level Measures: A Draft Interagency Concept</a></li>
+<li class="collapsed"><a href="/contact-us">Contact Us</a></li>
+<li class="collapsed"><a href="/dam-safety">Dam Safety</a></li>
+<li class="collapsed"><a href="/data-visualization">Data Visualization</a></li>
+<li class="collapsed"><a href="/disability" title="">Disability</a></li>
+<li class="collapsed"><a href="/disaster-assistance-reports">Disaster Assistance Reports</a></li>
+<li class="collapsed"><a href="/disasters" title="">Disaster Declarations</a></li>
+<li class="collapsed"><a href="/disaster-emergency-communications">Disaster Emergency Communications</a></li>
+<li class="leaf"><a href="/disaster-recovery-centers">Disaster Recovery Centers</a></li>
+<li class="leaf"><a href="/media-library/resources-documents" title="">Document and Resource Library</a></li>
+<li class="collapsed"><a href="/email">Email Updates</a></li>
+<li class="leaf"><a href="/emergency-management-agencies">Emergency Management Agencies</a></li>
+<li class="leaf"><a href="//training.fema.gov/emi" title="">Emergency Management Institute</a></li>
+<li class="leaf"><a href="/el-nino" title="">El Niño</a></li>
+<li class="collapsed"><a href="/office-environmental-planning-and-historic-preservation">Environmental Planning and Historic Preservation Program</a></li>
+<li class="collapsed"><a href="/ned">Exercise</a></li>
+<li class="leaf"><a href="/fact-sheets">Fact Sheets</a></li>
+<li class="collapsed"><a href="/finance-center">Finance Center</a></li>
+<li class="collapsed"><a href="/national-flood-insurance-program-flood-hazard-mapping">Flood Hazard Mapping</a></li>
+<li class="collapsed"><a href="/national-flood-insurance-program">Flood Insurance</a></li>
+<li class="leaf"><a href="//msc.fema.gov/portal/" title="">Flood Map Service Center</a></li>
+<li class="leaf"><a href="/faq/" title="">Frequently Asked Questions (FAQs)</a></li>
+<li class="collapsed"><a href="/grants" title="Grants">Grants</a></li>
+<li class="collapsed"><a href="/grants-management-modernization-program">Grants Management Modernization Program</a></li>
+<li class="collapsed"><a href="/hazard-mitigation-assistance">Hazard Mitigation Assistance</a></li>
+<li class="collapsed"><a href="/hazard-mitigation-planning">Hazard Mitigation Planning</a></li>
+<li class="collapsed"><a href="/hazus">Hazus</a></li>
+<li class="collapsed"><a href="/high-water-mark-initiative">High Water Mark Initiative</a></li>
+<li class="leaf"><a href="https://www.fema.gov" title="">Home</a></li>
+<li class="leaf"><a href="/how-make-payment-fema" title="">How to Make a Payment to FEMA</a></li>
+<li class="collapsed"><a href="/hurricane-harvey">Hurricane Harvey</a></li>
+<li class="collapsed"><a href="/hurricane-irma">Hurricane Irma</a></li>
+<li class="collapsed"><a href="/hurricane-maria" class="active">Hurricane Maria</a></li>
+<li class="collapsed"><a href="/hurricane-katrina-decade-progress-through-partnerships">Hurricane Katrina</a></li>
+<li class="leaf"><a href="/incident-management-assistance-teams" title="">Incident  Management Assistance Teams</a></li>
+<li class="leaf"><a href="https://training.fema.gov/is/" title="">Independent Study Program</a></li>
+<li class="leaf"><a href="/individual-and-community-preparedness-division">Individual and Community Preparedness Division</a></li>
+<li class="collapsed"><a href="/individual-assistance-program-tools">Individual Assistance Program Tools</a></li>
+<li class="collapsed"><a href="/individual-disaster-assistance">Individual Disaster Assistance</a></li>
+<li class="collapsed"><a href="/integrated-public-alert-warning-system">Integrated Public Alert &amp; Warning System</a></li>
+<li class="collapsed"><a href="/international-affairs">International Affairs</a></li>
+<li class="collapsed"><a href="/mobile-app">Mobile App</a></li>
+<li class="collapsed"><a href="/mississippi-recovery-office" title="">Mississippi Recovery</a></li>
+<li class="leaf"><a href="/media-library/multimedia/list" title="">Multimedia Library (Photos, Video, and Audio)</a></li>
+<li class="collapsed"><a href="/national-exercise-program">National Exercise Program</a></li>
+<li class="collapsed"><a href="/national-continuity-programs">National Continuity Programs</a></li>
+<li class="collapsed"><a href="/national-disaster-recovery-framework">National Disaster Recovery Framework</a></li>
+<li class="collapsed"><a href="/national-incident-management-system">National Incident Management System</a></li>
+<li class="collapsed"><a href="/national-preparedness">National Preparedness</a></li>
+<li class="leaf"><a href="/media-contacts">News Desk Contacts</a></li>
+<li class="collapsed"><a href="/news-releases" title="">News Releases</a></li>
+<li class="leaf"><a href="/official-accounts">Official Accounts</a></li>
+<li class="collapsed"><a href="/openfema">OpenFEMA</a></li>
+<li class="leaf"><a href="/preliminary-damage-assessment-reports" title="Preliminary Damage Assessments Reports">Preliminary Damage Assessment Reports</a></li>
+<li class="collapsed"><a href="/preparedness-non-disaster-grants">Preparedness (Non-Disaster) Grants</a></li>
+<li class="collapsed"><a href="/private-sector">Private Sector</a></li>
+<li class="collapsed"><a href="/protecting-homes">Protecting Homes</a></li>
+<li class="collapsed"><a href="/protecting-our-communities">Protecting Our Communities</a></li>
+<li class="collapsed"><a href="/protecting-your-businesses">Protecting Your Businesses</a></li>
+<li class="collapsed"><a href="/appeals" title="">Public Assistance Appeals Database</a></li>
+<li class="collapsed"><a href="/public-assistance-local-state-tribal-and-non-profit">Public Assistance: Local, State, Tribal and Non-Profit</a></li>
+<li class="collapsed"><a href="/recovery-resources">Recovery Resources</a></li>
+<li class="collapsed"><a href="/region-i-ct-me-ma-nh-ri-vt">Region I</a></li>
+<li class="collapsed"><a href="/region-ii-nj-ny-pr-vi-0">Region II</a></li>
+<li class="collapsed"><a href="/region-iii-dc-de-md-pa-va-wv">Region III</a></li>
+<li class="collapsed"><a href="/region-iv-al-fl-ga-ky-ms-nc-sc-tn">Region IV</a></li>
+<li class="collapsed"><a href="/region-v-il-mi-mn-oh-wi">Region V</a></li>
+<li class="collapsed"><a href="/region-vi-arkansas-louisiana-new-mexico-oklahoma-texas">Region VI</a></li>
+<li class="collapsed"><a href="/region-vii-ia-ks-mo-ne">Region VII</a></li>
+<li class="collapsed"><a href="/region-viii-co-mt-nd-sd-ut-wy">Region VIII</a></li>
+<li class="collapsed"><a href="/fema-region-ix-arizona-california-hawaii-nevada-pacific-islands">Region IX</a></li>
+<li class="collapsed"><a href="/region-x-ak-id-or-wa">Region X</a></li>
+<li class="collapsed"><a href="/required-notices">Required Notices</a></li>
+<li class="collapsed"><a href="/reservist-program" title="Reservist Program">Reservist Program</a></li>
+<li class="collapsed"><a href="/safer-stronger-protected-homes-communities">Safer, Stronger, Protected Homes &amp; Communities</a></li>
+<li class="collapsed"><a href="/social-media">Social Media</a></li>
+<li class="leaf"><a href="/states" title="">States</a></li>
+<li class="leaf"><a href="/testimony-and-speeches">Testimony &amp; Speeches</a></li>
+<li class="leaf"><a href="/text-messages">Text Messages</a></li>
+<li class="collapsed"><a href="/fema-tribal-affairs">Tribal</a></li>
+<li class="collapsed"><a href="/unified-federal-environmental-and-historic-preservation-review-presidentially-declared-disasters">Unified Federal Environmental and Historic Preservation Review</a></li>
+<li class="collapsed"><a href="/urban-search-rescue">Urban Search and Rescue</a></li>
+<li class="leaf"><a href="/us-coast-guard-retiree-fema-reservist-initiative">U.S. Coast Guard Retiree to FEMA Reservist Initiative</a></li>
+<li class="last collapsed"><a href="/voluntary-faith-based-community-based-organizations">Voluntary, Faith-Based, &amp; Community-Based Organizations</a></li>
+</ul>                </div><!-- .navigationItems -->
+              </div><!-- .modal-body -->
+            </div><!-- .modal-content -->
+          </div><!-- .modal-dialog -->
+        </div><!-- .modal -->
+
+        <!-- Global Search -->
+        <div type="" class="global-search" data-toggle="modal" data-target="#uniSearch" tabindex="0">
+          Search        </div>
+
+        <div class="modal fade search-modal" id="uniSearch" tabindex="-1" role="dialog" aria-labelledby="uniSearchLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                  <span aria-hidden="true"><div class="close-icon">&times;</div></span>
+                  <div class="close-text">Close</div>
+                </button>
+                <div class="modal-title" id="uniSearchLabel">Search</div>
+              </div><!-- .modal-header -->
+              <div class="modal-body">
+                <form accept-charset="UTF-8" action="//search.usa.gov/search" id="search_form" method="get">
+                  <div style="margin:0;padding:0;display:inline">
+                    <input name="utf8" type="hidden" value="&#x2713;" />
+                  </div>
+                  <input id="affiliate" name="affiliate" type="hidden" value="fema" />
+                  <label for="query">Enter Search Term(s):</label>
+                  <input placeholder="Search anything on fema.gov" autocomplete="off" class="usagov-search-autocomplete" id="query" name="query" type="text" size="31" />
+                  <input class="search-submit" name="commit" type="submit" value="GO" />
+                </form>
+              </div><!-- .modal-body -->
+            </div><!-- .modal-content -->
+          </div><!-- .modal-dialog -->
+        </div><!-- .modal -->
+
+        <!-- Global Languages -->
+        <div type="" class="language-modal" data-toggle="modal" data-target="#language" tabindex="0">
+          Languages        </div>
+
+        <div class="modal fade language" id="language" tabindex="-1" role="dialog" aria-labelledby="navigationLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                  <span aria-hidden="true"><div class="close-icon">&times;</div></span>
+                  <div class="close-text">Close</div>
+                </button>
+                <div class="modal-title" id="navigationLabel">Languages</div>
+              </div><!-- .modal-header -->
+              <div class="modal-body">
+                <ul><li><a href="/" lang="en">English</a></li><li><a href="/es" lang="es">Español</a></li><li><a href="/fr" lang="fr">Français</a></li><li><a href="/el" lang="el">Ελληνικά</a></li><li><a href="/ar" lang="ar">العربية</a></li><li><a href="/zh-hans" lang="zh-hans">简体中文</a></li><li><a href="/de" lang="de">Deutsch</a></li><li><a href="/ht" lang="ht">Haitian Creole</a></li><li><a href="/he" lang="he">עברית</a></li><li><a href="/hi" lang="hi">हिन्दी</a></li><li><a href="/it" lang="it">Italiano</a></li><li><a href="/ja" lang="ja">日本語</a></li><li><a href="/ko" lang="ko">한국어</a></li><li><a href="/pl" lang="pl">Polski</a></li><li><a href="/pt-br" lang="pt-br">Português</a></li><li><a href="/ru" lang="ru">Русский</a></li><li><a href="/tl" lang="tl">Tagalog</a></li><li><a href="/th" lang="th">ภาษาไทย</a></li><li><a href="/ur" lang="ur">اردو</a></li><li><a href="/vi" lang="vi">Tiếng Việt</a></li><li><a href="/yi" lang="yi">Yiddish</a></li></ul>              </div><!-- .modal-body -->
+            </div><!-- .modal-content -->
+          </div><!-- .modal-dialog -->
+        </div><!-- .modal -->
+
+      </div><!-- .global-nav -->
+
+      <!-- Left Sidebar (Rendered) -->
+      <div class="contextual-nav-desktop"></div>
+        <div class="region region-sidebar-first">
+    <div class="menu-block-wrapper menu-block-8 menu-name-menu-left-menu parent-mlid-0 menu-level-1">
+  <ul><li class="first last expanded active-trail active menu-mlid-45013"><a href="/hurricane-maria" class="active-trail active">Hurricane Maria</a><ul><li class="first leaf menu-mlid-45042"><a href="/disaster/updates/hurricane-maria-rumor-control" title="">Rumor Control</a></li>
+<li class="leaf menu-mlid-45019"><a href="/disaster/updates/hurricane-maria-news-graphics-and-social-media" title="">News, Graphics, &amp; Social Media</a></li>
+<li class="leaf menu-mlid-45031"><a href="/resources-people-disabilities-access-functional-needs" title="">Accessible ASL Videos</a></li>
+<li class="leaf menu-mlid-45035"><a href="https://www.fema.gov/disaster/4339" title="">Puerto Rico | DR-4339</a></li>
+<li class="last leaf menu-mlid-45032"><a href="https://www.fema.gov/disaster/4340" title="">Virgin Islands | DR-4340</a></li>
+</ul></li>
+</ul></div>
+  </div>
+
+    </div><!-- .global-nav-wrapper-->
+  </div><!-- .block-left -->
+
+  <!-- Skip Nav for Main Content -->
+  <a id="main-content" name="main-content" href="#" class="element-invisible element-focusable">Main Content</a>
+  <div class="block-right">
+
+    <div class="content-wrapper">
+      <section>
+                                  <h1 class="page-header">Hurricane Maria</h1>
+                                                                                                      <div class="region region-content">
+    <section id="block-system-main" class="block block-system clearfix">
+
+      
+  <div id="node-315781" class="node node-site-page clearfix">
+
+    
+            
+    
+    <div class="content">
+        <div class="field field-name-body field-type-text-with-summary field-label-hidden"><div class="field-items"><div class="field-item even"><p><img alt="" height="133" src="/sites/default/files/images/maria_updates_web.png" style="margin:0px 15px; float:right" width="295" />This is the main page for up-to-date resources and information on the federal response to Hurricane Maria.</p><p>Follow the direction of state, local, and tribal officials. (<a href="/es/huracan-maria">Español</a>)<br /> </p><div class="row row"><div class="col-sm-4"><strong>Puerto Rico | DR-4339</strong><ul><li><a href="/es/disaster/4339">Español | Spanish</a></li><li><a href="/disaster/4339">English</a></li></ul></div><div class="col-sm-4"><strong>U.S. Virgin Islands | DR-4340</strong><ul><li><a href="/es/disaster/4340">Español | Spanish</a></li><li><a href="/ht/disaster/4340">kreyòl ayisyen | Haitian Creole</a></li><li><a href="/disaster/4340">English</a></li></ul></div></div><h2>Cell Phones: No Cost Roaming Charges</h2><p>All Cellular Service customers, in both Puerto Rico and the U.S Virgin Islands will have service upon the first roaming partners availability.</p><p>Service providers will not be charging additional roaming charges in the areas <strong>at this time</strong>. Please check with your service provider for the date “roaming” charges will be reinstated.</p><p>If you are having difficulties “roaming” on your cellular device simply “reset” the phone by turning it all the way off for a few seconds. Once you turn your device back on, you should be able to “roam” freely.</p><h2>How to Find or Reunite with Loved Ones</h2><p>Following events like Hurricane Maria, we understand that communications networks are not always operational. As communications are restored, there are numerous options for survivors, friends, and family members to search for loved ones. </p><p>Survivors with internet access are encouraged to connect with friends and family members via social media platforms. Additional resources below are suggested for those both outside and inside the impacted areas.</p><p><strong>American Red Cross</strong><img alt=" Check in yourself or check on loved ones. To register so people know you're safe and well, use the thumbs up icon in the Emergency App or register at redcross.org/safeandwell. Search for a loved one by name and phone number or name and home address at redcross.org/safeandwell. Download the Red Cross Emergency App for free from your app store, or text GETEMERGENCY to 90999." src="/sites/default/files/images/redcrosssafewell.jpg" style="margin:10px 20px; width:582px; height:288px; float:right" /></p><p>The American Red Cross <a href="https://safeandwell.communityos.org/cms/index.php" target="_blank">Safe and Well website</a> allows individuals to register themselves as safe or search for loved ones. The site is always available, open to the public, and available in <a href="https://safeandwell.communityos.org/cms/index.php">English</a> and <a href="https://safeandwell-es.communityos.org/cms/">Spanish</a>. There are a number of ways to use this service:</p><ul><li>Registrations and searches can be done <strong>directly on the </strong><a href="https://safeandwell.communityos.org/cms/index.php"><strong>website</strong></a>.</li><li>Registrations can also be completed by <strong>texting SAFE to 78876</strong>. Messages exist in both Spanish and English.</li><li>To speak with someone at the American Red Cross concerning a missing friend or relative who has a serious, pre-existing health or mental health condition, please contact <strong>1-800 Red Cross (1-800-733-2767)</strong>.</li></ul><p>The American Red Cross <a href="http://www.redcross.org/get-help/how-to-prepare-for-emergencies/mobile-apps">Emergency App</a> features an “I’m Safe” button that allows users to post a message to their social accounts, letting friends and family know they are out of harm’s way. The app can be downloaded for free in app stores by searching for “American Red Cross” or by texting ‘GETEMERGENCY’ to 90999.</p><p><strong>National Center for Missing &amp; Exploited Children </strong></p><p>Anyone who finds a child who may be separated from parents or caregivers, please contact the local police and enter basic information and/or a photo into the National Center for Missing &amp; Exploited Children's <a href="https://umr.missingkids.org/umr/reportUMR;jsessionid=91503C5C16CA4B963605DEBBF62F28CF?execution=e1s1" target="_blank">Unaccompanied Minors Registry</a>. If you find an unaccompanied child, please indicate whether the child has a disability or has access and functional needs in the appropriate field in the <a href="https://umr.missingkids.org/umr/reportUMR?execution=e1s1" target="_blank">Unaccompanied Minors Registry</a>. If you do not have access to the internet, please call 1-866-908-9570.</p><p><strong>Information for Tourists</strong></p><p>Any tourists requiring transport off the islands should contact the U.S. Virgin Islands Department of Tourism at (340) 772-0357 or visit <a href="http://www.usviupdate.com/">www.usviupdate.com/</a> for additional information.</p><p>The Puerto Rico Tourism Company has set up a hotline at 877-976-2400 for people staying at hotels.</p><p><strong>Local Resources</strong></p><p>The <a href="http://prfaa.pr.gov/">Puerto Rico Federal Affairs Administration</a> directed those seeking information or assistance to call 202-800-3133 or email <a href="mailto:maria1@prfaa.pr.gov">maria1@prfaa.pr.gov</a>.</p><p>Additional information for the U.S. Virgin Islands is available at the following locations:</p><ul><li><a href="http://VIalert.gov">VIalert.gov</a></li><li><a href="http://USVIupdate.com">USVIupdate.com</a></li><li><a href="http://www.informusvi.com/">InformUSVI.com</a></li></ul><h2>Federal Response Updates</h2><p></p><p><em>All figures as of October 3, 2017, 10 am EDT</em></p><p><strong>Federal Force Laydown</strong></p><ul><li>There are <strong>more than 12,300 federal staff</strong> representing <strong>36 departments and agencies </strong>and including <strong>more than 800 FEMA personnel</strong>, on the ground in Puerto Rico and the U.S. Virgin Islands engaged in response and recovery operations from Hurricanes Maria and Irma.</li><li><strong>18 states</strong> supporting <strong>62</strong> <strong>requests </strong>for mutual aid</li><li><strong>USS Wasp </strong>scheduled to arrive Tuesday Oct 3 with 13 helicopters</li></ul><p><img alt="Logistics Snapshot for Hurricane Maria. 9/30/2017 at 12 PM. Maps showing open airports, open ports, and ports open with restrictions in Puerto Rico and the U.S. Virgin Islands. Image of ship. 14 Sea Vessels: providing water, lift, search and rescue, and commodities delivery capabilities. Image of airplane: 7 commodity flights to Puerto Rico and 3 commodity flights to U.S. Virgin Islands. Flights scheduled for 9/29. Flights continue daily to bring food, water, and other supplies. Image of a water bottle and bag of grain, symbolizing food: 11 regional staging areas in Puerto Rico serving 78 communities. 6 points of distribution in U.S. Virgin Islands. Millions of meals and millions of liters of water delivered. Additional meals and water delivered daily. Additional points of distribution will open as areas become accessible. FEMA logo in bottom right corner." src="https://www.fema.gov/media-library-data/1506789056089-8a75843965699c0046117a25cf02286d/Maria_LogisticsSnapshot_medium.jpg" style="float:right; width:431px; height:493px; margin:10px 15px" /><strong>Survivor Impacts</strong></p><ul><li>More than<strong> 240</strong> patients seen by U.S. Health and Human Services medical teams</li><li>More than<strong> 65%</strong> (+15%) of grocery and big-box stores open</li><li>More than<strong> 78%</strong> (101 of 128) USPS post offices providing mail for pick up or delivery to P.O. boxes</li><li><strong>24 municipalities</strong> added for Individual Assistance</li></ul><p><strong>Power Restoration and Fuel Impacts</strong></p><ul><li>San Juan financial district is back on the electrical grid – 5.4% (+0.4) customers have electricity</li><li>Roughly<strong> 70% retail gas stations</strong> are operational</li><li><strong>17 </strong>(+7) generators installed by the USACE for critical infrastructure</li></ul><p><strong>Transportation Impacts</strong></p><ul><li>More than<strong> 20 miles</strong> <strong>of roadway cleared</strong>; <strong>12 </strong>major highways open;<strong> 5 </strong>(+2) state roads open</li><li><strong>92% </strong>(13 of 14) deep-water ports are fully open, or open with restrictions</li><li><strong>100% airports</strong> are open</li><li><strong>147 </strong>arrivals and <strong>141</strong> departures from Luis Muñoz Marín International Airport (SJU) in San Juan on October 2.</li></ul><p><strong>Water/Wastewater Impacts</strong></p><ul><li><strong>50% </strong>Puerto Rico residents have <strong>access to drinking water</strong> (*based on Puerto Rico Aqueduct and Sewer Authority clientele)</li><li><strong>17% </strong>waste water treatment plants operational</li><li><strong>900</strong> sandbags on-hand to stabilize Guajataca Dam spillway</li></ul><p><strong>Hospitals and Medical Care Impacts</strong></p><ul><li>To provide additional surge capacity if needed, the Department of Defense hospital ship <strong>USNS COMFORT</strong> is arriving in Puerto Rico today (October 3).<ul style="list-style-type:circle"><li>The ship offers the <strong>full range of medical care</strong> with surgical, obstetric and pediatric capability and is equivalent to a level-two trauma center in the United States. The ship is staffed by more than <strong>500 medical personnel </strong>and support staff and holds <strong>250 hospital beds</strong>.</li></ul></li><li><strong>94% </strong>(64/68) hospitals are open</li><li><strong>8 </strong>VA hospitals are open<strong>; 14</strong> hospitals are on the electrical grid</li><li><strong>96% </strong> (46/48) Dialysis Centers open</li><li><strong>11 </strong>Disaster Medical Assistance Support Teams on site, as part of the National Disaster Medical Support Team activation</li></ul><p><strong>Commodity Distribution</strong></p><ul><li>FEMA, working in coordination with federal partners, has provided <strong>millions of meals</strong> and <strong>millions of liters of water</strong> to Puerto Rico and U.S. Virgin Islands. Additional meals and water continue to arrive to the islands regularly via air and sea.</li><li>As of October 1, the Governor of Puerto Rico established <strong>11 Regional Staging Areas</strong> around the island, serving all <strong>78 municipalities</strong>. The National Guard is delivering supplies to the regional staging areas around the island.</li></ul><p><strong>To see more photos of the federal response to Hurricane Maria, visit the following collections from our federal partners:</strong></p><ul><li><a href="https://www.dvidshub.net/feature/HurricaneMaria">U.S. Department of Defense Photos and Videos</a></li><li><a href="https://www.dvidshub.net/search/?q=HURRICANE+MARIA&amp;filter%5Bbranch%5D=Coast+Guard&amp;view=list&amp;sort=publishdate">U.S. Coast Guard Videos and Photos</a></li><li><div><div><div><div><div><div><div><p><a href="https://www.flickr.com/photos/cbpphotos/with/36563957134/">U.S. Customs and Border Protection Photos</a></p></div></div></div></div></div></div></div></li></ul><p><strong>On Social Media</strong></p><blockquote><p dir="ltr">Our Joint Field Office in Puerto Rico--where hundreds of FEMA staff &amp; teams from other agencies work together to support <a href="https://twitter.com/hashtag/Maria?src=hash&amp;ref_src=twsrc%5Etfw">#Maria</a> recovery. <a href="https://t.co/nL3CQCpH8X">pic.twitter.com/nL3CQCpH8X</a></p>— FEMA (@fema) <a href="https://twitter.com/fema/status/914974627864236034?ref_src=twsrc%5Etfw">October 2, 2017</a></blockquote><blockquote><p dir="ltr">.<a href="https://twitter.com/FEMA_Brock?ref_src=twsrc%5Etfw">@fema_brock</a> met w/ officials &amp; federal partners in PR today, as <a href="https://twitter.com/hashtag/Maria?src=hash&amp;ref_src=twsrc%5Etfw">#Maria</a> response/recovery efforts continue. Updates: <a href="https://t.co/NwKCXQh1OX">https://t.co/NwKCXQh1OX</a> <a href="https://t.co/GwgAErA0vw">pic.twitter.com/GwgAErA0vw</a></p>— FEMA (@fema) <a href="https://twitter.com/fema/status/914963948230922240?ref_src=twsrc%5Etfw">October 2, 2017</a></blockquote><blockquote><p dir="ltr">FEMA search &amp; rescue teams &amp; an <a href="https://twitter.com/HHSGov?ref_src=twsrc%5Etfw">@HHSGov</a> health &amp; medical team reached a community near Utuado, PR yesterday that was cut off due to <a href="https://twitter.com/hashtag/Maria?src=hash&amp;ref_src=twsrc%5Etfw">#Maria</a>. <a href="https://t.co/bQhAJovJ63">pic.twitter.com/bQhAJovJ63</a></p>— FEMA (@fema) <a href="https://twitter.com/fema/status/914886047632371712?ref_src=twsrc%5Etfw">October 2, 2017</a></blockquote><h2>Point of Distribution Locations</h2><p>Points of distribution are open in Puerto Rico and the U.S. Virgin Islands for survivors to get meals, water, and other commodities.</p><p><strong>U.S. Virgin Islands</strong></p><ul><li>Curfew 6 pm to 8 am on St. Thomas / St. John</li><li><strong>POD</strong>s on St. Thomas / St. John will be closed until Monday (10/02)<br /> </li><li>Permanent suspension of curfew from 11am to 6pm daily on St. Croix</li><li><strong>POD</strong>s will reopen on St. Croix for service Friday, September 29th and Saturday, September 30th.<ul><li><p><strong>Open from 12pm to 4pm</strong></p><ul><li><p>Alexander Henderson School</p></li><li><p>Juanita Gardine Elementary School</p></li><li><p>Cotton Valley Fire Station</p></li><li><p>Educational Complex </p></li><li><p>Eulalie Rivera School<br /> </p></li></ul></li><li><p><strong>Open Saturday, September 30th</strong></p><ul><li><p>Theodora Dunbavin Alternative Education</p></li></ul></li></ul></li></ul><p><strong>Puerto Rico</strong> - This list is as of 9/28/2017.</p><ul><li>More locations will be added to this list as they open.</li></ul><p>Please search below for your municipality and/or community.</p><table class="datatable"><thead><tr align="center"><th scope="col" style="width:50%">Community</th><th scope="col" style="width:50%">Municipality</th></tr></thead><tbody><tr><td>Arecibo I, II</td><td>Arecibo</td></tr><tr><td>Barceloneta</td><td>Arecibo</td></tr><tr><td>Hatillo</td><td>Arecibo</td></tr><tr><td>Camuy</td><td>Arecibo</td></tr><tr><td>Quebradilla</td><td>Arecibo</td></tr><tr><td>Florida</td><td>Arecibo</td></tr><tr><td>Manati</td><td>Arecibo</td></tr><tr><td>Lares</td><td>Arecibo</td></tr><tr><td>Ciales</td><td>Arecibo</td></tr><tr><td>Aguadilla</td><td>Aguadilla</td></tr><tr><td>Aguada</td><td>Aguadilla</td></tr><tr><td>Rincón</td><td>Aguadilla</td></tr><tr><td>Añasco</td><td>Aguadilla</td></tr><tr><td>Moca</td><td>Aguadilla</td></tr><tr><td>San Sebastian</td><td>Aguadilla</td></tr><tr><td>Isabela</td><td>Aguadilla</td></tr><tr><td>Guaynabo</td><td>Bayamon</td></tr><tr><td>Toa Baja</td><td>Bayamon</td></tr><tr><td>Cataño</td><td>Bayamon</td></tr><tr><td>Toa Alta</td><td>Bayamon</td></tr><tr><td>Vega Alta</td><td>Bayamon</td></tr><tr><td>Dorado</td><td>Bayamon</td></tr><tr><td>Vega Baja</td><td>Bayamon</td></tr><tr><td>Comerio</td><td>Bayamon</td></tr><tr><td>Orocovis</td><td>Bayamon</td></tr><tr><td>Naranjito</td><td>Bayamon</td></tr><tr><td>Morovia</td><td>Bayamon</td></tr><tr><td>Corozal</td><td>Bayamon</td></tr><tr><td>Barranquitas</td><td>Bayamon</td></tr><tr><td>Canovanas</td><td>Canóvanas</td></tr><tr><td>Carolina</td><td>Canóvanas</td></tr><tr><td>San Juan</td><td>Canóvanas</td></tr><tr><td>Trujillo Alto</td><td>Canóvanas</td></tr><tr><td>Loisa</td><td>Canóvanas</td></tr><tr><td>Rio Grande</td><td>Canóvanas</td></tr><tr><td>Ceiba</td><td>Ceiba</td></tr><tr><td>Fajardo</td><td>Ceiba</td></tr><tr><td>Luquillo</td><td>Ceiba</td></tr><tr><td>Culebra</td><td>Ceiba</td></tr><tr><td>Vieques</td><td>Ceiba</td></tr><tr><td>Naguabo</td><td>Ceiba</td></tr><tr><td>Yabucoa</td><td>Ceiba</td></tr><tr><td>Maunabo</td><td>Ceiba</td></tr><tr><td>Humacao</td><td>Ceiba</td></tr><tr><td>Caguas</td><td>Caguas</td></tr><tr><td>Cidra</td><td>Caguas</td></tr><tr><td>Cayey</td><td>Caguas</td></tr><tr><td>Aibonito</td><td>Caguas</td></tr><tr><td>Aguas Buenas</td><td>Caguas</td></tr><tr><td>Gurabo</td><td>Caguas</td></tr><tr><td>Juncos</td><td>Caguas</td></tr><tr><td>San Lorenzo</td><td>Caguas</td></tr><tr><td>Las Piedras</td><td>Caguas</td></tr><tr><td>Guayama</td><td>Guayama</td></tr><tr><td>Arroyo</td><td>Guayama</td></tr><tr><td>Patillas</td><td>Guayama</td></tr><tr><td>Salinas</td><td>Guayama</td></tr><tr><td>Coamo</td><td>Guayama</td></tr><tr><td>Santa Isabel</td><td>Guayama</td></tr><tr><td>Mayagüez</td><td>Mayagüez</td></tr><tr><td>Las Marias</td><td>Mayagüez</td></tr><tr><td>Maricao</td><td>Mayagüez</td></tr><tr><td>Hormigueros</td><td>Mayagüez</td></tr><tr><td>Cabo Rojo</td><td>Mayagüez</td></tr><tr><td>San German</td><td>Mayagüez</td></tr><tr><td>Sabana Grande</td><td>Mayagüez</td></tr><tr><td>Lajas</td><td>Mayagüez</td></tr><tr><td>Ponce</td><td>Ponce</td></tr><tr><td>Penuelas</td><td>Ponce</td></tr><tr><td>Guayanilla</td><td>Ponce</td></tr><tr><td>Yauco</td><td>Ponce</td></tr><tr><td>Guanica</td><td>Ponce</td></tr><tr><td>Juana Diaz</td><td>Ponce</td></tr><tr><td>Villalba</td><td>Ponce</td></tr><tr><td>Adjuntas</td><td>Ponce</td></tr><tr><td>Utuado</td><td>Utuado</td></tr></tbody></table><h2>How to Help</h2><div><ul></ul><p><img alt=" How to help after a disaster. The best way to help is with cash donations to trusted organizations. Cash is efficient, flexible to use, and requires no packaging or transport. Trusted organizations will ensure your money goes to help those in need." src="https://www.fema.gov/media-library-data/1476464381286-7e0b131f31391ddac73f3bdf11f69d2e/donations_medium.png" style="margin:10px 15px; width:400px; height:283px; float:right" /></p><p>For Hurricane Maria, there are three ways that the public can most effectively and efficiently help provide support for survivors in Puerto Rico and the U.S. Virgin Islands.</p><p><strong><em>The fastest way to help – cash is best</em></strong></p><p>The most effective means to support recovery of communities affected by Hurricane Maria is to donate money to trusted voluntary-, faith- and community-based charitable organizations. This gives these organizations the ability to purchase what survivors need right now. In addition, when these organizations purchase goods or services locally, they pump money back into the local and regional economy, helping businesses recover faster.</p><ul><li>To make a cash donation directly to the Commonwealth of Puerto Rico, visit <a href="http://www.unitedforpuertorico.com">www.unitedforpuertorico.com</a>. </li></ul><p><strong><em>Donating Goods</em></strong></p><p>It is important to remember unsolicited donated goods (e.g., clothing, miscellaneous household items, and mixed or perishable foodstuffs) require voluntary agencies to redirect valuable resources away from providing services to sort, package, transport, warehouse, and distribute items that may not meet the needs of disaster survivors.  </p><ul><li>To responsibly donate goods, the <a href="https://www.nvoad.org/howtohelp/donate/">NVOAD website</a> has information on non-profit organizations accepting or registering individual and corporate in-kind donations.</li><li>If you would like to give in-kind donations, coordinate with NVOAD organizations to identify the best ways to pick up and drop off your donations.</li></ul><p><strong><em>Volunteering</em></strong></p><p>Anyone seeking an opportunity to get involved in response and recovery operations underway is encouraged to volunteer with local and nationally known organizations.</p><ul><li>To register as an affiliated volunteer with a voluntary or charitable organization, visit the <a href="https://www.nvoad.org/voad-members/">National VOAD</a> for a list of partners active in disaster.</li></ul><p>Thank you for your interest in helping the survivors of Hurricane Maria. When disaster strikes, America looks to FEMA to support survivors and first responders in communities all across the country. We are <a href="http://careers.fema.gov/hurricane-workforce">currently seeking talented and hard-working people</a> to help support the hurricane response and recovery efforts.</p><h2>Urban Search &amp; Rescue Operations</h2><p>Urban Search &amp; Rescue teams have reached all municipalities. Teams have saved or assisted 843 individuals and searched over 2,600 structures.</p><h2>Puerto Rico Road Status</h2><p><img alt=" Inaccessible due to mudslide at 140 km in the direction of Mayaguez towards Arecibo. Lanes towards Mayaguez being used in both directions. Inaccessible from 148.7 km to 142.8 km due to flooding in both directions. Inaccessible due to mudslide and detachment of road at 54.4 km. Detour by PR-603 and PR-6103. Signage, lightning, and fallen trees. Accessible in both directions. Inaccessible at 22.6 km due to structural concerns in both directions. Inaccessible at 4.1 km due to flooding in both directions. Inaccessible in three segments in San Juan direction. Lanes toward Fajardo being used in both directions. Inaccessible in three segments in San Juan direction. Lanes towards Fajardo being used in both directions. Closed in direction to Caguas. Lanes towards Fajardo used in both direction. Inaccessible at 93.9 km towards Ponce. Emergency lane towards Caguas being used in opposite direction. Inaccessible due to structural damage of bridge at 1 km. Inaccessible at 200 km in both directions due to flood. Lanes towards Mayaguez being used in both directions. Inaccessible due to mudslide at 12.6 km. Inaccessible from 148.7 km to 142.km due to flooding in both directions." src="/sites/default/files/images/maria_leadershipmapbook_20170928_0800v2_withlogo.png" style="height:711px" /></p><h2>Safety Tips</h2><ul><li>If you encounter flood waters, remember – <strong>turn around, don’t drown</strong>. Don't drive through a flooded area.</li><li><strong>Avoid debris, downed power lines, and flood water,</strong> which may be electrically charged and hide dangerous debris or places where the ground is washed away. Avoid downed power or utility lines as they may be live with deadly voltage. Stay away and report them immediately to your power or utility company.</li><li>Emergency workers may be assisting people in flooded areas or cleaning up debris. You can help them by <strong>staying off the roads and out of the way as much as possible</strong>.</li><li>If your home has flood water inside or around it, don’t walk or wade in it.The water may be contaminated by oil, gasoline, or raw sewage.</li><li>If you have a flooded basement in your home, never attempt to turn off power or operate circuit breakers while standing in water.</li><li>If your power is out, safely use a generator or battery-operated flashlights.</li><li><strong>Never use a generator inside a home, basement, shed or garage</strong> even if doors and windows are open.</li><li>Keep generators outside and far away from windows, doors and vents. Read both the label on your generator and the owner's manual and follow the instructions.</li><li><strong>Avoid plugging emergency generators into electric outlets</strong> or hooking them directly to your home's electrical system – they can feed electricity back into the power lines, putting you and line workers in danger.<p style="text-align:center"><img alt=" Listen to local officials for updates and instructions. Use texts or social media to check in with friends and family. Watch out for debris and downed power lines. Stay out of damaged buildings and homes until local authorities say it's safe. Photograph the damage to your property to assist in filing an insurance claim." src="https://www.fema.gov/media-library-data/1490804363803-8b43ce0fe9b98b8c000069ab9162a265/NeighborCheck10_medium.jpg" style="margin:10px 15px; width:724px; height:617px" /></p></li></ul></div><h2>Beware of Fraud &amp; Price Gouging</h2><p>After a disaster scam artists, identity thieves and other criminals may attempt to prey on vulnerable survivors. The most common post-disaster fraud practices include phony housing inspectors, fraudulent building contractors, bogus pleas for disaster donations and fake offers of state or federal aid.</p><p><strong>Survivors should keep in mind</strong>:</p><ul><li>FEMA does not authorize individual contractors to solicit on its behalf.  Beware of any individual contractors contacting you directly on behalf of FEMA to sign you up for debris removal or remediation services.</li><li>If you have any concerns about individuals representing themselves as FEMA or would like to report fraud, please contact the National Center for Disaster Fraud at (866) 720-5721 or via email at <a href="mailto:disaster@leo.gov"><strong>disaster@leo.gov</strong></a>. </li><li>Federal and state workers never ask for, or accept money, and always carry identification badges</li><li>There is <strong>NO FEE </strong>required to apply for or to get disaster assistance from FEMA, the U.S. Small Business Administration or the state</li><li>Scam attempts can be made over the phone, by mail or email, text or in person</li></ul><p><strong>Price Gouging </strong></p><p>Price gouging occurs when a supplier marks up the price of an item more than is justified by his actual costs. Survivors are particularly susceptible because their needs are immediate, and have few alternatives to choose from. If you find price gouging report below:</p><p><strong>Report Price Gouging</strong></p><p><strong>Puerto Rico</strong>:<br />United States Attorney's Office<br />Torre Chardón, Suite 1201<br />350 Carlos Chardón Street<br />San Juan, PR 00918</p><ul><li>Main Phone: (787) 766-5656</li><li>Toll Free Phone: 1‐877‐USA‐5656 (1-877‐872‐5656)</li></ul><p> <br /><strong>U.S. Virgin Islands</strong>:<br />United States Attorney's Office<br />Federal Building &amp; U.S. Courthouse<br />Room 260<br />5500 Veterans Drive<br />St. Thomas, VI 00802-6424</p><ul><li>St. Thomas Main Phone: 340-774-5757</li><li>St. Croix Main Phone: 340-773-3920</li></ul><p><strong>Dealing with Contractors</strong>:</p><p>Survivors should take steps to protect themselves and avoid fraud when hiring contractors to clean property, remove debris or make repairs.</p><p><strong>Simple rules to avoid becoming a victim of fraud</strong>:</p><ul><li>Only use contractors licensed by your state</li><li>Get a written estimate and get more than one estimate</li><li>Demand and check references</li><li>Ask for proof of insurance<ul><li>i.e., liability and Workmen's Compensation</li></ul></li><li>Insist on a written contract and refuse to sign a contract with blank spaces</li><li>Get any guarantees in writing</li><li>Make final payments only after the work is completed</li><li>Pay by check.</li></ul><p>The best way to avoid fraud is to arm yourself against it by having a checklist to remind you of what you need to demand when hiring a contractor.</p><ul></ul><h2>Helping Children Cope</h2><div><p>To talk to a professional who can help you cope with emotional distress from the storm: Call the <a href="https://twitter.com/distressline">@disasterdistressline</a> at <strong>(800) 985-5990</strong> crisis support services are available <strong>24/7</strong>.</p><p>Children may cope more effectively with a disaster when they feel they understand what is happening and what they can do to help protect themselves, their family, and friends. Here’s how you can help them cope and a <a href="/media-library/assets/documents/138687">Fact Sheet</a>:</p><ul><li>Talk about the concerns about the storm with your children. To not talk about it makes it even more threatening in your children's mind. Start by asking what your children have already heard and what understanding they have. As your children explain, listen for misinformation, misconceptions, and underlying fears or concerns, and then address these.</li><li>Explain - as simply and directly as possible - what is happening or likely to happen. The amount of information that will be helpful to children depends on their age and developmental level, as well as their coping style. For example, older children generally want and will benefit from more detailed information than younger children. Because every child is different, take cues from your own children as to how much information to provide.</li><li>Encourage your children to ask questions, and answer those questions directly. Like adults, children are better able to cope with a crisis if they feel they understand it. Question-and-answer exchanges help to ensure ongoing support as your children begin to understand the crisis and the response to it.</li><li>Limit television viewing of disasters and other crisis events, especially for younger children. Consider coverage on all media, including the internet and social media. When older children watch television, try to watch with them and use the opportunity to discuss what is being seen and how it makes you and your children feel.</li><li>Reassure children of the steps that are being taken to keep them safe. Disasters and other crises remind us that we are never completely safe from harm. Now more than ever it is important to reassure children that, in reality, they should feel safe in their schools, homes, and communities.</li><li>Consider sharing your feelings about a crisis with your children. This is an opportunity for you to role model how to cope and how to plan for the future. Before you reach out, however, be sure that you are able to express a positive or hopeful plan.</li><li>Help your children to identify concrete actions they can take to help those affected by recent events. Rather than focus on what could have been done to prevent a disaster or other crisis, concentrate on what can be done now to help those affected by the event.</li><li>Play games and do activities together to create meaningful dialogue and offer a distraction.</li><li>If you have concerns about your children's behavior, contact your children's pediatrician, other primary care provider, or a qualified mental health professional.</li></ul></div></div></div></div><div class="field field-name-field-updated-date field-type-entity-property-field field-label-inline clearfix"><div class="field-label">Last Updated:&nbsp;</div><div class="field-items"><div class="field-item even">10/03/2017 - 08:59</div></div></div>    </div>
+
+    
+    
+
+</div>
+
+
+</section> <!-- /.block -->
+<section id="block-block-5" class="block block-block clearfix">
+
+      
+  <script></script>
+<style type="text/css">
+body.page-taxonomy img.gis_image {
+   border: none;
+    height: 153px !important;
+    margin-right: 0;
+    max-width: 100% !important;
+    width: 198px !important;
+}
+
+div.leadership  {
+margin-bottom: 22px;
+}
+
+div.leadership div.col-md-9 {
+padding-left:0;
+margin-left:35px;
+}
+
+div.leadership-main div.col-md-2 {
+text-align:center;
+overflow: hidden;
+}
+
+div.headshot-wrapper-big {
+width:140px; 
+height: 175px; 
+text-align:center;
+overflow: hidden; 
+margin-top: 7px;
+}
+
+div.content img.leader-headshot-big {
+margin-left: -25px; 
+height:175px !important; 
+width:175px !important; 
+max-width: inherit !important; 
+text-align:center;
+}
+
+div.headshot-wrapper {
+height: 113px; 
+width:100px; 
+overflow:hidden; 
+text-align:center;
+}
+
+div.content img.leader-headshot-small {
+margin-left:-8px; 
+width:115px !important;
+height:115px !important;
+max-width: inherit !important; 
+}
+
+</style>
+</section> <!-- /.block -->
+  </div>
+        <div class="contextual-nav-mobile"></div>
+        <footer class="content-footer">
+          <a href="#footer-bottom" id="skipNavLink" class="element-invisible element-focusable">Skip footer content.</a>
+          <div class="clear"></div>
+            <div class="region region-footer">
+    <section id="block-unicorn-social-links-unicorn-social-links" class="block block-unicorn-social-links clearfix">
+
+      
+  <div class="socialImagesDiv">
+        <a id="showThisPageSpan" href="#"><span class="icon-show"><img src="//www.fema.gov/profiles/fema_gov/themes/unicorn/img/social/icon_share.png"  alt="Click to expand and share this page on social networks"></span><span id="showText">Share This Page.</span></a>
+        <div class="social-images">
+        <a href="https://www.facebook.com/sharer/sharer.php?u=UNIURL" target="_blank"><img src="//www.fema.gov/profiles/fema_gov/themes/unicorn/img/social/icon_facebook.png" alt="Facebook Icon"></a>
+        <a href="https://twitter.com/intent/tweet?text=Hurricane+Maria&url=UNIURL&via=fema" target="_blank"><img src="//www.fema.gov/profiles/fema_gov/themes/unicorn/img/social/icon_twitter.png" alt="Twitter Icon"></a>
+        <a href="https://www.linkedin.com/shareArticle?mini=true&url=UNIURL&title=Hurricane Maria&summary=&source=" target="_blank"><img src="//www.fema.gov/profiles/fema_gov/themes/unicorn/img/social/icon_linkedin.png" alt="LinkedIn Icon"></a>
+        <a href="https://plus.google.com/share?url=UNIURL" target="_blank"><img src="//www.fema.gov/profiles/fema_gov/themes/unicorn/img/social/icon_googleplus.png" alt="Google Plus Icon"></a>
+        <a href="http://www.tumblr.com/share/link?url=UNIURL&name=Hurricane Maria&description=" target="_blank"><img src="//www.fema.gov/profiles/fema_gov/themes/unicorn/img/social/icon_tumblr.png" alt="Tumblr Icon"></a>
+
+        </div>
+    </div>
+</section> <!-- /.block -->
+<section id="block-menu-menu-unicorn-footer-menu" class="block block-menu clearfix">
+
+      
+  <ul><li class="first leaf"><a href="/" title="">Home</a></li>
+<li class="leaf"><a href="/download-plug-ins" title="">Download Plug-ins</a></li>
+<li class="leaf"><a href="/about-agency" title="">About Us</a></li>
+<li class="leaf"><a href="/privacy-policy" title="">Privacy Policy</a></li>
+<li class="leaf"><a href="//www.oig.dhs.gov/" title="">Office of the Inspector General</a></li>
+<li class="leaf"><a href="/fema-strategic-plan" title="">Strategic Plan</a></li>
+<li class="leaf"><a href="//www.whitehouse.gov" title="">Whitehouse.gov</a></li>
+<li class="leaf"><a href="//www.dhs.gov" title="">DHS.gov</a></li>
+<li class="leaf"><a href="//www.ready.gov" title="">Ready.gov</a></li>
+<li class="leaf"><a href="//www.usa.gov" title="">USA.gov</a></li>
+<li class="last leaf"><a href="//www.disasterassistance.gov/" title="">DisasterAssistance.gov</a></li>
+</ul>
+</section> <!-- /.block -->
+<section id="block-boxes-unicorn-footer-dhs-text" class="block block-boxes block-boxes-simple clearfix">
+
+      
+  <div id='boxes-box-unicorn_footer_dhs_text' class='boxes-box'><div class="boxes-box-content"><p><a href="https://www.oig.dhs.gov/hotline"><img src="https://www.oig.dhs.gov/sites/default/files/img/oig-hotline.png" alt="OIG Hotline to report waste and abuse" /></a></p>
+<p lang="en"><img lang="en" src="//www.fema.gov/profiles/fema_gov/themes/unicorn/img/icon_usflag.gif" alt="US flag signifying that this is a United States Federal Government website"> Official website of the Department of Homeland Security</p></div></div>
+</section> <!-- /.block -->
+  </div>
+          <a id="footer-bottom" name="footer-bottom" href="#" class="element-invisible element-focusable">End of web page.</a>
+        </footer>
+      </section>
+      <div class="clearfix"></div>
+    </div><!-- .content-wrapper -->
+  </div><!-- .block-right -->
+</div><!-- main container -->
+
+<div class="container unicorn-home-page-secondary-content">
+  <div class="secondary-content">
+    <!-- use JS to inject content here from div.views-field-field-also-featured-content -->
+  </div><!-- .secondary-content -->
+
+  <div class="secondary-footer">
+    <!-- use JS to insert footer content here -->
+  </div><!-- .secondary-footer -->
+
+</div><!-- .unicorn-home-page-secondary-content -->
+<script src="//www.fema.gov/sites/default/files/js/js_AZ9y0PShar4GyPuQUcAgecHmIwX4TUOo0HFPa06mnF0.js"></script>
+<script src="//www.fema.gov/sites/default/files/js/js_x7i9_K8_u7Lf_Pr4XToSxjCDPT7-3IXdc15I1723_SU.js"></script>
+</body>
+</html>
