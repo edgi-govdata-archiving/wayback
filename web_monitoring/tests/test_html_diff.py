@@ -96,24 +96,31 @@ staging_version_ids = [
     # two `<ul>` elements on this page, but in the diff, the `<p>` gets moved
     # _into_ the `<ul>`, so it renders like a list item instead of like the
     # header-ish thing it actually is."
-     ('f2d5d701-707a-42e0-8881-653346d01e0a',
-      'fc74d750-c651-46b7-bf74-434ad8c62e04'),
-     # See issue #99
-     ('9d4de183-a186-456c-bffb-55d82989877d',
-      '775a8b04-9bac-4d0d-8db0-a8e133c4a964'),
-    ]
+    ('f2d5d701-707a-42e0-8881-653346d01e0a',
+     'fc74d750-c651-46b7-bf74-434ad8c62e04'),
+    # See issue #99
+    ('9d4de183-a186-456c-bffb-55d82989877d',
+     '775a8b04-9bac-4d0d-8db0-a8e133c4a964'),
+]
 
 # Fetch content as we need it, and cache. This can potentially matter if a
 # subset of the tests are run.
 version_content_cache = {}
-staging_cli = Client(
-    email=os.environ['WEB_MONITORING_DB_STAGING_EMAIL'],
-    password=os.environ['WEB_MONITORING_DB_STAGING_PASSWORD'],
-    url=os.environ['WEB_MONITORING_DB_STAGING_URL'])
-
-
-CACHE_DIR = Path.home() / Path('.cache', 'web-monitoring-processing', 'tests')
+CACHE_DIR = Path(__file__).resolve().parent / Path('fixtures', 'versions')
 os.makedirs(CACHE_DIR, exist_ok=True)
+
+
+def get_staging_cli():
+    try:
+        email = os.environ['WEB_MONITORING_DB_STAGING_EMAIL']
+        password = os.environ['WEB_MONITORING_DB_STAGING_PASSWORD']
+        url = os.environ['WEB_MONITORING_DB_STAGING_URL']
+    except KeyError:
+        raise Exception('''You must have the following env vars set to update fixture content:
+            WEB_MONITORING_DB_STAGING_EMAIL,
+            WEB_MONITORING_DB_STAGING_PASSWORD,
+            WEB_MONITORING_DB_STAGING_URL''')
+    return Client(email, password, url)
 
 
 def get_staging_content(version_id):
@@ -125,7 +132,7 @@ def get_staging_content(version_id):
             with open(CACHE_DIR / Path(version_id), 'r') as f:
                 content = f.read()
         except FileNotFoundError:
-            content = staging_cli.get_version_content(version_id)
+            content = get_staging_cli().get_version_content(version_id)
             with open(CACHE_DIR / Path(version_id), 'w') as f:
                 f.write(content)
         version_content_cache[version_id] = content
