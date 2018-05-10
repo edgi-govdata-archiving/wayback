@@ -2,14 +2,11 @@ import concurrent.futures
 from docopt import docopt
 import hashlib
 import inspect
-import json
 import re
-import sys
 import tornado.gen
 import tornado.httpclient
 import tornado.ioloop
 import tornado.web
-from tornado.stack_context import ExceptionStackContext
 import traceback
 import web_monitoring
 import web_monitoring.differs
@@ -57,8 +54,8 @@ XML_PROLOG_PATTERN = re.compile(
     b'<?xml\\s[^>]*encoding=[\'"]([^\'"]+)[\'"].*\?>',
     re.IGNORECASE)
 
-
 client = tornado.httpclient.AsyncHTTPClient()
+
 
 class DiffHandler(tornado.web.RequestHandler):
     # subclass must define `differs` attribute
@@ -69,7 +66,11 @@ class DiffHandler(tornado.web.RequestHandler):
         try:
             func = self.differs[differ]
         except KeyError:
-            self.send_error(404, reason = f'Unknown diffing method: `{differ}`. You can get a list of supported differs from the `/` endpoint.')
+            self.send_error(404,
+                            reason=f'Unknown diffing method: `{differ}`. '
+                                   f'You can get a list of '
+                                   f'supported differs from '
+                                   f'the `/` endpoint.')
             return
 
         # If params repeat, take last one. Decode bytes into unicode strings.
@@ -80,10 +81,14 @@ class DiffHandler(tornado.web.RequestHandler):
             b = query_params.pop('b')
         except KeyError:
             self.send_error(
-                        400, reason = 'Malformed request. You must provide a URL as the value for both `a` and `b` query parameters.')
+                400,
+                reason='Malformed request. '
+                       'You must provide a URL as the value '
+                       'for both `a` and `b` query parameters.')
             return
         # Fetch server response for URLs a and b.
-        res_a, res_b = yield [client.fetch(a, raise_error=False), client.fetch(b, raise_error=False)]
+        res_a, res_b = yield [client.fetch(a, raise_error=False),
+                              client.fetch(b, raise_error=False)]
 
         try:
             self.check_response_for_error(res_a)
@@ -102,7 +107,7 @@ class DiffHandler(tornado.web.RequestHandler):
                 actual_hash = hashlib.sha256(res.body).hexdigest()
                 if actual_hash != expected_hash:
                     self.send_error(
-                        500, reason = 'Fetched content does not match hash.')
+                        500, reason='Fetched content does not match hash.')
                     return
 
         # TODO Add caching of fetched URIs.
@@ -137,20 +142,22 @@ class DiffHandler(tornado.web.RequestHandler):
         self.finish(response)
 
     def check_response_for_error(self, response):
-        #Check if the HTTP requests were successfull and handle exeptions
+        # Check if the HTTP requests were successful and handle exceptions
         if response.error is not None:
             try:
                 response.rethrow()
-            except (ValueError, IOError):
-                #Response code == 599 means that no HTTP response was received.
-                #In this case the error code should become 400 indicating that the error was
-                #raised because of a bad request parameter.
+            except (ValueError, OSError, tornado.httpclient.HTTPError):
+                # Response code == 599 means that
+                # no HTTP response was received.
+                # In this case the error code should
+                # become 400 indicating that the error was
+                # raised because of a bad request parameter.
                 if response.code == 599:
-                    self.send_error( 
-                        400, reason = str(response.error))
+                    self.send_error(
+                        400, reason=str(response.error))
                 else:
                     self.send_error(
-                        response.code, reason = str(response.error))
+                        response.code, reason=str(response.error))
                 raise tornado.httpclient.HTTPError(0)
 
 
@@ -255,7 +262,6 @@ class IndexHandler(tornado.web.RequestHandler):
 
 
 def make_app():
-
     class BoundDiffHandler(DiffHandler):
         differs = DIFF_ROUTES
 
