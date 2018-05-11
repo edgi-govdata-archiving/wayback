@@ -56,13 +56,18 @@ XML_PROLOG_PATTERN = re.compile(
     re.IGNORECASE)
 
 client = tornado.httpclient.AsyncHTTPClient()
+
 DEBUG_MODE = os.environ.get('DIFFING_SERVER_DEBUG', 'False').strip().lower() == 'true'
+
+acao_env_value = \
+    os.environ.get('ACCESS_CONTROL_ALLOW_ORIGIN_HEADER', '*')
+
 
 class DiffHandler(tornado.web.RequestHandler):
     # subclass must define `differs` attribute
 
     def set_default_headers(self):
-        self.set_header("Access-Control-Allow-Origin", "*")
+        self.set_header("Access-Control-Allow-Origin", acao_env_value)
         self.set_header("Access-Control-Allow-Headers", "x-requested-with")
         self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
 
