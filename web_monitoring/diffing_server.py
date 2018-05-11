@@ -2,6 +2,7 @@ import concurrent.futures
 from docopt import docopt
 import hashlib
 import inspect
+import os
 import re
 import tornado.gen
 import tornado.httpclient
@@ -233,7 +234,7 @@ def make_app():
     return tornado.web.Application([
         (r"/([A-Za-z0-9_]+)", BoundDiffHandler),
         (r"/", IndexHandler),
-    ])
+    ], debug=os.environ.get('TORNADO_DEBUG_MODE', 'False'))
 
 
 def start_app(port):
