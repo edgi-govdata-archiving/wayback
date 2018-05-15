@@ -57,7 +57,7 @@ XML_PROLOG_PATTERN = re.compile(
 
 
 client = tornado.httpclient.AsyncHTTPClient()
-debug_mode = (os.environ['TORNADO_DEBUG_MODE'] == 'True')
+debug_mode = (os.environ['DIFFING_SERVER_DEBUG'] == 'True')
 
 
 class DiffHandler(tornado.web.RequestHandler):
