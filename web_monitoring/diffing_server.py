@@ -57,6 +57,7 @@ XML_PROLOG_PATTERN = re.compile(
 
 
 client = tornado.httpclient.AsyncHTTPClient()
+debug_mode = (os.environ['TORNADO_DEBUG_MODE'] == 'True')
 
 
 class DiffHandler(tornado.web.RequestHandler):
@@ -234,8 +235,7 @@ def make_app():
     return tornado.web.Application([
         (r"/([A-Za-z0-9_]+)", BoundDiffHandler),
         (r"/", IndexHandler),
-    ], debug=os.environ.get('TORNADO_DEBUG_MODE', 'False'))
-
+    ], debug=debug_mode)
 
 def start_app(port):
     app = make_app()
