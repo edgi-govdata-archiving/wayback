@@ -2,6 +2,7 @@ import concurrent.futures
 from docopt import docopt
 import hashlib
 import inspect
+import os
 import re
 import tornado.gen
 import tornado.httpclient
@@ -55,7 +56,7 @@ XML_PROLOG_PATTERN = re.compile(
     re.IGNORECASE)
 
 client = tornado.httpclient.AsyncHTTPClient()
-
+DEBUG_MODE = os.environ.get('DIFFING_SERVER_DEBUG', 'False').strip().lower() == 'true'
 
 class DiffHandler(tornado.web.RequestHandler):
     # subclass must define `differs` attribute
@@ -268,8 +269,7 @@ def make_app():
     return tornado.web.Application([
         (r"/([A-Za-z0-9_]+)", BoundDiffHandler),
         (r"/", IndexHandler),
-    ])
-
+    ], debug=DEBUG_MODE)
 
 def start_app(port):
     app = make_app()
