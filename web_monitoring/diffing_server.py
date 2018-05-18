@@ -56,9 +56,29 @@ XML_PROLOG_PATTERN = re.compile(
     re.IGNORECASE)
 
 client = tornado.httpclient.AsyncHTTPClient()
+
 DEBUG_MODE = os.environ.get('DIFFING_SERVER_DEBUG', 'False').strip().lower() == 'true'
 
-class DiffHandler(tornado.web.RequestHandler):
+access_control_allow_origin_header = \
+    os.environ.get('ACCESS_CONTROL_ALLOW_ORIGIN_HEADER')
+
+
+class BaseHandler(tornado.web.RequestHandler):
+
+    def set_default_headers(self):
+        if access_control_allow_origin_header is not None:
+            self.set_header("Access-Control-Allow-Origin",
+                            access_control_allow_origin_header)
+            self.set_header("Access-Control-Allow-Headers", "x-requested-with")
+            self.set_header('Access-Control-Allow-Methods', 'GET, OPTIONS')
+
+    def options(self):
+        # no body
+        self.set_status(204)
+        self.finish()
+
+
+class DiffHandler(BaseHandler):
     # subclass must define `differs` attribute
 
     @tornado.gen.coroutine
@@ -253,7 +273,7 @@ def caller(func, a, b, **query_params):
     return func(**kwargs)
 
 
-class IndexHandler(tornado.web.RequestHandler):
+class IndexHandler(BaseHandler):
 
     @tornado.gen.coroutine
     def get(self):
