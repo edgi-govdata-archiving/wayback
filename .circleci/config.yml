@@ -64,7 +64,6 @@ workflows:
   build:
     jobs:
       - build:
-          context: web-monitoring-staging-access
           filters:
             branches:
               ignore: master
@@ -72,7 +71,6 @@ workflows:
   build-and-publish:
     jobs:
       - build:
-          context: web-monitoring-staging-access
           filters:
             branches:
               only:
