@@ -81,15 +81,22 @@ def links_diff_html(a_text, b_text, a_headers=None, b_headers=None,
         id='wm-diff-style')
     change_styles.string = """
         body { margin: 0; }
-        ul { margin: 0; padding: 0; }
-        li { opacity: 0.5; padding: 0.2em 1.5em; }
-        li::before { content: "•"; position: absolute; left: 0.5em; }
-        [wm-has-deletions], [wm-has-insertions] { opacity: 1; }
-        [wm-has-deletions] { background-color: #ffeef0; }
-        [wm-has-insertions] { background-color: #e6ffed; }
-        [wm-has-deletions][wm-has-insertions] { background-color: #eee; }
+        ol { margin: 0; padding: 0; display: table; }
+        li { opacity: 0.5; padding: 0.2em 1.5em; display: table-row; }
+        li > * { display: table-cell; padding: 0.25em; vertical-align: middle; }
+        li::before { content: "⚬"; display: table-cell; vertical-align: middle; width: 1.5em; text-align: center; }
+        [wm-has-deletions],
+        [wm-has-insertions] { opacity: 1; }
+        [wm-has-deletions]::before,
+        [wm-has-insertions]::before { content: "±"; }
+        [wm-has-deletions], [wm-has-insertions] { background-color: #eee; }
+        [wm-inserted] { background-color: #acf2bd; }
+        [wm-inserted]::before { content: "+"; }
+        [wm-deleted] { background-color: #fdb8c0; }
+        [wm-deleted]::before { content: "-"; }
         ins { text-decoration: none; background-color: #acf2bd; }
-        del { text-decoration: none; background-color: #fdb8c0; }"""
+        del { text-decoration: none; background-color: #fdb8c0; }
+        .link-url a { line-break: loose; word-break: break-all; display: block; }"""
     soup.head.append(change_styles)
     soup.title.string = get_title(diff['b_parsed'])
 
@@ -170,28 +177,35 @@ def _create_empty_soup(title=''):
         """, 'lxml')
 
 
+# FIXME: unify with _create_link_diff_listing
 def _create_link_listing(link, soup, change_type=None):
     """
     Create an element to display in the list of links.
     """
     listing = soup.new_tag('li')
-    container = listing
+    tag_type = 'span'
     if change_type:
         if change_type == 'insertion':
-            container = soup.new_tag('ins')
+            tag_type = 'ins'
             listing['wm-has-insertions'] = 'true'
             listing['wm-inserted'] = 'true'
         else:
-            container = soup.new_tag('del')
+            tag_type = 'del'
             listing['wm-has-deletions'] = 'true'
             listing['wm-deleted'] = 'true'
-        listing.append(container)
 
-    container.append(link['text'] + ' ')
+    text_tag = soup.new_tag(tag_type)
+    text_tag['class'] = 'link-text'
+    text_tag.append(link['text'])
+    listing.append(text_tag)
+
+    link_tag = soup.new_tag(tag_type)
+    link_tag['class'] = 'link-url'
     url = link['href']
     url_link = soup.new_tag('a', href=url)
     url_link.string = f'({url})'
-    container.append(url_link)
+    link_tag.append(url_link)
+    listing.append(link_tag)
 
     return listing
 
@@ -202,19 +216,40 @@ def _create_link_diff_listing(text_diff, href_diff, hrefs, soup):
     """
     listing = soup.new_tag('li')
 
-    text = ''.join(map(_html_for_dmp_operation, text_diff))
-    listing.append(text + ' ')
+    # text = ''.join(map(_html_for_dmp_operation, text_diff))
+    # listing.append(text + ' ')
+    text_tag = soup.new_tag('span')
+    text_tag['class'] = 'link-text'
+    text_tag.append(''.join(map(_html_for_dmp_operation, text_diff)))
+    listing.append(text_tag)
 
-    link_text = ''.join(map(_html_for_dmp_operation, href_diff))
+    link_insertions = filter(lambda operation: operation[0] >= 0, href_diff)
+    link_deletions = filter(lambda operation: operation[0] <= 0, href_diff)
+    link_tag = soup.new_tag('span')
+    link_tag['class'] = 'link-url'
+    listing.append(link_tag)
+
+    url_text = ''.join(map(_html_for_dmp_operation, link_insertions))
     url_link = soup.new_tag('a', href=hrefs[1])
-    url_link.string = f'({link_text})'
-    listing.append(url_link)
+    url_link.string = f'({url_text})'
+    link_tag.append(url_link)
 
-    if len(href_diff) > 1:
-        original_link = soup.new_tag('a', href=hrefs[0])
-        original_link.string = f'(original link)'
-        listing.append(' ')
-        listing.append(original_link)
+    if hrefs[0] != hrefs[1]:
+        url_text = ''.join(map(_html_for_dmp_operation, link_deletions))
+        url_link = soup.new_tag('a', href=hrefs[0])
+        url_link.string = f'({url_text})'
+        link_tag.append(url_link)
+
+    # link_text = ''.join(map(_html_for_dmp_operation, href_diff))
+    # url_link = soup.new_tag('a', href=hrefs[1])
+    # url_link.string = f'({link_text})'
+    # listing.append(url_link)
+
+    # if len(href_diff) > 1:
+    #     original_link = soup.new_tag('a', href=hrefs[0])
+    #     original_link.string = f'(original link)'
+    #     listing.append(' ')
+    #     listing.append(original_link)
 
     text_counts = Counter(map(lambda operation: operation[0], text_diff))
     href_counts = Counter(map(lambda operation: operation[0], href_diff))
@@ -293,7 +328,7 @@ def _assemble_html_diff(raw_diff):
     """
     change_types = {-1: 'deletion', 0: None, 1: 'insertion'}
     result = _create_empty_soup()
-    result_list = result.new_tag('ul')
+    result_list = result.new_tag('ol')
     result.body.append(result_list)
 
     for code, link in raw_diff:
