@@ -80,23 +80,30 @@ def links_diff_html(a_text, b_text, a_headers=None, b_headers=None,
         type='text/css',
         id='wm-diff-style')
     change_styles.string = """
-        body { margin: 0; }
-        ol { margin: 0; padding: 0; display: table; }
-        li { opacity: 0.5; padding: 0.2em 1.5em; display: table-row; }
-        li > * { display: table-cell; padding: 0.25em; vertical-align: middle; }
-        li::before { content: "⚬"; display: table-cell; vertical-align: middle; width: 1.5em; text-align: center; }
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            margin: 0;
+        }
+        .links-list {
+            border-collapse: collapse;
+        }
+        .links-list--item > td {
+            border-bottom: 1px solid #fff;
+            padding: 0.25em;
+        }
+        .links-list--href a {
+            line-break: loose;
+            word-break: break-all;
+        }
         [wm-has-deletions],
-        [wm-has-insertions] { opacity: 1; }
-        [wm-has-deletions]::before,
-        [wm-has-insertions]::before { content: "±"; }
-        [wm-has-deletions], [wm-has-insertions] { background-color: #eee; }
+        [wm-has-insertions] {
+            background-color: #eee;
+            opacity: 1;
+        }
         [wm-inserted] { background-color: #acf2bd; }
-        [wm-inserted]::before { content: "+"; }
-        [wm-deleted] { background-color: #fdb8c0; }
-        [wm-deleted]::before { content: "-"; }
+        [wm-deleted]  { background-color: #fdb8c0; }
         ins { text-decoration: none; background-color: #acf2bd; }
-        del { text-decoration: none; background-color: #fdb8c0; }
-        .link-url a { line-break: loose; word-break: break-all; display: block; }"""
+        del { text-decoration: none; background-color: #fdb8c0; }"""
     soup.head.append(change_styles)
     soup.title.string = get_title(diff['b_parsed'])
 
@@ -177,88 +184,83 @@ def _create_empty_soup(title=''):
         """, 'lxml')
 
 
-# FIXME: unify with _create_link_diff_listing
-def _create_link_listing(link, soup, change_type=None):
-    """
-    Create an element to display in the list of links.
-    """
-    listing = soup.new_tag('li')
-    tag_type = 'span'
-    if change_type:
-        if change_type == 'insertion':
-            tag_type = 'ins'
-            listing['wm-has-insertions'] = 'true'
-            listing['wm-inserted'] = 'true'
-        else:
-            tag_type = 'del'
-            listing['wm-has-deletions'] = 'true'
-            listing['wm-deleted'] = 'true'
-
-    text_tag = soup.new_tag(tag_type)
-    text_tag['class'] = 'link-text'
-    text_tag.append(link['text'])
-    listing.append(text_tag)
-
-    link_tag = soup.new_tag(tag_type)
-    link_tag['class'] = 'link-url'
-    url = link['href']
-    url_link = soup.new_tag('a', href=url)
-    url_link.string = f'({url})'
-    link_tag.append(url_link)
-    listing.append(link_tag)
-
-    return listing
+def not_deleted(diff_item):
+    return diff_item[0] >= 0
 
 
-def _create_link_diff_listing(text_diff, href_diff, hrefs, soup):
-    """
-    Create an element to display in the list of links.
-    """
-    listing = soup.new_tag('li')
+def not_inserted(diff_item):
+    return diff_item[0] <= 0
 
-    # text = ''.join(map(_html_for_dmp_operation, text_diff))
-    # listing.append(text + ' ')
-    text_tag = soup.new_tag('span')
-    text_tag['class'] = 'link-text'
-    text_tag.append(''.join(map(_html_for_dmp_operation, text_diff)))
-    listing.append(text_tag)
 
-    link_insertions = filter(lambda operation: operation[0] >= 0, href_diff)
-    link_deletions = filter(lambda operation: operation[0] <= 0, href_diff)
-    link_tag = soup.new_tag('span')
-    link_tag['class'] = 'link-url'
-    listing.append(link_tag)
+def _html_for_text_diff(diff):
+    return ''.join(map(_html_for_dmp_operation, diff))
 
-    url_text = ''.join(map(_html_for_dmp_operation, link_insertions))
-    url_link = soup.new_tag('a', href=hrefs[1])
-    url_link.string = f'({url_text})'
-    link_tag.append(url_link)
 
-    if hrefs[0] != hrefs[1]:
-        url_text = ''.join(map(_html_for_dmp_operation, link_deletions))
-        url_link = soup.new_tag('a', href=hrefs[0])
-        url_link.string = f'({url_text})'
-        link_tag.append(url_link)
+def _tag(soup, name, attributes, *children):
+    tag = soup.new_tag(name)
+    # Remove boolean attributes that are False
+    for key, value in attributes.items():
+        if value is not None and value != False:
+            tag[key] = value
+    for child in children:
+        tag.append(child)
+    return tag
 
-    # link_text = ''.join(map(_html_for_dmp_operation, href_diff))
-    # url_link = soup.new_tag('a', href=hrefs[1])
-    # url_link.string = f'({link_text})'
-    # listing.append(url_link)
 
-    # if len(href_diff) > 1:
-    #     original_link = soup.new_tag('a', href=hrefs[0])
-    #     original_link.string = f'(original link)'
-    #     listing.append(' ')
-    #     listing.append(original_link)
+CHANGE_INFO = {
+    -1:  {'symbol': '-', 'title': 'Deleted'},
+    0:   {'symbol': '⚬', 'title': None},
+    1:   {'symbol': '+', 'title': 'Added'},
+    100: {'symbol': '±', 'title': 'Changed'},
+}
 
-    text_counts = Counter(map(lambda operation: operation[0], text_diff))
-    href_counts = Counter(map(lambda operation: operation[0], href_diff))
-    if text_counts[1] > 0 or href_counts[1] > 0:
-        listing['wm-has-insertions'] = 'true'
-    if text_counts[-1] > 0 or href_counts[-1] > 0:
-        listing['wm-has-deletions'] = 'true'
 
-    return listing
+def _table_row_for_link(soup, change_type, link):
+    row = _tag(soup, 'tr', {
+        'class': 'links-list--item',
+        'wm-has-insertions': change_type > 0,
+        'wm-inserted': change_type == 1,
+        'wm-has-deletions': change_type < 0 or change_type == 100,
+        'wm-deleted': change_type == -1,
+    })
+
+    change = CHANGE_INFO[change_type] or CHANGE_INFO[0]
+    row.append(_tag(soup, 'td', {
+        'class': 'links-list--change-type',
+        'title': change['title'],
+    }, change['symbol']))
+
+    text_cell = _tag(soup, 'td', {'class': 'links-list--text'})
+    row.append(text_cell)
+    if change_type == 100:
+        text_insertions = filter(not_deleted, link['text'])
+        text_cell.append(_html_for_text_diff(text_insertions))
+        if len(link['text']) != 1:
+            text_cell.append(soup.new_tag('br'))
+            text_deletions = filter(not_inserted, link['text'])
+            text_cell.append(_html_for_text_diff(text_deletions))
+    else:
+        text_cell.append(link['text'])
+
+    href_cell = _tag(soup, 'td', {'class': 'links-list--href'})
+    row.append(href_cell)
+    if change_type == 100:
+        href_insertions = filter(not_deleted, link['href'])
+        url_text = _html_for_text_diff(href_insertions)
+        url = link['hrefs'][1]
+        href_cell.append(_tag(soup, 'a', {'href': url}, f'({url_text})'))
+
+        if link['hrefs'][0] != link['hrefs'][1]:
+            href_cell.append(soup.new_tag('br'))
+            href_deletions = filter(not_inserted, link['href'])
+            url_text = _html_for_text_diff(href_deletions)
+            url = link['hrefs'][0]
+            href_cell.append(_tag(soup, 'a', {'href': url}, f'({url_text})'))
+    else:
+        url = link['href']
+        href_cell.append(_tag(soup, 'a', {'href': url}, f'({url})'))
+
+    return row
 
 
 def _get_link_text(link):
@@ -326,20 +328,14 @@ def _assemble_html_diff(raw_diff):
     raw_diff : sequence
         The basic diff as a sequence of opcodes and links.
     """
-    change_types = {-1: 'deletion', 0: None, 1: 'insertion'}
     result = _create_empty_soup()
-    result_list = result.new_tag('ol')
-    result.body.append(result_list)
+    links_table = result.new_tag('table')
+    links_table['class'] = 'links-list'
+    links_body = result.new_tag('tbody')
+    links_table.append(links_body)
+    result.body.append(links_table)
 
     for code, link in raw_diff:
-        if code == 100:
-                result_list.append(_create_link_diff_listing(
-                    link['text'],
-                    link['href'],
-                    link['hrefs'],
-                    result))
-        else:
-            change_type = change_types[code]
-            result_list.append(_create_link_listing(link, result, change_type))
+        links_body.append(_table_row_for_link(result, code, link))
 
     return result
