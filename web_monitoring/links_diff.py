@@ -72,7 +72,7 @@ def links_diff_html(a_text, b_text, a_headers=None, b_headers=None,
     """
     diff = links_diff(a_text, b_text, a_headers, b_headers,
                       content_type_options)
-    soup = _assemble_html_diff(diff['diff'])
+    soup = _render_html_diff(diff['diff'])
 
     # Add styling and metadata
     change_styles = soup.new_tag(
@@ -162,6 +162,64 @@ def _find_outgoing_links(soup):
         if href and not href.startswith('#'):
             yield link
 
+
+def _get_link_text(link):
+    """
+    Get the "text" to diff and display for an `<a>` element.
+    """
+    for image in link.find_all('img'):
+        alt = image.get('alt')
+        if alt:
+            image.replace_with(f'[image: {alt}]')
+        else:
+            image.replace_with('[image]')
+    return link.text
+
+
+def _count_changes(opcodes):
+    return len([operation for operation in opcodes if operation[0] != 0])
+
+
+def _assemble_diff(a, b, opcodes):
+    """
+    Yield each link in the diff with a code for addition (1), removal (-1),
+    unchanged (0), or nested diff (100).
+
+    Parameters
+    ----------
+    a : list
+        The list of links in the previous verson of a document.
+    b : list
+        The list of links in the new version of a document.
+    opcodes : list
+        List of opcodes from SequenceMatcher that defines what to do with each
+        item in the lists of links.
+    """
+    for command, a_start, a_end, b_start, b_end in opcodes:
+        if command == 'equal':
+            for index, a_link in enumerate(a[a_start:a_end]):
+                b_link = b[b_start + index]
+                if hash(a_link) == hash(b_link):
+                    yield (0, b_link.json())
+                else:
+                    text_diff = compute_dmp_diff(a_link.text, b_link.text)
+                    href_diff = compute_dmp_diff(a_link.href, b_link.href)
+                    yield (100, {
+                        'text': text_diff,
+                        'href': href_diff,
+                        'hrefs': (a_link.href, b_link.href)
+                    })
+
+        if (command == 'insert' or command == 'replace'):
+            for link in b[b_start:b_end]:
+                yield (1, link.json())
+
+        if (command == 'delete' or command == 'replace'):
+            for link in a[a_start:a_end]:
+                yield (-1, link.json())
+
+
+# HTML DIFF RENDERING -----------------------------------------------------
 
 def _create_empty_soup(title=''):
     """
@@ -262,64 +320,7 @@ def _table_row_for_link(soup, change_type, link):
 
     return row
 
-
-def _get_link_text(link):
-    """
-    Get the "text" to diff and display for an `<a>` element.
-    """
-    for image in link.find_all('img'):
-        alt = image.get('alt')
-        if alt:
-            image.replace_with(f'[image: {alt}]')
-        else:
-            image.replace_with('[image]')
-    return link.text
-
-
-def _count_changes(opcodes):
-    return len([operation for operation in opcodes if operation[0] != 0])
-
-
-def _assemble_diff(a, b, opcodes):
-    """
-    Yield each link in the diff with a code for addition (1), removal (-1),
-    unchanged (0), or nested diff (100).
-
-    Parameters
-    ----------
-    a : list
-        The list of links in the previous verson of a document.
-    b : list
-        The list of links in the new version of a document.
-    opcodes : list
-        List of opcodes from SequenceMatcher that defines what to do with each
-        item in the lists of links.
-    """
-    for command, a_start, a_end, b_start, b_end in opcodes:
-        if command == 'equal':
-            for index, a_link in enumerate(a[a_start:a_end]):
-                b_link = b[b_start + index]
-                if hash(a_link) == hash(b_link):
-                    yield (0, b_link.json())
-                else:
-                    text_diff = compute_dmp_diff(a_link.text, b_link.text)
-                    href_diff = compute_dmp_diff(a_link.href, b_link.href)
-                    yield (100, {
-                        'text': text_diff,
-                        'href': href_diff,
-                        'hrefs': (a_link.href, b_link.href)
-                    })
-
-        if (command == 'insert' or command == 'replace'):
-            for link in b[b_start:b_end]:
-                yield (1, link.json())
-
-        if (command == 'delete' or command == 'replace'):
-            for link in a[a_start:a_end]:
-                yield (-1, link.json())
-
-
-def _assemble_html_diff(raw_diff):
+def _render_html_diff(raw_diff):
     """
     Create a Beautiful Soup document representing a diff.
 
