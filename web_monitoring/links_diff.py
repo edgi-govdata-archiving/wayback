@@ -87,6 +87,15 @@ def links_diff_html(a_text, b_text, a_headers=None, b_headers=None,
         .links-list {
             border-collapse: collapse;
         }
+        .links-list th {
+            background: #f6f6f6;
+            border-bottom: 1px solid #ccc;
+            padding: 0.25em;
+            text-align: left;
+        }
+        .links-list > tbody > tr:first-child > td {
+            padding-top: 0.5em;
+        }
         .links-list--item > td {
             border-bottom: 1px solid #fff;
             opacity: 0.5;
@@ -280,15 +289,28 @@ def _html_for_text_diff(diff):
     return ''.join(map(_html_for_dmp_operation, diff))
 
 
-def _tag(soup, name, attributes, *children):
+def _tag(soup, name, attributes=None, *children):
+    """
+    Build tags in a quicker, more composable way. Also lets you use 'class'
+    attributes without a lot of extra rigamarole.
+    """
     tag = soup.new_tag(name)
-    # Remove boolean attributes that are False
-    for key, value in attributes.items():
-        if value is not None and value != False:
-            tag[key] = value
+    if attributes:
+        for key, value in attributes.items():
+            # Remove boolean attributes that are False
+            if value is not None and value is not False:
+                tag[key] = value
+
     for child in children:
         tag.append(child)
+
     return tag
+
+
+def _tagger(soup):
+    def tagger(*args, **kwargs):
+        return _tag(soup, *args, **kwargs)
+    return tagger
 
 
 CHANGE_INFO = {
@@ -300,7 +322,8 @@ CHANGE_INFO = {
 
 
 def _table_row_for_link(soup, change_type, link):
-    row = _tag(soup, 'tr', {
+    tag = _tagger(soup)
+    row = tag('tr', {
         'class': 'links-list--item',
         'wm-has-insertions': change_type > 0,
         'wm-inserted': change_type == 1,
@@ -309,40 +332,40 @@ def _table_row_for_link(soup, change_type, link):
     })
 
     change = CHANGE_INFO[change_type] or CHANGE_INFO[0]
-    row.append(_tag(soup, 'td', {
+    row.append(tag('td', {
         'class': 'links-list--change-type',
         'title': change['title'],
     }, change['symbol']))
 
-    text_cell = _tag(soup, 'td', {'class': 'links-list--text'})
+    text_cell = tag('td', {'class': 'links-list--text'})
     row.append(text_cell)
     if change_type == 100:
         text_insertions = filter(not_deleted, link['text'])
         text_cell.append(_html_for_text_diff(text_insertions))
         if len(link['text']) != 1:
-            text_cell.append(soup.new_tag('br'))
+            text_cell.append(tag('br'))
             text_deletions = filter(not_inserted, link['text'])
             text_cell.append(_html_for_text_diff(text_deletions))
     else:
         text_cell.append(link['text'])
 
-    href_cell = _tag(soup, 'td', {'class': 'links-list--href'})
+    href_cell = tag('td', {'class': 'links-list--href'})
     row.append(href_cell)
     if change_type == 100:
         href_insertions = filter(not_deleted, link['href'])
         url_text = _html_for_text_diff(href_insertions)
         url = link['hrefs'][1]
-        href_cell.append(_tag(soup, 'a', {'href': url}, f'({url_text})'))
+        href_cell.append(tag('a', {'href': url}, f'({url_text})'))
 
         if link['hrefs'][0] != link['hrefs'][1]:
-            href_cell.append(soup.new_tag('br'))
+            href_cell.append(tag('br'))
             href_deletions = filter(not_inserted, link['href'])
             url_text = _html_for_text_diff(href_deletions)
             url = link['hrefs'][0]
-            href_cell.append(_tag(soup, 'a', {'href': url}, f'({url_text})'))
+            href_cell.append(tag('a', {'href': url}, f'({url_text})'))
     else:
         url = link['href']
-        href_cell.append(_tag(soup, 'a', {'href': url}, f'({url})'))
+        href_cell.append(tag('a', {'href': url}, f'({url})'))
 
     return row
 
@@ -357,10 +380,16 @@ def _render_html_diff(raw_diff):
         The basic diff as a sequence of opcodes and links.
     """
     result = _create_empty_soup()
+    tag = _tagger(result)
     result.body.append(
-        _tag(result, 'table', {'class': 'links-list'},
-             _tag(result, 'tbody', {}, *(
-                  _table_row_for_link(result, code, link)
-                  for code, link in raw_diff))))
+        tag('table', {'class': 'links-list'},
+            tag('thead', {},
+                tag('tr', {},
+                    tag('th'),
+                    tag('th', {}, 'Link Text'),
+                    tag('th', {}, 'URL'))),
+            tag('tbody', {}, *(
+                _table_row_for_link(result, code, link)
+                for code, link in raw_diff))))
 
     return result
