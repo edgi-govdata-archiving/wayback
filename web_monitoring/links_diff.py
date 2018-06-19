@@ -204,6 +204,25 @@ def _assemble_diff(a, b, opcodes):
         List of opcodes from SequenceMatcher that defines what to do with each
         item in the lists of links.
     """
+    # TODO: fix the following situation.
+    #
+    # If we have the lists:
+    #    A                             B
+    #    --------------------------- | ------------------------------
+    # 1. "Pony time!" ponytime.com/a | "Pony time!" ponytime.com/b
+    # 2. "Pony time!" ponytime.com/b | "Donkey time." not-ponies.com/
+    #
+    # SequenceMatcher can wind up putting the first row together as equal, but
+    # then sectioning off the second row as deleted from A. That's because the
+    # links in the first row qualify as "roughly" equal, which is equal as far
+    # as SequenceMatcher is allowed to know. Unfortunately, that prevents it
+    # from correctly identifying that A2 + B1 are actually the ones that are
+    # the same and A1 is the one that should be marked as gone. We need to do a
+    # first pass to move any insertions or deletions that are exactly equal to
+    # a link in the adjacent set SequenceMatcher marked as equal into that
+    # equal set. (Note this also means our equal set handling below will have
+    # to account for A having more items than B or vice-versa, which couldn't
+    # happen before.)
     for command, a_start, a_end, b_start, b_end in opcodes:
         # The equality comparator for links only tells us whether links were
         # "roughly" equal -- so two links that SequenceMatcher told us were the
