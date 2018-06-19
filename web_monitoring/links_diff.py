@@ -197,19 +197,44 @@ def _assemble_diff(a, b, opcodes):
         item in the lists of links.
     """
     for command, a_start, a_end, b_start, b_end in opcodes:
+        # The equality comparator for links only tells us whether links were
+        # "roughly" equal -- so two links that SequenceMatcher told us were the
+        # same may internal differences we need to display (this is by design).
         if command == 'equal':
-            for index, a_link in enumerate(a[a_start:a_end]):
-                b_link = b[b_start + index]
-                if hash(a_link) == hash(b_link):
-                    yield (0, b_link.json())
+            # This is a bit tricky: there might be several roughly equal links
+            # in a row, where some are exactly equal, but their order is
+            # shuffled around. We want to match up all the exactly equal ones.
+            a_remainders = []
+            a_set = a[a_start:a_end]
+            b_set = b[b_start:b_end]
+            last_index = a_end - 1 - a_start
+            for index, a_link in enumerate(a_set):
+                # Look for a B version link that was exactly equal to the
+                # current A version link.
+                for b_index, b_link in enumerate(b_set):
+                    if hash(a_link) == hash(b_link):
+                        del b_set[b_index]
+                        yield (0, b_link.json())
+                        break
+                # If we didn't find an exact match, set this A link aside.
                 else:
-                    text_diff = compute_dmp_diff(a_link.text, b_link.text)
-                    href_diff = compute_dmp_diff(a_link.href, b_link.href)
-                    yield (100, {
-                        'text': text_diff,
-                        'href': href_diff,
-                        'hrefs': (a_link.href, b_link.href)
-                    })
+                    a_remainders.append(a_link)
+
+                # If we're at the end of the list or the next link is not
+                # roughly equal, go back through the links that were set aside
+                # and generate a sub-diff for each of them.
+                if index == last_index or a_link != a_set[index + 1]:
+                    for a_link in a_remainders:
+                        b_link = b_set[0]
+                        del b_set[0]
+                        text_diff = compute_dmp_diff(a_link.text, b_link.text)
+                        href_diff = compute_dmp_diff(a_link.href, b_link.href)
+                        yield (100, {
+                            'text': text_diff,
+                            'href': href_diff,
+                            'hrefs': (a_link.href, b_link.href)
+                        })
+                    a_remainders.clear()
 
         if (command == 'insert' or command == 'replace'):
             for link in b[b_start:b_end]:
