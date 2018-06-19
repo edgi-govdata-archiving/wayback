@@ -89,19 +89,20 @@ def links_diff_html(a_text, b_text, a_headers=None, b_headers=None,
         }
         .links-list--item > td {
             border-bottom: 1px solid #fff;
+            opacity: 0.5;
             padding: 0.25em;
         }
         .links-list--href a {
             line-break: loose;
             word-break: break-all;
         }
-        [wm-has-deletions],
-        [wm-has-insertions] {
+        [wm-has-deletions] > td,
+        [wm-has-insertions] > td {
             background-color: #eee;
             opacity: 1;
         }
-        [wm-inserted] { background-color: #acf2bd; }
-        [wm-deleted]  { background-color: #fdb8c0; }
+        [wm-inserted] > td { background-color: #acf2bd; }
+        [wm-deleted] > td  { background-color: #fdb8c0; }
         ins { text-decoration: none; background-color: #acf2bd; }
         del { text-decoration: none; background-color: #fdb8c0; }"""
     soup.head.append(change_styles)
