@@ -126,6 +126,16 @@ class Link:
     """
     Represents a link that was used on the page. Designed to be fed into
     SequenceMatcher for diffing.
+
+    Note that Link objects have a very loose sense of equality. That is:
+
+        link_a == link_b
+
+    only indicates that link_a and link_b may be sorta kinda be representing
+    the same thing, but that you should still compare them in a more nuanced
+    way. To check for strict equality, use their hashes:
+
+        hash(link_a) == hash(link_b)
     """
 
     @classmethod
