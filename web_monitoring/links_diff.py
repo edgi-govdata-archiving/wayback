@@ -321,6 +321,7 @@ def _table_row_for_link(soup, change_type, link):
 
     return row
 
+
 def _render_html_diff(raw_diff):
     """
     Create a Beautiful Soup document representing a diff.
@@ -331,13 +332,10 @@ def _render_html_diff(raw_diff):
         The basic diff as a sequence of opcodes and links.
     """
     result = _create_empty_soup()
-    links_table = result.new_tag('table')
-    links_table['class'] = 'links-list'
-    links_body = result.new_tag('tbody')
-    links_table.append(links_body)
-    result.body.append(links_table)
-
-    for code, link in raw_diff:
-        links_body.append(_table_row_for_link(result, code, link))
+    result.body.append(
+        _tag(result, 'table', {'class': 'links-list'},
+             _tag(result, 'tbody', {}, *(
+                  _table_row_for_link(result, code, link)
+                  for code, link in raw_diff))))
 
     return result
