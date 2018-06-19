@@ -33,10 +33,10 @@ def links_diff(a_text, b_text, a_headers=None, b_headers=None,
 
     a_links = sorted(
         set([Link.from_element(element) for element in _find_outgoing_links(a_soup)]),
-        key=lambda link: link.text.lower())
+        key=lambda link: link.text.lower() + f'({link.href})')
     b_links = sorted(
         set([Link.from_element(element) for element in _find_outgoing_links(b_soup)]),
-        key=lambda link: link.text.lower())
+        key=lambda link: link.text.lower() + f'({link.href})')
 
     matcher = SequenceMatcher(a=a_links, b=b_links)
     opcodes = matcher.get_opcodes()
