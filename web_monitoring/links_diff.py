@@ -1,6 +1,5 @@
 from bs4 import BeautifulSoup
 from .content_type import raise_if_not_diffable_html
-from collections import Counter
 from .differs import compute_dmp_diff
 from difflib import SequenceMatcher
 from .html_diff_render import get_title, _html_for_dmp_operation
