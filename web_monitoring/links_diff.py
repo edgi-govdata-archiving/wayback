@@ -2,7 +2,8 @@ from bs4 import BeautifulSoup
 from .content_type import raise_if_not_diffable_html
 from .differs import compute_dmp_diff
 from difflib import SequenceMatcher
-from .html_diff_render import get_title, _html_for_dmp_operation
+from .html_diff_render import (get_title, _html_for_dmp_operation,
+                               undiffable_content_tags)
 import re
 
 
@@ -195,13 +196,26 @@ def _get_link_text(link):
     """
     Get the "text" to diff and display for an `<a>` element.
     """
+    # The content of tags like <script> and <style> shows up in the `.text`
+    # attribute, so just go ahead and remove them from the DOM
+    for invisible_tag in link.find_all(undiffable_content_tags):
+        invisible_tag.extract()
+
     for image in link.find_all('img'):
         alt = image.get('alt')
         if alt:
             image.replace_with(f'[image: {alt}]')
         else:
             image.replace_with('[image]')
-    return link.text
+
+    text = link.text.strip()
+    if not text:
+        if link.has_attr('title'):
+            text = f'[tooltip: {link["title"]}]'
+        else:
+            text = '[no text]'
+
+    return text
 
 
 def _count_changes(opcodes):
