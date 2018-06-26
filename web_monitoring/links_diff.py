@@ -85,6 +85,8 @@ def links_diff_html(a_text, b_text, a_headers=None, b_headers=None,
         }
         .links-list {
             border-collapse: collapse;
+            table-layout: fixed;
+            width: 100%;
         }
         .links-list th {
             background: #f6f6f6;
@@ -99,6 +101,13 @@ def links_diff_html(a_text, b_text, a_headers=None, b_headers=None,
             border-bottom: 1px solid #fff;
             opacity: 0.5;
             padding: 0.25em;
+        }
+        .links-list--change-type-col {
+            width: 1.5em;
+        }
+        .links-list--text-col,
+        .links-list--href-col {
+            width: 50%;
         }
         .links-list--href a {
             line-break: loose;
@@ -411,6 +420,9 @@ def _render_html_diff(raw_diff):
     tag = _tagger(result)
     result.body.append(
         tag('table', {'class': 'links-list'},
+            tag('col', {'class': 'links-list--change-type-col'}),
+            tag('col', {'class': 'links-list--text-col'}),
+            tag('col', {'class': 'links-list--href-col'}),
             tag('thead', {},
                 tag('tr', {},
                     tag('th'),
