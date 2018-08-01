@@ -237,8 +237,6 @@ def _assemble_diff(a, b, opcodes):
         List of opcodes from SequenceMatcher that defines what to do with each
         item in the lists of links.
     """
-    # TODO: fix the following situation.
-    #
     # If we have the lists:
     #    A                             B
     #    --------------------------- | ------------------------------
@@ -256,6 +254,55 @@ def _assemble_diff(a, b, opcodes):
     # equal set. (Note this also means our equal set handling below will have
     # to account for A having more items than B or vice-versa, which couldn't
     # happen before.)
+    operation_count = len(opcodes)
+    for index, operation in enumerate(opcodes):
+        command = operation[0]
+        if command == 'equal':
+            continue
+
+        last_equal = None
+        next_equal = None
+        if index > 0 and opcodes[index - 1][0] == 'equal':
+            last_equal = a[opcodes[index - 1][2] - 1]
+        if index + 1 < operation_count and opcodes[index + 1][0] == 'equal':
+            next_equal = a[opcodes[index + 1][1]]
+
+        if (command == 'insert' or command == 'replace'):
+            for link_index, link in enumerate(b[operation[3]:operation[4]]):
+                # FIXME: really we should stop looking for last_equal after
+                # finding a non-equal one... this implementatin assumes (I
+                # *think* correctly, but not with total confidence) that equal
+                # items will always be lined up on one side or the other of the
+                # added/removed content.
+                if last_equal and last_equal == link:
+                    # opcodes are tuples, so we can't just edit them.
+                    last_op = opcodes[index - 1]
+                    opcodes[index - 1] = (last_op[0], last_op[1], last_op[2], last_op[3], last_op[4] + 1)
+                    opcodes[index] = (operation[0], operation[1], operation[2], operation[3] + 1, operation[4])
+                elif next_equal and next_equal == link:
+                    # opcodes are tuples, so we can't just edit them.
+                    next_op = opcodes[index + 1]
+                    opcodes[index] = (operation[0], operation[1], operation[2], operation[3], operation[4] - 1)
+                    opcodes[index + 1] = (next_op[0], next_op[1], next_op[2], next_op[3] - 1, next_op[4])
+
+        if (command == 'delete' or command == 'replace'):
+            for link_index, link in enumerate(a[operation[1]:operation[2]]):
+                # FIXME: really we should stop looking for last_equal after
+                # finding a non-equal one... this implementatin assumes (I
+                # *think* correctly, but not with total confidence) that equal
+                # items will always be lined up on one side or the other of the
+                # added/removed content.
+                if last_equal and last_equal == link:
+                    # opcodes are tuples, so we can't just edit them.
+                    last_op = opcodes[index - 1]
+                    opcodes[index - 1] = (last_op[0], last_op[1], last_op[2] + 1, last_op[3], last_op[4])
+                    opcodes[index] = (operation[0], operation[1] + 1, operation[2], operation[3], operation[4])
+                elif next_equal and next_equal == link:
+                    # opcodes are tuples, so we can't just edit them.
+                    next_op = opcodes[index + 1]
+                    opcodes[index] = (operation[0], operation[1], operation[2] - 1, operation[3], operation[4])
+                    opcodes[index + 1] = (next_op[0], next_op[1] - 1, next_op[2], next_op[3], next_op[4])
+
     for command, a_start, a_end, b_start, b_end in opcodes:
         # The equality comparator for links only tells us whether links were
         # "roughly" equal -- so two links that SequenceMatcher told us were the
@@ -285,16 +332,32 @@ def _assemble_diff(a, b, opcodes):
                 # and generate a sub-diff for each of them.
                 if index == last_index or a_link != a_set[index + 1]:
                     for a_link in a_remainders:
-                        b_link = b_set[0]
+                        # b_set may contain more items at the end that are not
+                        # roughly equal (see how we disbalanced this group in
+                        # the first pass over the opcodes above), so we need
+                        # to check that the items match before diffing inside.
+                        if b_set and b_set[0] == a_link:
+                            b_link = b_set[0]
+                            del b_set[0]
+                            text_diff = compute_dmp_diff(a_link.text, b_link.text)
+                            href_diff = compute_dmp_diff(a_link.href, b_link.href)
+                            yield (100, {
+                                'text': text_diff,
+                                'href': href_diff,
+                                'hrefs': (a_link.href, b_link.href)
+                            })
+                        else:
+                            yield (-1, a_link.json())
+
+                    while b_set and b_set[0] == a_link:
+                        yield (1, b_set[0].json())
                         del b_set[0]
-                        text_diff = compute_dmp_diff(a_link.text, b_link.text)
-                        href_diff = compute_dmp_diff(a_link.href, b_link.href)
-                        yield (100, {
-                            'text': text_diff,
-                            'href': href_diff,
-                            'hrefs': (a_link.href, b_link.href)
-                        })
+
                     a_remainders.clear()
+
+            # Handle any left over additions
+            for b_link in b_set:
+                yield (1, b_link.json())
 
         if (command == 'insert' or command == 'replace'):
             for link in b[b_start:b_end]:
