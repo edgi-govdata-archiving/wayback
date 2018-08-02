@@ -1,13 +1,13 @@
-beautifulsoup4
-python-dateutil
-diff_match_patch_python
-docopt
+beautifulsoup4 ==4.6.0
+python-dateutil ~=2.6.1
+diff_match_patch_python ~=1.0.2
+docopt ~=0.6.2
 git+https://github.com/anastasia/htmldiffer@develop
 git+https://github.com/danielballan/htmltreediff@customize
-lxml
-pandas
-requests
-toolz
-tornado
-tqdm
-tzlocal
+lxml ~=4.1.1
+pandas ~=0.23.0
+requests ~=2.18.4
+toolz ~=0.8.2
+tornado ~=5.0.2
+tqdm ~=4.19.4
+tzlocal ~=1.4
