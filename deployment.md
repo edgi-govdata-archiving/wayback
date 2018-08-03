@@ -20,7 +20,7 @@ Next, install [`conda`](https://conda.io/), which we’ll use to manage Python v
 # Find the URL of the installer you want to use.
 # For Anaconda, see: https://www.continuum.io/downloads for download URLs
 # For Miniconda, see: https://conda.io/miniconda.html for download URLs
-$ curl <conda_url> > conda_installer.sh 
+$ curl <conda_url> > conda_installer.sh
 # e.g: curl https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh > conda_installer.sh
 ```
 
@@ -110,24 +110,28 @@ command=/opt/conda/envs/web-monitoring-processing/bin/wm-diffing-server --port 8
 stderr_logfile = /var/log/supervisor/tornado-stderr.log
 stdout_logfile = /var/log/supervisor/tornado-stdout.log
 environment=PAGE_FREEZER_API_KEY=<page_freezer_key>
+stopasgroup=true
 
 [program:wm-diffing-server-8001]
 command=/opt/conda/envs/web-monitoring-processing/bin/wm-diffing-server --port 8001
 stderr_logfile = /var/log/supervisor/tornado-stderr.log
 stdout_logfile = /var/log/supervisor/tornado-stdout.log
 environment=PAGE_FREEZER_API_KEY=<page_freezer_key>
+stopasgroup=true
 
 [program:wm-diffing-server-8002]
 command=/opt/conda/envs/web-monitoring-processing/bin/wm-diffing-server --port 8002
 stderr_logfile = /var/log/supervisor/tornado-stderr.log
 stdout_logfile = /var/log/supervisor/tornado-stdout.log
 environment=PAGE_FREEZER_API_KEY=<page_freezer_key>
+stopasgroup=true
 
 [program:wm-diffing-server-8003]
 command=/opt/conda/envs/web-monitoring-processing/bin/wm-diffing-server --port 8003
 stderr_logfile = /var/log/supervisor/tornado-stderr.log
 stdout_logfile = /var/log/supervisor/tornado-stdout.log
 environment=PAGE_FREEZER_API_KEY=<page_freezer_key>
+stopasgroup=true
 ```
 
 You can add or remove as many copies of the program as you like, but note that each should be on a separate port. Also make sure fill in `<page_freeer_key>` with your key. You can also leave this line out entirely if you choose not to use PageFreezer diffs.
@@ -177,7 +181,7 @@ server {
 
     # Allow file uploads
     client_max_body_size 50M;
-    
+
     # ...other standard URLs here, like robots.txt or static files; not necessary now...
 
     # Send all paths to the diffing server
