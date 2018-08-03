@@ -124,7 +124,7 @@ class DiffHandler(BaseHandler):
             return
         # Special case for local files, for dev/testing.
         if a.startswith('file://') and b.startswith('file://'):
-            if os.get('WEB_MONITORING_APP_ENV') in ('development', 'testing'):
+            if not os.environ.get('WEB_MONITORING_APP_ENV') == 'production':
                 headers = {'Content-Type': 'application/html; charset=UTF-8'}
                 with open(a[7:], 'rb') as f:
                     body = f.read()
