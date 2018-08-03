@@ -136,6 +136,7 @@ class DiffHandler(BaseHandler):
                 self.send_error(
                     500, reason=("Local files can only be used in development "
                                  "or testing environment."))
+                return
         else:
             # Fetch server response for URLs a and b.
             res_a, res_b = yield [client.fetch(a, raise_error=False),
