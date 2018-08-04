@@ -1,4 +1,5 @@
 import json
+import os
 import tempfile
 from tornado.testing import AsyncHTTPTestCase
 import web_monitoring.diffing_server as df
@@ -35,6 +36,20 @@ class DiffingServerLocalHandlingTest(DiffingServerTestCase):
 
 
 class DiffingServerExceptionHandlingTest(DiffingServerTestCase):
+
+    def test_local_file_disallowed_in_production(self):
+        original = os.environ.get('WEB_MONITORING_APP_ENV')
+        os.environ['WEB_MONITORING_APP_ENV'] = 'production'
+        try:
+            with tempfile.NamedTemporaryFile() as a:
+                response = self.fetch('/identical_bytes?'
+                                      f'a=file://{a.name}&b=https://example.org')
+                self.assertEqual(response.code, 403)
+        finally:
+            if original is None:
+                del os.environ['WEB_MONITORING_APP_ENV']
+            else:
+                os.environ['WEB_MONITORING_APP_ENV'] = original
 
     def test_invalid_url_a_format(self):
         response = self.fetch('/html_token?format=json&include=all&'
