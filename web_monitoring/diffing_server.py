@@ -130,7 +130,7 @@ class DiffHandler(BaseHandler):
             if url.startswith('file://'):
                 if os.environ.get('WEB_MONITORING_APP_ENV') == 'production':
                     self.send_error(
-                        500, reason=("Local files cannot be used in "
+                        403, reason=("Local files cannot be used in "
                                      "production environment."))
                     return
                 headers = {'Content-Type': 'application/html; charset=UTF-8'}
@@ -142,7 +142,7 @@ class DiffHandler(BaseHandler):
         fetched = yield [client.fetch(url, raise_error=False)
                          for url in to_fetch.values()]
         responses.update({param: response for param, response in
-                          zip(urls, fetched)})
+                          zip(to_fetch, fetched)})
 
         try:
             for response in responses.values():
