@@ -58,6 +58,20 @@ XML_PROLOG_PATTERN = re.compile(
 
 client = tornado.httpclient.AsyncHTTPClient()
 
+
+class MockRequest:
+    "An HTTPRequest-like object for local file:/// requests."
+    def __init__(self, url):
+        self.url = url
+
+class MockResponse:
+    "An HTTPResponse-like object for local file:/// requests."
+    def __init__(self, url, body, headers):
+        self.request = MockRequest(url)
+        self.body = body
+        self.headers = headers
+        self.error = None
+
 DEBUG_MODE = os.environ.get('DIFFING_SERVER_DEBUG', 'False').strip().lower() == 'true'
 
 access_control_allow_origin_header = \
@@ -98,9 +112,11 @@ class DiffHandler(BaseHandler):
         # If params repeat, take last one. Decode bytes into unicode strings.
         query_params = {k: v[-1].decode() for k, v in
                         self.request.arguments.items()}
+        # The logic here is a bit tortured in order to allow one or both URLs
+        # to be local files, while still optimizing the common case of two
+        # remote URLs that we want to fetch in parallel.
         try:
-            a = query_params.pop('a')
-            b = query_params.pop('b')
+            urls = {param: query_params.pop(param) for param in ('a', 'b')}
         except KeyError:
             self.send_error(
                 400,
@@ -108,25 +124,41 @@ class DiffHandler(BaseHandler):
                        'You must provide a URL as the value '
                        'for both `a` and `b` query parameters.')
             return
-        # Fetch server response for URLs a and b.
-        res_a, res_b = yield [client.fetch(a, raise_error=False),
-                              client.fetch(b, raise_error=False)]
+        # Special case for local files, for dev/testing.
+        responses = {}
+        for param, url in urls.items():
+            if url.startswith('file://'):
+                if os.environ.get('WEB_MONITORING_APP_ENV') == 'production':
+                    self.send_error(
+                        403, reason=("Local files cannot be used in "
+                                     "production environment."))
+                    return
+                headers = {'Content-Type': 'application/html; charset=UTF-8'}
+                with open(url[7:], 'rb') as f:
+                    body = f.read()
+                    responses[param] = MockResponse(url, body, headers)
+        # Now fetch any nonlocal URLs.
+        to_fetch = {k: v for k, v in urls.items() if k not in responses}
+        fetched = yield [client.fetch(url, raise_error=False)
+                         for url in to_fetch.values()]
+        responses.update({param: response for param, response in
+                          zip(to_fetch, fetched)})
 
         try:
-            self.check_response_for_error(res_a)
-            self.check_response_for_error(res_b)
+            for response in responses.values():
+                self.check_response_for_error(response)
         except tornado.httpclient.HTTPError:
             return
 
         # Validate response bytes against hash, if provided.
-        for query_param, res in zip(('a_hash', 'b_hash'), (res_a, res_b)):
+        for param, response in responses.items():
             try:
-                expected_hash = query_params.pop('a_hash')
+                expected_hash = query_params.pop(f'{param}_hash')
             except KeyError:
                 # No hash provided in the request. Skip validation.
                 pass
             else:
-                actual_hash = hashlib.sha256(res.body).hexdigest()
+                actual_hash = hashlib.sha256(response.body).hexdigest()
                 if actual_hash != expected_hash:
                     self.send_error(
                         500, reason='Fetched content does not match hash.')
@@ -136,7 +168,9 @@ class DiffHandler(BaseHandler):
 
         # Pass the bytes and any remaining args to the diffing function.
         executor = concurrent.futures.ProcessPoolExecutor()
-        res = yield executor.submit(caller, func, res_a, res_b, **query_params)
+        res = yield executor.submit(caller,
+                                    func, responses['a'], responses['b'],
+                                    **query_params)
         res['version'] = web_monitoring.__version__
         # Echo the client's request unless the differ func has specified
         # somethine else.
