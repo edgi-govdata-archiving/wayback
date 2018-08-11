@@ -98,20 +98,6 @@ class DiffingServerExceptionHandlingTest(DiffingServerTestCase):
         with self.assertRaises(KeyError):
             df.caller(mock_diffing_method, response, response)
 
-    def test_undecodable_content(self):
-        response = self.fetch('https://www.cl.cam.ac.uk/~mgk25/'
-                              'ucs/examples/UTF-8-test.txt')
-        with self.assertRaises(UndecodableContentError):
-            df._decode_body(response, 'a', False)
-
-    def test_fetch_undecodable_content(self):
-        response = self.fetch('/html_token?format=json&include=all&'
-                              'a=https://example.org&'
-                              'b=https://www.cl.cam.ac.uk'
-                              '/~mgk25/ucs/examples/UTF-8-test.txt')
-        self.json_check(response)
-        self.assertEqual(response.code, 422)
-
     def test_a_is_404(self):
         response = self.fetch('/html_token?format=json&include=all'
                               '&a=http://httpstat.us/404'
