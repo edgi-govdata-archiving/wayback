@@ -11,9 +11,7 @@ import tornado.web
 import traceback
 import web_monitoring
 import web_monitoring.differs
-from web_monitoring.diff_errors import (
-    UndiffableContentError, UndecodableContentError
-)
+from web_monitoring.diff_errors import UndiffableContentError
 import web_monitoring.html_diff_render
 import web_monitoring.links_diff
 
@@ -182,8 +180,7 @@ class DiffHandler(BaseHandler):
 
         # Handle errors that are allowed to be public
         actual_error = 'exc_info' in kwargs and kwargs['exc_info'][1] or None
-        if isinstance(actual_error, (UndiffableContentError,
-                                     UndecodableContentError)):
+        if isinstance(actual_error, UndiffableContentError):
             response['code'] = 422
             response['error'] = str(actual_error)
 

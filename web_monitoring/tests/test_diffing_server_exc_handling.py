@@ -3,7 +3,6 @@ import os
 import tempfile
 from tornado.testing import AsyncHTTPTestCase
 import web_monitoring.diffing_server as df
-from web_monitoring.diff_errors import UndecodableContentError
 
 
 class DiffingServerTestCase(AsyncHTTPTestCase):
