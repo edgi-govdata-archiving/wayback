@@ -34,13 +34,16 @@ def _get_text(html):
     return soup.find_all(text=True)
 
 
+INVISIBLE_TAGS = set(['style', 'script', '[document]', 'head', 'title'])
+_RE_HTML_COMMENT = re.compile('<!--.*-->')
+
+
 def _is_visible(element):
     "A best-effort guess at whether an HTML element is visible on the page."
     # adapted from https://www.quora.com/How-can-I-extract-only-text-data-from-HTML-pages
-    INVISIBLE_TAGS = ('style', 'script', '[document]', 'head', 'title')
     if element.parent.name in INVISIBLE_TAGS:
         return False
-    elif re.match('<!--.*-->', str(element.encode('utf-8'))):
+    elif _RE_HTML_COMMENT.match(str(element.encode('utf-8'))):
         return False
     return True
 
