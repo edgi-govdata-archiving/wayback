@@ -37,7 +37,7 @@ logger = logging.getLogger(__name__)
 # insertion/deletion elements. Instead, break the insertions/deletions in two.
 # TODO: custom elements are iffy here. Maybe include them? (any tag with a `-`
 # in the name)
-block_level_tags = (
+block_level_tags = set([
     'address',
     'article',
     'aside',
@@ -96,7 +96,7 @@ block_level_tags = (
     'del',
     'ins',
     'slot',
-)
+])
 
 # "void" in the HTML sense -- these tags do not having a closing tag
 void_tags = (
@@ -121,7 +121,7 @@ empty_tags = (*void_tags, 'iframe')
 
 # Should be treated as a single unit for diffing purposes -- their content is not HTML
 # TODO: fork the tokenization part of lxml.html.diff and use this list!
-undiffable_content_tags = (
+undiffable_content_tags = set([
     'datalist',  # Still HTML content, but we can’t really diff inside
     'math',
     'option',
@@ -132,11 +132,11 @@ undiffable_content_tags = (
     'svg',
     'template',
     'textarea'
-)
+])
 
 # Elements that are not allowed to have our change elements as direct children
 # TODO: add a cleanup step that respects this situation
-no_change_children_tags = (
+no_change_children_tags = set([
     'colgroup',
     'dl',
     'hgroup',
@@ -151,7 +151,7 @@ no_change_children_tags = (
     'tfoot',
     'tr',
     'ul',
-)
+])
 
 # TODO: do we need special treatment for `<picture>`? Kind of like `<img>`
 
@@ -170,8 +170,8 @@ ACTIVE_ELEMENTS = ('script', 'style')
 # out we've seen a variety of real-world situations where tags flip from inline
 # markup to headings or headings nested by themselves (!) in other structural
 # markup, making them cause frequent problems if included here.
-SEPARATABLE_TAGS = ('blockquote', 'section', 'article', 'header', 'footer',
-                    'pre', 'ul', 'ol', 'li', 'table', 'p')
+SEPARATABLE_TAGS = set(['blockquote', 'section', 'article', 'header', 'footer',
+                        'pre', 'ul', 'ol', 'li', 'table', 'p'])
 # SEPARATABLE_TAGS = block_level_tags
 
 # A simplistic, empty HTML document to use in place of totally empty content
@@ -963,9 +963,9 @@ def _customize_tokens(tokens):
 # out we've seen a variety of real-world situations where tags flip from inline
 # markup to headings or headings nested by themselves (!) in other structural
 # markup, making them cause frequent problems if included here.
-SEPARATABLE_TAGS = ['blockquote', 'section', 'article', 'header',
-                    'footer', 'pre', 'ul', 'ol', 'li', 'table', 'p']
-HEADING_TAGS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+SEPARATABLE_TAGS = set(['blockquote', 'section', 'article', 'header',
+                        'footer', 'pre', 'ul', 'ol', 'li', 'table', 'p'])
+HEADING_TAGS = set(['h1', 'h2', 'h3', 'h4', 'h5', 'h6'])
 def _has_separation_tags(tag_list):
     for index, tag in enumerate(tag_list):
         for name in SEPARATABLE_TAGS:
