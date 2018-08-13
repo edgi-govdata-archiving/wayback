@@ -92,3 +92,41 @@ docker run -p 4000:80 processing
 ```
 
 Point your browser or ``curl`` at ``http://localhost:4000``.
+
+
+## Contributors
+
+This project wouldn’t exist without a lot of amazing people’s help. Thanks to the following for all their contributions!
+
+<!-- ALL-CONTRIBUTORS-LIST:START -->
+| Contributions | Name |
+| ----: | :---- |
+| [💻](# "Code") [⚠️](# "Tests") [🚇](# "Infrastructure") [📖](# "Documentation") [💬](# "Answering Questions") [👀](# "Reviewer") | [Dan Allan](https://github.com/danielballan) |
+| [💻](# "Code") | [Vangelis Banos](https://github.com/vbanos) |
+| [💻](# "Code") [📖](# "Documentation") | [Chaitanya Prakash Bapat](https://github.com/ChaiBapchya) |
+| [💻](# "Code") [⚠️](# "Tests") [🚇](# "Infrastructure") [📖](# "Documentation") [💬](# "Answering Questions") [👀](# "Reviewer") | [Rob Brackett](https://github.com/Mr0grog) |
+| [💻](# "Code") | [Stephen Buckley](https://github.com/StephenAlanBuckley) |
+| [💻](# "Code") [📖](# "Documentation") [📋](# "Organizer") | [Ray Cha](https://github.com/weatherpattern) |
+| [💻](# "Code") [⚠️](# "Tests") | [Janak Raj Chadha](https://github.com/janakrajchadha) |
+| [💻](# "Code") | [Autumn Coleman](https://github.com/AutumnColeman) |
+| [💻](# "Code") | [Luming Hao](https://github.com/lh00000000) |
+| [💻](# "Code") | [Stuart Lynn](https://github.com/stuartlynn) |
+| [💻](# "Code") | [Allan Pichardo](https://github.com/allanpichardo) |
+| [📖](# "Documentation") [📋](# "Organizer") | [Matt Price](https://github.com/titaniumbones) |
+| [📖](# "Documentation") | [Susan Tan](https://github.com/ArcTanSusan) |
+| [💻](# "Code") [⚠️](# "Tests") | [Fotis Tsalampounis](https://github.com/ftsalamp) |
+| [📖](# "Documentation") [📋](# "Organizer") | [Dawn Walker](https://github.com/dcwalk) |
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+(For a key to the contribution emoji or more info on this format, check out [“All Contributors.”](https://github.com/kentcdodds/all-contributors))
+
+
+## License & Copyright
+
+Copyright (C) 2017-2018 Environmental Data and Governance Initiative (EDGI)
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 3.0.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+See the [`LICENSE`](https://github.com/edgi-govdata-archiving/webpage-versions-processing/blob/master/LICENSE) file for details.
