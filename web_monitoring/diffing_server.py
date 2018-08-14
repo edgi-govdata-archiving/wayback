@@ -11,9 +11,7 @@ import tornado.web
 import traceback
 import web_monitoring
 import web_monitoring.differs
-from web_monitoring.diff_errors import (
-    UndiffableContentError, UndecodableContentError
-)
+from web_monitoring.diff_errors import UndiffableContentError
 import web_monitoring.html_diff_render
 import web_monitoring.links_diff
 
@@ -182,8 +180,7 @@ class DiffHandler(BaseHandler):
 
         # Handle errors that are allowed to be public
         actual_error = 'exc_info' in kwargs and kwargs['exc_info'][1] or None
-        if isinstance(actual_error, (UndiffableContentError,
-                                     UndecodableContentError)):
+        if isinstance(actual_error, UndiffableContentError):
             response['code'] = 422
             response['error'] = str(actual_error)
 
@@ -233,15 +230,9 @@ def _extract_encoding(headers, content):
     return encoding
 
 
-def _decode_body(response, name, ignore_errors=False):
+def _decode_body(response, name):
     encoding = _extract_encoding(response.headers, response.body) or 'UTF-8'
-    try:
-        errors = ignore_errors and 'ignore' or 'strict'
-        return response.body.decode(encoding, errors=errors)
-    except UnicodeError as error:
-        raise UndecodableContentError(
-            'The response body of `{}` could not be decoded as {}.'.format(
-                name, error.encoding))
+    return response.body.decode(encoding, errors='replace')
 
 
 def caller(func, a, b, **query_params):
@@ -282,18 +273,14 @@ def caller(func, a, b, **query_params):
     # The differ's signature is a dependency injection scheme.
     sig = inspect.signature(func)
 
-    ignore_decoding_errors = query_params.get(
-        'ignore_decoding_errors', 'false'
-    ).lower() != 'false'
-
     if 'a_text' in sig.parameters:
         query_params.setdefault(
             'a_text',
-            _decode_body(a, 'a', ignore_decoding_errors))
+            _decode_body(a, 'a'))
     if 'b_text' in sig.parameters:
         query_params.setdefault(
             'b_text',
-            _decode_body(b, 'b', ignore_decoding_errors))
+            _decode_body(b, 'b'))
 
     kwargs = dict()
     for name, param in sig.parameters.items():
