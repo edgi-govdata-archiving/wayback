@@ -182,6 +182,10 @@ EMPTY_HTML = '''<html>
     </body>
 </html>'''
 
+# Maximum number of spacer tokens to add to a token stream for a document.
+# Adding too many can cause SequenceMatcher to choke.
+MAX_SPACERS = 2500
+
 
 def html_diff_render(a_text, b_text, a_headers=None, b_headers=None,
                      include='combined', content_type_options='normal'):
@@ -380,8 +384,8 @@ def _htmldiff(old, new, include='all'):
     new_tokens = tokenize(new)
     # old_tokens = [_customize_token(token) for token in old_tokens]
     # new_tokens = [_customize_token(token) for token in new_tokens]
-    old_tokens = _customize_tokens(old_tokens)
-    new_tokens = _customize_tokens(new_tokens)
+    old_tokens = _limit_spacers(_customize_tokens(old_tokens), MAX_SPACERS)
+    new_tokens = _limit_spacers(_customize_tokens(new_tokens), MAX_SPACERS)
     # result = htmldiff_tokens(old_tokens, new_tokens)
     # result = diff_tokens(old_tokens, new_tokens) #, include='delete')
     logger.debug('CUSTOMIZED!')
@@ -410,6 +414,23 @@ def _htmldiff(old, new, include='all'):
         diffs['deletions'] = render_diff('deletions')
 
     return metadata, diffs
+
+
+# FIXME: this is utterly ridiculous -- the crazy spacer token solution we came
+# up with can add so much extra stuff to some kinds of pages that
+# SequenceMatcher chokes on it. This strips out excess spacers. We should
+# really re-examine the whole spacer token concept now that we control the
+# tokenization phase, though.
+def _limit_spacers(tokens, max_spacers):
+    limited_tokens = []
+    for token in tokens:
+        if isinstance(token, SpacerToken):
+            if max_spacers <= 0:
+                continue
+            max_spacers -= 1
+        limited_tokens.append(token)
+
+    return limited_tokens
 
 
 def _count_changes(opcodes):
