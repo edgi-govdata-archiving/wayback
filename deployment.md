@@ -63,9 +63,13 @@ Run the actual installer:
 ```sh
 $ cd web-monitoring-processing
 
-# Install packages into new conda environment.
-$ /opt/conda/bin/conda-env create --force -f environment.yml -p /opt/conda/envs/web-monitoring-processing
+# Create a new conda environment.
+$ conda create -n web-monitoring-processing
+$ conda activate web-monitoring-processing
 
+# Install packages
+$ while read requirement; do conda install --yes $requirement; done < requirements.txt
+$ python setup.py install
 ```
 
 Now, test that your installation actually works by running the diffing server on port 8000:
