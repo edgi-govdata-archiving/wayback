@@ -140,3 +140,12 @@ def test_html_diff_render_should_not_check_content_if_content_type_options_is_ig
         a_headers={'Content-Type': 'text/html'},
         b_headers={'Content-Type': 'application/pdf'},
         content_type_options='ignore')
+
+
+def test_html_diff_works_on_documents_with_no_body():
+    results = html_diff_render(
+        '<!doctype html><html><head><title>Hi!</title></head></html>',
+        '<!doctype html><html><head><title>Oops!</title></head></html>')
+
+    assert 'combined' in results
+    assert isinstance(results['combined'], str)
