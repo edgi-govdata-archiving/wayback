@@ -266,13 +266,8 @@ def html_diff_render(a_text, b_text, a_headers=None, b_headers=None,
     [element.extract() for element in
      soup_new.find_all(string=lambda text:isinstance(text, Comment))]
 
-    # Ensure the soups (which we will modify and return) each have a `<head>`
-    if not soup_old.head:
-        head = soup_old.new_tag('head')
-        soup_old.html.insert(0, head)
-    if not soup_new.head:
-        head = soup_new.new_tag('head')
-        soup_new.html.insert(0, head)
+    soup_old = _cleanup_document_structure(soup_old)
+    soup_new = _cleanup_document_structure(soup_new)
 
     metadata, diff_bodies = diff_elements(soup_old.body, soup_new.body, include)
     results = metadata.copy()
@@ -322,6 +317,17 @@ def html_diff_render(a_text, b_text, a_headers=None, b_headers=None,
     return results
 
 
+def _cleanup_document_structure(soup):
+    """Ensure a BeautifulSoup document has a <head> and <body>"""
+    if not soup.head:
+        head = soup.new_tag('head')
+        soup.html.insert(0, head)
+    if not soup.body:
+        body = soup.new_tag('body')
+        soup.html.append(body)
+    return soup
+
+
 def _deactivate_deleted_active_elements(soup):
     for index, element in enumerate(soup.find_all(ACTIVE_ELEMENTS)):
         if element.find_parent('del'):
@@ -358,9 +364,10 @@ def _diff_title(old, new):
 
 
 def diff_elements(old, new, include='all'):
-    results = {}
-    if not old or not new:
-        return results
+    if not old:
+        old = BeautifulSoup().new_tag('div')
+    if not new:
+        new = BeautifulSoup().new_tag('div')
 
     def fill_element(element, diff):
         result_element = copy.copy(element)
@@ -368,6 +375,7 @@ def diff_elements(old, new, include='all'):
         result_element.append(diff)
         return result_element
 
+    results = {}
     metadata, raw_diffs = _htmldiff(str(old), str(new), include)
     for diff_type, diff in raw_diffs.items():
         element = diff_type == 'deletions' and old or new
