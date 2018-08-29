@@ -334,3 +334,7 @@ Options:
     arguments = docopt(doc, version='0.0.1')
     port = int(arguments['<port>'] or 8888)
     start_app(port)
+
+
+if __name__ == '__main__':
+    cli()
