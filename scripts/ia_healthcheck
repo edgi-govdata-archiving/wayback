@@ -1,42 +1,43 @@
 #!/usr/bin/env python
 
+# This script checks whether the Internet Archive's Wayback Machine has
+# recent captures of the URLs we are tracking in the Web Monitoring Database.
+# It works by taking a random sample of pages from the DB and using the CDX API
+# to check that each has been captured at least once in the last few days.
+
 from datetime import datetime, timedelta
 import random
 import sys
-from web_monitoring import db
-from web_monitoring import internetarchive
+from web_monitoring import db, internetarchive
 
 
 MAX_CAPTURE_AGE = timedelta(hours=72)
 LINKS_TO_CHECK = 5
 
 
-def query_webmondb():
+def sample_monitored_urls(sample_size):
     """
-    Query the web monitoring SCANNER API to get random links from the database
+    Get a random sample of `sample_size` URLs that are tracked in a Web
+    Monitoring DB instance.
 
     Returns
     -------
     list of string
     """
-    try:
-        client = db.Client.from_env()
-    except db.MissingCredentials as error:
-        print(error, file=sys.stderr)
-        return []
-    else:
-        page = client.list_pages(chunk=1, chunk_size=1)
-        url_count = page['meta']['total_results']
-        return ([get_links(client, number)
-            for number in random.sample(range(url_count), LINKS_TO_CHECK)])
+    client = db.Client.from_env()
+    page = client.list_pages(chunk=1, chunk_size=1)
+    url_count = page['meta']['total_results']
+    return (get_page_url(client, index)
+            for index in random.sample(range(url_count), sample_size))
 
-def get_links(client, index):
+
+def get_page_url(client, index):
     return client.list_pages(chunk=index, chunk_size=1)['data'][0]['url']
 
-def query_wayback_cdx(url):
+
+def wayback_has_captures(url, from_date=None):
     """
-    Query Wayback Machine using CDX API
-    Get a list of versions of a url, and check for ValueError
+    Determine whether the Wayback Machine has any recent captures of a URL.
 
     Parameters
     ----------
@@ -47,37 +48,35 @@ def query_wayback_cdx(url):
     list of JSON
     """
     try:
-        versions = internetarchive.list_versions(url,
-            from_date=datetime.now() - MAX_CAPTURE_AGE)
+        versions = internetarchive.list_versions(url, from_date=from_date)
         next(versions)
-    except ValueError as error:
+    except ValueError:
         return False
     else:
         return True
 
 
-def output_file(responses):
+def output_results(statuses):
     """
-    Write Output to a Text file
+    Output nicely formatted results.
 
     Parameters
     ----------
-    responses: list of string
+    statuses: list of tuple of (str, bool)
     """
     healthy_links = 0
     unhealthy_links = 0
 
-    if not responses:
-        print('No links were returned.')
+    if not statuses:
+        print('No pages were sampled!')
     else:
-        for (url, status) in responses:
-            print(str(status) + ': ' + str(url)+'\n\n\n')
+        for (url, status) in statuses:
+            print(f'{status}: {url}')
             if status:
                 healthy_links += 1
             else:
                 unhealthy_links += 1
-        print('Found: {} Healthy Links and {} Unhealthy Links.'
-.format(healthy_links, unhealthy_links))
+        print(f'\nFound: {healthy_links} healthy links and {unhealthy_links} unhealthy links.')
 
 
 def output_sentry():
@@ -86,13 +85,13 @@ def output_sentry():
     """
     raise NotImplementedError
 
-# Get the random list of links from the Web Monitoring DB
-# Get the responses of the links from the Wayback URL
-# Check to see if the responses are within the time limit and write the output
-
 
 if __name__ == "__main__":
-
-    links = query_webmondb()
-    responses = [(url, query_wayback_cdx(url)) for url in links if url]
-    output_file(responses)
+    try:
+        links = sample_monitored_urls(LINKS_TO_CHECK)
+        from_date = datetime.now() - MAX_CAPTURE_AGE
+        capture_statuses = [(url, wayback_has_captures(url, from_date))
+                            for url in links]
+        output_results(capture_statuses)
+    except db.MissingCredentials as error:
+        print(error, file=sys.stderr)
