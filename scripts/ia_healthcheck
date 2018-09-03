@@ -12,7 +12,7 @@ from web_monitoring import db, internetarchive
 
 
 MAX_CAPTURE_AGE = timedelta(hours=72)
-LINKS_TO_CHECK = 5
+LINKS_TO_CHECK = 10
 
 
 def sample_monitored_urls(sample_size):
@@ -62,20 +62,24 @@ def output_results(statuses):
 
     Parameters
     ----------
-    statuses: list of tuple of (str, bool)
+    statuses: sequence of tuple of (str, bool)
     """
     healthy_links = 0
     unhealthy_links = 0
 
-    if not statuses:
+    for (url, status) in statuses:
+        if status:
+            healthy_links += 1
+            status_text = '✔︎    Found'
+        else:
+            unhealthy_links += 1
+            status_text = '✘  Missing'
+
+        print(f'{status_text}: {url}')
+
+    if healthy_links + unhealthy_links == 0:
         print('No pages were sampled!')
     else:
-        for (url, status) in statuses:
-            print(f'{status}: {url}')
-            if status:
-                healthy_links += 1
-            else:
-                unhealthy_links += 1
         print(f'\nFound: {healthy_links} healthy links and {unhealthy_links} unhealthy links.')
 
 
@@ -88,10 +92,12 @@ def output_sentry():
 
 if __name__ == "__main__":
     try:
+        print(f'Sampling {LINKS_TO_CHECK} pages from Web Monitoring API...')
         links = sample_monitored_urls(LINKS_TO_CHECK)
         from_date = datetime.now() - MAX_CAPTURE_AGE
-        capture_statuses = [(url, wayback_has_captures(url, from_date))
-                            for url in links]
+        print(f'Checking for captures in Wayback Machine...')
+        capture_statuses = ((url, wayback_has_captures(url, from_date))
+                            for url in links)
         output_results(capture_statuses)
     except db.MissingCredentials as error:
         print(error, file=sys.stderr)
