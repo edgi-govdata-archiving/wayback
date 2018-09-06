@@ -32,6 +32,10 @@ class UnexpectedResponseFormat(WebMonitoringException):
     ...
 
 
+class MementoPlaybackError(WebMonitoringException):
+    ...
+
+
 CDX_SEARCH_URL = 'http://web.archive.org/cdx/search/cdx'
 ARCHIVE_RAW_URL_TEMPLATE = 'http://web.archive.org/web/{timestamp}id_/{url}'
 ARCHIVE_VIEW_URL_TEMPLATE = 'http://web.archive.org/web/{timestamp}/{url}'
@@ -267,7 +271,7 @@ def format_version(*, url, dt, uri, version_hash, title, status, mime_type,
     redirected_url : string, optional
         If getting `url` resulted in a redirect, this should be the URL
         that was ultimately redirected to.
-    redirects : string, optional
+    redirects : sequence, optional
         If getting `url` resulted in any redirects this should be a sequence
         of all the URLs that were retrieved, starting with the originally
         requested URL and ending with the value of the `redirected_url` arg.
@@ -335,13 +339,20 @@ def timestamped_uri_to_version(dt, uri, *, url, maintainers=None, tags=None,
         suitable for passing to :class:`Client.add_versions`
     """
     with utils.rate_limited(group='timestamped_uri_to_version'):
-        res = utils.retryable_request('GET', uri)
+        # Check to make sure we are actually getting a memento playback.
+        res = utils.retryable_request('GET', uri, allow_redirects=False)
+        if res.headers.get('memento-datetime') is None:
+            if not res.ok:
+                res.raise_for_status()
+            else:
+                raise MementoPlaybackError(f'Memento at {uri} was not playback-able')
 
-    # IA's memento server responds with the status of the original request, so
-    # use the presence of the 'Memento-Datetime' header to determine if we
-    # should use the response or there was an actual error.
-    if not res.ok and not res.headers.get('memento-datetime'):
-        res.raise_for_status()
+        # If the playback includes a redirect, continue on.
+        if res.status_code >= 300 and res.status_code < 400:
+            original = res
+            res = utils.retryable_request('GET', res.headers.get('location'))
+            res.history.insert(0, original)
+            res.request = original.request
 
     version_hash = utils.hash_content(res.content)
     title = utils.extract_title(res.content)
