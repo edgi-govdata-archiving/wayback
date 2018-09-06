@@ -91,7 +91,7 @@ def cdx_hash(content):
     return b32encode(hashlib.sha1(content).digest()).decode()
 
 
-def search_cdx(params):
+def search_cdx(params, session=None):
     """
     Search archive.org's CDX API for all captures of a given URL.
 
@@ -111,7 +111,9 @@ def search_cdx(params):
     Parameters
     ----------
     params : dict
-           Any options that the CDX API takes. Must at least include `url`.
+        Any options that the CDX API takes. Must at least include `url`.
+    session : requests.Session, optional
+        A session object to use for requests.
 
     Raises
     ------
@@ -128,7 +130,9 @@ def search_cdx(params):
     params['resolveRevisits'] = 'true'
     params['showResumeKey'] = 'true'
 
-    response = utils.retryable_request('GET', CDX_SEARCH_URL, params=params)
+    internal_session = session or requests.Session()
+    response = utils.retryable_request('GET', CDX_SEARCH_URL, params=params,
+                                       session=internal_session)
     lines = response.iter_lines()
     count = 0
 
@@ -165,6 +169,9 @@ def search_cdx(params):
         )
         count += 1
         yield data
+
+    if internal_session is not session:
+        internal_session.close()
 
     return count
 
@@ -320,7 +327,7 @@ def format_version(*, url, dt, uri, version_hash, title, status, mime_type,
 
 
 def timestamped_uri_to_version(dt, uri, *, url, maintainers=None, tags=None,
-                               view_url=None):
+                               view_url=None, session=None):
     """
     Fetch version content and combine it with metadata to build a Version.
 
@@ -338,6 +345,8 @@ def timestamped_uri_to_version(dt, uri, *, url, maintainers=None, tags=None,
         Any arbitrary "tags" to apply to the page for categorization
     view_url : string, optional
         The archive.org URL for viewing the page (with rewritten links, etc.)
+    session : requests.Session, optional
+        A session object to use for making HTTP requests
 
     Returns
     -------
@@ -346,7 +355,7 @@ def timestamped_uri_to_version(dt, uri, *, url, maintainers=None, tags=None,
     """
     with utils.rate_limited(group='timestamped_uri_to_version'):
         # Check to make sure we are actually getting a memento playback.
-        res = utils.retryable_request('GET', uri, allow_redirects=False)
+        res = utils.retryable_request('GET', uri, allow_redirects=False, session=session)
         if res.headers.get('memento-datetime') is None:
             if not res.ok:
                 res.raise_for_status()
@@ -356,7 +365,7 @@ def timestamped_uri_to_version(dt, uri, *, url, maintainers=None, tags=None,
         # If the playback includes a redirect, continue on.
         if res.status_code >= 300 and res.status_code < 400:
             original = res
-            res = utils.retryable_request('GET', res.headers.get('location'))
+            res = utils.retryable_request('GET', res.headers.get('location'), session=session)
             res.history.insert(0, original)
             res.request = original.request
 
