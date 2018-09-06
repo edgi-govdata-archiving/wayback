@@ -108,3 +108,7 @@ Options:
                       from_date=_parse_date_argument(arguments['<from_date>']),
                       to_date=_parse_date_argument(arguments['<to_date>']),
                       skip_unchanged=skip_unchanged)
+
+
+if __name__ == '__main__':
+    main()
