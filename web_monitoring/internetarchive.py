@@ -128,7 +128,7 @@ def search_cdx(params):
     params['resolveRevisits'] = 'true'
     params['showResumeKey'] = 'true'
 
-    response = requests.get(CDX_SEARCH_URL, params=params)
+    response = utils.retryable_request('GET', CDX_SEARCH_URL, params=params)
     lines = response.iter_lines()
     count = 0
 
