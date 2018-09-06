@@ -1,11 +1,25 @@
 from datetime import datetime
+from pathlib import Path
 import pytest
+import vcr
 from web_monitoring.internetarchive import (list_versions,
                                             original_url_for_memento,
                                             timestamped_uri_to_version,
                                             MementoPlaybackError)
 
 
+# This stashes HTTP responses in JSON files (one per test) so that an actual
+# server does not have to be running.
+cassette_library_dir = str(Path(__file__).parent / Path('cassettes/ia'))
+ia_vcr = vcr.VCR(
+         serializer='yaml',
+         cassette_library_dir=cassette_library_dir,
+         record_mode='once',
+         match_on=['uri', 'method'],
+)
+
+
+@ia_vcr.use_cassette()
 def test_list_versions():
     versions = list_versions('nasa.gov',
                              from_date=datetime(1996, 10, 1),
@@ -17,12 +31,13 @@ def test_list_versions():
     list(versions)
 
 
+@ia_vcr.use_cassette()
 def test_list_versions_multipage():
     # Set page size limits low enough to guarantee multiple pages
     versions = list_versions('cnn.com',
                              from_date=datetime(2001, 4, 10),
-                             to_date=datetime(2001, 4, 15),
-                             cdx_params={'limit': 10})
+                             to_date=datetime(2001, 5, 10),
+                             cdx_params={'limit': 25})
 
     # Exhaust the generator and make sure no entries trigger errors.
     list(versions)
@@ -45,6 +60,7 @@ class TestOriginalUrlForMemento:
         assert url == 'https://arpa-e.energy.gov/?q=engage%2Fevents-workshops'
 
 
+@ia_vcr.use_cassette()
 def test_timestamped_uri_to_version():
     version = timestamped_uri_to_version(datetime(2017, 11, 24, 15, 13, 15),
                                          'http://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/',
@@ -53,6 +69,7 @@ def test_timestamped_uri_to_version():
     assert version['page_url'] == 'https://www.fws.gov/birds/'
 
 
+@ia_vcr.use_cassette()
 def test_timestamped_uri_to_version_works_with_redirects():
     version = timestamped_uri_to_version(datetime(2018, 8, 8, 9, 41, 44),
                                          'http://web.archive.org/web/20180808094144id_/https://www.epa.gov/ghgreporting/san5779-factsheet',
@@ -62,6 +79,7 @@ def test_timestamped_uri_to_version_works_with_redirects():
     assert len(version['source_metadata']['redirects']) == 3
 
 
+@ia_vcr.use_cassette()
 def test_timestamped_uri_to_version_should_fail_for_non_playbackable_mementos():
     with pytest.raises(MementoPlaybackError):
         timestamped_uri_to_version(datetime(2017, 9, 29, 0, 27, 12),
