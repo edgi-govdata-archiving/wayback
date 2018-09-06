@@ -169,7 +169,8 @@ def search_cdx(params):
     return count
 
 
-def list_versions(url, *, from_date=None, to_date=None, skip_repeats=True):
+def list_versions(url, *, from_date=None, to_date=None, skip_repeats=True,
+                  cdx_params=None):
     """
     Search archive.org for captures of a URL (optionally, within a time span).
 
@@ -195,6 +196,8 @@ def list_versions(url, *, from_date=None, to_date=None, skip_repeats=True):
         Get versions captured before this date.
     skip_repeats : boolean, optional
         Don’t include consecutive captures of the same content (default: True).
+    cdx_params : dict, optional
+        Additional options to pass directly to the CDX API when querying.
 
     Raises
     ------
@@ -217,7 +220,10 @@ def list_versions(url, *, from_date=None, to_date=None, skip_repeats=True):
     >>> for version in list_versions('nasa.gov'):
     ...     # do something
     """
-    params = {'url': url, 'collapse': 'digest'}
+    params = {'collapse': 'digest'}
+    if cdx_params:
+        params.update(cdx_params)
+    params['url'] = url
     if from_date:
         params['from'] = from_date.strftime(URL_DATE_FORMAT)
     if to_date:

@@ -7,7 +7,9 @@ from web_monitoring.internetarchive import (list_versions,
 
 
 def test_list_versions():
-    versions = list_versions('nasa.gov')
+    versions = list_versions('nasa.gov',
+                             from_date=datetime(1996, 10, 1),
+                             to_date=datetime(1997, 2, 1))
     version = next(versions)
     assert version.date == datetime(1996, 12, 31, 23, 58, 47)
 
@@ -16,9 +18,11 @@ def test_list_versions():
 
 
 def test_list_versions_multipage():
-    # cnn.com has enough 'mementos' to span multiple pages and exercise the
-    # multi-page code path.
-    versions = list_versions('cnn.com')
+    # Set page size limits low enough to guarantee multiple pages
+    versions = list_versions('cnn.com',
+                             from_date=datetime(2001, 4, 10),
+                             to_date=datetime(2001, 4, 15),
+                             cdx_params={'limit': 10})
 
     # Exhaust the generator and make sure no entries trigger errors.
     list(versions)
