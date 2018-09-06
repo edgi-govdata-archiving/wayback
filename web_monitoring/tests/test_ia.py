@@ -1,6 +1,9 @@
 from datetime import datetime
+import pytest
 from web_monitoring.internetarchive import (list_versions,
-                                            original_url_for_memento)
+                                            original_url_for_memento,
+                                            timestamped_uri_to_version,
+                                            MementoPlaybackError)
 
 
 def test_list_versions():
@@ -36,3 +39,27 @@ class TestOriginalUrlForMemento:
     def test_does_not_decode_query(self):
         url = original_url_for_memento('http://web.archive.org/web/20170813195036/https://arpa-e.energy.gov/?q=engage%2Fevents-workshops')
         assert url == 'https://arpa-e.energy.gov/?q=engage%2Fevents-workshops'
+
+
+def test_timestamped_uri_to_version():
+    version = timestamped_uri_to_version(datetime(2017, 11, 24, 15, 13, 15),
+                                         'http://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/',
+                                         url='https://www.fws.gov/birds/')
+    assert isinstance(version, dict)
+    assert version['page_url'] == 'https://www.fws.gov/birds/'
+
+
+def test_timestamped_uri_to_version_works_with_redirects():
+    version = timestamped_uri_to_version(datetime(2018, 8, 8, 9, 41, 44),
+                                         'http://web.archive.org/web/20180808094144id_/https://www.epa.gov/ghgreporting/san5779-factsheet',
+                                         url='https://www.epa.gov/ghgreporting/san5779-factsheet')
+    assert isinstance(version, dict)
+    assert version['page_url'] == 'https://www.epa.gov/ghgreporting/san5779-factsheet'
+    assert len(version['source_metadata']['redirects']) == 3
+
+
+def test_timestamped_uri_to_version_should_fail_for_non_playbackable_mementos():
+    with pytest.raises(MementoPlaybackError):
+        timestamped_uri_to_version(datetime(2017, 9, 29, 0, 27, 12),
+                                   'http://web.archive.org/web/20170929002712id_/https://www.fws.gov/birds/',
+                                   url='https://www.fws.gov/birds/')
