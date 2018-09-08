@@ -119,29 +119,10 @@ The content of this file should look like:
 ; BTW, Tornado processes are single threaded.
 ; To take advantage of multiple cores, you'll need multiple processes.
 
-[program:wm-diffing-server-8000]
-command=/opt/conda/envs/web-monitoring-processing/bin/wm-diffing-server --port 8000
-stderr_logfile = /var/log/supervisor/tornado-stderr.log
-stdout_logfile = /var/log/supervisor/tornado-stdout.log
-environment=PAGE_FREEZER_API_KEY=<page_freezer_key>
-stopasgroup=true
-
-[program:wm-diffing-server-8001]
-command=/opt/conda/envs/web-monitoring-processing/bin/wm-diffing-server --port 8001
-stderr_logfile = /var/log/supervisor/tornado-stderr.log
-stdout_logfile = /var/log/supervisor/tornado-stdout.log
-environment=PAGE_FREEZER_API_KEY=<page_freezer_key>
-stopasgroup=true
-
-[program:wm-diffing-server-8002]
-command=/opt/conda/envs/web-monitoring-processing/bin/wm-diffing-server --port 8002
-stderr_logfile = /var/log/supervisor/tornado-stderr.log
-stdout_logfile = /var/log/supervisor/tornado-stdout.log
-environment=PAGE_FREEZER_API_KEY=<page_freezer_key>
-stopasgroup=true
-
-[program:wm-diffing-server-8003]
-command=/opt/conda/envs/web-monitoring-processing/bin/wm-diffing-server --port 8003
+[program:wm-diffing-server]
+numprocs=4
+process_name=%(program_name)s-80%(process_num)02d
+command=/opt/conda/envs/web-monitoring-processing/bin/wm-diffing-server --port 80%(process_num)02d
 stderr_logfile = /var/log/supervisor/tornado-stderr.log
 stdout_logfile = /var/log/supervisor/tornado-stdout.log
 environment=PAGE_FREEZER_API_KEY=<page_freezer_key>
