@@ -40,6 +40,15 @@ $ sudo usermod -a -G conda <your_username>
 # Ensure users in that group have access to conda
 $ sudo chgrp -R conda /opt/conda
 $ sudo chmod 770 -R /opt/conda
+
+# Add setup script to your shell
+$ echo -e '\nsource /opt/conda/etc/profile.d/conda.sh' >> ~/.bashrc
+```
+
+You’ll need to log out and log back in to update your user groups and to load Conda’s tools in your shell. Once you’ve logged back in, check to make sure Conda is working by printing its version:
+
+```sh
+$ conda --version
 ```
 
 
@@ -68,7 +77,8 @@ $ conda create -n web-monitoring-processing
 $ conda activate web-monitoring-processing
 
 # Install packages
-$ while read requirement; do conda install --yes $requirement; done < requirements.txt
+$ while read requirement; do conda install --yes ${requirement/\ [~=]/=}; done < requirements.txt
+$ pip install -r requirements.txt
 $ python setup.py install
 ```
 
