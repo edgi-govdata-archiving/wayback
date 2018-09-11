@@ -21,6 +21,7 @@ import copy
 import difflib
 import html
 import logging
+import os
 import re
 from .content_type import raise_if_not_diffable_html
 from .differs import compute_dmp_diff
@@ -296,9 +297,12 @@ def html_diff_render(a_text, b_text, a_headers=None, b_headers=None,
             "style",
             type="text/css",
             id='wm-diff-style')
+        differ_insertion = os.environ.get('DIFFER_INSERTION', '#d4fcbc').strip()
+        differ_deletion = os.environ.get('DIFFER_DELETION', '#fbb6c2').strip()
         change_styles.string = """
-            ins, ins > * {text-decoration: none; background-color: #d4fcbc;}
-            del, del > * {text-decoration: none; background-color: #fbb6c2;}"""
+            ins, ins > * {text-decoration: none; background-color: %s;}
+            del, del > * {text-decoration: none; background-color: %s;}"""\
+                               % (differ_insertion, differ_deletion)
         soup.head.append(change_styles)
 
         soup.body.replace_with(diff_body)
