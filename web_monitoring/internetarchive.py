@@ -357,10 +357,13 @@ def timestamped_uri_to_version(dt, uri, *, url, maintainers=None, tags=None,
         # Check to make sure we are actually getting a memento playback.
         res = utils.retryable_request('GET', uri, allow_redirects=False, session=session)
         if res.headers.get('memento-datetime') is None:
-            if not res.ok:
-                res.raise_for_status()
+            message = res.headers.get('X-Archive-Wayback-Runtime-Error')
+            if message:
+                raise MementoPlaybackError(f'Memento at {uri} could not be played: {message}')
+            elif res.ok:
+                raise MementoPlaybackError(f'Memento at {uri} could not be played')
             else:
-                raise MementoPlaybackError(f'Memento at {uri} was not playback-able')
+                res.raise_for_status()
 
         # If the playback includes a redirect, continue on.
         if res.status_code >= 300 and res.status_code < 400:
