@@ -2,10 +2,10 @@ from bs4 import BeautifulSoup, Comment
 from diff_match_patch import diff, diff_bytes
 from htmldiffer.diff import HTMLDiffer
 import htmltreediff
+import os
 import re
 import sys
 import web_monitoring.pagefreezer
-
 
 # BeautifulSoup can sometimes exceed the default Python recursion limit (1000).
 sys.setrecursionlimit(10000)
@@ -30,7 +30,7 @@ def _get_text(html):
     "Extract textual content from HTML."
     soup = BeautifulSoup(html, 'lxml')
     [element.extract() for element in
-     soup.find_all(string=lambda text:isinstance(text, Comment))]
+     soup.find_all(string=lambda text: isinstance(text, Comment))]
     return soup.find_all(text=True)
 
 
@@ -69,11 +69,11 @@ def pagefreezer(a_url, b_url):
 
 
 def compute_dmp_diff(a_text, b_text, timelimit=4):
-
     if (isinstance(a_text, str) and isinstance(b_text, str)):
         changes = diff(a_text, b_text, checklines=False, timelimit=timelimit, cleanup_semantic=True, counts_only=False)
     elif (isinstance(a_text, bytes) and isinstance(b_text, bytes)):
-        changes = diff_bytes(a_text, b_text, checklines=False, timelimit=timelimit, cleanup_semantic=True, counts_only=False)
+        changes = diff_bytes(a_text, b_text, checklines=False, timelimit=timelimit, cleanup_semantic=True,
+                             counts_only=False)
     else:
         raise TypeError("Both the texts should be either of type 'str' or 'bytes'.")
 
@@ -95,7 +95,7 @@ def html_text_diff(a_text, b_text):
     t1 = _get_visible_text(a_text)
     t2 = _get_visible_text(b_text)
 
-    TIMELIMIT = 2 #seconds
+    TIMELIMIT = 2  # seconds
     res = compute_dmp_diff(t1, t2, timelimit=TIMELIMIT)
     count = len([[type_, string_] for type_, string_ in res if type_])
     return {'change_count': count, 'diff': res}
@@ -111,7 +111,7 @@ def html_source_diff(a_text, b_text):
     ...                  '<p>Added</p><p>Unchanged</p>')
     [[0, '<p>'], [-1, 'Delet'], [1, 'Add'], [0, 'ed</p><p>Unchanged</p>']]
     """
-    TIMELIMIT = 2 #seconds
+    TIMELIMIT = 2  # seconds
     res = compute_dmp_diff(a_text, b_text, timelimit=TIMELIMIT)
     count = len([[type_, string_] for type_, string_ in res if type_])
     return {'change_count': count, 'diff': res}
@@ -145,26 +145,32 @@ def insert_style(html, css):
 
 
 def html_tree_diff(a_text, b_text):
+    differ_insertion = os.environ.get('DIFFER_INSERTION', '#d4fcbc').strip()
+    differ_deletion = os.environ.get('DIFFER_DELETION', '#fbb6c2').strip()
     css = """
-diffins {text-decoration : none; background-color: #d4fcbc;}
-diffdel {text-decoration : none; background-color: #fbb6c2;}
-diffins * {text-decoration : none; background-color: #d4fcbc;}
-diffdel * {text-decoration : none; background-color: #fbb6c2;}
-    """
+diffins {text-decoration : none; background-color: %s;}
+diffdel {text-decoration : none; background-color: %s;}
+diffins * {text-decoration : none; background-color: %s;}
+diffdel * {text-decoration : none; background-color: %s;}
+    """ % (differ_insertion, differ_deletion, differ_insertion,
+           differ_deletion)
     d = htmltreediff.diff(a_text, b_text,
-                          ins_tag='diffins',del_tag='diffdel',
+                          ins_tag='diffins', del_tag='diffdel',
                           pretty=True)
     # TODO Count number of changes.
     return {'diff': insert_style(d, css)}
 
 
 def html_differ(a_text, b_text):
+    differ_insertion = os.environ.get('DIFFER_INSERTION', '#d4fcbc').strip()
+    differ_deletion = os.environ.get('DIFFER_DELETION', '#fbb6c2').strip()
     css = """
-.htmldiffer_insert {text-decoration : none; background-color: #d4fcbc;}
-.htmldiffer_delete {text-decoration : none; background-color: #fbb6c2;}
-.htmldiffer_insert * {text-decoration : none; background-color: #d4fcbc;}
-.htmldiffer_delete * {text-decoration : none; background-color: #fbb6c2;}
-    """
+.htmldiffer_insert {text-decoration : none; background-color: %s;}
+.htmldiffer_delete {text-decoration : none; background-color: %s;}
+.htmldiffer_insert * {text-decoration : none; background-color: %s;}
+.htmldiffer_delete * {text-decoration : none; background-color: %s;}
+    """ % (differ_insertion, differ_deletion, differ_insertion,
+           differ_deletion)
     d = HTMLDiffer(a_text, b_text).combined_diff
     # TODO Count number of changes.
     return {'diff': insert_style(d, css)}
