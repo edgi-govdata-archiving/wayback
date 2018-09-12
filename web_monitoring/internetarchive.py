@@ -71,9 +71,8 @@ def original_url_for_memento(memento_url):
     >>> original_url_for_memento('http://web.archive.org/web/20170813195036/https://arpa-e.energy.gov/?q=engage/events-workshops')
     'https://arpa-e.energy.gov/?q=engage/events-workshops'
     """
-    try:
-        url = MEMENTO_URL_PATTERN.match(memento_url).group(1)
-    except:
+    url = MEMENTO_URL_PATTERN.match(memento_url).group(1)
+    if url is None:
         raise ValueError(f'"{memento_url}" is not a memento URL')
 
     # A URL *may* be percent encoded, decode ONLY if so (we don’t want to
