@@ -224,7 +224,8 @@ class CDXClient:
         Examples
         --------
         Grab the datetime and URL of the version nasa.gov snapshot.
-        >>> versions = list_versions('nasa.gov')
+        >>> cli = CDXClient()
+        >>> versions = cli.list_versions('nasa.gov')
         >>> version = next(versions)
         >>> version.date
         datetime.datetime(1996, 12, 31, 23, 58, 47)
