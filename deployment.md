@@ -40,6 +40,15 @@ $ sudo usermod -a -G conda <your_username>
 # Ensure users in that group have access to conda
 $ sudo chgrp -R conda /opt/conda
 $ sudo chmod 770 -R /opt/conda
+
+# Add setup script to your shell
+$ echo -e '\nsource /opt/conda/etc/profile.d/conda.sh' >> ~/.bashrc
+```
+
+You’ll need to log out and log back in to update your user groups and to load Conda’s tools in your shell. Once you’ve logged back in, check to make sure Conda is working by printing its version:
+
+```sh
+$ conda --version
 ```
 
 
@@ -63,9 +72,14 @@ Run the actual installer:
 ```sh
 $ cd web-monitoring-processing
 
-# Install packages into new conda environment.
-$ /opt/conda/bin/conda-env create --force -f environment.yml -p /opt/conda/envs/web-monitoring-processing
+# Create a new conda environment.
+$ conda create -n web-monitoring-processing
+$ conda activate web-monitoring-processing
 
+# Install packages
+$ while read requirement; do conda install --yes ${requirement/\ [~=]/=}; done < requirements.txt
+$ pip install -r requirements.txt
+$ python setup.py install
 ```
 
 Now, test that your installation actually works by running the diffing server on port 8000:
@@ -105,29 +119,10 @@ The content of this file should look like:
 ; BTW, Tornado processes are single threaded.
 ; To take advantage of multiple cores, you'll need multiple processes.
 
-[program:wm-diffing-server-8000]
-command=/opt/conda/envs/web-monitoring-processing/bin/wm-diffing-server --port 8000
-stderr_logfile = /var/log/supervisor/tornado-stderr.log
-stdout_logfile = /var/log/supervisor/tornado-stdout.log
-environment=PAGE_FREEZER_API_KEY=<page_freezer_key>
-stopasgroup=true
-
-[program:wm-diffing-server-8001]
-command=/opt/conda/envs/web-monitoring-processing/bin/wm-diffing-server --port 8001
-stderr_logfile = /var/log/supervisor/tornado-stderr.log
-stdout_logfile = /var/log/supervisor/tornado-stdout.log
-environment=PAGE_FREEZER_API_KEY=<page_freezer_key>
-stopasgroup=true
-
-[program:wm-diffing-server-8002]
-command=/opt/conda/envs/web-monitoring-processing/bin/wm-diffing-server --port 8002
-stderr_logfile = /var/log/supervisor/tornado-stderr.log
-stdout_logfile = /var/log/supervisor/tornado-stdout.log
-environment=PAGE_FREEZER_API_KEY=<page_freezer_key>
-stopasgroup=true
-
-[program:wm-diffing-server-8003]
-command=/opt/conda/envs/web-monitoring-processing/bin/wm-diffing-server --port 8003
+[program:wm-diffing-server]
+numprocs=4
+process_name=%(program_name)s-80%(process_num)02d
+command=/opt/conda/envs/web-monitoring-processing/bin/wm-diffing-server --port 80%(process_num)02d
 stderr_logfile = /var/log/supervisor/tornado-stderr.log
 stdout_logfile = /var/log/supervisor/tornado-stdout.log
 environment=PAGE_FREEZER_API_KEY=<page_freezer_key>
