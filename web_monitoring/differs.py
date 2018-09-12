@@ -1,11 +1,12 @@
 from bs4 import BeautifulSoup, Comment
 from diff_match_patch import diff, diff_bytes
+from web_monitoring.utils import get_color_palette
 from htmldiffer.diff import HTMLDiffer
 import htmltreediff
-import os
 import re
 import sys
 import web_monitoring.pagefreezer
+
 
 # BeautifulSoup can sometimes exceed the default Python recursion limit (1000).
 sys.setrecursionlimit(10000)
@@ -145,19 +146,17 @@ def insert_style(html, css):
 
 
 def html_tree_diff(a_text, b_text):
-    differ_insertion = os.environ.get('DIFFER_INSERTION')
-    if differ_insertion is None or differ_insertion == '':
-        differ_insertion = '#d4fcbc'
-    differ_deletion = os.environ.get('DIFFER_DELETION')
-    if differ_deletion is None or differ_deletion == '':
-        differ_deletion = '#fbb6c2'
-    css = """
-diffins {text-decoration : none; background-color: %s;}
-diffdel {text-decoration : none; background-color: %s;}
-diffins * {text-decoration : none; background-color: %s;}
-diffdel * {text-decoration : none; background-color: %s;}
-    """ % (differ_insertion, differ_deletion, differ_insertion,
-           differ_deletion)
+    color_palette = get_color_palette()
+    css = f'''
+diffins {{text-decoration : none; background-color:
+    {color_palette['differ_insertion']};}}
+diffdel {{text-decoration : none; background-color:
+    {color_palette['differ_deletion']};}}
+diffins * {{text-decoration : none; background-color:
+    {color_palette['differ_insertion']};}}
+diffdel * {{text-decoration : none; background-color:
+    {color_palette['differ_deletion']};}}
+    '''
     d = htmltreediff.diff(a_text, b_text,
                           ins_tag='diffins', del_tag='diffdel',
                           pretty=True)
@@ -166,19 +165,18 @@ diffdel * {text-decoration : none; background-color: %s;}
 
 
 def html_differ(a_text, b_text):
-    differ_insertion = os.environ.get('DIFFER_INSERTION')
-    if differ_insertion is None or differ_insertion == '':
-        differ_insertion = '#d4fcbc'
-    differ_deletion = os.environ.get('DIFFER_DELETION')
-    if differ_deletion is None or differ_deletion == '':
-        differ_deletion = '#fbb6c2'
-    css = """
-.htmldiffer_insert {text-decoration : none; background-color: %s;}
-.htmldiffer_delete {text-decoration : none; background-color: %s;}
-.htmldiffer_insert * {text-decoration : none; background-color: %s;}
-.htmldiffer_delete * {text-decoration : none; background-color: %s;}
-    """ % (differ_insertion, differ_deletion, differ_insertion,
-           differ_deletion)
+    color_palette = get_color_palette()
+    css = f'''
+.htmldiffer_insert {{text-decoration : none; background-color:
+    {color_palette['differ_insertion']};}}
+.htmldiffer_delete {{text-decoration : none; background-color:
+    {color_palette['differ_deletion']};}}
+.htmldiffer_insert * {{text-decoration : none; background-color:
+    {color_palette['differ_insertion']};}}
+.htmldiffer_delete * {{text-decoration : none; background-color:
+    {color_palette['differ_deletion']};}}
+    '''
+
     d = HTMLDiffer(a_text, b_text).combined_diff
     # TODO Count number of changes.
     return {'diff': insert_style(d, css)}

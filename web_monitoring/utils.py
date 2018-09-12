@@ -3,6 +3,7 @@ from contextlib import contextmanager
 import hashlib
 import io
 import lxml.html
+import os
 import requests
 import time
 
@@ -97,3 +98,20 @@ def rate_limited(calls_per_second=2, group='default'):
             time.sleep(minimum_wait - (current_time - last_call))
         yield
         _last_call_by_group[group] = time.time()
+
+
+def get_color_palette():
+    """
+    Read and return the CSS color env variables that indicate the colors in
+    html_diff_render, differs and links_diff.
+
+    Returns
+    ------
+    palette: Dictionary
+        A dictionary containing the differ_insertion and differ_deletion css
+        color codes
+    """
+    differ_insertion = os.environ.get('DIFFER_INSERTION', '#4dac26')
+    differ_deletion = os.environ.get('DIFFER_DELETION', '#d01c8b')
+    return {'differ_insertion': differ_insertion,
+            'differ_deletion': differ_deletion}
