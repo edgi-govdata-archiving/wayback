@@ -90,162 +90,171 @@ def cdx_hash(content):
     return b32encode(hashlib.sha1(content).digest()).decode()
 
 
-def search_cdx(params, session=None):
+class CDXClient:
     """
-    Search archive.org's CDX API for all captures of a given URL.
-
-    This will automatically page through all results for a given search.
-
-    Returns an iterator of CdxRecord objects. The StopIteration value is the
-    total count of found captures.
-
-    Note that even URLs without wildcards may return results with different
-    URLs. Search results are matched by url_key, which is a SURT-formatted,
-    canonicalized URL:
-
-      * Does not differentiate between HTTP and HTTPS
-      * Is not case-sensitive
-      * Treats `www.` and `www*.` subdomains the same as no subdomain at all
+    A client for querying Wayback Machine's CDX API.
 
     Parameters
     ----------
-    params : dict
-        Any options that the CDX API takes. Must at least include `url`.
-    session : requests.Session, optional
-        A session object to use for requests.
-
-    Raises
-    ------
-    UnexpectedResponseFormat
-        If the CDX response was not parseable.
-
-    References
-    ----------
-    * https://github.com/internetarchive/wayback/tree/master/wayback-cdx-server
+    session : :class:`requests.Session`, optional
     """
+    def __init__(self, session=None):
+        self.session = session or requests.Session()
 
-    # NOTE: resolveRevisits works on a CDX server version that isn't released.
-    # It attempts to automatically resolve `warc/revisit` records.
-    params['resolveRevisits'] = 'true'
-    params['showResumeKey'] = 'true'
+    def search(self, params):
+        """
+        Search archive.org's CDX API for all captures of a given URL.
 
-    internal_session = session or requests.Session()
-    response = utils.retryable_request('GET', CDX_SEARCH_URL, params=params,
-                                       session=internal_session)
-    lines = response.iter_lines()
-    count = 0
+        This will automatically page through all results for a given search.
 
-    for line in lines:
-        text = line.decode()
+        Returns an iterator of CdxRecord objects. The StopIteration value is
+        the total count of found captures.
 
-        # The resume key is delineated by a blank line.
-        if text == '':
-            params['resumeKey'] = next(lines).decode()
-            count += yield from search_cdx(params)
-            break
+        Note that even URLs without wildcards may return results with different
+        URLs. Search results are matched by url_key, which is a SURT-formatted,
+        canonicalized URL:
 
-        try:
-            data = CdxRecord(*text.split(' '), None, '', '')
-            capture_time = datetime.strptime(data.timestamp, URL_DATE_FORMAT)
-        except Exception:
-            raise UnexpectedResponseFormat(text)
+        * Does not differentiate between HTTP and HTTPS
+        * Is not case-sensitive
+        * Treats ``www.`` and ``www*.`` subdomains the same as no subdomain at
+          all
 
-        clean_url = REDUNDANT_HTTPS_PORT.sub(
-            r'\1\2', REDUNDANT_HTTP_PORT.sub(
-                r'\1\2', data.url))
-        if clean_url != data.url:
-            data = data._replace(url=clean_url)
+        Parameters
+        ----------
+        params : dict
+            Any options that the CDX API takes. Must at least include `url`.
 
-        # TODO: repeat captures have a status code of `-` and a mime type of
-        # `warc/revisit`. These can only be resolved by requesting the content
-        # and following redirects. Maybe nice to do so automatically here.
-        data = data._replace(
-            date=capture_time,
-            raw_url=ARCHIVE_RAW_URL_TEMPLATE.format(
-                timestamp=data.timestamp, url=data.url),
-            view_url=ARCHIVE_VIEW_URL_TEMPLATE.format(
-                timestamp=data.timestamp, url=data.url)
-        )
-        count += 1
-        yield data
+        Raises
+        ------
+        UnexpectedResponseFormat
+            If the CDX response was not parseable.
 
-    if internal_session is not session:
-        internal_session.close()
+        References
+        ----------
+        * https://github.com/internetarchive/wayback/tree/master/wayback-cdx-server
+        """
 
-    return count
+        # NOTE: resolveRevisits works on a CDX server version that isn't released.
+        # It attempts to automatically resolve `warc/revisit` records.
+        params['resolveRevisits'] = 'true'
+        params['showResumeKey'] = 'true'
 
+        response = utils.retryable_request('GET', CDX_SEARCH_URL,
+                                           params=params,
+                                           session=self.session)
+        lines = response.iter_lines()
+        count = 0
 
-def list_versions(url, *, from_date=None, to_date=None, skip_repeats=True,
-                  cdx_params=None):
-    """
-    Search archive.org for captures of a URL (optionally, within a time span).
+        for line in lines:
+            text = line.decode()
 
-    This function provides a convenient, use-case-specific interface to
-    archive.org's CDX API. For a more direct, low-level API, use
-    :func:`search_cdx`.
+            # The resume key is delineated by a blank line.
+            if text == '':
+                params['resumeKey'] = next(lines).decode()
+                count += yield from self.search(params)
+                break
 
-    Note that even URLs without wildcards may return results with multiple
-    URLs. Search results are matched by url_key, which is a SURT-formatted,
-    canonicalized URL:
+            try:
+                data = CdxRecord(*text.split(' '), None, '', '')
+                capture_time = datetime.strptime(data.timestamp,
+                                                 URL_DATE_FORMAT)
+            except Exception:
+                raise UnexpectedResponseFormat(text)
 
-      * Does not differentiate between HTTP and HTTPS
-      * Is not case-sensitive
-      * Treats `www.` and `www*.` subdomains the same as no subdomain at all
+            clean_url = REDUNDANT_HTTPS_PORT.sub(
+                r'\1\2', REDUNDANT_HTTP_PORT.sub(
+                    r'\1\2', data.url))
+            if clean_url != data.url:
+                data = data._replace(url=clean_url)
 
-    Parameters
-    ----------
-    url : string
-        The URL to list versions for. Can contain wildcards.
-    from_date : datetime, optional
-        Get versions captured after this date.
-    to_date : datetime, optional
-        Get versions captured before this date.
-    skip_repeats : boolean, optional
-        Don’t include consecutive captures of the same content (default: True).
-    cdx_params : dict, optional
-        Additional options to pass directly to the CDX API when querying.
+            # TODO: repeat captures have a status code of `-` and a mime type
+            # of `warc/revisit`. These can only be resolved by requesting the
+            # content and following redirects. Maybe nice to do so
+            # automatically here.
+            data = data._replace(
+                date=capture_time,
+                raw_url=ARCHIVE_RAW_URL_TEMPLATE.format(
+                    timestamp=data.timestamp, url=data.url),
+                view_url=ARCHIVE_VIEW_URL_TEMPLATE.format(
+                    timestamp=data.timestamp, url=data.url)
+            )
+            count += 1
+            yield data
 
-    Raises
-    ------
-    UnexpectedResponseFormat
-        If the CDX response was not parseable.
-    ValueError
-        If there were no versions of the given URL.
+        return count
 
-    Examples
-    --------
-    Grab the datetime and URL of the version nasa.gov snapshot.
-    >>> versions = list_versions('nasa.gov')
-    >>> version = next(versions)
-    >>> version.date
-    datetime.datetime(1996, 12, 31, 23, 58, 47)
-    >>> version.raw_url
-    "http://web.archive.org/web/19961231235847id\_/http://www.nasa.gov:80/"
+    def list_versions(self, url, *,
+                      from_date=None, to_date=None, skip_repeats=True,
+                      cdx_params=None):
+        """
+        Search archive.org for captures of a URL (optionally, within a time span).
 
-    Loop through all the snapshots.
-    >>> for version in list_versions('nasa.gov'):
-    ...     # do something
-    """
-    params = {'collapse': 'digest'}
-    if cdx_params:
-        params.update(cdx_params)
-    params['url'] = url
-    if from_date:
-        params['from'] = from_date.strftime(URL_DATE_FORMAT)
-    if to_date:
-        params['to'] = to_date.strftime(URL_DATE_FORMAT)
+        This function provides a convenient, use-case-specific interface to
+        archive.org's CDX API. For a more direct, low-level API, use
+        :func:`search_cdx`.
 
-    last_hashes = {}
-    for version in search_cdx(params):
-        # TODO: may want to follow redirects and resolve them in the future
-        if not skip_repeats or last_hashes.get(version.url) != version.digest:
-            last_hashes[version.url] = version.digest
-            # TODO: yield the whole version
-            yield version
+        Note that even URLs without wildcards may return results with multiple
+        URLs. Search results are matched by url_key, which is a SURT-formatted,
+        canonicalized URL:
 
-    if not last_hashes:
-        raise ValueError("Internet archive does not have archived "
-                         "versions of {}".format(url))
+        * Does not differentiate between HTTP and HTTPS
+        * Is not case-sensitive
+        * Treats `www.` and `www*.` subdomains the same as no subdomain at all
+
+        Parameters
+        ----------
+        url : string
+            The URL to list versions for. Can contain wildcards.
+        from_date : datetime, optional
+            Get versions captured after this date.
+        to_date : datetime, optional
+            Get versions captured before this date.
+        skip_repeats : boolean, optional
+            Don’t include consecutive captures of the same content (default: True).
+        cdx_params : dict, optional
+            Additional options to pass directly to the CDX API when querying.
+
+        Raises
+        ------
+        UnexpectedResponseFormat
+            If the CDX response was not parseable.
+        ValueError
+            If there were no versions of the given URL.
+
+        Examples
+        --------
+        Grab the datetime and URL of the version nasa.gov snapshot.
+        >>> versions = list_versions('nasa.gov')
+        >>> version = next(versions)
+        >>> version.date
+        datetime.datetime(1996, 12, 31, 23, 58, 47)
+        >>> version.raw_url
+        "http://web.archive.org/web/19961231235847id\_/http://www.nasa.gov:80/"
+
+        Loop through all the snapshots.
+        >>> for version in list_versions('nasa.gov'):
+        ...     # do something
+        """
+        params = {'collapse': 'digest'}
+        if cdx_params:
+            params.update(cdx_params)
+        params['url'] = url
+        if from_date:
+            params['from'] = from_date.strftime(URL_DATE_FORMAT)
+        if to_date:
+            params['to'] = to_date.strftime(URL_DATE_FORMAT)
+
+        last_hashes = {}
+        for version in self.search(params):
+            # TODO: may want to follow redirects and resolve them in the future
+            if not skip_repeats or last_hashes.get(version.url) != version.digest:
+                last_hashes[version.url] = version.digest
+                # TODO: yield the whole version
+                yield version
+
+        if not last_hashes:
+            raise ValueError("Internet archive does not have archived "
+                             "versions of {}".format(url))
 
 
 def format_version(*, url, dt, uri, version_hash, title, status, mime_type,
@@ -325,75 +334,88 @@ def format_version(*, url, dt, uri, version_hash, title, status, mime_type,
     )
 
 
-def timestamped_uri_to_version(dt, uri, *, url, maintainers=None, tags=None,
-                               view_url=None, session=None):
+class MementoClient:
     """
-    Fetch version content and combine it with metadata to build a Version.
+    A client for querying Wayback Machine's Memento API.
 
     Parameters
     ----------
-    dt : datetime.datetime
-        capture time
-    uri : string
-        URI of version
-    url : string
-        page URL
-    maintainers : list of string, optional
-        Entities responsible for maintaining the page, as a list of strings
-    tags : list of string, optional
-        Any arbitrary "tags" to apply to the page for categorization
-    view_url : string, optional
-        The archive.org URL for viewing the page (with rewritten links, etc.)
-    session : requests.Session, optional
-        A session object to use for making HTTP requests
-
-    Returns
-    -------
-    dict : Version
-        suitable for passing to :class:`Client.add_versions`
+    session : :class:`requests.Session`, optional
     """
-    with utils.rate_limited(group='timestamped_uri_to_version'):
-        # Check to make sure we are actually getting a memento playback.
-        res = utils.retryable_request('GET', uri, allow_redirects=False, session=session)
-        if res.headers.get('memento-datetime') is None:
-            message = res.headers.get('X-Archive-Wayback-Runtime-Error')
-            if message:
-                raise MementoPlaybackError(f'Memento at {uri} could not be played: {message}')
-            elif res.ok:
-                raise MementoPlaybackError(f'Memento at {uri} could not be played')
-            else:
-                res.raise_for_status()
+    def __init__(self, session=None):
+        self.session = session or requests.Session()
 
-        # If the playback includes a redirect, continue on.
-        if res.status_code >= 300 and res.status_code < 400:
-            original = res
-            res = utils.retryable_request('GET', res.headers.get('location'), session=session)
-            res.history.insert(0, original)
-            res.request = original.request
+    def timestamped_uri_to_version(self, dt, uri, *, url,
+                                   maintainers=None, tags=None, view_url=None):
+        """
+        Fetch version content and combine it with metadata to build a Version.
 
-    version_hash = utils.hash_content(res.content)
-    title = utils.extract_title(res.content)
-    content_type = (res.headers['content-type'] or '').split(';', 1)
+        Parameters
+        ----------
+        dt : datetime.datetime
+            capture time
+        uri : string
+            URI of version
+        url : string
+            page URL
+        maintainers : list of string, optional
+            Entities responsible for maintaining the page, as a list of strings
+        tags : list of string, optional
+            Any arbitrary "tags" to apply to the page for categorization
+        view_url : string, optional
+            The archive.org URL for viewing the page (with rewritten links, etc.)
 
-    # Get all headers from original response
-    prefix = 'X-Archive-Orig-'
-    original_headers = {
-        k[len(prefix):]: v for k, v in res.headers.items()
-        if k.startswith(prefix)
-    }
+        Returns
+        -------
+        dict : Version
+            suitable for passing to :class:`Client.add_versions`
+        """
+        with utils.rate_limited(group='timestamped_uri_to_version'):
+            # Check to make sure we are actually getting a memento playback.
+            res = utils.retryable_request(
+                'GET', uri, allow_redirects=False, session=self.session)
+            if res.headers.get('memento-datetime') is None:
+                message = res.headers.get('X-Archive-Wayback-Runtime-Error')
+                if message:
+                    raise MementoPlaybackError(f'Memento at {uri} could not be played: {message}')
+                elif res.ok:
+                    raise MementoPlaybackError(f'Memento at {uri} could not be played')
+                else:
+                    res.raise_for_status()
 
-    redirected_url = None
-    redirects = None
-    if res.url != uri:
-        redirected_url = original_url_for_memento(res.url)
-        redirects = list(map(
-            lambda response: original_url_for_memento(response.url),
-            res.history))
-        redirects.append(redirected_url)
+            # If the playback includes a redirect, continue on.
+            if res.status_code >= 300 and res.status_code < 400:
+                original = res
+                res = utils.retryable_request(
+                    'GET', res.headers.get('location'), session=self.session)
+                res.history.insert(0, original)
+                res.request = original.request
 
-    return format_version(url=url, dt=dt, uri=uri,
-                          version_hash=version_hash, title=title, tags=tags,
-                          maintainers=maintainers, status=res.status_code,
-                          mime_type=content_type[0], encoding=res.encoding,
-                          headers=original_headers, view_url=view_url,
-                          redirected_url=redirected_url, redirects=redirects)
+        version_hash = utils.hash_content(res.content)
+        title = utils.extract_title(res.content)
+        content_type = (res.headers['content-type'] or '').split(';', 1)
+
+        # Get all headers from original response
+        prefix = 'X-Archive-Orig-'
+        original_headers = {
+            k[len(prefix):]: v for k, v in res.headers.items()
+            if k.startswith(prefix)
+        }
+
+        redirected_url = None
+        redirects = None
+        if res.url != uri:
+            redirected_url = original_url_for_memento(res.url)
+            redirects = list(map(
+                lambda response: original_url_for_memento(response.url),
+                res.history))
+            redirects.append(redirected_url)
+
+        return format_version(url=url, dt=dt, uri=uri,
+                              version_hash=version_hash, title=title,
+                              tags=tags, maintainers=maintainers,
+                              status=res.status_code,
+                              mime_type=content_type[0], encoding=res.encoding,
+                              headers=original_headers, view_url=view_url,
+                              redirected_url=redirected_url,
+                              redirects=redirects)
