@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 from .content_type import raise_if_not_diffable_html
 from .differs import compute_dmp_diff
+from web_monitoring.utils import get_color_palette
 from difflib import SequenceMatcher
 from .html_diff_render import (get_title, _html_for_dmp_operation,
                                undiffable_content_tags)
@@ -75,54 +76,60 @@ def links_diff_html(a_text, b_text, a_headers=None, b_headers=None,
     soup = _render_html_diff(diff['diff'])
 
     # Add styling and metadata
+    color_palette = get_color_palette()
     change_styles = soup.new_tag(
         'style',
         type='text/css',
         id='wm-diff-style')
-    change_styles.string = """
-        body {
+    change_styles.string = f"""
+        body {{
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
             margin: 0;
-        }
-        .links-list {
+        }}
+        .links-list {{
             border-collapse: collapse;
             table-layout: fixed;
             width: 100%;
-        }
-        .links-list th {
+        }}
+        .links-list th {{
             background: #f6f6f6;
             border-bottom: 1px solid #ccc;
             padding: 0.25em;
             text-align: left;
-        }
-        .links-list > tbody > tr:first-child > td {
+        }}
+        .links-list > tbody > tr:first-child > td {{
             padding-top: 0.5em;
-        }
-        .links-list--item > td {
+        }}
+        .links-list--item > td {{
             border-bottom: 1px solid #fff;
             opacity: 0.5;
             padding: 0.25em;
-        }
-        .links-list--change-type-col {
+        }}
+        .links-list--change-type-col {{
             width: 1.5em;
-        }
+        }}
         .links-list--text-col,
-        .links-list--href-col {
+        .links-list--href-col {{
             width: 50%;
-        }
-        .links-list--href a {
+        }}
+        .links-list--href a {{
             line-break: loose;
             word-break: break-all;
-        }
+        }}
         [wm-has-deletions] > td,
-        [wm-has-insertions] > td {
+        [wm-has-insertions] > td {{
             background-color: #eee;
             opacity: 1;
-        }
-        [wm-inserted] > td { background-color: #acf2bd; }
-        [wm-deleted] > td  { background-color: #fdb8c0; }
-        ins { text-decoration: none; background-color: #acf2bd; }
-        del { text-decoration: none; background-color: #fdb8c0; }"""
+        }}
+        [wm-inserted] > td {{
+            background-color: {color_palette['differ_insertion']};}}
+        [wm-deleted] > td  {{
+            background-color: {color_palette['differ_deletion']};}}
+        ins {{ text-decoration: none;
+            background-color: {color_palette['differ_insertion']};}}
+        del {{ text-decoration: none;
+            background-color: {color_palette['differ_deletion']};}}"""
+
     soup.head.append(change_styles)
     soup.title.string = get_title(diff['b_parsed'])
 
