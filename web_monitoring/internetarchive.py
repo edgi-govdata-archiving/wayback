@@ -268,8 +268,8 @@ class WaybackClient:
         Examples
         --------
         Grab the datetime and URL of the first nasa.gov snapshot.
-        >>> with CDXClient() as cdx:
-        >>>     versions = cdx.list_versions('nasa.gov')
+        >>> with WaybackClient() as client:
+        >>>     versions = client.list_versions('nasa.gov')
         >>>     version = next(versions)
         >>>     version.date
         datetime.datetime(1996, 12, 31, 23, 58, 47)
@@ -277,7 +277,7 @@ class WaybackClient:
         "http://web.archive.org/web/19961231235847id\_/http://www.nasa.gov:80/"
 
         Loop through all the snapshots.
-        >>> for version in cdx.list_versions('nasa.gov'):
+        >>> for version in client.list_versions('nasa.gov'):
         ...     # do something
         """
         params = {'collapse': 'digest'}
