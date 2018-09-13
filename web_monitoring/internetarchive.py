@@ -146,7 +146,7 @@ class WaybackClient:
         self.session.close()
 
     def search(self, url, *, matchType=None, limit=None, offset=None,
-               fastLatest=None, gzip=None, from_time=None, to_time=None,
+               fastLatest=None, gzip=None, from_date=None, to_date=None,
                filter_field=None, collapse=None, showResumeKey=True,
                resumeKey=None, page=None, pageSize=None, resolveRevisits=True,
                **kwargs):
@@ -188,12 +188,12 @@ class WaybackClient:
             return a variable number of results.
         gzip : bool, optional
             Whether output should be gzipped.
-        from_time : str, optional
-            Only include captures after this timestamp. Equivalent to the
-            `from` argument in the CDX API. (format: yyyyMMddhhmmss)
-        to_time : str, optional
-            Only include captures before this timestamp. Equivalent to the `to`
-            argument in the CDX API. (format: yyyyMMddhhmmss)
+        from_date : datetime, optional
+            Only include captures after this date. Equivalent to the
+            `from` argument in the CDX API.
+        to_date : str, optional
+            Only include captures before this date. Equivalent to the `to`
+            argument in the CDX API.
         filter_field : str, optional
             A filter for any field in the results. Equivalent to the `filter`
             argument in the CDX API. (format: `[!]field:regex`)
@@ -237,8 +237,8 @@ class WaybackClient:
         # TODO: support args that add new fields to the results or change the
         # result format
         query = {'url': url, 'matchType': matchType, 'limit': limit,
-                 'offset': offset, 'gzip': gzip, 'from': from_time,
-                 'to': to_time, 'filter': filter_field,
+                 'offset': offset, 'gzip': gzip, 'from': from_date,
+                 'to': to_date, 'filter': filter_field,
                  'fastLatest': fastLatest, 'collapse': collapse,
                  'showResumeKey': showResumeKey, 'resumeKey': resumeKey,
                  'resolveRevisits': resolveRevisits, 'page': page,
@@ -256,6 +256,8 @@ class WaybackClient:
             if value is not None:
                 if isinstance(value, str):
                     final_query[key] = value
+                elif isinstance(value, datetime):
+                    final_query[key] = value.strftime(URL_DATE_FORMAT)
                 else:
                     final_query[key] = str(value).lower()
 
@@ -361,10 +363,8 @@ class WaybackClient:
         if cdx_params:
             params.update(cdx_params)
         params['url'] = url
-        if from_date:
-            params['from_time'] = from_date.strftime(URL_DATE_FORMAT)
-        if to_date:
-            params['to_time'] = to_date.strftime(URL_DATE_FORMAT)
+        params['from_date'] = from_date
+        params['to_date'] = to_date
 
         last_hashes = {}
         for version in self.search(**params):
