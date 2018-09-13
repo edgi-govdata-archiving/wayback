@@ -7,7 +7,7 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [python-requests/2.19.1]
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?collapse=digest&url=nasa.gov&from=19961001000000&to=19970201000000&resolveRevisits=true&showResumeKey=true
+    uri: http://web.archive.org/cdx/search/cdx?url=nasa.gov&from=19961001000000&to=19970201000000&collapse=digest&showResumeKey=true&resolveRevisits=true
   response:
     body:
       string: !!binary |
@@ -18,10 +18,10 @@ interactions:
       Connection: [keep-alive]
       Content-Encoding: [gzip]
       Content-Type: [text/plain;charset=UTF-8]
-      Date: ['Thu, 06 Sep 2018 06:34:10 GMT']
+      Date: ['Thu, 13 Sep 2018 19:41:29 GMT']
       Server: [nginx/1.13.11]
       X-App-Server: [wwwb-app1]
-      X-Cache-Key: ['httpweb.archive.org/cdx/search/cdx?collapse=digest&url=nasa.gov&from=19961001000000&to=19970201000000&resolveRevisits=true&showResumeKey=trueUS']
+      X-Cache-Key: ['httpweb.archive.org/cdx/search/cdx?url=nasa.gov&from=19961001000000&to=19970201000000&collapse=digest&showResumeKey=true&resolveRevisits=trueUS']
       X-Page-Cache: [BYPASS]
       X-location: [cdx]
       X-ts: ['----']

@@ -145,7 +145,11 @@ class WaybackClient:
         "Close the client's session."
         self.session.close()
 
-    def search(self, params):
+    def search(self, url, *, matchType=None, limit=None, offset=None,
+               fastLatest=None, gzip=None, from_time=None, to_time=None,
+               filter_field=None, collapse=None, showResumeKey=True,
+               resumeKey=None, page=None, pageSize=None, resolveRevisits=True,
+               **kwargs):
         """
         Search archive.org's CDX API for all captures of a given URL.
 
@@ -163,10 +167,60 @@ class WaybackClient:
         * Treats ``www.`` and ``www*.`` subdomains the same as no subdomain at
           all
 
+        Note not all CDX API parameters are supported. In particular, this does
+        not support: `output`, `fl`, `showDupeCount`, `showSkipCount`,
+        `lastSkipTimestamp`, `showNumPages`, `showPagedIndex`.
+
         Parameters
         ----------
-        params : dict
-            Any options that the CDX API takes. Must at least include `url`.
+        url : str
+            The URL to query for captures of.
+        matchType : str, optional
+            Must be one of 'exact', 'prefix', 'host', or 'domain'. The default
+            value is calculated based on the format of `url`.
+        limit : int, optional
+            Maximum number of results per page (this iterator will continue to
+            move through all pages unless `showResumeKey=False`, though).
+        offset : int, optional
+            Skip the first N results.
+        fastLatest : bool, optional
+            Get faster results when using a negative value for `limit`. It may
+            return a variable number of results.
+        gzip : bool, optional
+            Whether output should be gzipped.
+        from_time : str, optional
+            Only include captures after this timestamp. Equivalent to the
+            `from` argument in the CDX API. (format: yyyyMMddhhmmss)
+        to_time : str, optional
+            Only include captures before this timestamp. Equivalent to the `to`
+            argument in the CDX API. (format: yyyyMMddhhmmss)
+        filter_field : str, optional
+            A filter for any field in the results. Equivalent to the `filter`
+            argument in the CDX API. (format: `[!]field:regex`)
+        collapse : str, optional
+            Collapse consecutive results that match on a given field. (format:
+            `fieldname` or `fieldname:N` -- N is the number of chars to match.)
+        showResumeKey : bool, optional
+            If False, don't continue to iterate through all pages of results.
+            The default value is True
+        resumeKey : str, optional
+            Start returning results from a specified resumption point/offset.
+            The value for this is supplied by the previous page of results when
+            `showResumeKey` is True.
+        page : int, optional
+            If using paging start from this page number (note: paging, as
+            opposed to the using `resumeKey` is somewhat complicated because
+            of the interplay with indexes and index sizes).
+        pageSize : int, optional
+            The number of index blocks to examine for each page of results.
+            Index blocks generally cover about 3,000 items, so setting
+            `pageSize=1` might return anywhere from 0 to 3,000 results per page.
+        resolveRevists : bool, optional
+            Attempt to resolve `warc/revisit` records to their actual content
+            type and response code. Not supported on all CDX servers. Defaults
+            to True.
+        **kwargs
+            Any additional CDX API options.
 
         Raises
         ------
@@ -178,13 +232,35 @@ class WaybackClient:
         * https://github.com/internetarchive/wayback/tree/master/wayback-cdx-server
         """
 
-        # NOTE: resolveRevisits works on a CDX server version that isn't released.
-        # It attempts to automatically resolve `warc/revisit` records.
-        params['resolveRevisits'] = 'true'
-        params['showResumeKey'] = 'true'
+        # TODO: support args that can be set multiple times: filter, collapse
+        # Should take input as a sequence and convert to repeat query args
+        # TODO: support args that add new fields to the results or change the
+        # result format
+        query = {'url': url, 'matchType': matchType, 'limit': limit,
+                 'offset': offset, 'gzip': gzip, 'from': from_time,
+                 'to': to_time, 'filter': filter_field,
+                 'fastLatest': fastLatest, 'collapse': collapse,
+                 'showResumeKey': showResumeKey, 'resumeKey': resumeKey,
+                 'resolveRevisits': resolveRevisits, 'page': page,
+                 'pageSize': page}
+        query.update(kwargs)
+
+        unsupported = {'output', 'fl', 'showDupeCount', 'showSkipCount',
+                       'lastSkipTimestamp', 'showNumPages', 'showPagedIndex'}
+
+        final_query = {}
+        for key, value in query.items():
+            if key in unsupported:
+                raise ValueError(f'The {key} argument is not supported')
+
+            if value is not None:
+                if isinstance(value, str):
+                    final_query[key] = value
+                else:
+                    final_query[key] = str(value).lower()
 
         response = utils.retryable_request('GET', CDX_SEARCH_URL,
-                                           params=params,
+                                           params=final_query,
                                            session=self.session)
         lines = response.iter_lines()
         count = 0
@@ -194,8 +270,9 @@ class WaybackClient:
 
             # The resume key is delineated by a blank line.
             if text == '':
-                params['resumeKey'] = next(lines).decode()
-                count += yield from self.search(params)
+                next_args = query.copy()
+                next_args['resumeKey'] = next(lines).decode()
+                count += yield from self.search(**next_args)
                 break
 
             try:
@@ -285,12 +362,12 @@ class WaybackClient:
             params.update(cdx_params)
         params['url'] = url
         if from_date:
-            params['from'] = from_date.strftime(URL_DATE_FORMAT)
+            params['from_time'] = from_date.strftime(URL_DATE_FORMAT)
         if to_date:
-            params['to'] = to_date.strftime(URL_DATE_FORMAT)
+            params['to_time'] = to_date.strftime(URL_DATE_FORMAT)
 
         last_hashes = {}
-        for version in self.search(params):
+        for version in self.search(**params):
             # TODO: may want to follow redirects and resolve them in the future
             if not skip_repeats or last_hashes.get(version.url) != version.digest:
                 last_hashes[version.url] = version.digest
