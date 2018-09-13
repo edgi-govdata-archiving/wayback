@@ -94,7 +94,12 @@ def cdx_hash(content):
 
 class CDXClient:
     """
-    A client for querying Wayback Machine's CDX API.
+    A client for querying Wayback Machine's CDX API. It lets you search for
+    captures of URLs.
+
+    You can use a CDXClient as a context manager. When exiting, it will close
+    the session it's using (if you've passed in a custom session, make sure
+    not to use the context manager functionality).
 
     Parameters
     ----------
@@ -102,6 +107,16 @@ class CDXClient:
     """
     def __init__(self, session=None):
         self.session = session or requests.Session()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        self.close()
+
+    def close(self):
+        "Close the client's session."
+        self.session.close()
 
     def search(self, params):
         """
@@ -225,17 +240,17 @@ class CDXClient:
 
         Examples
         --------
-        Grab the datetime and URL of the version nasa.gov snapshot.
-        >>> cli = CDXClient()
-        >>> versions = cli.list_versions('nasa.gov')
-        >>> version = next(versions)
-        >>> version.date
+        Grab the datetime and URL of the first nasa.gov snapshot.
+        >>> with CDXClient() as cdx:
+        >>>     versions = cdx.list_versions('nasa.gov')
+        >>>     version = next(versions)
+        >>>     version.date
         datetime.datetime(1996, 12, 31, 23, 58, 47)
-        >>> version.raw_url
+        >>>     version.raw_url
         "http://web.archive.org/web/19961231235847id\_/http://www.nasa.gov:80/"
 
         Loop through all the snapshots.
-        >>> for version in list_versions('nasa.gov'):
+        >>> for version in cdx.list_versions('nasa.gov'):
         ...     # do something
         """
         params = {'collapse': 'digest'}
@@ -339,7 +354,12 @@ def format_version(*, url, dt, uri, version_hash, title, status, mime_type,
 
 class MementoClient:
     """
-    A client for querying Wayback Machine's Memento API.
+    A client for querying Wayback Machine's Memento API. Use this to get
+    actual captures of a web page.
+
+    You can use a MementoClient as a context manager. When exiting, it will
+    close the session it's using (if you've passed in a custom session, make
+    sure not to use the context manager functionality).
 
     Parameters
     ----------
@@ -347,6 +367,16 @@ class MementoClient:
     """
     def __init__(self, session=None):
         self.session = session or requests.Session()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        self.close()
+
+    def close(self):
+        "Close the client's session."
+        self.session.close()
 
     def timestamped_uri_to_version(self, dt, uri, *, url,
                                    maintainers=None, tags=None, view_url=None):
