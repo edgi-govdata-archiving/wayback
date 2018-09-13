@@ -2,7 +2,7 @@ from datetime import datetime
 from pathlib import Path
 import pytest
 import vcr
-from web_monitoring.internetarchive import (MementoClient, CDXClient,
+from web_monitoring.internetarchive import (WaybackClient,
                                             original_url_for_memento,
                                             MementoPlaybackError,
                                             SessionClosedError)
@@ -21,10 +21,10 @@ ia_vcr = vcr.VCR(
 
 @ia_vcr.use_cassette()
 def test_list_versions():
-    with CDXClient() as cdx:
-        versions = cdx.list_versions('nasa.gov',
-                                    from_date=datetime(1996, 10, 1),
-                                    to_date=datetime(1997, 2, 1))
+    with WaybackClient() as client:
+        versions = client.list_versions('nasa.gov',
+                                        from_date=datetime(1996, 10, 1),
+                                        to_date=datetime(1997, 2, 1))
         version = next(versions)
         assert version.date == datetime(1996, 12, 31, 23, 58, 47)
 
@@ -35,11 +35,11 @@ def test_list_versions():
 @ia_vcr.use_cassette()
 def test_list_versions_multipage():
     # Set page size limits low enough to guarantee multiple pages
-    with CDXClient() as cdx:
-        versions = cdx.list_versions('cnn.com',
-                                    from_date=datetime(2001, 4, 10),
-                                    to_date=datetime(2001, 5, 10),
-                                    cdx_params={'limit': 25})
+    with WaybackClient() as client:
+        versions = client.list_versions('cnn.com',
+                                        from_date=datetime(2001, 4, 10),
+                                        to_date=datetime(2001, 5, 10),
+                                        cdx_params={'limit': 25})
 
         # Exhaust the generator and make sure no entries trigger errors.
         list(versions)
@@ -48,10 +48,10 @@ def test_list_versions_multipage():
 @ia_vcr.use_cassette()
 def test_list_versions_cannot_iterate_after_session_closing():
     with pytest.raises(SessionClosedError):
-        with CDXClient() as cdx:
-            versions = cdx.list_versions('nasa.gov',
-                                        from_date=datetime(1996, 10, 1),
-                                        to_date=datetime(1997, 2, 1))
+        with WaybackClient() as client:
+            versions = client.list_versions('nasa.gov',
+                                            from_date=datetime(1996, 10, 1),
+                                            to_date=datetime(1997, 2, 1))
 
         next(versions)
 
@@ -83,7 +83,7 @@ class TestOriginalUrlForMemento:
 
 @ia_vcr.use_cassette()
 def test_timestamped_uri_to_version():
-    with MementoClient() as client:
+    with WaybackClient() as client:
         version = client.timestamped_uri_to_version(
             datetime(2017, 11, 24, 15, 13, 15),
             'http://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/',
@@ -94,7 +94,7 @@ def test_timestamped_uri_to_version():
 
 @ia_vcr.use_cassette()
 def test_timestamped_uri_to_version_works_with_redirects():
-    with MementoClient() as client:
+    with WaybackClient() as client:
         version = client.timestamped_uri_to_version(
             datetime(2018, 8, 8, 9, 41, 44),
             'http://web.archive.org/web/20180808094144id_/https://www.epa.gov/ghgreporting/san5779-factsheet',
@@ -106,7 +106,7 @@ def test_timestamped_uri_to_version_works_with_redirects():
 
 @ia_vcr.use_cassette()
 def test_timestamped_uri_to_version_should_fail_for_non_playbackable_mementos():
-    with MementoClient() as client:
+    with WaybackClient() as client:
         with pytest.raises(MementoPlaybackError):
             client.timestamped_uri_to_version(
                 datetime(2017, 9, 29, 0, 27, 12),

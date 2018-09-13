@@ -119,14 +119,14 @@ class WaybackSession(requests.Session):
         return super().send(*args, **kwargs)
 
 
-class CDXClient:
+class WaybackClient:
     """
-    A client for querying Wayback Machine's CDX API. It lets you search for
-    captures of URLs.
+    A client for retrieving data from the Internet Archive's Wayback Machine.
 
-    You can use a CDXClient as a context manager. When exiting, it will close
-    the session it's using (if you've passed in a custom session, make sure
-    not to use the context manager functionality).
+    You can use a WaybackClient as a context manager. When exiting, it will
+    close the session it's using (if you've passed in a custom session, make
+    sure not to use the context manager functionality unless you want to live
+    dangerously).
 
     Parameters
     ----------
@@ -301,6 +301,81 @@ class CDXClient:
             raise ValueError("Internet archive does not have archived "
                              "versions of {}".format(url))
 
+    def timestamped_uri_to_version(self, dt, uri, *, url,
+                                   maintainers=None, tags=None, view_url=None):
+        """
+        Fetch version content and combine it with metadata to build a Version.
+
+        Parameters
+        ----------
+        dt : datetime.datetime
+            capture time
+        uri : string
+            URI of version
+        url : string
+            page URL
+        maintainers : list of string, optional
+            Entities responsible for maintaining the page, as a list of strings
+        tags : list of string, optional
+            Any arbitrary "tags" to apply to the page for categorization
+        view_url : string, optional
+            The archive.org URL for viewing the page (with rewritten links, etc.)
+
+        Returns
+        -------
+        dict : Version
+            suitable for passing to :class:`Client.add_versions`
+        """
+        with utils.rate_limited(group='timestamped_uri_to_version'):
+            # Check to make sure we are actually getting a memento playback.
+            res = utils.retryable_request(
+                'GET', uri, allow_redirects=False, session=self.session)
+            if res.headers.get('memento-datetime') is None:
+                message = res.headers.get('X-Archive-Wayback-Runtime-Error')
+                if message:
+                    raise MementoPlaybackError(f'Memento at {uri} could not be played: {message}')
+                elif res.ok:
+                    raise MementoPlaybackError(f'Memento at {uri} could not be played')
+                else:
+                    res.raise_for_status()
+
+            # If the playback includes a redirect, continue on.
+            if res.status_code >= 300 and res.status_code < 400:
+                original = res
+                res = utils.retryable_request(
+                    'GET', res.headers.get('location'), session=self.session)
+                res.history.insert(0, original)
+                res.request = original.request
+
+        version_hash = utils.hash_content(res.content)
+        title = utils.extract_title(res.content)
+        content_type = (res.headers['content-type'] or '').split(';', 1)
+
+        # Get all headers from original response
+        prefix = 'X-Archive-Orig-'
+        original_headers = {
+            k[len(prefix):]: v for k, v in res.headers.items()
+            if k.startswith(prefix)
+        }
+
+        redirected_url = None
+        redirects = None
+        if res.url != uri:
+            redirected_url = original_url_for_memento(res.url)
+            redirects = list(map(
+                lambda response: original_url_for_memento(response.url),
+                res.history))
+            redirects.append(redirected_url)
+
+        return format_version(url=url, dt=dt, uri=uri,
+                              version_hash=version_hash, title=title,
+                              tags=tags, maintainers=maintainers,
+                              status=res.status_code,
+                              mime_type=content_type[0], encoding=res.encoding,
+                              headers=original_headers, view_url=view_url,
+                              redirected_url=redirected_url,
+                              redirects=redirects)
+
 
 def format_version(*, url, dt, uri, version_hash, title, status, mime_type,
                    encoding, maintainers=None, tags=None, headers=None,
@@ -377,105 +452,3 @@ def format_version(*, url, dt, uri, version_hash, title, status, mime_type,
          source_type='internet_archive',
          source_metadata=metadata
     )
-
-
-class MementoClient:
-    """
-    A client for querying Wayback Machine's Memento API. Use this to get
-    actual captures of a web page.
-
-    You can use a MementoClient as a context manager. When exiting, it will
-    close the session it's using (if you've passed in a custom session, make
-    sure not to use the context manager functionality).
-
-    Parameters
-    ----------
-    session : :class:`requests.Session`, optional
-    """
-    def __init__(self, session=None):
-        self.session = session or WaybackSession()
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, type, value, traceback):
-        self.close()
-
-    def close(self):
-        "Close the client's session."
-        self.session.close()
-
-    def timestamped_uri_to_version(self, dt, uri, *, url,
-                                   maintainers=None, tags=None, view_url=None):
-        """
-        Fetch version content and combine it with metadata to build a Version.
-
-        Parameters
-        ----------
-        dt : datetime.datetime
-            capture time
-        uri : string
-            URI of version
-        url : string
-            page URL
-        maintainers : list of string, optional
-            Entities responsible for maintaining the page, as a list of strings
-        tags : list of string, optional
-            Any arbitrary "tags" to apply to the page for categorization
-        view_url : string, optional
-            The archive.org URL for viewing the page (with rewritten links, etc.)
-
-        Returns
-        -------
-        dict : Version
-            suitable for passing to :class:`Client.add_versions`
-        """
-        with utils.rate_limited(group='timestamped_uri_to_version'):
-            # Check to make sure we are actually getting a memento playback.
-            res = utils.retryable_request(
-                'GET', uri, allow_redirects=False, session=self.session)
-            if res.headers.get('memento-datetime') is None:
-                message = res.headers.get('X-Archive-Wayback-Runtime-Error')
-                if message:
-                    raise MementoPlaybackError(f'Memento at {uri} could not be played: {message}')
-                elif res.ok:
-                    raise MementoPlaybackError(f'Memento at {uri} could not be played')
-                else:
-                    res.raise_for_status()
-
-            # If the playback includes a redirect, continue on.
-            if res.status_code >= 300 and res.status_code < 400:
-                original = res
-                res = utils.retryable_request(
-                    'GET', res.headers.get('location'), session=self.session)
-                res.history.insert(0, original)
-                res.request = original.request
-
-        version_hash = utils.hash_content(res.content)
-        title = utils.extract_title(res.content)
-        content_type = (res.headers['content-type'] or '').split(';', 1)
-
-        # Get all headers from original response
-        prefix = 'X-Archive-Orig-'
-        original_headers = {
-            k[len(prefix):]: v for k, v in res.headers.items()
-            if k.startswith(prefix)
-        }
-
-        redirected_url = None
-        redirects = None
-        if res.url != uri:
-            redirected_url = original_url_for_memento(res.url)
-            redirects = list(map(
-                lambda response: original_url_for_memento(response.url),
-                res.history))
-            redirects.append(redirected_url)
-
-        return format_version(url=url, dt=dt, uri=uri,
-                              version_hash=version_hash, title=title,
-                              tags=tags, maintainers=maintainers,
-                              status=res.status_code,
-                              mime_type=content_type[0], encoding=res.encoding,
-                              headers=original_headers, view_url=view_url,
-                              redirected_url=redirected_url,
-                              redirects=redirects)
