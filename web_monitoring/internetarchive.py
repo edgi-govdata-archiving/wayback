@@ -23,16 +23,20 @@ import requests
 from web_monitoring import utils
 
 
-class WebMonitoringException(Exception):
+class WaybackException(Exception):
     # All exceptions raised directly by this package inherit from this.
     ...
 
 
-class UnexpectedResponseFormat(WebMonitoringException):
+class UnexpectedResponseFormat(WaybackException):
     ...
 
 
-class MementoPlaybackError(WebMonitoringException):
+class MementoPlaybackError(WaybackException):
+    ...
+
+
+class SessionClosedError(WaybackException):
     ...
 
 
@@ -92,6 +96,29 @@ def cdx_hash(content):
     return b32encode(hashlib.sha1(content).digest()).decode()
 
 
+class WaybackSession(requests.Session):
+    """
+    A custom session object that network pools connections and resources. It
+    raises a :class:`SessionClosedError` if you try and use it after closing
+    it, to help identify and avoid potentially dangerous code patterns.
+    (Standard session objects continue to be usable after closing, even if they
+    may not work exactly as expected.)
+    """
+
+    _closed = False
+
+    def close(self):
+        super().close()
+        self._closed = True
+
+    def send(self, *args, **kwargs):
+        if self._closed:
+            raise SessionClosedError('This session has already been closed '
+                                     'and cannot send new HTTP requests.')
+
+        return super().send(*args, **kwargs)
+
+
 class CDXClient:
     """
     A client for querying Wayback Machine's CDX API. It lets you search for
@@ -106,7 +133,7 @@ class CDXClient:
     session : :class:`requests.Session`, optional
     """
     def __init__(self, session=None):
-        self.session = session or requests.Session()
+        self.session = session or WaybackSession()
 
     def __enter__(self):
         return self
@@ -366,7 +393,7 @@ class MementoClient:
     session : :class:`requests.Session`, optional
     """
     def __init__(self, session=None):
-        self.session = session or requests.Session()
+        self.session = session or WaybackSession()
 
     def __enter__(self):
         return self
