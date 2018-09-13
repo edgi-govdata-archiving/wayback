@@ -304,11 +304,21 @@ class IndexHandler(BaseHandler):
         self.write(repr(list(DIFF_ROUTES)))
 
 
+class HealthCheckHandler(BaseHandler):
+
+    @tornado.gen.coroutine
+    def get(self):
+        # TODO Include more information about health here.
+        # The 200 repsonse code with an empty object is just a liveness check.
+        self.write({})
+
+
 def make_app():
     class BoundDiffHandler(DiffHandler):
         differs = DIFF_ROUTES
 
     return tornado.web.Application([
+        (r"/healthcheck", HealthCheckHandler),
         (r"/([A-Za-z0-9_]+)", BoundDiffHandler),
         (r"/", IndexHandler),
     ], debug=DEBUG_MODE)
