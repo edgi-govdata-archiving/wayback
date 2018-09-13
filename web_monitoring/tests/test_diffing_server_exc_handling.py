@@ -3,6 +3,7 @@ import os
 import tempfile
 from tornado.testing import AsyncHTTPTestCase
 import web_monitoring.diffing_server as df
+import web_monitoring
 
 
 class DiffingServerTestCase(AsyncHTTPTestCase):
@@ -17,6 +18,14 @@ class DiffingServerTestCase(AsyncHTTPTestCase):
         json_response = json.loads(response.body)
         self.assertTrue(isinstance(json_response['code'], int))
         self.assertTrue(isinstance(json_response['error'], str))
+
+
+class DiffingServerIndexTest(DiffingServerTestCase):
+    def test_version(self):
+        response = self.fetch('/')
+        json_response = json.loads(response.body)
+        assert json_response['version'] == web_monitoring.__version__
+
 
 class DiffingServerLocalHandlingTest(DiffingServerTestCase):
 
