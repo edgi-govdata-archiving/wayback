@@ -29,24 +29,23 @@ def _add_and_monitor(versions):
 def import_ia(url, *, from_date=None, to_date=None, maintainers=None,
               tags=None, skip_unchanged='resolved-response'):
     skip_responses = skip_unchanged == 'response'
-    with ia.CDXClient() as cdx:
-        with ia.MementoClient() as mementos:
-            # Pulling on this generator does the work.
-            versions = (mementos.timestamped_uri_to_version(version.date,
-                                                            version.raw_url,
-                                                            url=version.url,
-                                                            maintainers=maintainers,
-                                                            tags=tags,
-                                                            view_url=version.view_url)
-                        for version in cdx.list_versions(url,
+    with ia.WaybackClient() as wayback:
+        # Pulling on this generator does the work.
+        versions = (wayback.timestamped_uri_to_version(version.date,
+                                                       version.raw_url,
+                                                       url=version.url,
+                                                       maintainers=maintainers,
+                                                       tags=tags,
+                                                       view_url=version.view_url)
+                    for version in wayback.list_versions(url,
                                                          from_date=from_date,
                                                          to_date=to_date,
                                                          skip_repeats=skip_responses))
 
-            if skip_unchanged == 'resolved-response':
-                versions = _filter_unchanged_versions(versions)
+        if skip_unchanged == 'resolved-response':
+            versions = _filter_unchanged_versions(versions)
 
-            _add_and_monitor(versions)
+        _add_and_monitor(versions)
 
 
 def _filter_unchanged_versions(versions):
