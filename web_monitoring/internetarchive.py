@@ -41,7 +41,7 @@ ARCHIVE_RAW_URL_TEMPLATE = 'http://web.archive.org/web/{timestamp}id_/{url}'
 ARCHIVE_VIEW_URL_TEMPLATE = 'http://web.archive.org/web/{timestamp}/{url}'
 URL_DATE_FORMAT = '%Y%m%d%H%M%S'
 MEMENTO_URL_PATTERN = re.compile(
-    r'^http(?:s)?://web.archive.org/web/\d+(?:id_)?/(.*)$')
+    r'^http(?:s)?://web.archive.org/web/\d+(?:id_)?/(.+)$')
 REDUNDANT_HTTP_PORT = re.compile(r'^(http://[^:/]+):80(.*)$')
 REDUNDANT_HTTPS_PORT = re.compile(r'^(https://[^:/]+):443(.*)$')
 
@@ -71,9 +71,11 @@ def original_url_for_memento(memento_url):
     >>> original_url_for_memento('http://web.archive.org/web/20170813195036/https://arpa-e.energy.gov/?q=engage/events-workshops')
     'https://arpa-e.energy.gov/?q=engage/events-workshops'
     """
-    url = MEMENTO_URL_PATTERN.match(memento_url).group(1)
-    if url is None:
+    match = MEMENTO_URL_PATTERN.match(memento_url)
+    if match is None:
         raise ValueError(f'"{memento_url}" is not a memento URL')
+
+    url = match.group(1)
 
     # A URL *may* be percent encoded, decode ONLY if so (we don’t want to
     # accidentally decode the querystring if there is one)

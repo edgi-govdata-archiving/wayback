@@ -60,6 +60,14 @@ class TestOriginalUrlForMemento:
         url = original_url_for_memento('http://web.archive.org/web/20170813195036/https://arpa-e.energy.gov/?q=engage%2Fevents-workshops')
         assert url == 'https://arpa-e.energy.gov/?q=engage%2Fevents-workshops'
 
+    def test_raises_for_non_memento_urls(self):
+        with pytest.raises(ValueError):
+            original_url_for_memento('http://whatever.com')
+
+    def test_raises_for_non_string_input(self):
+        with pytest.raises(TypeError):
+            original_url_for_memento(None)
+
 
 @ia_vcr.use_cassette()
 def test_timestamped_uri_to_version():
