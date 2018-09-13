@@ -4,7 +4,8 @@ import pytest
 import vcr
 from web_monitoring.internetarchive import (MementoClient, CDXClient,
                                             original_url_for_memento,
-                                            MementoPlaybackError)
+                                            MementoPlaybackError,
+                                            SessionClosedError)
 
 
 # This stashes HTTP responses in JSON files (one per test) so that an actual
@@ -42,6 +43,17 @@ def test_list_versions_multipage():
 
         # Exhaust the generator and make sure no entries trigger errors.
         list(versions)
+
+
+@ia_vcr.use_cassette()
+def test_list_versions_cannot_iterate_after_session_closing():
+    with pytest.raises(SessionClosedError):
+        with CDXClient() as cdx:
+            versions = cdx.list_versions('nasa.gov',
+                                        from_date=datetime(1996, 10, 1),
+                                        to_date=datetime(1997, 2, 1))
+
+        next(versions)
 
 
 class TestOriginalUrlForMemento:
