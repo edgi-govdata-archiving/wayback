@@ -299,9 +299,10 @@ class IndexHandler(BaseHandler):
 
     @tornado.gen.coroutine
     def get(self):
-        # Return a list of the differs.
         # TODO Show swagger API or Markdown instead.
-        self.write(repr(list(DIFF_ROUTES)))
+        info = {'diff_types': repr(list(DIFF_ROUTES)),
+                'version': web_monitoring.__version__}
+        self.write(info)
 
 
 class HealthCheckHandler(BaseHandler):
