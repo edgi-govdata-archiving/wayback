@@ -34,6 +34,13 @@ class DiffingServerLocalHandlingTest(DiffingServerTestCase):
                 self.assertEqual(response.code, 200)
 
 
+class DiffingServerHealthCheckHandlingTest(DiffingServerTestCase):
+
+    def test_healthcheck(self):
+        response = self.fetch('/healthcheck')
+        self.assertEqual(response.code, 200)
+
+
 class DiffingServerExceptionHandlingTest(DiffingServerTestCase):
 
     def test_local_file_disallowed_in_production(self):
