@@ -300,7 +300,7 @@ class IndexHandler(BaseHandler):
     @tornado.gen.coroutine
     def get(self):
         # TODO Show swagger API or Markdown instead.
-        info = {'diff_types': repr(list(DIFF_ROUTES)),
+        info = {'diff_types': list(DIFF_ROUTES),
                 'version': web_monitoring.__version__}
         self.write(info)
 
