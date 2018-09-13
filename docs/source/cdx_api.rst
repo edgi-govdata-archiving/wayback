@@ -18,11 +18,8 @@ TO DO
 API Documentation
 =================
 
-.. autoclass:: CDXClient
+.. autoclass:: WaybackClient
 
     .. automethod:: search
     .. automethod:: list_versions
-
-.. autoclass:: MementoClient
-
     .. automethod:: timestamped_uri_to_version
