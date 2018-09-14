@@ -32,7 +32,7 @@ def _should_retry(response):
 
 
 def retryable_request(method, url, retries=3, backoff=20,
-                      should_retry=_should_retry, **kwargs):
+                      should_retry=_should_retry, session=None, **kwargs):
     """
     Make a request with the `requests` library that will be automatically
     retried up to a set number of times.
@@ -53,6 +53,8 @@ def retryable_request(method, url, retries=3, backoff=20,
         A callback that receives the HTTP response and returns a boolean
         indicating whether the call should be retried. By default, it retries
         for responses with 503 and 504 status codes (gateway errors).
+    session : requests.Session, optional
+        A session object to use when making requests.
     **kwargs : dict, optional
         Any additional keyword parameters are passed on to `requests`
 
@@ -61,12 +63,17 @@ def retryable_request(method, url, retries=3, backoff=20,
     response : requests.Response
         The HTTP response object from `requests`
     """
-    response = requests.request(method, url, **kwargs)
+    internal_session = session or requests.Session()
+    response = internal_session.request(method, url, **kwargs)
     if should_retry(response) and retries > 0:
         time.sleep(backoff / retries)
-        return retryable_request(method, url, retries - 1, backoff, **kwargs)
-    else:
-        return response
+        response = retryable_request(method, url, retries - 1, backoff,
+                                     session=internal_session, **kwargs)
+
+    if internal_session is not session:
+        internal_session.close()
+
+    return response
 
 
 _last_call_by_group = defaultdict(int)
