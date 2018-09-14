@@ -72,6 +72,7 @@ def original_url_for_memento(memento_url):
     Examples
     --------
     Extract original URL.
+
     >>> original_url_for_memento('http://web.archive.org/web/20170813195036/https://arpa-e.energy.gov/?q=engage/events-workshops')
     'https://arpa-e.energy.gov/?q=engage/events-workshops'
     """
@@ -347,6 +348,7 @@ class WaybackClient:
         Examples
         --------
         Grab the datetime and URL of the first nasa.gov snapshot.
+
         >>> with WaybackClient() as client:
         >>>     versions = client.list_versions('nasa.gov')
         >>>     version = next(versions)
@@ -356,6 +358,7 @@ class WaybackClient:
         "http://web.archive.org/web/19961231235847id\_/http://www.nasa.gov:80/"
 
         Loop through all the snapshots.
+
         >>> for version in client.list_versions('nasa.gov'):
         ...     # do something
         """

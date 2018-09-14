@@ -56,6 +56,7 @@ def result_into_df(result):
     --------
 
     Query PageFreezer and pack the result into a DataFrame.
+
     >>> response = compare(url_1, url_2)
     >>> df = result_into_df(response['result'])
     """
