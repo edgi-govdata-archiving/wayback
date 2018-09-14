@@ -51,8 +51,8 @@ cover/*
 *.log
 
 # Sphinx documentation
-doc/build/
-doc/source/generated/*.rst
+docs/build/
+docs/source/generated/*.rst
 
 # PyBuilder
 target/

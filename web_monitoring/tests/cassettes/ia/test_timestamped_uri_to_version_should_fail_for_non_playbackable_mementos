@@ -1,0 +1,28 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://web.archive.org/web/20170929002712id_/https://www.fws.gov/birds/
+  response:
+    body: {string: 'found capture at 20171124151315
+
+        '}
+    headers:
+      Connection: [keep-alive]
+      Content-Length: ['32']
+      Content-Type: [text/plain; charset=utf-8]
+      Date: ['Thu, 06 Sep 2018 05:31:22 GMT']
+      Location: ['http://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/']
+      Server: [nginx/1.13.11]
+      X-App-Server: [wwwb-app43]
+      X-Cache-Key: ['httpweb.archive.org/web/20170929002712id_/https://www.fws.gov/birds/US']
+      X-Page-Cache: [HIT]
+      X-location: [All]
+      X-ts: ['----']
+    status: {code: 302, message: FOUND}
+version: 1

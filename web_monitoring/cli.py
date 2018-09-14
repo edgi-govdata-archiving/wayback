@@ -28,22 +28,24 @@ def _add_and_monitor(versions):
 
 def import_ia(url, *, from_date=None, to_date=None, maintainers=None,
               tags=None, skip_unchanged='resolved-response'):
-    # Pulling on this generator does the work.
     skip_responses = skip_unchanged == 'response'
-    versions = (ia.timestamped_uri_to_version(version.date, version.raw_url,
-                                              url=version.url,
-                                              maintainers=maintainers,
-                                              tags=tags,
-                                              view_url=version.view_url)
-                for version in ia.list_versions(url,
-                                                from_date=from_date,
-                                                to_date=to_date,
-                                                skip_repeats=skip_responses))
+    with ia.WaybackClient() as wayback:
+        # Pulling on this generator does the work.
+        versions = (wayback.timestamped_uri_to_version(version.date,
+                                                       version.raw_url,
+                                                       url=version.url,
+                                                       maintainers=maintainers,
+                                                       tags=tags,
+                                                       view_url=version.view_url)
+                    for version in wayback.list_versions(url,
+                                                         from_date=from_date,
+                                                         to_date=to_date,
+                                                         skip_repeats=skip_responses))
 
-    if skip_unchanged == 'resolved-response':
-        versions = _filter_unchanged_versions(versions)
+        if skip_unchanged == 'resolved-response':
+            versions = _filter_unchanged_versions(versions)
 
-    _add_and_monitor(versions)
+        _add_and_monitor(versions)
 
 
 def _filter_unchanged_versions(versions):

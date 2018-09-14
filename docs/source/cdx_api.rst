@@ -1,11 +1,14 @@
 .. currentmodule:: web_monitoring.internetarchive
 
-******************************************************
-Python API to Internet Archive Wayback Machine CDX API
-******************************************************
+**********************************************
+Python API to Internet Archive Wayback Machine
+**********************************************
 
 Search for historical snapshots of a URL. Download metadata about the snapshots
 and/or the snapshot content itself.
+
+We implement Python clients for the CDX and Memento APIs provided by Wayback
+Machine.
 
 Tutorial
 ========
@@ -15,9 +18,8 @@ TO DO
 API Documentation
 =================
 
-.. autosummary::
-    :toctree: generated
+.. autoclass:: WaybackClient
 
-    list_versions
-    search_cdx
-    timestamped_uri_to_version
+    .. automethod:: search
+    .. automethod:: list_versions
+    .. automethod:: timestamped_uri_to_version
