@@ -66,8 +66,8 @@ the variable ``record``. Starting from where we left off, we'll access the
 *content* of the snapshot and do a very simple analysis.
 
 The Wayback Machine provides two ways to look at the data it has captured.
-There is copy edited for human viewers on the web, available at the record's
-``view_url``, and there is original copy of what was captured when the page
+There is a copy edited for human viewers on the web, available at the record's
+``view_url``, and there is the original copy of what was captured when the page
 was originally scraped, availabe at the record's ``raw_url``. For analysis
 purposes, we generally want the ``raw_url``.
 
@@ -85,7 +85,7 @@ times that ``'mars'`` appears in the content.
 
    content.count('mars')
 
-This is is case-sensitive, so to be more accurate we should convent the content
+This is is case-sensitive, so to be more accurate we should convert the content
 to lowercase first.
 
 .. ipython:: python
@@ -93,10 +93,11 @@ to lowercase first.
    content.lower().count('mars')
 
 We picked up a couple occurrences of ``'Mars'`` that the original count missed.
+
 We have been doing this count on the full HTML source of the page, which
-includes both visible text and internal code that is not visible to a human
-visitor. We can use a function in ``web_monitoring`` to extract only the
-visible text.
+includes both visible text and code that is not visible to a human visitor
+browsing the page. We can use a function in ``web_monitoring`` to extract only
+the visible text.
 
 .. ipython:: python
 
@@ -118,7 +119,7 @@ And now let's do the word count on just the visible content.
    visible.lower().count('mars')
 
 Our count of ``visible`` excludes appearances of ``'mars'`` that aren't in the
-visible text, such as in and link URLs. Both analyses could be interesting,
+visible text, such as in link URLs. Both analyses could be interesting,
 depending on the context.
 
 API Documentation
