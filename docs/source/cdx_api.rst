@@ -10,8 +10,8 @@ and/or the snapshot content itself.
 Tutorial
 ========
 
-Example: What is the earliest snapshot of nasa.gov?
----------------------------------------------------
+What is the earliest snapshot of nasa.gov?
+------------------------------------------
 
 Instantiate a :class:`WaybackClient`.
 
@@ -58,8 +58,8 @@ can use dot access on ``record`` to access the date specifically.
 
    record.date
 
-Example: How many times does the word 'space' appear on nasa.gov?
------------------------------------------------------------------
+How many times does the word 'mars' appear on nasa.gov?
+-------------------------------------------------------
 
 Above, we access the metadata for the oldest snapshot on nasa.gov, stored in
 the variable ``record``. Starting from where we left off, we'll access the
@@ -85,14 +85,14 @@ times that ``'mars'`` appears in the content.
 
    content.count('mars')
 
-This is is case-sensitive, so to be more accurate we should convert the content
-to lowercase first.
+This is case-sensitive, so to be more accurate we should convert the content to
+lowercase first.
 
 .. ipython:: python
 
    content.lower().count('mars')
 
-We picked up a couple occurrences of ``'Mars'`` that the original count missed.
+We picked up a couple additional occurrences that the original count missed.
 
 We have been doing this count on the full HTML source of the page, which
 includes both visible text and code that is not visible to a human visitor
