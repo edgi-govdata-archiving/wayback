@@ -125,7 +125,7 @@ depending on the context.
 API Documentation
 =================
 
-The Wayback Machines exposes its data through two different mechanisms,
+The Wayback Machine exposes its data through two different mechanisms,
 implementing two different standards for archival data, the CDX API and the
 Memento API. We implement a Python client that can speak both.
 
