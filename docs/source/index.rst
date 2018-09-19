@@ -21,5 +21,5 @@ developers. Contributions are welcome! See the
 
     installation
     db_api
-    cdx_api
+    wayback
     data_sources
