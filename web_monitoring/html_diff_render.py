@@ -19,6 +19,7 @@ from bs4 import BeautifulSoup, Comment
 from collections import Counter, namedtuple
 import copy
 import difflib
+from web_monitoring.utils import get_color_palette
 import html
 import logging
 import re
@@ -296,9 +297,13 @@ def html_diff_render(a_text, b_text, a_headers=None, b_headers=None,
             "style",
             type="text/css",
             id='wm-diff-style')
-        change_styles.string = """
-            ins, ins > * {text-decoration: none; background-color: #d4fcbc;}
-            del, del > * {text-decoration: none; background-color: #fbb6c2;}"""
+
+        color_palette = get_color_palette()
+        change_styles.string = f'''
+            ins, ins > * {{text-decoration: none; background-color:
+                {color_palette['differ_insertion']};}}
+            del, del > * {{text-decoration: none; background-color:
+                {color_palette['differ_deletion']};}}'''
         soup.head.append(change_styles)
 
         soup.body.replace_with(diff_body)
