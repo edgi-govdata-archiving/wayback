@@ -431,8 +431,8 @@ Alternatively, you can instaniate Client(user, password) directly.""")
         ----------
         import_ids: collection
 
-        Return
-        ------
+        Returns
+        -------
         errors : tuple
         """
         errors = []
