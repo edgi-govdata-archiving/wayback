@@ -136,8 +136,17 @@ class DiffHandler(BaseHandler):
                     body = f.read()
                     responses[param] = MockResponse(url, body, headers)
         # Now fetch any nonlocal URLs.
+        # Pass request header defined by URL param pass_header=HEADER_NAME
+        # to nonlocal URLs. Useful for passing data like cookie headers.
         to_fetch = {k: v for k, v in urls.items() if k not in responses}
-        fetched = yield [client.fetch(url, raise_error=False)
+        headers = {}
+        header_key = query_params.get('pass_header')
+        if header_key:
+            header_value = self.request.headers.get(header_key)
+            if header_value:
+                headers[header_key] = header_value
+
+        fetched = yield [client.fetch(url, headers=headers, raise_error=False)
                          for url in to_fetch.values()]
         responses.update({param: response for param, response in
                           zip(to_fetch, fetched)})
