@@ -144,6 +144,7 @@ class DiffHandler(BaseHandler):
         header_keys = query_params.get('pass_headers')
         if header_keys:
             for header_key in header_keys.split(','):
+                header_key = header_key.strip()
                 header_value = self.request.headers.get(header_key)
                 if header_value:
                     headers[header_key] = header_value
