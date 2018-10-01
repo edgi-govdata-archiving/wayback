@@ -1,9 +1,15 @@
 import json
 import os
+import re
 import tempfile
 from tornado.testing import AsyncHTTPTestCase
+from unittest.mock import patch
 import web_monitoring.diffing_server as df
 import web_monitoring
+from tornado.escape import utf8
+from tornado.httpclient import HTTPResponse, AsyncHTTPClient
+from tornado.httputil import HTTPHeaders
+from io import BytesIO
 
 
 class DiffingServerTestCase(AsyncHTTPTestCase):
@@ -48,6 +54,32 @@ class DiffingServerHealthCheckHandlingTest(DiffingServerTestCase):
     def test_healthcheck(self):
         response = self.fetch('/healthcheck')
         self.assertEqual(response.code, 200)
+
+
+class DiffingServerFetchTest(DiffingServerTestCase):
+
+    def test_pass_headers(self):
+        mock = MockAsyncHttpClient()
+        with patch.object(df, 'client', wraps=mock):
+            mock.respond_to(r'/a$')
+            mock.respond_to(r'/b$')
+
+            self.fetch('/html_source_dmp?'
+                       'pass_headers=Authorization,%20User-Agent&'
+                       'a=https://example.org/a&b=https://example.org/b',
+                       headers={'User-Agent': 'Some Agent',
+                                'Authorization': 'Bearer xyz',
+                                'Accept': 'application/json'})
+
+            a_headers = mock.requests['https://example.org/a'].headers
+            assert a_headers.get('User-Agent') == 'Some Agent'
+            assert a_headers.get('Authorization') == 'Bearer xyz'
+            assert a_headers.get('Accept') != 'application/json'
+
+            b_headers = mock.requests['https://example.org/b'].headers
+            assert b_headers.get('User-Agent') == 'Some Agent'
+            assert b_headers.get('Authorization') == 'Bearer xyz'
+            assert b_headers.get('Accept') != 'application/json'
 
 
 class DiffingServerExceptionHandlingTest(DiffingServerTestCase):
@@ -123,3 +155,68 @@ class DiffingServerExceptionHandlingTest(DiffingServerTestCase):
 
 def mock_diffing_method(c_body):
     return
+
+
+# TODO: we may want to extract this to a support module
+class MockAsyncHttpClient(AsyncHTTPClient):
+    """
+    A mock Tornado AsyncHTTPClient. Use it to set fake responses and track
+    requests made with an AsyncHTTPClient instance.
+    """
+
+    def __init__(self):
+        self.requests = {}
+        self.stub_responses = []
+
+    def respond_to(self, matcher, code=200, body='', headers={}, **kwargs):
+        """
+        Set up a fake HTTP response. If a request is made and no fake response
+        set up with `respond_to()` matches it, an error will be raised.
+
+        Parameters
+        ----------
+        matcher : callable or string
+            Defines whether this response data should be used for a given
+            request. If callable, it will be called with the Tornado Request
+            object and should return `True` if the response should be used. If
+            a string, it will be used as a regular expression to match the
+            request URL.
+        code : int, optional
+            The HTTP response code to response with. Defaults to 200 (OK).
+        body : string, optional
+            The response body to send back.
+        headers : dict, optional
+            Any headers to use for the response.
+        **kwargs : any, optional
+            Additional keyword args to pass to the Tornado Response.
+            Reference: http://www.tornadoweb.org/en/stable/httpclient.html#tornado.httpclient.HTTPResponse
+        """
+        if isinstance(matcher, str):
+            regex = re.compile(matcher)
+            matcher = lambda request: regex.search(request.url) is not None
+
+        if 'Content-Type' not in headers and 'content-type' not in headers:
+            headers['Content-Type'] = 'text/plain'
+
+        self.stub_responses.append({
+            'matcher': matcher,
+            'code': code,
+            'body': body,
+            'headers': headers,
+            'extra': kwargs
+        })
+
+    def fetch_impl(self, request, callback):
+        stub = self._find_stub(request)
+        buffer = BytesIO(utf8(stub['body']))
+        headers = HTTPHeaders(stub['headers'])
+        response = HTTPResponse(request, stub['code'], buffer=buffer,
+                                headers=headers, **stub['extra'])
+        self.requests[request.url] = request
+        callback(response)
+
+    def _find_stub(self, request):
+        for stub in self.stub_responses:
+            if stub['matcher'](request):
+                return stub
+        raise ValueError(f'No response stub for {request.url}')
