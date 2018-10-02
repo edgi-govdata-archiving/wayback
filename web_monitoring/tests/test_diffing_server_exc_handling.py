@@ -84,6 +84,12 @@ class DiffingServerFetchTest(DiffingServerTestCase):
 
 class DiffingServerExceptionHandlingTest(DiffingServerTestCase):
 
+    def get_app(self):
+        """It is necessary to set this before app init to enable CORS headers.
+        """
+        df.access_control_allow_origin_header = "*"
+        return df.make_app()
+
     def test_local_file_disallowed_in_production(self):
         original = os.environ.get('WEB_MONITORING_APP_ENV')
         os.environ['WEB_MONITORING_APP_ENV'] = 'production'
@@ -151,6 +157,18 @@ class DiffingServerExceptionHandlingTest(DiffingServerTestCase):
                               '&b=https://example.org')
         self.assertEqual(response.code, 404)
         self.json_check(response)
+
+    def test_check_cors_headers(self):
+        """Since we have set Access-Control-Allow-Origin: * on app init,
+        the response should have a list of HTTP headers required by CORS.
+        """
+        response = self.fetch('/html_token?format=json&include=all'
+                              '&a=https://example.org'
+                              '&b=https://example.org')
+        assert response.headers.get('Access-Control-Allow-Origin') == '*'
+        assert response.headers.get('Access-Control-Allow-Credentials') == 'true'
+        assert response.headers.get('Access-Control-Allow-Headers') == 'x-requested-with'
+        assert response.headers.get('Access-Control-Allow-Methods') == 'GET, OPTIONS'
 
 
 def mock_diffing_method(c_body):
