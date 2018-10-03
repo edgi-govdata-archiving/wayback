@@ -82,6 +82,7 @@ class BaseHandler(tornado.web.RequestHandler):
         if access_control_allow_origin_header is not None:
             self.set_header("Access-Control-Allow-Origin",
                             access_control_allow_origin_header)
+            self.set_header("Access-Control-Allow-Credentials", "true")
             self.set_header("Access-Control-Allow-Headers", "x-requested-with")
             self.set_header('Access-Control-Allow-Methods', 'GET, OPTIONS')
 
