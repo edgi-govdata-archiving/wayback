@@ -335,7 +335,7 @@ def make_app():
         (r"/healthcheck", HealthCheckHandler),
         (r"/([A-Za-z0-9_]+)", BoundDiffHandler),
         (r"/", IndexHandler),
-    ], debug=DEBUG_MODE)
+    ], debug=DEBUG_MODE, compress_response=True)
 
 def start_app(port):
     app = make_app()
