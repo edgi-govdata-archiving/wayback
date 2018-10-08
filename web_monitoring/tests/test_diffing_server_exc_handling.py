@@ -154,36 +154,33 @@ class DiffingServerExceptionHandlingTest(DiffingServerTestCase):
 
     @patch('web_monitoring.diffing_server.access_control_allow_origin_header', '*')
     def test_check_cors_headers(self):
-        """
-        Since we have set Access-Control-Allow-Origin: * on app init,
+        """Since we have set Access-Control-Allow-Origin: * on app init,
         the response should have a list of HTTP headers required by CORS.
+        Access-Control-Allow-Origin value equals request Origin header because
+        we use setting `access_control_allow_origin_header='*'`.
         """
         response = self.fetch('/html_token?format=json&include=all'
-                              '&a=https://example.org'
-                              '&b=https://example.org')
-        assert response.headers.get('Access-Control-Allow-Origin') == '*'
+                              '&a=https://example.org&b=https://example.org',
+                              headers={'Accept': 'application/json',
+                                       'Origin': 'http://test.com'})
+        assert response.headers.get('Access-Control-Allow-Origin') == 'http://test.com'
         assert response.headers.get('Access-Control-Allow-Credentials') == 'true'
         assert response.headers.get('Access-Control-Allow-Headers') == 'x-requested-with'
         assert response.headers.get('Access-Control-Allow-Methods') == 'GET, OPTIONS'
 
-    # The processing of the access_control_allow_origin_header to produce
-    # ALLOWED_ORIGINS happens inside the diffing_server module and not on web
-    # app init. As a result, we need to mock patch both of them here to make
-    # the unit test work.
     @patch('web_monitoring.diffing_server.access_control_allow_origin_header',
            'http://one.com,http://two.com,http://three.com')
-    @patch('web_monitoring.diffing_server.ALLOWED_ORIGINS',
-           set(['http://one.com', 'http://two.com','http://three.com']))
     def test_cors_origin_header(self):
         """The allowed origins is a list of URLs. If the request has HTTP
         header `Origin` as one of them, the response `Access-Control-Allow-Origin`
-        should have the same value.
+        should have the same value. If not, there shouldn't be any such header
+        at all.
         This is necessary for CORS requests with credentials to work properly.
         """
         response = self.fetch('/html_token?format=json&include=all'
                               '&a=https://example.org&b=https://example.org',
-                               headers={'Accept': 'application/json',
-                                        'Origin':'http://two.com'})
+                              headers={'Accept': 'application/json',
+                                       'Origin': 'http://two.com'})
         assert response.headers.get('Access-Control-Allow-Origin') == 'http://two.com'
 
 
