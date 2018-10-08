@@ -77,16 +77,16 @@ access_control_allow_origin_header = \
 
 class BaseHandler(tornado.web.RequestHandler):
 
-    _ALLOWED_ORIGINS = None
-
     def set_default_headers(self):
         if access_control_allow_origin_header is not None:
-            if not self._ALLOWED_ORIGINS:
-                self._ALLOWED_ORIGINS = set([origin.strip() for origin in
-                                             access_control_allow_origin_header.split(',')])
+            if 'allowed_origins' not in self.settings:
+                self.settings['allowed_origins'] = \
+                    set([origin.strip() for origin
+                         in access_control_allow_origin_header.split(',')])
             req_origin = self.request.headers.get('Origin')
             if req_origin:
-                if req_origin in self._ALLOWED_ORIGINS or '*' in self._ALLOWED_ORIGINS:
+                allowed = self.settings.get('allowed_origins')
+                if allowed and (req_origin in allowed or '*' in allowed):
                     self.set_header('Access-Control-Allow-Origin', req_origin)
             self.set_header('Access-Control-Allow-Credentials', 'true')
             self.set_header('Access-Control-Allow-Headers', 'x-requested-with')
