@@ -75,15 +75,21 @@ DEBUG_MODE = os.environ.get('DIFFING_SERVER_DEBUG', 'False').strip().lower() == 
 access_control_allow_origin_header = \
     os.environ.get('ACCESS_CONTROL_ALLOW_ORIGIN_HEADER')
 
-
 class BaseHandler(tornado.web.RequestHandler):
 
     def set_default_headers(self):
         if access_control_allow_origin_header is not None:
-            self.set_header("Access-Control-Allow-Origin",
-                            access_control_allow_origin_header)
-            self.set_header("Access-Control-Allow-Credentials", "true")
-            self.set_header("Access-Control-Allow-Headers", "x-requested-with")
+            if 'allowed_origins' not in self.settings:
+                self.settings['allowed_origins'] = \
+                    set([origin.strip() for origin
+                         in access_control_allow_origin_header.split(',')])
+            req_origin = self.request.headers.get('Origin')
+            if req_origin:
+                allowed = self.settings.get('allowed_origins')
+                if allowed and (req_origin in allowed or '*' in allowed):
+                    self.set_header('Access-Control-Allow-Origin', req_origin)
+            self.set_header('Access-Control-Allow-Credentials', 'true')
+            self.set_header('Access-Control-Allow-Headers', 'x-requested-with')
             self.set_header('Access-Control-Allow-Methods', 'GET, OPTIONS')
 
     def options(self):
