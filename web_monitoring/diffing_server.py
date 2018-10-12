@@ -11,7 +11,7 @@ import tornado.web
 import traceback
 import web_monitoring
 import web_monitoring.differs
-from web_monitoring.diff_errors import UndiffableContentError
+from web_monitoring.diff_errors import UndiffableContentError, UndecodableContentError
 import web_monitoring.html_diff_render
 import web_monitoring.links_diff
 
@@ -199,7 +199,7 @@ class DiffHandler(BaseHandler):
 
         # Handle errors that are allowed to be public
         actual_error = 'exc_info' in kwargs and kwargs['exc_info'][1] or None
-        if isinstance(actual_error, UndiffableContentError):
+        if isinstance(actual_error, (UndiffableContentError, UndecodableContentError)):
             response['code'] = 422
             response['error'] = str(actual_error)
 
@@ -235,7 +235,7 @@ class DiffHandler(BaseHandler):
 
 def _extract_encoding(headers, content):
     encoding = None
-    content_type = headers["Content-Type"]
+    content_type = headers.get('Content-Type', '')
     if 'charset=' in content_type:
         encoding = content_type.split('charset=')[-1]
     if not encoding:
@@ -249,9 +249,14 @@ def _extract_encoding(headers, content):
     return encoding
 
 
-def _decode_body(response, name):
+def _decode_body(response, name, raise_if_binary=True):
     encoding = _extract_encoding(response.headers, response.body) or 'UTF-8'
-    return response.body.decode(encoding, errors='replace')
+    text = response.body.decode(encoding, errors='replace')
+    # If a significantly large portion of the document was totally undecodable,
+    # it's likely this wasn't text at all, but binary data.
+    if raise_if_binary and text.count('\ufffd') / len(text) > 0.25:
+        raise UndecodableContentError(f'The response body of `{name}` could not be decoded as {encoding}.')
+    return text
 
 
 def caller(func, a, b, **query_params):
@@ -292,14 +297,15 @@ def caller(func, a, b, **query_params):
     # The differ's signature is a dependency injection scheme.
     sig = inspect.signature(func)
 
+    raise_if_binary = not query_params.get('ignore_decoding_errors', False)
     if 'a_text' in sig.parameters:
         query_params.setdefault(
             'a_text',
-            _decode_body(a, 'a'))
+            _decode_body(a, 'a', raise_if_binary=raise_if_binary))
     if 'b_text' in sig.parameters:
         query_params.setdefault(
             'b_text',
-            _decode_body(b, 'b'))
+            _decode_body(b, 'b', raise_if_binary=raise_if_binary))
 
     kwargs = dict()
     for name, param in sig.parameters.items():
