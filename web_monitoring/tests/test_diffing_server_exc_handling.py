@@ -154,7 +154,8 @@ class DiffingServerExceptionHandlingTest(DiffingServerTestCase):
 
     @patch('web_monitoring.diffing_server.access_control_allow_origin_header', '*')
     def test_check_cors_headers(self):
-        """Since we have set Access-Control-Allow-Origin: * on app init,
+        """
+        Since we have set Access-Control-Allow-Origin: * on app init,
         the response should have a list of HTTP headers required by CORS.
         Access-Control-Allow-Origin value equals request Origin header because
         we use setting `access_control_allow_origin_header='*'`.
@@ -171,7 +172,8 @@ class DiffingServerExceptionHandlingTest(DiffingServerTestCase):
     @patch('web_monitoring.diffing_server.access_control_allow_origin_header',
            'http://one.com,http://two.com,http://three.com')
     def test_cors_origin_header(self):
-        """The allowed origins is a list of URLs. If the request has HTTP
+        """
+        The allowed origins is a list of URLs. If the request has HTTP
         header `Origin` as one of them, the response `Access-Control-Allow-Origin`
         should have the same value. If not, there shouldn't be any such header
         at all.
