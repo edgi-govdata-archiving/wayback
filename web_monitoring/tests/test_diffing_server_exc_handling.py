@@ -1,10 +1,13 @@
 import json
+import mimetypes
 import os
+from pathlib import Path
 import re
 import tempfile
 from tornado.testing import AsyncHTTPTestCase
 from unittest.mock import patch
 import web_monitoring.diffing_server as df
+from web_monitoring.diff_errors import UndecodableContentError
 import web_monitoring
 from tornado.escape import utf8
 from tornado.httpclient import HTTPResponse, AsyncHTTPClient
@@ -185,9 +188,42 @@ class DiffingServerExceptionHandlingTest(DiffingServerTestCase):
                                        'Origin': 'http://two.com'})
         assert response.headers.get('Access-Control-Allow-Origin') == 'http://two.com'
 
+    def test_poorly_encoded_content(self):
+        response = mock_tornado_request('poorly_encoded_utf8.txt')
+        df._decode_body(response, 'a')
+
+    def test_undecodable_content(self):
+        response = mock_tornado_request('simple.pdf')
+        with self.assertRaises(UndecodableContentError):
+            df._decode_body(response, 'a')
+
+    def test_fetch_undecodable_content(self):
+        response = self.fetch('/html_source_dmp?format=json&'
+                              f'a=file://{fixture_path("poorly_encoded_utf8.txt")}&'
+                              f'b=file://{fixture_path("simple.pdf")}')
+        self.json_check(response)
+        assert response.code == 422
+
 
 def mock_diffing_method(c_body):
     return
+
+
+def fixture_path(fixture):
+    return Path(__file__).resolve().parent / 'fixtures' / fixture
+
+
+# TODO: merge this functionality in with MockAsyncHttpClient? It could have the
+# ability to serve a [fixture] file.
+def mock_tornado_request(fixture, headers=None):
+    path = fixture_path(fixture)
+    headers = headers or {}
+    if 'Content-Type' not in headers:
+        guess = mimetypes.guess_type(fixture)[0]
+        headers['Content-Type'] = guess or 'text/html; charset=UTF-8'
+    with open(path, 'rb') as f:
+        body = f.read()
+        return df.MockResponse(f'file://{path}', body, headers)
 
 
 # TODO: we may want to extract this to a support module
