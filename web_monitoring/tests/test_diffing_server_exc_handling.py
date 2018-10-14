@@ -1,4 +1,5 @@
 import json
+import mimetypes
 import os
 from pathlib import Path
 import re
@@ -188,11 +189,11 @@ class DiffingServerExceptionHandlingTest(DiffingServerTestCase):
         assert response.headers.get('Access-Control-Allow-Origin') == 'http://two.com'
 
     def test_poorly_encoded_content(self):
-        response = mock_tornado_request('poorly_encoded_utf8.txt', {'Content-Type': 'text/plain; charset=utf-8'})
+        response = mock_tornado_request('poorly_encoded_utf8.txt')
         df._decode_body(response, 'a')
 
     def test_undecodable_content(self):
-        response = mock_tornado_request('simple.pdf', {'Content-Type': 'application/pdf'})
+        response = mock_tornado_request('simple.pdf')
         with self.assertRaises(UndecodableContentError):
             df._decode_body(response, 'a')
 
@@ -212,11 +213,14 @@ def fixture_path(fixture):
     return Path(__file__).resolve().parent / 'fixtures' / fixture
 
 
+# TODO: merge this functionality in with MockAsyncHttpClient? It could have the
+# ability to serve a [fixture] file.
 def mock_tornado_request(fixture, headers=None):
     path = fixture_path(fixture)
     headers = headers or {}
     if 'Content-Type' not in headers:
-        headers['Content-Type'] = 'application/html; charset=UTF-8'
+        guess = mimetypes.guess_type(fixture)[0]
+        headers['Content-Type'] = guess or 'text/html; charset=UTF-8'
     with open(path, 'rb') as f:
         body = f.read()
         return df.MockResponse(f'file://{path}', body, headers)
