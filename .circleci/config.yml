@@ -24,7 +24,7 @@ jobs:
           key: processing-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "dev-requirements.txt" }}
           paths:
             - venv
-            
+
       - run:
           name: Tests
           command: |
@@ -66,7 +66,7 @@ workflows:
       - build:
           filters:
             branches:
-              ignore: master
+              ignore: release
 
   build-and-publish:
     jobs:
@@ -74,11 +74,7 @@ workflows:
           filters:
             branches:
               only:
-                - master
-      - hold:
-          type: approval
-          requires:
-            - build
+                - release
       - publish_docker:
           requires:
-            - hold
+            - build
