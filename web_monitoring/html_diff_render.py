@@ -14,7 +14,6 @@ For now, you can mentally divide this module into two sections:
    depends on some parts of the LXML module, but that could change. (The entry
    point for this is _htmldiff)
 """
-
 from bs4 import BeautifulSoup, Comment
 from collections import Counter, namedtuple
 import copy
