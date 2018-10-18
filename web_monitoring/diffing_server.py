@@ -156,7 +156,8 @@ class DiffHandler(BaseHandler):
                 if header_value:
                     headers[header_key] = header_value
 
-        fetched = yield [client.fetch(url, headers=headers, raise_error=False)
+        fetched = yield [client.fetch(url, headers=headers, raise_error=False,
+                                      validate_cert=False)
                          for url in to_fetch.values()]
         responses.update({param: response for param, response in
                           zip(to_fetch, fetched)})
