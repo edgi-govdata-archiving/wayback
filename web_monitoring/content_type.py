@@ -23,7 +23,7 @@ NON_HTML_PATTERN = re.compile(r'^[\s\n\r]*(%s)' % '|'.join((
 
 # Content Types that we know represent HTML
 ACCEPTABLE_CONTENT_TYPES = (
-    'appliction/html',
+    'application/html',
     'application/xhtml',
     'application/xhtml+xml',
     'application/xml',
