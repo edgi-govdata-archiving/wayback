@@ -72,6 +72,9 @@ class MockResponse:
 
 DEBUG_MODE = os.environ.get('DIFFING_SERVER_DEBUG', 'False').strip().lower() == 'true'
 
+VALIDATE_TARGET_CERTIFICATES = \
+    os.environ.get('VALIDATE_TARGET_CERTIFICATES', 'False').strip().lower() == 'true'
+
 access_control_allow_origin_header = \
     os.environ.get('ACCESS_CONTROL_ALLOW_ORIGIN_HEADER')
 
@@ -156,7 +159,8 @@ class DiffHandler(BaseHandler):
                 if header_value:
                     headers[header_key] = header_value
 
-        fetched = yield [client.fetch(url, headers=headers, raise_error=False)
+        fetched = yield [client.fetch(url, headers=headers, raise_error=False,
+                                      validate_cert=VALIDATE_TARGET_CERTIFICATES)
                          for url in to_fetch.values()]
         responses.update({param: response for param, response in
                           zip(to_fetch, fetched)})
