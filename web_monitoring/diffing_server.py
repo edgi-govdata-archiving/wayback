@@ -15,6 +15,8 @@ from web_monitoring.diff_errors import UndiffableContentError, UndecodableConten
 import web_monitoring.html_diff_render
 import web_monitoring.links_diff
 
+DIFFER_PARALLELISM = os.environ.get('DIFFER_PARALLELISM', 10)
+
 # Map tokens in the REST API to functions in modules.
 # The modules do not have to be part of the web_monitoring package.
 DIFF_ROUTES = {
@@ -188,7 +190,7 @@ class DiffHandler(BaseHandler):
         # TODO Add caching of fetched URIs.
 
         # Pass the bytes and any remaining args to the diffing function.
-        executor = concurrent.futures.ProcessPoolExecutor()
+        executor = self.settings['diff_executor']
         res = yield executor.submit(caller,
                                     func, responses['a'], responses['b'],
                                     **query_params)
@@ -351,7 +353,9 @@ def make_app():
         (r"/healthcheck", HealthCheckHandler),
         (r"/([A-Za-z0-9_]+)", BoundDiffHandler),
         (r"/", IndexHandler),
-    ], debug=DEBUG_MODE, compress_response=True)
+    ], debug=DEBUG_MODE, compress_response=True,
+       diff_executor=concurrent.futures.ProcessPoolExecutor(DIFFER_PARALLELISM))
+
 
 def start_app(port):
     app = make_app()
