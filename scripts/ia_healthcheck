@@ -7,7 +7,7 @@
 
 from datetime import datetime, timedelta
 import random
-import raven
+import sentry_sdk
 import sys
 from web_monitoring import db, internetarchive
 
@@ -15,9 +15,9 @@ from web_monitoring import db, internetarchive
 MAX_CAPTURE_AGE = timedelta(hours=72)
 LINKS_TO_CHECK = 10
 
-# Raven automatically instantiates using the `SENTRY_DSN` environment variable.
+# Sentry automatically instantiates with the `SENTRY_DSN` environment variable.
 # If not set, all its methods will operate conveniently as no-ops.
-sentry = raven.Client()
+sentry_sdk.init()
 
 
 def sample_monitored_urls(sample_size):
@@ -53,7 +53,8 @@ def wayback_has_captures(url, from_date=None):
     list of JSON
     """
     try:
-        versions = internetarchive.list_versions(url, from_date=from_date)
+        wayback = internetarchive.WaybackClient()
+        versions = wayback.list_versions(url, from_date=from_date)
         next(versions)
     except ValueError:
         return False
@@ -87,13 +88,13 @@ def output_results(statuses):
 
     if healthy_links + unhealthy_links == 0:
         print('Failed to sampled any pages!')
-        sentry.captureMessage('Failed to sampled any pages!')
+        sentry_sdk.capture_message('Failed to sampled any pages!')
     else:
         message = f'\nFound: {healthy_links} healthy links and {unhealthy_links} unhealthy links.'
         print(message)
         if unhealthy_links > 0:
             log_string = '\n'.join(logs)
-            sentry.captureMessage(f'{message}\n{log_string}')
+            sentry_sdk.capture_message(f'{message}\n{log_string}')
 
 
 if __name__ == "__main__":
@@ -107,6 +108,3 @@ if __name__ == "__main__":
         output_results(capture_statuses)
     except db.MissingCredentials as error:
         print(error, file=sys.stderr)
-    except Exception:
-        sentry.captureException()
-        raise
