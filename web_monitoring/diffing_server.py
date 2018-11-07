@@ -4,6 +4,7 @@ import hashlib
 import inspect
 import os
 import re
+import sentry_sdk
 import tornado.gen
 import tornado.httpclient
 import tornado.ioloop
@@ -14,6 +15,14 @@ import web_monitoring.differs
 from web_monitoring.diff_errors import UndiffableContentError, UndecodableContentError
 import web_monitoring.html_diff_render
 import web_monitoring.links_diff
+
+# Track errors with Sentry.io. It will automatically detect the `SENTRY_DSN`
+# environment variable. If not set, all its methods will operate conveniently
+# as no-ops.
+sentry_sdk.init(ignore_errors=[KeyboardInterrupt])
+# Tornado logs any non-success response at ERROR level, which Sentry captures
+# by default. We don't really want those logs.
+sentry_sdk.integrations.logging.ignore_logger('tornado.access')
 
 DIFFER_PARALLELISM = os.environ.get('DIFFER_PARALLELISM', 10)
 
@@ -232,10 +241,28 @@ class DiffHandler(BaseHandler):
         response = {'code': status_code, 'error': self._reason}
 
         # Handle errors that are allowed to be public
+        # TODO: this error filtering should probably be in `send_error()`
         actual_error = 'exc_info' in kwargs and kwargs['exc_info'][1] or None
         if isinstance(actual_error, (UndiffableContentError, UndecodableContentError)):
             response['code'] = 422
             response['error'] = str(actual_error)
+
+        # Pass non-raised (i.e. we manually called `send_error()`), non-user
+        # errors to Sentry.io.
+        if actual_error is None and response['code'] >= 500:
+            # TODO: this breadcrumb should happen at the start of the request
+            # handler, but we need to test and make sure crumbs are properly
+            # attached to *this* HTTP request and don't bleed over to others,
+            # since Sentry's special support for Tornado has been dropped.
+            headers = dict(self.request.headers)
+            if 'Authorization' in headers:
+                headers['Authorization'] = '[removed]'
+            sentry_sdk.add_breadcrumb(category='request', data={
+                'url': self.request.full_url(),
+                'method': self.request.method,
+                'headers': headers,
+            })
+            sentry_sdk.capture_message(f'{self._reason} (status: {response["code"]})')
 
         # Fill in full info if configured to do so
         if self.settings.get('serve_traceback') and 'exc_info' in kwargs:
