@@ -299,10 +299,13 @@ def html_diff_render(a_text, b_text, a_headers=None, b_headers=None,
 
         color_palette = get_color_palette()
         change_styles.string = f'''
-            ins, ins > * {{text-decoration: none; background-color:
-                {color_palette['differ_insertion']};}}
-            del, del > * {{text-decoration: none; background-color:
-                {color_palette['differ_deletion']};}}'''
+            ins.wm-diff, ins.wm-diff > * {{background-color:
+                {color_palette['differ_insertion']} !important;
+                all: unset;}}
+            del.wm-diff, del.wm-diff > * {{background-color:
+                {color_palette['differ_deletion']} !important;
+                all: unset;}}
+            script {{display: none !important;}}'''
         soup.head.append(change_styles)
 
         soup.body.replace_with(diff_body)
@@ -351,9 +354,9 @@ def _html_for_dmp_operation(operation):
     "Convert a diff-match-patch operation to an HTML string."
     html_value = html.escape(operation[1])
     if operation[0] == -1:
-        return f'<del>{html_value}</del>'
+        return f'<del class="wm-diff">{html_value}</del>'
     elif operation[0] == 1:
-        return f'<ins>{html_value}</ins>'
+        return f'<ins class="wm-diff">{html_value}</ins>'
     else:
         return html_value
 
@@ -1118,7 +1121,7 @@ def merge_changes(change_chunks, doc, tag_type='ins'):
 
                             doc.append(f'</{tag_type}>')
                             doc.append(chunk)
-                            doc.append(f'<{tag_type}>')
+                            doc.append(f'<{tag_type} class="wm-diff">')
 
                             # other side of the malformed document case from above
                             current_content.reverse()
@@ -1144,7 +1147,7 @@ def merge_changes(change_chunks, doc, tag_type='ins'):
                     inline_tag_name = name
 
         if depth == 0:
-            doc.append(f'<{tag_type}>')
+            doc.append(f'<{tag_type} class="wm-diff">')
             depth += 1
             current_content = []
 
@@ -1389,7 +1392,7 @@ def merge_change_groups(change_chunks, doc, tag_type=None):
                             # doc.append(group)
                             # <end> not sure if we should break the group
                             if tag_type:
-                                group.append(f'<{tag_type}>')
+                                group.append(f'<{tag_type} class="wm-diff">')
 
                             # other side of the malformed document case from above
                             current_content.reverse()
@@ -1420,7 +1423,7 @@ def merge_change_groups(change_chunks, doc, tag_type=None):
             group = []
             doc.append(group)
             if tag_type:
-                group.append(f'<{tag_type}>')
+                group.append(f'<{tag_type} class="wm-diff">')
             depth += 1
             current_content = []
 
@@ -1582,7 +1585,7 @@ def reconcile_change_groups(insert_groups, delete_groups, document):
             # if we have a hanging delete buffer (with content, not just HTML
             # DOM structure), clean it up and insert it before moving on.
             # FIXME: this should not look explicitly for `<del>`
-            if '<del>' in delete_buffer:
+            if '<del class="wm-diff">' in delete_buffer:
                 for tag in delete_tag_stack:
                     delete_buffer.append(f'</{tag[0]}>')
                 document.extend(delete_buffer)
@@ -1627,7 +1630,7 @@ def reconcile_change_groups(insert_groups, delete_groups, document):
     # Add any hanging buffer of deletes that never got completed, but only if
     # it has salient changes in it.
     # FIXME: this should not look explicitly for `<del>`
-    if '<del>' in delete_buffer:
+    if '<del class="wm-diff">' in delete_buffer:
         for tag in delete_tag_stack:
             delete_buffer.append(f'</{tag[0]}>')
         document.extend(delete_buffer)

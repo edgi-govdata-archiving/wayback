@@ -125,10 +125,11 @@ def links_diff_html(a_text, b_text, a_headers=None, b_headers=None,
             background-color: {color_palette['differ_insertion']};}}
         [wm-deleted] > td  {{
             background-color: {color_palette['differ_deletion']};}}
-        ins {{ text-decoration: none;
-            background-color: {color_palette['differ_insertion']};}}
-        del {{ text-decoration: none;
-            background-color: {color_palette['differ_deletion']};}}"""
+        ins.wm-diff {{ background-color: {color_palette['differ_insertion']}
+        !important; all: unset;}}
+        del.wm-diff {{ background-color: {color_palette['differ_deletion']}
+        !important; all: unset;}}
+        script {{display: none !important;}}"""
 
     soup.head.append(change_styles)
     soup.title.string = get_title(diff['b_parsed'])
