@@ -187,18 +187,46 @@ class DiffHandler(BaseHandler):
                         500, reason='Fetched content does not match hash.')
                     return
 
-        # TODO Add caching of fetched URIs.
+        # TODO: Add caching of fetched URIs.
 
         # Pass the bytes and any remaining args to the diffing function.
-        executor = self.settings['diff_executor']
-        res = yield executor.submit(caller,
-                                    func, responses['a'], responses['b'],
-                                    **query_params)
+        res = yield self.diff(func, responses['a'], responses['b'],
+                              query_params)
         res['version'] = web_monitoring.__version__
         # Echo the client's request unless the differ func has specified
         # somethine else.
         res.setdefault('type', differ)
         self.write(res)
+
+    @tornado.gen.coroutine
+    def diff(self, func, a, b, params, tries=2):
+        """
+        Actually do a diff between two pieces of content, optionally retrying
+        if the process pool that executes the diff breaks.
+        """
+        executor = self.get_diff_executor()
+        for attempt in range(tries):
+            try:
+                result = yield executor.submit(caller, func, a, b, **params)
+                raise tornado.gen.Return(result)
+            except concurrent.futures.process.BrokenProcessPool:
+                executor = self.get_diff_executor(reset=True)
+
+    # NOTE: this doesn't do anything async, but if we change it to do so, we
+    # need to add a lock (either asyncio.Lock or tornado.locks.Lock).
+    def get_diff_executor(self, reset=False):
+        executor = self.settings.get('diff_executor')
+        if reset or not executor:
+            if executor:
+                try:
+                    executor.shutdown(wait=False)
+                except Exception:
+                    pass
+            executor = concurrent.futures.ProcessPoolExecutor(
+                DIFFER_PARALLELISM)
+            self.settings['diff_executor'] = executor
+
+        return executor
 
     def write_error(self, status_code, **kwargs):
         response = {'code': status_code, 'error': self._reason}
@@ -354,7 +382,7 @@ def make_app():
         (r"/([A-Za-z0-9_]+)", BoundDiffHandler),
         (r"/", IndexHandler),
     ], debug=DEBUG_MODE, compress_response=True,
-       diff_executor=concurrent.futures.ProcessPoolExecutor(DIFFER_PARALLELISM))
+       diff_executor=None)
 
 
 def start_app(port):
