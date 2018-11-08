@@ -208,6 +208,12 @@ class DiffingServerExceptionHandlingTest(DiffingServerTestCase):
         response = mock_tornado_request('unknown_encoding.html')
         df._decode_body(response, 'a')
 
+    def test_diff_content_with_null_bytes(self):
+        response = self.fetch('/html_source_dmp?format=json&'
+                              f'a=file://{fixture_path("has_null_byte.txt")}&'
+                              f'b=file://{fixture_path("has_null_byte.txt")}')
+        assert response.code == 200
+
 
 def mock_diffing_method(c_body):
     return

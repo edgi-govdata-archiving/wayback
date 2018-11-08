@@ -325,6 +325,10 @@ def _decode_body(response, name, raise_if_binary=True):
         # If the encoding we found isn't known, fall back to ascii
         text = response.body.decode('ascii', errors='replace')
 
+    # Replace null terminators; some differs (especially those written in C)
+    # don't handle them well in the middle of a string.
+    text = text.replace('\u0000', '\ufffd')
+
     # If a significantly large portion of the document was totally undecodable,
     # it's likely this wasn't text at all, but binary data.
     if raise_if_binary and text.count('\ufffd') / len(text) > 0.25:
