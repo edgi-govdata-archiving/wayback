@@ -188,6 +188,10 @@ class DiffingServerExceptionHandlingTest(DiffingServerTestCase):
                                        'Origin': 'http://two.com'})
         assert response.headers.get('Access-Control-Allow-Origin') == 'http://two.com'
 
+    def test_decode_empty_bodies(self):
+        response = mock_tornado_request('empty.txt')
+        df._decode_body(response, 'a')
+
     def test_poorly_encoded_content(self):
         response = mock_tornado_request('poorly_encoded_utf8.txt')
         df._decode_body(response, 'a')
@@ -203,6 +207,16 @@ class DiffingServerExceptionHandlingTest(DiffingServerTestCase):
                               f'b=file://{fixture_path("simple.pdf")}')
         self.json_check(response)
         assert response.code == 422
+
+    def test_treats_unknown_encoding_as_ascii(self):
+        response = mock_tornado_request('unknown_encoding.html')
+        df._decode_body(response, 'a')
+
+    def test_diff_content_with_null_bytes(self):
+        response = self.fetch('/html_source_dmp?format=json&'
+                              f'a=file://{fixture_path("has_null_byte.txt")}&'
+                              f'b=file://{fixture_path("has_null_byte.txt")}')
+        assert response.code == 200
 
 
 def mock_diffing_method(c_body):

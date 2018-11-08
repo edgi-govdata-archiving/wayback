@@ -307,16 +307,37 @@ def _extract_encoding(headers, content):
         prolog_match = XML_PROLOG_PATTERN.search(content, endpos=2048)
         if prolog_match:
             encoding = prolog_match.group(1).decode('ascii', errors='ignore')
+    # Handle common mistakes and errors in encoding names
+    if encoding == 'iso-8559-1':
+        encoding = 'iso-8859-1'
+    # Windows-1252 is so commonly mislabeled, WHATWG recommends assuming it's a
+    # mistake: https://encoding.spec.whatwg.org/#names-and-labels
+    if encoding == 'iso-8859-1' and 'html' in content_type:
+        encoding = 'windows-1252'
     return encoding
 
 
 def _decode_body(response, name, raise_if_binary=True):
     encoding = _extract_encoding(response.headers, response.body) or 'UTF-8'
-    text = response.body.decode(encoding, errors='replace')
+    try:
+        text = response.body.decode(encoding, errors='replace')
+    except LookupError:
+        # If the encoding we found isn't known, fall back to ascii
+        text = response.body.decode('ascii', errors='replace')
+
+    text_length = len(text)
+    if text_length == 0:
+        return text
+
+    # Replace null terminators; some differs (especially those written in C)
+    # don't handle them well in the middle of a string.
+    text = text.replace('\u0000', '\ufffd')
+
     # If a significantly large portion of the document was totally undecodable,
     # it's likely this wasn't text at all, but binary data.
-    if raise_if_binary and text.count('\ufffd') / len(text) > 0.25:
+    if raise_if_binary and text.count('\ufffd') / text_length > 0.25:
         raise UndecodableContentError(f'The response body of `{name}` could not be decoded as {encoding}.')
+
     return text
 
 
