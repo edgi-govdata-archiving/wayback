@@ -188,6 +188,10 @@ class DiffingServerExceptionHandlingTest(DiffingServerTestCase):
                                        'Origin': 'http://two.com'})
         assert response.headers.get('Access-Control-Allow-Origin') == 'http://two.com'
 
+    def test_decode_empty_bodies(self):
+        response = mock_tornado_request('empty.txt')
+        df._decode_body(response, 'a')
+
     def test_poorly_encoded_content(self):
         response = mock_tornado_request('poorly_encoded_utf8.txt')
         df._decode_body(response, 'a')
