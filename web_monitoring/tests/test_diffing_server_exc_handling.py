@@ -204,6 +204,10 @@ class DiffingServerExceptionHandlingTest(DiffingServerTestCase):
         self.json_check(response)
         assert response.code == 422
 
+    def test_treats_unknown_encoding_as_ascii(self):
+        response = mock_tornado_request('unknown_encoding.html')
+        df._decode_body(response, 'a')
+
 
 def mock_diffing_method(c_body):
     return
