@@ -1,4 +1,4 @@
-coverage ~=4.5.1
+coverage ~=4.5.2
 doctr ~=1.7.4
 pyflakes ~=2.0.0
 pytest ~=3.10.1
