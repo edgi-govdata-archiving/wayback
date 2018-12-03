@@ -81,6 +81,10 @@ def test_list_pages():
     res = cli.list_pages(maintainers=[AGENCY])
     assert len(res['data']) > 0
 
+    # Test relations
+    res = cli.list_pages(include_latest=True)
+    assert all(['latest' in page for page in res['data']]) == True
+
 
 @db_vcr.use_cassette()
 def test_get_page():

@@ -202,6 +202,7 @@ Alternatively, you can instaniate Client(user, password) directly.""")
                   'url': url,
                   'title': title,
                   'include_versions': include_versions,
+                  'include_latest': include_latest,
                   'source_type': source_type,
                   'hash': hash,
                   'capture_time': _time_range_string(start_date, end_date)}
