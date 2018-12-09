@@ -168,7 +168,7 @@ Alternatively, you can instaniate Client(user, password) directly.""")
                    tags=None, maintainers=None, url=None, title=None,
                    include_versions=None, include_earliest=None,
                    include_latest=None, source_type=None, hash=None,
-                   start_date=None, end_date=None):
+                   start_date=None, end_date=None, active=None):
         """
         List all Pages, optionally filtered by search criteria.
 
@@ -191,6 +191,7 @@ Alternatively, you can instaniate Client(user, password) directly.""")
             SHA256 hash of Version content
         start_date : datetime, optional
         end_date : datetime, optional
+        active : boolean, optional
 
         Returns
         -------
@@ -207,7 +208,8 @@ Alternatively, you can instaniate Client(user, password) directly.""")
                   'include_latest': include_latest,
                   'source_type': source_type,
                   'hash': hash,
-                  'capture_time': _time_range_string(start_date, end_date)}
+                  'capture_time': _time_range_string(start_date, end_date),
+                  'active': active}
         url = f'{self._api_url}/pages'
         res = requests.get(url, auth=self._auth, params=params)
         _process_errors(res)
