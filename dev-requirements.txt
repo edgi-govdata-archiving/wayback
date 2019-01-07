@@ -1,7 +1,7 @@
 coverage ~=4.5.2
 doctr ~=1.7.4
 pyflakes ~=2.0.0
-pytest ~=4.0.2
+pytest ~=4.1.0
 vcrpy ~=2.0.1
 doctr ~=1.7.4
 ipython ~=6.5.0
