@@ -1,6 +1,6 @@
 coverage ~=4.5.2
 doctr ~=1.7.4
-pyflakes ~=2.0.0
+pyflakes ~=2.1.0
 pytest ~=4.1.1
 vcrpy ~=2.0.1
 doctr ~=1.7.4
