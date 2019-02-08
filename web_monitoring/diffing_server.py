@@ -115,14 +115,24 @@ class BaseHandler(tornado.web.RequestHandler):
 class DiffHandler(BaseHandler):
     # subclass must define `differs` attribute
 
-    # Compute our own etags.
+    # Compute our own ETag header values.
+    # We're not actually hashing content for this, since that is expensive.
     def compute_etag(self):
         query_params = {k: v[-1].decode() for k, v in
             self.request.arguments.items()}
-        etag = str('"' + hashlib.sha256(
+        etag = str('W/"' + hashlib.sha256(
             web_monitoring.__version__.encode('utf-8') + self.request.path.encode('utf-8') + str(query_params).encode('utf-8')
         ).hexdigest() + '"').encode('utf-8')
         return etag
+
+    def head(self, differ):
+
+        self.set_etag_header()
+        if self.check_etag_header():
+            self.set_status(304)
+            self.finish()
+            return
+
 
     @tornado.gen.coroutine
     def get(self, differ):
