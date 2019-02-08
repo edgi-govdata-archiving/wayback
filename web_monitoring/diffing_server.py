@@ -92,15 +92,6 @@ access_control_allow_origin_header = \
 class BaseHandler(tornado.web.RequestHandler):
 
     def set_default_headers(self):
-        # Set Etag header if possible.
-        try:
-            etag = hashlib.sha256(
-                web_monitoring.__version__.encode('utf-8') + self.request.path.encode('utf-8') + str(query_params).encode('utf-8')
-            ).hexdigest().encode('utf-8')
-            self.set_header('Etag', etag)
-        except NameError:
-            pass
-
         if access_control_allow_origin_header is not None:
             if 'allowed_origins' not in self.settings:
                 self.settings['allowed_origins'] = \
@@ -124,8 +115,25 @@ class BaseHandler(tornado.web.RequestHandler):
 class DiffHandler(BaseHandler):
     # subclass must define `differs` attribute
 
+    # Compute our own etags.
+    def compute_etag(self):
+        query_params = {k: v[-1].decode() for k, v in
+            self.request.arguments.items()}
+        etag = str('"' + hashlib.sha256(
+            web_monitoring.__version__.encode('utf-8') + self.request.path.encode('utf-8') + str(query_params).encode('utf-8')
+        ).hexdigest() + '"').encode('utf-8')
+        return etag
+
     @tornado.gen.coroutine
     def get(self, differ):
+
+        # Skip a whole bunch of work if possible.
+        self.set_etag_header()
+        if self.check_etag_header():
+            self.set_status(304)
+            self.finish()
+            return
+
         # Find the diffing function registered with the name given by `differ`.
         try:
             func = self.differs[differ]
