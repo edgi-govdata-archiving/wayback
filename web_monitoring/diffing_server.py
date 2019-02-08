@@ -92,6 +92,15 @@ access_control_allow_origin_header = \
 class BaseHandler(tornado.web.RequestHandler):
 
     def set_default_headers(self):
+        # Set Etag header if possible.
+        try:
+            etag = hashlib.sha256(
+                web_monitoring.__version__.encode('utf-8') + self.request.path.encode('utf-8') + str(query_params).encode('utf-8')
+            ).hexdigest().encode('utf-8')
+            self.set_header('Etag', etag)
+        except NameError:
+            pass
+
         if access_control_allow_origin_header is not None:
             if 'allowed_origins' not in self.settings:
                 self.settings['allowed_origins'] = \
