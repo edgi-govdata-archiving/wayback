@@ -52,6 +52,29 @@ class DiffingServerLocalHandlingTest(DiffingServerTestCase):
                 self.assertEqual(response.code, 200)
 
 
+class DiffingServerEtagTest(DiffingServerTestCase):
+    def test_etag_header(self):
+        with tempfile.NamedTemporaryFile() as a:
+            with tempfile.NamedTemporaryFile() as b:
+                cold_response = self.fetch('/html_token?format=json&include=all&'
+                        f'a=file://{a.name}&b=file://{b.name}')
+                self.assertEqual(cold_response.code, 200)
+
+                etag = cold_response.headers.get('Etag')
+
+                warm_response = self.fetch('/html_token?format=json&include=all&'
+                        f'a=file://{a.name}&b=file://{b.name}',
+                                           headers={'If-None-Match': etag,
+                                           'Accept': 'application/json'})
+                self.assertEqual(warm_response.code, 304)
+
+                mismatch_response = self.fetch('/html_token?format=json&include=all&'
+                        f'a=file://{a.name}&b=file://{b.name}',
+                                           headers={'If-None-Match': 'Stale Value',
+                                           'Accept': 'application/json'})
+                self.assertEqual(mismatch_response.code, 200)
+
+
 class DiffingServerHealthCheckHandlingTest(DiffingServerTestCase):
 
     def test_healthcheck(self):
