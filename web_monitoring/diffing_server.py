@@ -2,6 +2,7 @@ import concurrent.futures
 from docopt import docopt
 import hashlib
 import inspect
+import functools
 import os
 import re
 import sentry_sdk
@@ -115,14 +116,26 @@ class BaseHandler(tornado.web.RequestHandler):
 class DiffHandler(BaseHandler):
     # subclass must define `differs` attribute
 
-    # Compute our own ETag header values.
-    # We're not actually hashing content for this, since that is expensive.
-    def compute_etag(self):
+    # If query parameters repeat, take last one.
+    # Decode clean query parameters into unicode strings and cache the results.
+    @functools.lru_cache()
+    def decode_query_params(self):
         query_params = {k: v[-1].decode() for k, v in
-            self.request.arguments.items()}
-        etag = str('W/"' + hashlib.sha256(
-            web_monitoring.__version__.encode('utf-8') + self.request.path.encode('utf-8') + str(query_params).encode('utf-8')
-        ).hexdigest() + '"').encode('utf-8')
+                        self.request.arguments.items()}
+        return query_params
+
+    # Compute our own ETag header values.
+    def compute_etag(self):
+        # We're not actually hashing content for this, since that is expensive.
+        validation_bytes = str(
+            web_monitoring.__version__
+            + self.request.path
+            + str(self.decode_query_params())
+        ).encode('utf-8')
+
+        # Uses the "weak validation" directive since we don't guarantee that future
+        # responses for the same diff will be byte-for-byte identical.
+        etag = str('W/"' + web_monitoring.utils.hash_content(validation_bytes) + '"').encode('utf-8')
         return etag
 
     def head(self, differ):
@@ -155,9 +168,7 @@ class DiffHandler(BaseHandler):
                                    f'the `/` endpoint.')
             return
 
-        # If params repeat, take last one. Decode bytes into unicode strings.
-        query_params = {k: v[-1].decode() for k, v in
-                        self.request.arguments.items()}
+        query_params = self.decode_query_params()
         # The logic here is a bit tortured in order to allow one or both URLs
         # to be local files, while still optimizing the common case of two
         # remote URLs that we want to fetch in parallel.
