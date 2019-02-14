@@ -138,15 +138,6 @@ class DiffHandler(BaseHandler):
         etag = f'W/"{web_monitoring.utils.hash_content(validation_bytes)}"'
         return etag
 
-    def head(self, differ):
-
-        self.set_etag_header()
-        if self.check_etag_header():
-            self.set_status(304)
-            self.finish()
-            return
-
-
     @tornado.gen.coroutine
     def get(self, differ):
 
