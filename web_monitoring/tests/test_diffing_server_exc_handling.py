@@ -231,7 +231,6 @@ class DiffingServerExceptionHandlingTest(DiffingServerTestCase):
         response = mock_tornado_request('simple.pdf')
         with self.assertRaises(UndecodableContentError):
             df._decode_body(response, 'a')
-        self.assertFalse(response.headers.get('Etag'))
 
     def test_fetch_undecodable_content(self):
         response = self.fetch('/html_source_dmp?format=json&'
