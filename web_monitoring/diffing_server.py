@@ -135,7 +135,7 @@ class DiffHandler(BaseHandler):
 
         # Uses the "weak validation" directive since we don't guarantee that future
         # responses for the same diff will be byte-for-byte identical.
-        etag = str('W/"' + web_monitoring.utils.hash_content(validation_bytes) + '"').encode('utf-8')
+        etag = f'W/"{web_monitoring.utils.hash_content(validation_bytes)}"'
         return etag
 
     def head(self, differ):
