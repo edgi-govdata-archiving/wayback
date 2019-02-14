@@ -53,7 +53,7 @@ class DiffingServerLocalHandlingTest(DiffingServerTestCase):
 
 
 class DiffingServerEtagTest(DiffingServerTestCase):
-    def test_etag_header(self):
+    def test_etag_validation(self):
         with tempfile.NamedTemporaryFile() as a:
             with tempfile.NamedTemporaryFile() as b:
                 cold_response = self.fetch('/html_token?format=json&include=all&'
@@ -129,42 +129,49 @@ class DiffingServerExceptionHandlingTest(DiffingServerTestCase):
                               'a=example.org&b=https://example.org')
         self.json_check(response)
         self.assertEqual(response.code, 400)
+        self.assertFalse(response.headers.get('Etag'))
 
     def test_invalid_url_b_format(self):
         response = self.fetch('/html_token?format=json&include=all&'
                               'a=https://example.org&b=example.org')
         self.json_check(response)
         self.assertEqual(response.code, 400)
+        self.assertFalse(response.headers.get('Etag'))
 
     def test_invalid_diffing_method(self):
         response = self.fetch('/non_existing?format=json&include=all&'
                               'a=example.org&b=https://example.org')
         self.json_check(response)
         self.assertEqual(response.code, 404)
+        self.assertFalse(response.headers.get('Etag'))
 
     def test_missing_url_a(self):
         response = self.fetch('/html_token?format=json&include=all&'
                               'b=https://example.org')
         self.json_check(response)
         self.assertEqual(response.code, 400)
+        self.assertFalse(response.headers.get('Etag'))
 
     def test_missing_url_b(self):
         response = self.fetch('/html_token?format=json&include=all&'
                               'a=https://example.org')
         self.json_check(response)
         self.assertEqual(response.code, 400)
+        self.assertFalse(response.headers.get('Etag'))
 
     def test_not_reachable_url_a(self):
         response = self.fetch('/html_token?format=json&include=all&'
                               'a=https://eeexample.org&b=https://example.org')
         self.json_check(response)
         self.assertEqual(response.code, 400)
+        self.assertFalse(response.headers.get('Etag'))
 
     def test_not_reachable_url_b(self):
         response = self.fetch('/html_token?format=json&include=all&'
                               'a=https://example.org&b=https://eeexample.org')
         self.json_check(response)
         self.assertEqual(response.code, 400)
+        self.assertFalse(response.headers.get('Etag'))
 
     def test_missing_params_caller_func(self):
         response = self.fetch('http://example.org/')
@@ -176,6 +183,7 @@ class DiffingServerExceptionHandlingTest(DiffingServerTestCase):
                               '&a=http://httpstat.us/404'
                               '&b=https://example.org')
         self.assertEqual(response.code, 404)
+        self.assertFalse(response.headers.get('Etag'))
         self.json_check(response)
 
     @patch('web_monitoring.diffing_server.access_control_allow_origin_header', '*')
@@ -223,6 +231,7 @@ class DiffingServerExceptionHandlingTest(DiffingServerTestCase):
         response = mock_tornado_request('simple.pdf')
         with self.assertRaises(UndecodableContentError):
             df._decode_body(response, 'a')
+        self.assertFalse(response.headers.get('Etag'))
 
     def test_fetch_undecodable_content(self):
         response = self.fetch('/html_source_dmp?format=json&'
@@ -230,6 +239,7 @@ class DiffingServerExceptionHandlingTest(DiffingServerTestCase):
                               f'b=file://{fixture_path("simple.pdf")}')
         self.json_check(response)
         assert response.code == 422
+        self.assertFalse(response.headers.get('Etag'))
 
     def test_treats_unknown_encoding_as_ascii(self):
         response = mock_tornado_request('unknown_encoding.html')
