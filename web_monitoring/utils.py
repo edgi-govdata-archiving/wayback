@@ -118,7 +118,7 @@ def get_color_palette():
         A dictionary containing the differ_insertion and differ_deletion css
         color codes
     """
-    differ_insertion = os.environ.get('DIFFER_COLOR_INSERTION', '#4dac26')
-    differ_deletion = os.environ.get('DIFFER_COLOR_DELETION', '#d01c8b')
+    differ_insertion = os.environ.get('DIFFER_COLOR_INSERTION', '#a1d76a')
+    differ_deletion = os.environ.get('DIFFER_COLOR_DELETION', '#e8a4c8')
     return {'differ_insertion': differ_insertion,
             'differ_deletion': differ_deletion}
