@@ -7,7 +7,7 @@ git+https://github.com/anastasia/htmldiffer@develop
 git+https://github.com/danielballan/htmltreediff@customize
 lxml ~=4.3.3
 pandas ~=0.24.2
-sentry-sdk ~=0.7.10
+sentry-sdk ~=0.7.12
 requests ~=2.21.0
 toolz ~=0.9.0
 tornado ~=5.1
