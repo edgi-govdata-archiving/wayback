@@ -11,5 +11,5 @@ sentry-sdk ~=0.8.0
 requests ~=2.21.0
 toolz ~=0.9.0
 tornado ~=5.1
-tqdm ~=4.31.1
+tqdm ~=4.32.1
 tzlocal ~=1.5
