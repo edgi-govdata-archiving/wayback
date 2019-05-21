@@ -16,6 +16,7 @@ For now, you can mentally divide this module into two sections:
 """
 from bs4 import BeautifulSoup, Comment
 from collections import Counter, namedtuple
+from functools import lru_cache
 import copy
 import difflib
 from web_monitoring.utils import get_color_palette
@@ -1453,6 +1454,16 @@ def merge_change_groups(change_chunks, doc, tag_type=None):
 
 TagInfo = namedtuple('TagInfo', ('name', 'open', 'source'))
 
+@lru_cache(maxsize=1024)
+def tag_info(tag_text):
+    """
+    Read text like `<span>` and return a `TagInfo` named tuple or None if not
+    a tag.
+    """
+    if not tag_text.startswith('<'):
+        return None
+    name = tag_text.split()[0].strip('<>/')
+    return TagInfo(name, not tag_text.startswith('</'), tag_text)
 
 # TODO: rewrite this in a way that doesn't mutate the input?
 def reconcile_change_groups(insert_groups, delete_groups, document):
@@ -1489,12 +1500,6 @@ def reconcile_change_groups(insert_groups, delete_groups, document):
     insert_buffer = []
     delete_buffer = []
     buffer = document
-
-    def tag_info(token):
-        if not token.startswith('<'):
-            return None
-        name = token.split()[0].strip('<>/')
-        return TagInfo(name, not token.startswith('</'), token)
 
     while True:
         insertion = insert_index < insert_count and insert_groups[insert_index] or None
