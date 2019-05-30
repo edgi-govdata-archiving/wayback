@@ -1,3 +1,4 @@
+import codecs
 import concurrent.futures
 from docopt import docopt
 import hashlib
@@ -5,6 +6,7 @@ import inspect
 import functools
 import os
 import re
+import cchardet
 import sentry_sdk
 import tornado.gen
 import tornado.httpclient
@@ -325,7 +327,7 @@ class DiffHandler(BaseHandler):
 
 def _extract_encoding(headers, content):
     encoding = None
-    content_type = headers.get('Content-Type', '')
+    content_type = headers.get('Content-Type', '').lower()
     if 'charset=' in content_type:
         encoding = content_type.split('charset=')[-1]
     if not encoding:
@@ -336,6 +338,19 @@ def _extract_encoding(headers, content):
         prolog_match = XML_PROLOG_PATTERN.search(content, endpos=2048)
         if prolog_match:
             encoding = prolog_match.group(1).decode('ascii', errors='ignore')
+    if encoding:
+        encoding = encoding.strip()
+    if not encoding and content:
+        # try to identify encoding using cchardet. Use up to 18kb of the
+        # content for detection. Its not necessary to use the full content
+        # as it could be huge. Also, if you use too little, detection is not
+        # accurate.
+        detected = cchardet.detect(content[:18432])
+        if detected:
+            detected_encoding = detected.get('encoding')
+            if detected_encoding:
+                encoding = detected_encoding.lower()
+
     # Handle common mistakes and errors in encoding names
     if encoding == 'iso-8559-1':
         encoding = 'iso-8859-1'
@@ -343,17 +358,17 @@ def _extract_encoding(headers, content):
     # mistake: https://encoding.spec.whatwg.org/#names-and-labels
     if encoding == 'iso-8859-1' and 'html' in content_type:
         encoding = 'windows-1252'
+    # Check if the selected encoding is known. If not, fallback to default.
+    try:
+        codecs.lookup(encoding)
+    except (LookupError, ValueError, TypeError):
+        encoding = 'utf-8'
     return encoding
 
 
 def _decode_body(response, name, raise_if_binary=True):
-    encoding = _extract_encoding(response.headers, response.body) or 'UTF-8'
-    try:
-        text = response.body.decode(encoding, errors='replace')
-    except LookupError:
-        # If the encoding we found isn't known, fall back to ascii
-        text = response.body.decode('ascii', errors='replace')
-
+    encoding = _extract_encoding(response.headers, response.body)
+    text = response.body.decode(encoding, errors='replace')
     text_length = len(text)
     if text_length == 0:
         return text

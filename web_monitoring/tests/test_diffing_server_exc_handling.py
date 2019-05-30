@@ -244,6 +244,23 @@ class DiffingServerExceptionHandlingTest(DiffingServerTestCase):
         response = mock_tornado_request('unknown_encoding.html')
         df._decode_body(response, 'a')
 
+    def test_extract_encoding_bad_headers(self):
+        headers = {'Content-Type': '  text/html; charset=iso-8859-7'}
+        assert df._extract_encoding(headers, b'') == 'iso-8859-7'
+        headers = {'Content-Type': 'text/xhtml;CHARSET=iso-8859-5 '}
+        assert df._extract_encoding(headers, b'') == 'iso-8859-5'
+        headers = {'Content-Type': '\x94Invalid\x0b'}
+        assert df._extract_encoding(headers, b'') == 'utf-8'
+
+    def test_extract_encoding_from_body(self):
+        # Polish content without any content-type headers or meta tag.
+        headers = {}
+        body = """<html><head><title>TITLE</title></head>
+        <i>czyli co zrobić aby zobaczyć w tekstach polskie litery.</i>
+        Obowiązku czytania nie ma, ale wiele może wyjaśnić.
+        <body></body>""".encode('iso-8859-2')
+        assert df._extract_encoding(headers, body) == 'iso-8859-2'
+
     def test_diff_content_with_null_bytes(self):
         response = self.fetch('/html_source_dmp?format=json&'
                               f'a=file://{fixture_path("has_null_byte.txt")}&'
