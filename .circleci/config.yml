@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/web-monitoring-processing
     docker:
-      - image: circleci/python:3.6
+      - image: circleci/python:3.7
     steps:
       - checkout
       - restore_cache:
