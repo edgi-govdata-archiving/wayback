@@ -108,6 +108,12 @@ def test_list_versions():
     res = cli.list_versions()
     assert res['data']
 
+    # Test relations
+    res = cli.list_versions(include_change_from_previous=True)
+    assert all(['change_from_previous' in item for item in res['data']]) is True
+    res = cli.list_versions(include_change_from_earliest=True)
+    assert all(['change_from_earliest' in item for item in res['data']]) is True
+
 
 @db_vcr.use_cassette()
 def test_get_version():
@@ -115,6 +121,12 @@ def test_get_version():
     res = cli.get_version(TO_VERSION_ID)
     assert res['data']['uuid'] == TO_VERSION_ID
     assert res['data']['page_uuid'] == PAGE_ID
+
+    # Test relations
+    res = cli.get_version(TO_VERSION_ID, include_change_from_previous=True,
+                          include_change_from_earliest=True)
+    assert 'change_from_previous' in res['data']
+    assert 'change_from_earliest' in res['data']
 
 
 @db_vcr.use_cassette()
