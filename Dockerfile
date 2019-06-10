@@ -3,7 +3,7 @@ FROM python:3.7-slim
 MAINTAINER enviroDGI@gmail.com
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    git gcc g++
+    git gcc g++ pkg-config libxml2-dev libxslt-dev
 
 # Set the working directory to /app
 WORKDIR /app
