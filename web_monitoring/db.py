@@ -272,7 +272,9 @@ Alternatively, you can instaniate Client(user, password) directly.""")
     def list_versions(self, *, page_id=None, chunk=None, chunk_size=None,
                       start_date=None, end_date=None,
                       source_type=None, hash=None,
-                      source_metadata=None):
+                      source_metadata=None, different=None,
+                      include_change_from_previous=None,
+                      include_change_from_earliest=None):
         """
         List Versions, optionally filtered by serach criteria, including Page.
 
@@ -295,7 +297,17 @@ Alternatively, you can instaniate Client(user, password) directly.""")
 
             * ``{'version_id': 12345678}``
             * ``{'account': 'versionista1', 'has_content': True}``
-
+        different : boolean, optional
+            If False, include versions that aren't actually different from the
+            previous version of the same page in the response.
+        include_change_from_previous : boolean, optional
+            If True, include a `change_from_previous` field in each version
+            that represents a change object between it and the previous version
+            of the same page.
+        include_change_from_earliest : boolean, optional
+            If True, include a `change_from_earliest` field in each version
+            that represents a change object between it and the earliest version
+            of the same page.
         Returns
         -------
         response : dict
@@ -304,7 +316,10 @@ Alternatively, you can instaniate Client(user, password) directly.""")
                   'chunk_size': chunk_size,
                   'capture_time': _time_range_string(start_date, end_date),
                   'source_type': source_type,
-                  'hash': hash}
+                  'hash': hash,
+                  'different': different,
+                  'include_change_from_previous': include_change_from_previous,
+                  'include_change_from_earliest': include_change_from_earliest}
         if source_metadata is not None:
             for k, v in source_metadata.items():
                 params[f'source_metadata[{k}]'] = v
@@ -322,20 +337,31 @@ Alternatively, you can instaniate Client(user, password) directly.""")
             v['capture_time'] = parse_timestamp(v['capture_time'])
         return result
 
-    def get_version(self, version_id):
+    def get_version(self, version_id, include_change_from_previous=None,
+                    include_change_from_earliest=None):
         """
         Lookup a specific Version by ID.
 
         Parameters
         ----------
         version_id : string
+        include_change_from_previous : boolean, optional
+            If True, include a `change_from_previous` field in that represents
+            a change object between this and the previous version of the same
+            page.
+        include_change_from_earliest : boolean, optional
+            If True, include a `change_from_earliest` field in that represents
+            a change object between this and the earliest version of the same
+            page.
 
         Returns
         -------
         response : dict
         """
         url = f'{self._api_url}/versions/{version_id}'
-        res = requests.get(url, auth=self._auth)
+        params = {'include_change_from_previous': include_change_from_previous,
+                  'include_change_from_earliest': include_change_from_earliest}
+        res = requests.get(url, auth=self._auth, params=params)
         _process_errors(res)
         result = res.json()
         data = result['data']
