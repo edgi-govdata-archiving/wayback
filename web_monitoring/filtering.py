@@ -1,5 +1,6 @@
 from urllib.parse import urlparse
-from bs4 import BeautifulSoup
+import html5_parser
+
 
 day_list = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
 month_list = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
@@ -30,7 +31,9 @@ def df_filter(df):
                 break
 
         if (str(row['state']) == 'Change'):
-            social_soup = BeautifulSoup(str(row['new']), 'lxml')
+            social_soup = html5_parser.parse(str(row['new']),
+                                             treebuilder='soup',
+                                             return_root=False)
             social_list = list(social_soup.find_all(['a', 'script']))
             for x in social_list:
                 if (x.name == 'a'):
