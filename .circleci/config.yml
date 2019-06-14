@@ -46,35 +46,51 @@ jobs:
             . venv/bin/activate
             cd docs && make html
 
-  publish_docker:
+  build_docker:
     machine: true
     steps:
       - checkout
       - run: |
-          docker login -u $DOCKER_USER -p $DOCKER_PASS
-      - run: |
           docker build -t envirodgi/processing:$CIRCLE_SHA1 .
-          docker build -t envirodgi/processing:latest .
-      - run: |
-          docker push envirodgi/processing:$CIRCLE_SHA1
-          docker push envirodgi/processing:latest
+      - run:
+          name: Save Image
+          command: |
+            mkdir /tmp/workspace
+            docker save --output /tmp/workspace/docker-image envirodgi/processing:$CIRCLE_SHA1
+      - persist_to_workspace:
+          root: /tmp/workspace
+          paths:
+            - docker-image
+
+  publish_docker:
+    machine: true
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - run:
+          name: Load Built Docker Image
+          command: docker load --input /tmp/workspace/docker-image
+      - run:
+          name: Re-tag Image
+          command: docker image tag envirodgi/processing:$CIRCLE_SHA1 envirodgi/processing:latest
+      - run:
+          name: Publish to Docker Hub
+          command: |
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker push envirodgi/processing:$CIRCLE_SHA1
+            docker push envirodgi/processing:latest
 
 workflows:
   version: 2
   build:
     jobs:
-      - build:
-          filters:
-            branches:
-              ignore: release
-
-  build-and-publish:
-    jobs:
-      - build:
+      - build
+      - build_docker
+      - publish_docker:
+          requires:
+            - build
+            - build_docker
           filters:
             branches:
               only:
                 - release
-      - publish_docker:
-          requires:
-            - build
