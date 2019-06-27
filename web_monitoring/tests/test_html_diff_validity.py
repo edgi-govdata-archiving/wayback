@@ -8,6 +8,7 @@ doesn’t break or throw exceptions.
 
 from pathlib import Path
 from pkg_resources import resource_filename
+import html5_parser
 import pytest
 import re
 from web_monitoring.diff_errors import UndiffableContentError
@@ -64,6 +65,31 @@ def test_html_diff_render_doesnt_move_script_content_into_page_text():
     without_script = re.sub(r'(?s)<script[^>]*>.*?</script>', '', body)
     text_only = re.sub(r'<[^>]+>', '', without_script).strip()
     assert text_only == ''
+
+
+def test_deactivate_deleted_active_elements():
+    '''
+    Method `_deactivate_deleted_active_elements` is used by `html_diff_render`
+    internally to encapsulate `del > script` and `del > style` elements with a
+    `<template class="wm-diff-deleted-inert">` tag. The result for each deleted
+    tag should be like:
+
+    <del class="wm-diff">
+        <template class="wm-diff-deleted-inert">
+            <script src="s2.js">
+            </script>
+        </template>
+    </del>
+    '''
+    a = '''<body>
+           <script src="s1.js"></script>
+           <p>test</p>
+           <script src="s2.js"></script></body>'''
+    b = '''<body><p>test2</p></body>'''
+    result = html_diff_render(a, b)['combined']
+    soup = html5_parser.parse(result, treebuilder='soup', return_root=False)
+    elements = soup.select('template.wm-diff-deleted-inert')
+    assert len(elements) == 2
 
 
 @pytest.mark.skip(reason='lxml parser does not support CDATA in html')

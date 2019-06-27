@@ -341,7 +341,7 @@ def _cleanup_document_structure(soup):
 
 
 def _deactivate_deleted_active_elements(soup):
-    for index, element in enumerate(soup.find_all(ACTIVE_ELEMENTS)):
+    for element in soup.find_all(ACTIVE_ELEMENTS):
         if element.find_parent('del'):
             wrapper = soup.new_tag('template')
             wrapper['class'] = 'wm-diff-deleted-inert'
