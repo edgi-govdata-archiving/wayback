@@ -269,6 +269,23 @@ class DiffingServerExceptionHandlingTest(DiffingServerTestCase):
                               f'b=file://{fixture_path("has_null_byte.txt")}')
         assert response.code == 200
 
+    def test_validates_good_hashes(self):
+        response = self.fetch('/html_source_dmp?format=json&'
+                              f'a=file://{fixture_path("empty.txt")}&'
+                              'a_hash=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855&'
+                              f'b=file://{fixture_path("empty.txt")}&'
+                              'b_hash=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855')
+        assert response.code == 200
+
+    def test_validates_bad_hashes(self):
+        response = self.fetch('/html_source_dmp?format=json&'
+                              f'a=file://{fixture_path("empty.txt")}&'
+                              'a_hash=f3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855&'
+                              f'b=file://{fixture_path("empty.txt")}&'
+                              'b_hash=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855')
+        assert response.code == 500
+        assert 'hash' in json.loads(response.body)['error']
+
 
 def mock_diffing_method(c_body):
     return

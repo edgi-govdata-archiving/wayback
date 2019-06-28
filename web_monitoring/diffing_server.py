@@ -174,69 +174,78 @@ class DiffHandler(BaseHandler):
                        'You must provide a URL as the value '
                        'for both `a` and `b` query parameters.')
             return
-        # Special case for local files, for dev/testing.
-        responses = {}
-        for param, url in urls.items():
-            if url.startswith('file://'):
-                if os.environ.get('WEB_MONITORING_APP_ENV') == 'production':
-                    self.send_error(
-                        403, reason=("Local files cannot be used in "
-                                     "production environment."))
-                    return
-                headers = {'Content-Type': 'application/html; charset=UTF-8'}
-                with open(url[7:], 'rb') as f:
-                    body = f.read()
-                    responses[param] = MockResponse(url, body, headers)
-        # Now fetch any nonlocal URLs.
-        # Pass request headers defined by URL param pass_headers=HEADER_NAME
-        # to nonlocal URLs. Useful for passing data like cookie headers.
-        # HEADER_NAME can be one or multiple headers separated by ','
-        to_fetch = {k: v for k, v in urls.items() if k not in responses}
-        headers = {}
-        header_keys = query_params.get('pass_headers')
-        if header_keys:
-            for header_key in header_keys.split(','):
-                header_key = header_key.strip()
-                header_value = self.request.headers.get(header_key)
-                if header_value:
-                    headers[header_key] = header_value
-
-        fetched = yield [client.fetch(url, headers=headers, raise_error=False,
-                                      validate_cert=VALIDATE_TARGET_CERTIFICATES)
-                         for url in to_fetch.values()]
-        responses.update({param: response for param, response in
-                          zip(to_fetch, fetched)})
-
-        try:
-            for response in responses.values():
-                self.check_response_for_error(response)
-        except tornado.httpclient.HTTPError:
-            return
-
-        # Validate response bytes against hash, if provided.
-        for param, response in responses.items():
-            try:
-                expected_hash = query_params.pop(f'{param}_hash')
-            except KeyError:
-                # No hash provided in the request. Skip validation.
-                pass
-            else:
-                actual_hash = hashlib.sha256(response.body).hexdigest()
-                if actual_hash != expected_hash:
-                    self.send_error(
-                        500, reason='Fetched content does not match hash.')
-                    return
 
         # TODO: Add caching of fetched URIs.
+        content = yield [self.fetch_diffable_content(url,
+                                                     query_params.pop(f'{param}_hash', None),
+                                                     query_params)
+                         for param, url in urls.items()]
+        if not all(content):
+            return
 
         # Pass the bytes and any remaining args to the diffing function.
-        res = yield self.diff(func, responses['a'], responses['b'],
-                              query_params)
+        res = yield self.diff(func, content[0], content[1], query_params)
         res['version'] = web_monitoring.__version__
         # Echo the client's request unless the differ func has specified
         # somethine else.
         res.setdefault('type', differ)
         self.write(res)
+
+    @tornado.gen.coroutine
+    def fetch_diffable_content(self, url, expected_hash, query_params):
+        """
+        Fetch and validate a content to diff from a given URL.
+        """
+        response = None
+
+        # For testing convenience, support file:// URLs in development.
+        if url.startswith('file://'):
+            if os.environ.get('WEB_MONITORING_APP_ENV') == 'production':
+                self.send_error(
+                    403, reason=('Local files cannot be used in '
+                                 'production environment.'))
+                raise tornado.gen.Return(None)
+            # FIXME: set content-type based on file extension.
+            headers = {'Content-Type': 'application/html; charset=UTF-8'}
+            with open(url[7:], 'rb') as f:
+                body = f.read()
+                response = MockResponse(url, body, headers)
+        else:
+            # Include request headers defined by the query param
+            # `pass_headers=HEADER_NAMES` in the upstream request. This is
+            # useful for passing data like cookie headers. HEADER_NAMES is a
+            # comma-separated list of HTTP header names.
+            headers = {}
+            header_keys = query_params.get('pass_headers')
+            if header_keys:
+                for header_key in header_keys.split(','):
+                    header_key = header_key.strip()
+                    header_value = self.request.headers.get(header_key)
+                    if header_value:
+                        headers[header_key] = header_value
+
+            try:
+                response = yield client.fetch(url, headers=headers,
+                                              validate_cert=VALIDATE_TARGET_CERTIFICATES)
+            except ValueError as error:
+                self.send_error(400, reason=str(error))
+            except OSError as error:
+                self.send_error(502, reason=f'Could not fetch {url}: {error}')
+            except tornado.simple_httpclient.HTTPTimeoutError:
+                self.send_error(504, reason=f'Timed out while fetching "{url}"')
+            except tornado.httpclient.HTTPError as error:
+                self.send_error(502,
+                                reason=f'Received a {error.response.code} status while fetching "{url}": {error}')
+
+        if response and expected_hash:
+            actual_hash = hashlib.sha256(response.body).hexdigest()
+            if actual_hash != expected_hash:
+                response = None
+                self.send_error(500,
+                                reason=(f'Fetched content at "{url}" does not '
+                                        f'match hash "{expected_hash}".'))
+
+        raise tornado.gen.Return(response)
 
     @tornado.gen.coroutine
     def diff(self, func, a, b, params, tries=2):
@@ -304,29 +313,6 @@ class DiffHandler(BaseHandler):
         if response['code'] != status_code:
             self.set_status(response['code'])
         self.finish(response)
-
-    def check_response_for_error(self, response):
-        # Check if the HTTP requests were successful and handle exceptions
-        if response.error is not None:
-            try:
-                response.rethrow()
-            except (ValueError, OSError, tornado.httpclient.HTTPError):
-                url = response.request.url
-                # Timeouts aren't distinguishable from other network failures
-                # by status code, so check the actual error type.
-                if isinstance(response.error, tornado.simple_httpclient.HTTPTimeoutError):
-                    self.send_error(
-                        504,
-                        reason=f'Timed out while fetching "{url}"')
-                elif isinstance(response.error, ValueError):
-                    self.send_error(
-                        400,
-                        reason=str(response.error))
-                else:
-                    self.send_error(
-                        502,
-                        reason=f'Received a {response.code} status while fetching "{url}": {response.error}')
-                raise tornado.httpclient.HTTPError(0)
 
 
 def _extract_encoding(headers, content):
