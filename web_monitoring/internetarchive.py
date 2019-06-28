@@ -265,6 +265,11 @@ class WaybackClient:
         response = utils.retryable_request('GET', CDX_SEARCH_URL,
                                            params=final_query,
                                            session=self.session)
+        try:
+            response.raise_for_status()
+        except requests.exceptions.HTTPError as error:
+            raise WaybackException(str(error))
+
         lines = response.iter_lines()
         count = 0
 
