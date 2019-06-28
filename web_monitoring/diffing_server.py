@@ -311,17 +311,21 @@ class DiffHandler(BaseHandler):
             try:
                 response.rethrow()
             except (ValueError, OSError, tornado.httpclient.HTTPError):
-                # Response code == 599 means that
-                # no HTTP response was received.
-                # In this case the error code should
-                # become 400 indicating that the error was
-                # raised because of a bad request parameter.
-                if response.code == 599:
+                url = response.request.url
+                # Timeouts aren't distinguishable from other network failures
+                # by status code, so check the actual error type.
+                if isinstance(response.error, tornado.simple_httpclient.HTTPTimeoutError):
                     self.send_error(
-                        400, reason=str(response.error))
+                        504,
+                        reason=f'Timed out while fetching "{url}"')
+                elif isinstance(response.error, ValueError):
+                    self.send_error(
+                        400,
+                        reason=str(response.error))
                 else:
                     self.send_error(
-                        response.code, reason=str(response.error))
+                        502,
+                        reason=f'Received a {response.code} status while fetching "{url}": {response.error}')
                 raise tornado.httpclient.HTTPError(0)
 
 

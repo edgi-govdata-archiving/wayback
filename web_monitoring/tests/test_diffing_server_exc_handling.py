@@ -163,14 +163,14 @@ class DiffingServerExceptionHandlingTest(DiffingServerTestCase):
         response = self.fetch('/html_token?format=json&include=all&'
                               'a=https://eeexample.org&b=https://example.org')
         self.json_check(response)
-        self.assertEqual(response.code, 400)
+        self.assertEqual(response.code, 502)
         self.assertFalse(response.headers.get('Etag'))
 
     def test_not_reachable_url_b(self):
         response = self.fetch('/html_token?format=json&include=all&'
                               'a=https://example.org&b=https://eeexample.org')
         self.json_check(response)
-        self.assertEqual(response.code, 400)
+        self.assertEqual(response.code, 502)
         self.assertFalse(response.headers.get('Etag'))
 
     def test_missing_params_caller_func(self):
@@ -182,7 +182,9 @@ class DiffingServerExceptionHandlingTest(DiffingServerTestCase):
         response = self.fetch('/html_token?format=json&include=all'
                               '&a=http://httpstat.us/404'
                               '&b=https://example.org')
-        self.assertEqual(response.code, 404)
+        # The error is upstream, but the message should indicate it was a 404.
+        self.assertEqual(response.code, 502)
+        assert '404' in json.loads(response.body)['error']
         self.assertFalse(response.headers.get('Etag'))
         self.json_check(response)
 
