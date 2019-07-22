@@ -7,7 +7,7 @@ git+https://github.com/anastasia/htmldiffer@develop
 git+https://github.com/danielballan/htmltreediff@customize
 html5-parser ~=0.4.7 --no-binary lxml
 lxml ~=4.3.4
-pandas ~=0.24.2
+pandas ~=0.25.0
 sentry-sdk ~=0.10.2
 requests ~=2.22.0
 toolz ~=0.10.0
