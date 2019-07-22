@@ -11,6 +11,6 @@ pandas ~=0.24.2
 sentry-sdk ~=0.10.1
 requests ~=2.22.0
 toolz ~=0.10.0
-tornado ~=5.1
+tornado ~=6.0.3
 tqdm ~=4.32.2
 tzlocal ~=1.5
