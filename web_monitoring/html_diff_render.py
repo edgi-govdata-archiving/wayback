@@ -16,6 +16,7 @@ For now, you can mentally divide this module into two sections:
 """
 from bs4 import BeautifulSoup, Comment
 from collections import Counter, namedtuple
+from enum import Enum
 from functools import lru_cache
 import copy
 import difflib
@@ -626,6 +627,14 @@ def split_trailing_whitespace(word):
     stripped_length = len(word.rstrip())
     return word[0:stripped_length], word[stripped_length:]
 
+class TokenType(Enum):
+    undiffable = 0
+    start_tag = 1
+    end_tag = 2
+    word = 3
+    href = 4
+    img = 5
+
 
 def fixup_chunks(chunks):
     """
@@ -635,46 +644,44 @@ def fixup_chunks(chunks):
     cur_word = None
     result = []
     for chunk in chunks:
-        if isinstance(chunk, tuple):
-            if chunk[0] == 'img':
-                src = chunk[1]
-                tag, trailing_whitespace = split_trailing_whitespace(chunk[2])
-                cur_word = tag_token('img', src, html_repr=tag,
-                                     pre_tags=tag_accum,
-                                     trailing_whitespace=trailing_whitespace)
-                tag_accum = []
-                result.append(cur_word)
+        current_token = chunk[0]
+        if current_token == TokenType.img:
+            src = chunk[1]
+            tag, trailing_whitespace = split_trailing_whitespace(chunk[2])
+            cur_word = tag_token('img', src, html_repr=tag,
+                                 pre_tags=tag_accum,
+                                 trailing_whitespace=trailing_whitespace)
+            tag_accum = []
+            result.append(cur_word)
 
-            elif chunk[0] == 'href':
-                href = chunk[1]
-                cur_word = href_token(href, pre_tags=tag_accum, trailing_whitespace=" ")
-                tag_accum = []
-                result.append(cur_word)
+        elif current_token == TokenType.href:
+            href = chunk[1]
+            cur_word = href_token(href, pre_tags=tag_accum, trailing_whitespace=" ")
+            tag_accum = []
+            result.append(cur_word)
 
-            elif chunk[0] == 'UNDIFFABLE':
-                cur_word = UndiffableContentToken(chunk[1], pre_tags=tag_accum)
-                tag_accum = []
-                result.append(cur_word)
+        elif current_token == TokenType.undiffable:
+            cur_word = UndiffableContentToken(chunk[1], pre_tags=tag_accum)
+            tag_accum = []
+            result.append(cur_word)
 
-            continue
-
-        if is_word(chunk):
-            chunk, trailing_whitespace = split_trailing_whitespace(chunk)
+        elif current_token == TokenType.word:
+            chunk, trailing_whitespace = split_trailing_whitespace(chunk[1])
             cur_word = DiffToken(chunk, pre_tags=tag_accum, trailing_whitespace=trailing_whitespace)
             tag_accum = []
             result.append(cur_word)
 
-        elif is_start_tag(chunk):
-            tag_accum.append(chunk)
+        elif current_token == TokenType.start_tag:
+            tag_accum.append(chunk[1])
 
-        elif is_end_tag(chunk):
+        elif current_token == TokenType.end_tag:
             if tag_accum:
-                tag_accum.append(chunk)
+                tag_accum.append(chunk[1])
             else:
                 assert cur_word, (
                     "Weird state, cur_word=%r, result=%r, chunks=%r of %r"
                     % (cur_word, result, chunk, chunks))
-                cur_word.post_tags.append(chunk)
+                cur_word.post_tags.append(chunk[1])
         else:
             assert(0)
 
@@ -694,28 +701,28 @@ def flatten_el(el, include_hrefs, skip_tag=False):
     not returned (just its contents)."""
     if not skip_tag:
         if el.tag == 'img':
-            yield ('img', el.get('src'), start_tag(el))
+            yield (TokenType.img, el.get('src'), start_tag(el))
         elif el.tag in undiffable_content_tags:
             element_source = etree.tostring(el, encoding=str, method='html')
-            yield ('UNDIFFABLE', element_source)
+            yield (TokenType.undiffable, element_source)
             return
         else:
-            yield start_tag(el)
+            yield (TokenType.start_tag, start_tag(el))
     if el.tag in void_tags and not el.text and not len(el) and not el.tail:
         return
     start_words = split_words(el.text)
     for word in start_words:
-        yield html_escape(word)
+        yield (TokenType.word, html_escape(word))
     for child in el:
         for item in flatten_el(child, include_hrefs=include_hrefs):
             yield item
     if el.tag == 'a' and el.get('href') and include_hrefs:
-        yield ('href', el.get('href'))
+        yield (TokenType.href, el.get('href'))
     if not skip_tag:
-        yield end_tag(el)
+        yield (TokenType.end_tag, end_tag(el))
         end_words = split_words(el.tail)
         for word in end_words:
-            yield html_escape(word)
+            yield (TokenType.word, html_escape(word))
 
 split_words_re = re.compile(r'\S+(?:\s+|$)', re.U)
 
@@ -747,14 +754,6 @@ def end_tag(el):
         extra = ''
     return '</%s>%s' % (el.tag, extra)
 
-def is_word(tok):
-    return not tok.startswith('<')
-
-def is_end_tag(tok):
-    return tok.startswith('</')
-
-def is_start_tag(tok):
-    return tok.startswith('<') and not tok.startswith('</')
 
 # ------------------ END lxml.html.diff Tokenization ------------------------
 
