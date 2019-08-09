@@ -234,8 +234,16 @@ class DiffHandler(BaseHandler):
             except tornado.simple_httpclient.HTTPTimeoutError:
                 self.send_error(504, reason=f'Timed out while fetching "{url}"')
             except tornado.httpclient.HTTPError as error:
-                self.send_error(502,
-                                reason=f'Received a {error.response.code} status while fetching "{url}": {error}')
+                # If the response is actually coming from a web archive,
+                # allow error codes. The Memento-Datetime header indicates
+                # the response is an archived one, and not an actual failure
+                # to respond with the desired content.
+                if error.response is not None and \
+                        error.response.headers.get('Memento-Datetime') is not None:
+                    response = error.response
+                else:
+                    self.send_error(502,
+                                    reason=f'Received a {error.response.code} status while fetching "{url}": {error}')
 
         if response and expected_hash:
             actual_hash = hashlib.sha256(response.body).hexdigest()
