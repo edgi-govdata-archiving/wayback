@@ -164,7 +164,7 @@ Alternatively, you can instaniate Client(user, password) directly.""")
 
     ### PAGES ###
 
-    def list_pages(self, *, chunk=None, chunk_size=None,
+    def list_pages(self, *, chunk=None, chunk_size=None, sort=None,
                    tags=None, maintainers=None, url=None, title=None,
                    include_versions=None, include_earliest=None,
                    include_latest=None, source_type=None, hash=None,
@@ -178,6 +178,8 @@ Alternatively, you can instaniate Client(user, password) directly.""")
             pagination parameter
         chunk_size : integer, optional
             number of items per chunk
+        sort : list of string, optional
+            fields to sort by in `{field}:{order}` format, e.g. `title:asc`
         tags : list of string, optional
         maintainers : list of string, optional
         url : string, optional
@@ -199,6 +201,7 @@ Alternatively, you can instaniate Client(user, password) directly.""")
         """
         params = {'chunk': chunk,
                   'chunk_size': chunk_size,
+                  'sort': sort and ','.join(sort) or None,
                   'tags[]': tags,
                   'maintainers[]': maintainers,
                   'url': url,
@@ -270,7 +273,7 @@ Alternatively, you can instaniate Client(user, password) directly.""")
     ### VERSIONS ###
 
     def list_versions(self, *, page_id=None, chunk=None, chunk_size=None,
-                      start_date=None, end_date=None,
+                      sort=None, start_date=None, end_date=None,
                       source_type=None, hash=None,
                       source_metadata=None, different=None,
                       include_change_from_previous=None,
@@ -286,6 +289,9 @@ Alternatively, you can instaniate Client(user, password) directly.""")
             pagination parameter
         chunk_size : integer, optional
             number of items per chunk
+        sort : list of string, optional
+            fields to sort by in `{field}:{order}` format,
+            e.g. `capture_time:asc`
         start_date : datetime, optional
         end_date : datetime, optional
         source_type : string, optional
@@ -314,6 +320,7 @@ Alternatively, you can instaniate Client(user, password) directly.""")
         """
         params = {'chunk': chunk,
                   'chunk_size': chunk_size,
+                  'sort': sort and ','.join(sort) or None,
                   'capture_time': _time_range_string(start_date, end_date),
                   'source_type': source_type,
                   'hash': hash,
@@ -416,7 +423,8 @@ Alternatively, you can instaniate Client(user, password) directly.""")
         _process_errors(res)
         return res.json()
 
-    def add_versions(self, versions, *, update='skip', batch_size=1000):
+    def add_versions(self, versions, *, update='skip', create_pages=None,
+                     skip_unchanged_versions=None, batch_size=1000):
         """
         Submit versions in bulk for importing into web-monitoring-db.
 
@@ -438,6 +446,12 @@ Alternatively, you can instaniate Client(user, password) directly.""")
                 * ``'merge'`` -- Similar to `replace`, but merges the values in
                   ``source_metadata``
 
+        create_pages : bool, optional
+            If True, create new pages for any URLs in the import set that don't
+            already exist.
+        skip_unchanged_versions : bool, optional
+            If true, don't import versions of a page that have the same hash as
+            the version captured immediately before them.
         batch_size : integer, optional
             Default batch size is 50000 Versions.
 
@@ -452,10 +466,15 @@ Alternatively, you can instaniate Client(user, password) directly.""")
             # versions might be a generator. This comprehension will pull on it
             validated_versions = [_build_importable_version(**v)
                                   for v in batch]
+
+            params = {'update': update, 'create_pages': create_pages,
+                      'skip_unchanged_versions': skip_unchanged_versions}
+            params = {k: v if isinstance(v, str) else str(v).lower()
+                      for k, v in params.items() if v is not None}
             res = requests.post(
                 url, auth=self._auth,
                 headers={'Content-Type': 'application/x-json-stream'},
-                params={'update': update},
+                params=params,
                 data='\n'.join(map(json.dumps, validated_versions)))
             _process_errors(res)
             import_id = res.json()['data']['id']
