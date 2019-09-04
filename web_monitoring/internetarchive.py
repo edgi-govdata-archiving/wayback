@@ -17,10 +17,28 @@ from base64 import b32encode
 from collections import namedtuple
 from datetime import datetime
 import hashlib
+import logging
 import urllib.parse
 import re
 import requests
-from web_monitoring import utils
+import time
+from urllib3.connectionpool import HTTPConnectionPool
+from web_monitoring import utils, __version__
+
+from requests.exceptions import (
+    ConnectionError,
+    ProxyError,
+    RetryError,
+    Timeout
+)
+from urllib3.exceptions import (
+    ConnectTimeoutError,
+    MaxRetryError,
+    ReadTimeoutError
+)
+
+
+logger = logging.getLogger(__name__)
 
 
 class WaybackException(Exception):
@@ -32,22 +50,52 @@ class UnexpectedResponseFormat(WaybackException):
     ...
 
 
+class BlockedByRobotsError(WaybackException):
+    # A URL can't be queried in Wayback because it was blocked by robots.txt
+    ...
+
+
+# TODO: split this up into a family of more specific errors? When playback
+# failed partway into a redirect chain, when a redirect goes outside
+# redirect_target_window, when a memento was circular?
 class MementoPlaybackError(WaybackException):
     ...
 
 
-class SessionClosedError(WaybackException):
-    ...
+class WaybackRetryError(WaybackException):
+    def __init__(self, retries, total_time, causal_error):
+        self.retries = retries
+        self.cause = causal_error
+        self.time = total_time
+        super().__init__(f'Retried {retries} times over {total_time or "?"} seconds (error: {causal_error})')
 
 
 CDX_SEARCH_URL = 'http://web.archive.org/cdx/search/cdx'
+# This /web/timemap URL has newer features, but has other bugs and doesn't
+# support some features, like resume keys (for paging). It ignores robots.txt,
+# while /cdx/search obeys robots.txt (for now). It also has different/extra
+# columns. See https://github.com/internetarchive/wayback/blob/bd205b9b26664a6e2ea3c0c2a8948f0dc6ff4519/wayback-cdx-server/src/main/java/org/archive/cdxserver/format/CDX11Format.java#L13-L17
+# NOTE: the `length` and `robotflags` fields appear to always be empty
+# TODO: support new/upcoming CDX API
+# CDX_SEARCH_URL = 'http://web.archive.org/web/timemap/cdx'
+
 ARCHIVE_RAW_URL_TEMPLATE = 'http://web.archive.org/web/{timestamp}id_/{url}'
 ARCHIVE_VIEW_URL_TEMPLATE = 'http://web.archive.org/web/{timestamp}/{url}'
 URL_DATE_FORMAT = '%Y%m%d%H%M%S'
 MEMENTO_URL_PATTERN = re.compile(
-    r'^http(?:s)?://web.archive.org/web/\d+(?:id_)?/(.+)$')
+    r'^http(?:s)?://web.archive.org/web/(\d+)(?:id_)?/(.+)$')
 REDUNDANT_HTTP_PORT = re.compile(r'^(http://[^:/]+):80(.*)$')
 REDUNDANT_HTTPS_PORT = re.compile(r'^(https://[^:/]+):443(.*)$')
+DATA_URL_START = re.compile(r'data:[\w]+/[\w]+;base64')
+# Matches URLs w/ users w/no pass, e-mail addresses, and mailto: URLs. These
+# basically look like an e-mail or mailto: got `http://` pasted in front, e.g:
+#   http://b***z@pnnl.gov/
+#   http://@pnnl.gov/
+#   http://mailto:first.last@pnnl.gov/
+#   http://<<mailto:first.last@pnnl.gov>>/
+EMAILISH_URL = re.compile(r'^https?://(<*)((mailto:)|([^/@:]*@))')
+# Make sure it roughly starts with a valid protocol + domain + port?
+URL_ISH = re.compile(r'^[\w+\-]+://[^/?=&]+\.\w\w+(:\d+)?(/|$)')
 
 CdxRecord = namedtuple('CdxRecord', (
     # Raw CDX values
@@ -65,6 +113,43 @@ CdxRecord = namedtuple('CdxRecord', (
 ))
 
 
+def split_memento_url(memento_url):
+    'Extract the raw date and URL components from a memento URL.'
+    match = MEMENTO_URL_PATTERN.match(memento_url)
+    if match is None:
+        raise ValueError(f'"{memento_url}" is not a memento URL')
+
+    return match.group(2), match.group(1)
+
+
+def clean_memento_url_component(url):
+    # A URL *may* be percent encoded, decode ONLY if so (we don’t want to
+    # accidentally decode the querystring if there is one)
+    lower_url = url.lower()
+    if lower_url.startswith('http%3a') or lower_url.startswith('https%3a'):
+        url = urllib.parse.unquote(url)
+
+    return url
+
+
+def memento_url_data(memento_url):
+    """
+    Get the original URL and date that a memento URL represents a capture of.
+
+    Examples
+    --------
+    Extract original URL and date.
+
+    >>> memento_url_data('http://web.archive.org/web/20170813195036/https://arpa-e.energy.gov/?q=engage/events-workshops')
+    ('https://arpa-e.energy.gov/?q=engage/events-workshops', datetime.datetime(2017, 8, 13, 19, 50, 36))
+    """
+    raw_url, timestamp = split_memento_url(memento_url)
+    url = clean_memento_url_component(raw_url)
+    date = datetime.strptime(timestamp, URL_DATE_FORMAT)
+
+    return url, date
+
+
 def original_url_for_memento(memento_url):
     """
     Get the original URL that a memento URL represents a capture of.
@@ -76,19 +161,21 @@ def original_url_for_memento(memento_url):
     >>> original_url_for_memento('http://web.archive.org/web/20170813195036/https://arpa-e.energy.gov/?q=engage/events-workshops')
     'https://arpa-e.energy.gov/?q=engage/events-workshops'
     """
-    match = MEMENTO_URL_PATTERN.match(memento_url)
-    if match is None:
-        raise ValueError(f'"{memento_url}" is not a memento URL')
+    return clean_memento_url_component(split_memento_url(memento_url)[0])
 
-    url = match.group(1)
 
-    # A URL *may* be percent encoded, decode ONLY if so (we don’t want to
-    # accidentally decode the querystring if there is one)
-    lower_url = url.lower()
-    if lower_url.startswith('http%3a') or lower_url.startswith('https%3a'):
-        url = urllib.parse.unquote(url)
+def is_malformed_url(url):
+    if DATA_URL_START.search(url):
+        return True
 
-    return url
+    # TODO: restrict to particular protocols?
+    if url.startswith('mailto:') or EMAILISH_URL.match(url):
+        return True
+
+    if URL_ISH.match(url) is None:
+        return True
+
+    return False
 
 
 def cdx_hash(content):
@@ -97,30 +184,165 @@ def cdx_hash(content):
     return b32encode(hashlib.sha1(content).digest()).decode()
 
 
-class WaybackSession(requests.Session):
+#####################################################################
+# HACK: handle malformed Content-Encoding headers from Wayback.
+# When you send `Accept-Encoding: gzip` on a request for a memento, Wayback
+# will faithfully gzip the response body. However, if the original response
+# from the web server that was snapshotted was gzipped, Wayback screws up the
+# `Content-Encoding` header on the memento response, leading any HTTP client to
+# *not* decompress the gzipped body. Wayback folks have no clear timeline for
+# a fix, hence the workaround here. More info in this issue:
+# https://github.com/edgi-govdata-archiving/web-monitoring-processing/issues/309
+#
+# This subclass of urllib3's response class identifies the malformed headers
+# and repairs them before instantiating the actual response object, so when it
+# reads the body, it knows to decode it correctly.
+#
+# See what we're overriding from urllib3:
+# https://github.com/urllib3/urllib3/blob/a6ec68a5c5c5743c59fe5c62c635c929586c429b/src/urllib3/response.py#L499-L526
+class WaybackResponse(HTTPConnectionPool.ResponseCls):
+    @classmethod
+    def from_httplib(cls, httplib_response, **response_kwargs):
+        headers = httplib_response.msg
+        pairs = headers.items()
+        if ('content-encoding', '') in pairs and ('Content-Encoding', 'gzip') in pairs:
+            del headers['content-encoding']
+            headers['Content-Encoding'] = 'gzip'
+        return super().from_httplib(httplib_response, **response_kwargs)
+
+
+HTTPConnectionPool.ResponseCls = WaybackResponse
+# END HACK
+#####################################################################
+
+
+# TODO: make rate limiting configurable at the session level, rather than
+# arbitrarily set inside get_memento(). Idea: have a rate limit lock type and
+# pass an instance to the constructor here.
+class WaybackSession(utils.DisableAfterCloseSession, requests.Session):
     """
-    A custom session object that network pools connections and resources. It
-    raises a :class:`SessionClosedError` if you try and use it after closing
-    it, to help identify and avoid potentially dangerous code patterns.
-    (Standard session objects continue to be usable after closing, even if they
-    may not work exactly as expected.)
+    A custom session object that network pools connections and resources for
+    requests to the Wayback Machine.
+
+    Parameters
+    ----------
+    retries : int, optional
+        The maximum number of retries for requests.
+    backoff : int or float, optional
+        Number of seconds from which to calculate how long to back off and wait
+        when retrying requests. The first retry is always immediate, but
+        subsequent retries increase by powers of 2:
+            seconds = backoff * 2 ^ (retry number - 1)
+        So if this was `4`, retries would happen after the following delays:
+            0 seconds, 4 seconds, 8 seconds, 16 seconds, ...
+    timeout : int or float or tuple of (int or float, int or float), optional
+        A timeout to use for all requests. If not set, there will be no
+        no explicit timeout. See the Requests docs for more:
+        http://docs.python-requests.org/en/master/user/advanced/#timeouts
+    user_agent : str, optional
+        A custom user-agent string to use in all requests.
     """
 
-    _closed = False
+    # It seems Wayback sometimes produces 500 errors for transient issues, so
+    # they make sense to retry here. Usually not in other contexts, though.
+    retryable_statuses = frozenset((413, 421, 429, 500, 502, 503, 504, 599))
 
-    def close(self):
-        super().close()
-        self._closed = True
+    retryable_errors = (ConnectTimeoutError, MaxRetryError, ReadTimeoutError,
+                        ProxyError, RetryError, Timeout)
+    # Handleable errors *may* be retryable, but need additional logic beyond
+    # just the error type. See `should_retry_error()`.
+    handleable_errors = (ConnectionError,) + retryable_errors
 
+    def __init__(self, retries=6, backoff=2, timeout=None, user_agent=None):
+        super().__init__()
+        self.retries = retries
+        self.backoff = backoff
+        self.timeout = timeout
+        self.headers = {
+            'User-Agent': user_agent or f'edgi.web_monitoring.WaybackClient/{__version__}',
+            'Accept-Encoding': 'gzip, deflate'
+        }
+        # NOTE: the nice way to accomplish retry/backoff is with a urllib3:
+        #     adapter = requests.adapters.HTTPAdapter(
+        #         max_retries=Retry(total=5, backoff_factor=2,
+        #                           status_forcelist=(503, 504)))
+        #     self.mount('http://', adapter)
+        # But Wayback mementos can have errors, which complicates things. See:
+        # https://github.com/urllib3/urllib3/issues/1445#issuecomment-422950868
+        #
+        # Also note that, if we are ever able to switch to that, we may need to
+        # get more fancy with log filtering, since we *expect* lots of retries
+        # with Wayback's APIs, but urllib3 logs a warning on every retry:
+        # https://github.com/urllib3/urllib3/blob/5b047b645f5f93900d5e2fc31230848c25eb1f5f/src/urllib3/connectionpool.py#L730-L737
+
+    # Customize the built-in `send` functionality with retryability.
+    # NOTE: worth considering whether we should push this logic to a custom
+    # requests.adapters.HTTPAdapter
     def send(self, *args, **kwargs):
-        if self._closed:
-            raise SessionClosedError('This session has already been closed '
-                                     'and cannot send new HTTP requests.')
+        if self.timeout is not None and 'timeout' not in kwargs:
+            kwargs['timeout'] = self.timeout
 
-        return super().send(*args, **kwargs)
+        total_time = 0
+        maximum = self.retries
+        retries = 0
+        while True:
+            try:
+                result = super().send(*args, **kwargs)
+                if retries >= maximum or not self.should_retry(result):
+                    return result
+            except WaybackSession.handleable_errors as error:
+                if retries >= maximum:
+                    raise WaybackRetryError(retries, total_time, error) from error
+                elif not self.should_retry_error(error):
+                    raise
+
+            # The first retry has no delay.
+            if retries > 0:
+                seconds = self.backoff * 2 ** (retries - 1)
+                total_time += seconds
+                time.sleep(seconds)
+
+            retries += 1
+
+    def should_retry(self, response):
+        # A memento may actually be a capture of an error, so don't retry it :P
+        if 'Memento-Datetime' in response.headers:
+            return False
+
+        return response.status_code in self.retryable_statuses
+
+    def should_retry_error(self, error):
+        if isinstance(error, WaybackSession.retryable_errors):
+            return True
+        elif isinstance(error, ConnectionError):
+            # ConnectionErrors from requests actually wrap a whole family of
+            # more detailed errors from urllib3, so we need to do some string
+            # checking to determine whether the error is retryable.
+            text = str(error)
+            # NOTE: we have also seen this, which may warrant retrying:
+            # `requests.exceptions.ConnectionError: ('Connection aborted.',
+            # RemoteDisconnected('Remote end closed connection without
+            # response'))`
+            if 'NewConnectionError' in text or 'Max retries' in text:
+                return True
+
+        return False
+
+    def reset(self):
+        "Reset any network connections the session is using."
+        # Close really just closes all the adapters in `self.adapters`. We
+        # could do that directly, but `self.adapters` is not documented/public,
+        # so might be somewhat risky.
+        self.close(disable=False)
+        # Re-build the standard adapters. See:
+        # https://github.com/kennethreitz/requests/blob/v2.22.0/requests/sessions.py#L415-L418
+        self.mount('https://', requests.adapters.HTTPAdapter())
+        self.mount('http://', requests.adapters.HTTPAdapter())
 
 
-class WaybackClient:
+# TODO: add retry, backoff, cross_thread_backoff, and rate_limit options that
+# create a custom instance of urllib3.utils.Retry
+class WaybackClient(utils.DepthCountedContext):
     """
     A client for retrieving data from the Internet Archive's Wayback Machine.
 
@@ -136,10 +358,7 @@ class WaybackClient:
     def __init__(self, session=None):
         self.session = session or WaybackSession()
 
-    def __enter__(self):
-        return self
-
-    def __exit__(self, type, value, traceback):
+    def __exit_all__(self, type, value, traceback):
         self.close()
 
     def close(self):
@@ -150,7 +369,7 @@ class WaybackClient:
                fastLatest=None, gzip=None, from_date=None, to_date=None,
                filter_field=None, collapse=None, showResumeKey=True,
                resumeKey=None, page=None, pageSize=None, resolveRevisits=True,
-               **kwargs):
+               skip_malformed_results=True, **kwargs):
         """
         Search archive.org's CDX API for all captures of a given URL.
 
@@ -220,6 +439,13 @@ class WaybackClient:
             Attempt to resolve `warc/revisit` records to their actual content
             type and response code. Not supported on all CDX servers. Defaults
             to True.
+        skip_malformed_results : bool, optional
+            If true, don't yield records that look like they have no actual
+            memento associated with them. Some crawlers will erroneously
+            attempt to capture bad URLs like `http://mailto:someone@domain.com`
+            or `http://data:image/jpeg;base64,AF34...` and so on. This is a
+            filter performed client side and is not a CDX API argument.
+            (Default: True)
         **kwargs
             Any additional CDX API options.
 
@@ -262,9 +488,8 @@ class WaybackClient:
                 else:
                     final_query[key] = str(value).lower()
 
-        response = utils.retryable_request('GET', CDX_SEARCH_URL,
-                                           params=final_query,
-                                           session=self.session)
+        response = self.session.request('GET', CDX_SEARCH_URL,
+                                        params=final_query)
         try:
             response.raise_for_status()
         except requests.exceptions.HTTPError as error:
@@ -288,11 +513,15 @@ class WaybackClient:
                 capture_time = datetime.strptime(data.timestamp,
                                                  URL_DATE_FORMAT)
             except Exception:
-                raise UnexpectedResponseFormat(text)
+                if 'RobotAccessControlException' in text:
+                    raise BlockedByRobotsError(query["url"])
+                raise UnexpectedResponseFormat(f'Could not parse CDX output: "{text}" (query: {final_query})')
 
             clean_url = REDUNDANT_HTTPS_PORT.sub(
                 r'\1\2', REDUNDANT_HTTP_PORT.sub(
                     r'\1\2', data.url))
+            if skip_malformed_results and is_malformed_url(clean_url):
+                continue
             if clean_url != data.url:
                 data = data._replace(url=clean_url)
 
@@ -376,6 +605,12 @@ class WaybackClient:
 
         last_hashes = {}
         for version in self.search(**params):
+            # TODO: make skip_repeats smarter so we can use it again: only
+            # check & skip the hash if the mime_type is not `warc/revisit`,
+            # `unk`, `-` or `` and status_code is not `3xx`, `-` or ``.
+            # Possible betterment: CAN skip warc/revisits with same hash IF
+            # previous version of this URL with the same hash was not a revisit
+            # and was not a 3xx status code.
             # TODO: may want to follow redirects and resolve them in the future
             if not skip_repeats or last_hashes.get(version.url) != version.digest:
                 last_hashes[version.url] = version.digest
@@ -385,6 +620,153 @@ class WaybackClient:
         if not last_hashes:
             raise ValueError("Internet archive does not have archived "
                              "versions of {}".format(url))
+
+    # TODO: make this nicer by taking an optional date, so `url` can be a
+    # memento url or an original URL + plus date and we'll compose a memento
+    # URL.
+    # TODO: for generic use, needs to be able to return the memento itself if
+    # the memento was a redirect (different than allowing a nearby-in-time
+    # memento of the same URL, which would be the above argument). Probably
+    # call this `follow_redirects=True`?
+    def get_memento(self, url, exact=True, exact_redirects=None,
+                    target_window=24 * 60 * 60):
+        """
+        Fetch a memento from the Wayback Machine. This retrieves the content
+        that was ultimately returned from a memento, following any redirects
+        that were present at the time the memento was captured. (That is, if
+        `http://example.com/a` redirected to `http://example.com/b`, this
+        returns the memento for `/b` when you request `/a`.)
+
+        Parameters
+        ----------
+        url : string
+            URL of memento in Wayback (e.g.
+            `http://web.archive.org/web/20180816111911id_/http://www.nws.noaa.gov/sp/`)
+        exact : boolean, optional
+            If false and the requested memento either doesn't exist or can't be
+            played back, this returns the closest-in-time memento to the
+            requested one, so long as it is within `target_window`.
+            Default: True
+        exact_redirects : boolean, optional
+            If false and the requested memento is a redirect whose *target*
+            doesn't exist or or can't be played back, this returns the closest-
+            in-time memento to the intended target, so long as it is within
+            `target_window`. If unset, this will be the same as `exact`.
+        target_window : int, optional
+            If the memento is of a redirect, allow up to this many seconds
+            between the capture of the redirect and the capture of the target
+            URL. (Note this does NOT apply when the originally requested
+            memento didn't exist and wayback redirects to the next-closest-in-
+            -time one. That will always raise a MementoPlaybackError.)
+            Defaults to 86,400 (24 hours).
+
+        Returns
+        -------
+        dict : requests.Response
+            An HTTP response with the content of the memento, including a
+            history of any redirects involved.
+        """
+        if exact_redirects is None:
+            exact_redirects = exact
+
+        with utils.rate_limited(calls_per_second=30, group='get_memento'):
+            # Correctly following redirects is actually pretty complicated. In
+            # the simplest case, a memento is a simple web page, and that's
+            # no problem. However...
+            #   1.  If the response was a >= 400 status, we have to determine
+            #       whether that status is coming from the memento or from the
+            #       the Wayback Machine itself.
+            #   2.  If the response was a 3xx status (a redirect) we have to
+            #       determine the same thing, but it's a little more complex...
+            #       a) If the redirect *is* the memento, its target may be an
+            #          actual memento (see #1) or it may be a redirect (#2).
+            #          The targeted URL is frequently captured anywhere from
+            #          the same second to a few hours later, so it is likely
+            #          the target will result in case 2b (below).
+            #       b) If there is no memento for the requested time, but there
+            #          are mementos for the same URL at another time, Wayback
+            #          *may* redirect to that memento.
+            #          - If this was on the original request, that's *not* ok
+            #            because it means we're getting a different memento
+            #            than we asked for.
+            #          - If the redirect came from a URL that was the target of
+            #            of a memento redirect (2a), then this is expected.
+            #            Before following the redirect, though, we first sanity
+            #            check it to make sure the memento we are redirecting
+            #            to actually came from nearby in time (sometimes
+            #            Wayback will redirect to captures *months* away).
+            history = []
+            urls = set()
+            previous_was_memento = False
+            orginal_url, original_date = memento_url_data(url)
+            response = self.session.request('GET', url, allow_redirects=False)
+            protocol_and_www = re.compile(r'^https?://(www\d?\.)?')
+            while True:
+                is_memento = 'Memento-Datetime' in response.headers
+
+                if not is_memento:
+                    # The exactness requirements for redirects from memento
+                    # playbacks and non-playbacks is different -- even with
+                    # strict matching, a memento that redirects to a non-
+                    # memento is normal and ok; the target of a redirect will
+                    # rarely have been captured at the same time as the
+                    # redirect itself. (See 2b)
+                    playable = False
+                    if response.next and (
+                       (len(history) == 0 and exact == False) or
+                       (len(history) > 0 and (previous_was_memento or exact_redirects == False))):
+                        current_url = original_url_for_memento(response.url)
+                        target_url, target_date = memento_url_data(response.next.url)
+                        # A non-memento redirect is generally taking us to the
+                        # closest-in-time capture of the same URL. Note that is
+                        # NOT the next capture -- i.e. the one that would have
+                        # been produced by an earlier memento redirect -- it's
+                        # just the *closest* one. The first job here is to make
+                        # sure it fits within our target window.
+                        if abs(target_date - original_date).seconds <= target_window:
+                            # The redirect will point to the closest-in-time
+                            # SURT URL, which will often not be an exact URL
+                            # match. If we aren't looking for exact matches,
+                            # then just assume wherever we're redirecting to is
+                            # ok. Otherwise, try to sanity-check the URL.
+                            if exact_redirects:
+                                # FIXME: what should *really* happen here, if
+                                # we want exactness, is a CDX search for the
+                                # next-int-time capture of the exact URL we
+                                # redirected to. I'm not totally sure how
+                                # great that is (also it seems high overhead to
+                                # do a search in the middle of this series of
+                                # memento lookups), so just do a loose URL
+                                # check for now.
+                                current_nice_url = protocol_and_www.sub('', current_url).casefold()
+                                target_nice_url = protocol_and_www.sub('', target_url).casefold()
+                                playable = current_nice_url == target_nice_url
+                            else:
+                                playable = True
+
+                    if not playable:
+                        message = response.headers.get('X-Archive-Wayback-Runtime-Error')
+                        if message:
+                            raise MementoPlaybackError(f'Memento at {url} could not be played: {message}')
+                        elif response.ok:
+                            raise MementoPlaybackError(f'Memento at {url} could not be played')
+                        else:
+                            response.raise_for_status()
+
+                if response.next:
+                    previous_was_memento = is_memento
+                    urls.add(response.url)
+                    # Wayback sometimes has circular memento redirects ¯\_(ツ)_/¯
+                    if response.next.url in urls:
+                        raise MementoPlaybackError(f'Memento at {url} is circular')
+
+                    history.append(response)
+                    response = self.session.send(response.next, allow_redirects=False)
+                else:
+                    break
+
+            response.history = history
+            return response
 
     def timestamped_uri_to_version(self, dt, uri, *, url,
                                    maintainers=None, tags=None, view_url=None):
@@ -411,27 +793,7 @@ class WaybackClient:
         dict : Version
             suitable for passing to :class:`Client.add_versions`
         """
-        with utils.rate_limited(group='timestamped_uri_to_version'):
-            # Check to make sure we are actually getting a memento playback.
-            res = utils.retryable_request(
-                'GET', uri, allow_redirects=False, session=self.session)
-            if res.headers.get('memento-datetime') is None:
-                message = res.headers.get('X-Archive-Wayback-Runtime-Error')
-                if message:
-                    raise MementoPlaybackError(f'Memento at {uri} could not be played: {message}')
-                elif res.ok:
-                    raise MementoPlaybackError(f'Memento at {uri} could not be played')
-                else:
-                    res.raise_for_status()
-
-            # If the playback includes a redirect, continue on.
-            if res.status_code >= 300 and res.status_code < 400:
-                original = res
-                res = utils.retryable_request(
-                    'GET', res.headers.get('location'), session=self.session)
-                res.history.insert(0, original)
-                res.request = original.request
-
+        res = self.get_memento(uri, exact_redirects=False)
         version_hash = utils.hash_content(res.content)
         title = utils.extract_title(res.content)
         content_type = (res.headers['content-type'] or '').split(';', 1)
@@ -512,7 +874,6 @@ def format_version(*, url, dt, uri, version_hash, title, status, mime_type,
     # format into source_metadata, a free-form object for extra info that not
     # all sources are required to provide.
     metadata = {
-        'status_code': status,
         'mime_type': mime_type,
         'encoding': encoding,
         'headers': headers or {},
@@ -535,5 +896,6 @@ def format_version(*, url, dt, uri, version_hash, title, status, mime_type,
          uri=uri,
          version_hash=version_hash,
          source_type='internet_archive',
-         source_metadata=metadata
+         source_metadata=metadata,
+         status=status
     )

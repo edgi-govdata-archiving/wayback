@@ -2,10 +2,11 @@ from datetime import datetime
 from pathlib import Path
 import pytest
 import vcr
-from web_monitoring.internetarchive import (WaybackClient,
+from web_monitoring.utils import SessionClosedError
+from web_monitoring.internetarchive import (WaybackSession,
+                                            WaybackClient,
                                             original_url_for_memento,
-                                            MementoPlaybackError,
-                                            SessionClosedError)
+                                            MementoPlaybackError)
 
 
 # This stashes HTTP responses in JSON files (one per test) so that an actual
@@ -112,3 +113,31 @@ def test_timestamped_uri_to_version_should_fail_for_non_playbackable_mementos():
                 datetime(2017, 9, 29, 0, 27, 12),
                 'http://web.archive.org/web/20170929002712id_/https://www.fws.gov/birds/',
                 url='https://www.fws.gov/birds/')
+
+
+class TestWaybackSession:
+    def test_request_retries(self, requests_mock):
+        requests_mock.get('http://test.com', [{'text': 'bad1', 'status_code': 503},
+                                              {'text': 'bad2', 'status_code': 503},
+                                              {'text': 'good', 'status_code': 200}])
+        session = WaybackSession(retries=2, backoff=0.1)
+        response = session.request('GET', 'http://test.com')
+        assert response.ok
+
+        session.close()
+
+    def test_stops_after_given_retries(self, requests_mock):
+        requests_mock.get('http://test.com', [{'text': 'bad1', 'status_code': 503},
+                                              {'text': 'bad2', 'status_code': 503},
+                                              {'text': 'good', 'status_code': 200}])
+        session = WaybackSession(retries=1, backoff=0.1)
+        response = session.request('GET', 'http://test.com')
+        assert response.status_code == 503
+        assert response.text == 'bad2'
+
+    def test_only_retries_some_errors(self, requests_mock):
+        requests_mock.get('http://test.com', [{'text': 'bad1', 'status_code': 400},
+                                              {'text': 'good', 'status_code': 200}])
+        session = WaybackSession(retries=1, backoff=0.1)
+        response = session.request('GET', 'http://test.com')
+        assert response.status_code == 400

@@ -6,8 +6,7 @@ env:
         - secure: "CvGiseLGfgrT3KN++1Zir4GBQO3KXOSxGTYplgX1yREHgqdixRPeEEv2z0RBc3pc8e1QWNRh9cSkXDcmny8KNwmRnrTgfqJfbvzErX9WEoNSSs+zSXrjUYmarfrcckRR/guKv/yM4zTatzQ23EUrT3wlp5JBtjudb8msuwzlPXkfyMZPjK6NTwmvuA0JwHyCfjg559wVnMUXvVj7CLSVTH/bxvNIfWwfqnfOnk1mM9Zuj6B+HQxUreU367I/S7d1FK5Rs+Ov9scy2DvnbsuN5NHg7/KmbaD31xiKoZMmcFKIMBjv3Bubd7BLFmjAQ5KW0ZuOD76k+8yq7AREV2dUlWLdsOxfHb79+9xQuJGocN7mmLqF1WcHDBIkJLiBiB9GwE9brKMwdsnzI+CfXOi+aH+B1Q6ZvztJ+eDTjoGi0fiHXaXC82pCvBhLoV8H/tHNZB7ojUZvDhigN/NtfEBcBMmer/6gXbFmDZWOM3z1rh+pgZOppvVxDUWLTgo7i1XNMjMlKgDl4lc+JYY6/d3r8B8oGuaPGiDD6pM1aNu2Nd5DmNOH7HCwL1MlVIvNT/c/4yuzdbxvH6aKxGHRfQlTovpLyIFMlnuQVWYqd6d+AYzDl8dvPiwQrHvMK7uxdEheYRbOOX39w8I2AAdYhAus+ENsEfoSKJXcdGdNfjv3MmE="
 matrix:
   include:
-    - python: 3.6
-    # - python: 3.7  # not yet supported by Travis (2018-09-14)
+    - python: 3.7
 
 install:
     - pip install -r requirements.txt

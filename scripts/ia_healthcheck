@@ -30,7 +30,7 @@ def sample_monitored_urls(sample_size):
     list of string
     """
     client = db.Client.from_env()
-    page = client.list_pages(chunk=1, chunk_size=1, active=True)
+    page = client.list_pages(chunk=1, chunk_size=1, active=True, include_total=True)
     url_count = page['meta']['total_results']
     return (get_page_url(client, index)
             for index in random.sample(range(url_count), sample_size))
@@ -53,9 +53,9 @@ def wayback_has_captures(url, from_date=None):
     list of JSON
     """
     try:
-        wayback = internetarchive.WaybackClient()
-        versions = wayback.list_versions(url, from_date=from_date)
-        next(versions)
+        with internetarchive.WaybackClient() as wayback:
+            versions = wayback.list_versions(url, from_date=from_date)
+            next(versions)
     except ValueError:
         return False
     else:
