@@ -232,9 +232,11 @@ class WaybackSession(utils.DisableAfterCloseSession, requests.Session):
         Number of seconds from which to calculate how long to back off and wait
         when retrying requests. The first retry is always immediate, but
         subsequent retries increase by powers of 2:
+
             seconds = backoff * 2 ^ (retry number - 1)
+
         So if this was `4`, retries would happen after the following delays:
-            0 seconds, 4 seconds, 8 seconds, 16 seconds, ...
+        0 seconds, 4 seconds, 8 seconds, 16 seconds, ...
     timeout : int or float or tuple of (int or float, int or float), optional
         A timeout to use for all requests. If not set, there will be no
         no explicit timeout. See the Requests docs for more:

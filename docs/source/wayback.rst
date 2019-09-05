@@ -4,14 +4,14 @@
 Python API to Internet Archive Wayback Machine
 **********************************************
 
-Search for historical snapshots of a URL. Download metadata about the snapshots
-and/or the snapshot content itself.
+Search for historical mementos (archived copies) of a URL. Download metadata
+about the mementos and/or the memento content itself.
 
 Tutorial
 ========
 
-What is the earliest snapshot of nasa.gov?
-------------------------------------------
+What is the earliest memento of nasa.gov?
+-----------------------------------------
 
 Instantiate a :class:`WaybackClient`.
 
@@ -51,7 +51,7 @@ Wayback Machine. Looking at the record in detail,
 
    record
 
-we can find our answer: Wayback's first snapshot of nasa.gov was in 1996. We
+we can find our answer: Wayback's first memento of nasa.gov was in 1996. We
 can use dot access on ``record`` to access the date specifically.
 
 .. ipython:: python
@@ -61,9 +61,9 @@ can use dot access on ``record`` to access the date specifically.
 How many times does the word 'mars' appear on nasa.gov?
 -------------------------------------------------------
 
-Above, we access the metadata for the oldest snapshot on nasa.gov, stored in
+Above, we access the metadata for the oldest memento on nasa.gov, stored in
 the variable ``record``. Starting from where we left off, we'll access the
-*content* of the snapshot and do a very simple analysis.
+*content* of the memento and do a very simple analysis.
 
 The Wayback Machine provides two ways to look at the data it has captured.
 There is a copy edited for human viewers on the web, available at the record's
@@ -71,12 +71,14 @@ There is a copy edited for human viewers on the web, available at the record's
 was originally scraped, availabe at the record's ``raw_url``. For analysis
 purposes, we generally want the ``raw_url``.
 
-Let's download the raw content using ``requests``.
+Let's download the raw content using ``WaybackClient``. (You could download the
+content directly with an HTTP library like ``requests``, but ``WaybackClient``
+adds extra tools for dealing with Wayback Machine servers.)
 
 .. ipython:: python
 
-   import requests
-   content = requests.get(record.raw_url).content.decode()
+   response = client.get_memento(record.raw_url)
+   content = response.content.decode()
 
 We can use the built-in method ``count`` on strings to count the number of
 times that ``'mars'`` appears in the content.
@@ -133,4 +135,9 @@ Memento API. We implement a Python client that can speak both.
 
     .. automethod:: search
     .. automethod:: list_versions
+    .. automethod:: get_memento
     .. automethod:: timestamped_uri_to_version
+
+.. autoclass:: WaybackSession
+
+    .. automethod:: reset

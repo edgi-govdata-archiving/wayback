@@ -1,6 +1,42 @@
-# Command Line Interface
-# See scripts/ directory for associated executable(s). All of the interesting
-# functionality is implemented in this module to make it easier to test.
+"""
+Command-Line Tools for loading data from the Wayback Machine and importing it
+into web-monitoring-db
+
+See the `scripts/` directory for the associated executable(s). Most of the
+logic is implemented in this module to make it easier to test or reuse.
+
+There is a lot of asynchronous, thread-based logic here to make sure large
+import jobs can be performed efficiently, making as many parallel network
+requests as Wayback and your local machine will comfortably support. The
+general data flow looks something like:
+
+   (start here)         (or here)
+ ┌──────────────┐   ┌──────────────┐
+ │ Create list  │   │ Load list of │
+ │ of arbitrary │   │  known URLs  │
+ │    URLs      │   │   from API   │
+ └──────────────┘   └──────────────┘
+        ├───────────────────┘
+        │
+ ┌─ ─ ─ ┼ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ (in parallel) ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┐
+ ┊      │                                                                     ┊
+ ┊ ┌──────────┐  ┌─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┐  ┌────────┐ ┊
+ ┊ │ Load CDX │  ┊ ┌────────────┐ ┌────────────┐ ┌────────────┐ ┊  │ Import │ ┊
+ ┊ │ records  │  ┊ │Load memento│ │Load memento│ │Load memento│ ┊  │   to   │ ┊
+ ┊ │ for URLs │  ┊ └────────────┘ └────────────┘ └────────────┘ ┊  │   DB   │ ┊
+ ┊ │          │  ┊    ├─────────────────┴──────────────┘        ┊  │        │ ┊
+ ┊ └──────────┘  └─ ─ ┼ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┘  └────────┘ ┊
+ ┊      ↓             ↑                              ↓   ↓           ↑   │    ┊
+ ┊      └── (queue) ──┘ <─── (re-queue errors x2) ───┘   └─ (queue) ─┘   │    ┊
+ ┊                                                                       │    ┊
+ └─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─┼─ ─ ┘
+                                                                         │
+                                                                       Done!
+
+Each box represents a thread. Instances of `FiniteQueue` are used to move data
+and results between them.
+"""
+
 from collections import defaultdict
 from datetime import datetime, timedelta
 from docopt import docopt
