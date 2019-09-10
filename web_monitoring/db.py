@@ -86,7 +86,7 @@ def _build_version(*, page_id, uuid, capture_time, uri, hash, source_type,
 def _build_importable_version(*, page_url, uuid=None, capture_time, uri,
                               version_hash, source_type, title,
                               page_maintainers=None, page_tags=None,
-                              source_metadata=None):
+                              source_metadata=None, status=None):
     """
     Build a Version dict from parameters, performing some validation.
 
@@ -105,6 +105,7 @@ def _build_importable_version(*, page_url, uuid=None, capture_time, uri,
                'source_type': str(source_type),
                'title': str(title),
                'source_metadata': source_metadata,
+               'status': str(status),
                'page_maintainers': page_maintainers,
                'page_tags': page_tags}
     return version
