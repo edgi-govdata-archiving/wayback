@@ -30,7 +30,6 @@ from .differs import compute_dmp_diff
 
 # Imports only used in forked tokenization code; may be ripe for removal:
 from lxml import etree
-from lxml.html import fragment_fromstring
 from html import escape as html_escape
 
 
@@ -388,7 +387,10 @@ def diff_elements(old, new, include='all'):
         return result_element
 
     results = {}
-    metadata, raw_diffs = _htmldiff(str(old), str(new), include)
+    metadata, raw_diffs = _htmldiff(_diffable_fragment(old),
+                                    _diffable_fragment(new),
+                                    include)
+
     for diff_type, diff in raw_diffs.items():
         element = diff_type == 'deletions' and old or new
         results[diff_type] = fill_element(element, diff)
@@ -396,6 +398,27 @@ def diff_elements(old, new, include='all'):
     return metadata, results
 
 
+def _diffable_fragment(element):
+    """
+    Convert a beautiful soup element into an HTML fragment string with just the
+    element's *contents* that is ready for diffing.
+    """
+    # FIXME: we have to remove <ins> and <del> tags because *we* use them to
+    # indicate changes that we find. We probably shouldn't do that:
+    # https://github.com/edgi-govdata-archiving/web-monitoring-processing/issues/69#issuecomment-321424897
+    for edit_tag in element.find_all(_is_ins_or_del):
+        edit_tag.unwrap()
+    # Create a fragment string of just the element's contents
+    return ''.join(map(str, element.children))
+
+
+def _is_ins_or_del(tag):
+    return tag.name == 'ins' or tag.name == 'del'
+
+
+# FIXME: this should take two BeautifulSoup elements to diff (since we've
+# already parsed and generated those), not two HTML fragment strings that have
+# to get parsed again.
 def _htmldiff(old, new, include='all'):
     """
     A slightly customized version of htmldiff that uses different tokens.
@@ -566,6 +589,9 @@ class UndiffableContentToken(DiffToken):
     pass
 
 
+# FIXME: this should be adapted to work off a BeautifulSoup element instead of
+# an etree/lxml element, since we already have that and could avoid re-parsing
+# the whole document a second time.
 def tokenize(html, include_hrefs=True):
     """
     Parse the given HTML and returns token objects (words with attached tags).
@@ -584,41 +610,18 @@ def tokenize(html, include_hrefs=True):
     if etree.iselement(html):
         body_el = html
     else:
-        body_el = parse_html(html, cleanup=True)
+        body_el = parse_html(html)
     # Then we split the document into text chunks for each tag, word, and end tag:
     chunks = flatten_el(body_el, skip_tag=True, include_hrefs=include_hrefs)
     # Finally re-joining them into token objects:
     return fixup_chunks(chunks)
 
-def parse_html(html, cleanup=True):
+def parse_html(html):
     """
-    Parses an HTML fragment, returning an lxml element.  Note that the HTML will be
-    wrapped in a <div> tag that was not in the original document.
-
-    If cleanup is true, make sure there's no <head> or <body>, and get
-    rid of any <ins> and <del> tags.
+    Parses an HTML fragment, returning an lxml element.  Note that the HTML
+    will be wrapped in a <div> tag that was not in the original document.
     """
-    if cleanup:
-        # This removes any extra markup or structure like <head>:
-        html = cleanup_html(html)
-    return fragment_fromstring(html, create_parent=True)
-
-_body_re = re.compile(r'<body.*?>', re.I|re.S)
-_end_body_re = re.compile(r'</body.*?>', re.I|re.S)
-_ins_del_re = re.compile(r'</?(ins|del).*?>', re.I|re.S)
-
-def cleanup_html(html):
-    """ This 'cleans' the HTML, meaning that any page structure is removed
-    (only the contents of <body> are used, if there is any <body).
-    Also <ins> and <del> tags are removed.  """
-    match = _body_re.search(html)
-    if match:
-        html = html[match.end():]
-    match = _end_body_re.search(html)
-    if match:
-        html = html[:match.start()]
-    html = _ins_del_re.sub('', html)
-    return html
+    return html5_parser.parse(html, treebuilder='lxml')
 
 def split_trailing_whitespace(word):
     """
