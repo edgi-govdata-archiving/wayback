@@ -34,7 +34,6 @@ DIFFER_PARALLELISM = os.environ.get('DIFFER_PARALLELISM', 10)
 DIFF_ROUTES = {
     "length": web_monitoring.differs.compare_length,
     "identical_bytes": web_monitoring.differs.identical_bytes,
-    "pagefreezer": web_monitoring.differs.pagefreezer,
     "side_by_side_text": web_monitoring.differs.side_by_side_text,
     "links": web_monitoring.links_diff.links_diff_html,
     "links_json": web_monitoring.links_diff.links_diff_json,

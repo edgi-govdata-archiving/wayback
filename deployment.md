@@ -125,11 +125,10 @@ process_name=%(program_name)s-80%(process_num)02d
 command=/opt/conda/envs/web-monitoring-processing/bin/wm-diffing-server --port 80%(process_num)02d
 stderr_logfile = /var/log/supervisor/tornado-stderr.log
 stdout_logfile = /var/log/supervisor/tornado-stdout.log
-environment=PAGE_FREEZER_API_KEY=<page_freezer_key>
 stopasgroup=true
 ```
 
-You can add or remove as many copies of the program as you like, but note that each should be on a separate port. Also make sure fill in `<page_freeer_key>` with your key. You can also leave this line out entirely if you choose not to use PageFreezer diffs.
+You can add or remove as many copies of the program as you like, but note that each should be on a separate port.
 
 Then, reload Supervisor’s configuration:
 
