@@ -6,7 +6,6 @@ import htmltreediff
 import html5_parser
 import re
 import sys
-import web_monitoring.pagefreezer
 
 
 # BeautifulSoup can sometimes exceed the default Python recursion limit (1000).
@@ -59,15 +58,6 @@ def side_by_side_text(a_text, b_text):
     "Extract the visible text from both response bodies."
     return {'diff': {'a_text': _get_visible_text(a_text),
                      'b_text': _get_visible_text(b_text)}}
-
-
-def pagefreezer(a_url, b_url):
-    "Dispatch to PageFreezer."
-    # Just send PF the urls, not the whole body.
-    # It is still useful that we downloaded the body because we are able to
-    # validate it against the expected hash.
-    obj = web_monitoring.pagefreezer.PageFreezer(a_url, b_url)
-    return {'diff': obj.query_result}
 
 
 def compute_dmp_diff(a_text, b_text, timelimit=4):

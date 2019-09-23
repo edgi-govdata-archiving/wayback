@@ -21,13 +21,13 @@ This component is intended to hold various backend tools serving different tasks
 
 Working and Under Active Development:
 
-* A Python API to PageFreezer's diffing service in
-  ``web_monitoring.page_freezer``
 * A Python API to the Internet Archive Wayback Machine's archived webpage
   snapshots in ``web_monitoring.internetarchive``
 * A Python API to the web-monitoring-db Rails app in ``web_monitoring.db``
-* Python functions and a command-line tool for importing snapshots from PF and
-  IA into web-monitoring-db.
+* Python functions and a command-line tool for importing snapshots from the
+  Internet Archive into web-monitoring-db.
+* An HTTP API for diffing two documents according to a variety of algorithms.
+  (Uses the Tornado web framework.)
 
 Legacy projects that may be revisited:
 * [Example HTML](https://github.com/edgi-govdata-archiving/web-monitoring-processing/tree/master/archives) providing useful test cases.
