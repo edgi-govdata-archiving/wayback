@@ -119,6 +119,7 @@ This project wouldn’t exist without a lot of amazing people’s help. Thanks t
 | [💻](# "Code") | [Stuart Lynn](https://github.com/stuartlynn) |
 | [💻](# "Code") | [Allan Pichardo](https://github.com/allanpichardo) |
 | [📖](# "Documentation") [📋](# "Organizer") | [Matt Price](https://github.com/titaniumbones) |
+| [💻](# "Code") | [Mike Rotondo](https://github.com/mrotondo) |
 | [📖](# "Documentation") | [Susan Tan](https://github.com/ArcTanSusan) |
 | [💻](# "Code") [⚠️](# "Tests") | [Fotis Tsalampounis](https://github.com/ftsalamp) |
 | [📖](# "Documentation") [📋](# "Organizer") | [Dawn Walker](https://github.com/dcwalk) |
@@ -129,7 +130,7 @@ This project wouldn’t exist without a lot of amazing people’s help. Thanks t
 
 ## License & Copyright
 
-Copyright (C) 2017-2018 Environmental Data and Governance Initiative (EDGI)
+Copyright (C) 2017-2019 Environmental Data and Governance Initiative (EDGI)
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 3.0.
 
