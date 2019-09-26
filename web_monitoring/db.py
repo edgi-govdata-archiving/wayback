@@ -611,8 +611,11 @@ Alternatively, you can instaniate Client(user, password) directly.""")
         result = res.json()
         # In place, replace datetime strings with datetime objects.
         data = result['data']
-        data['created_at'] = parse_timestamp(data['created_at'])
-        data['updated_at'] = parse_timestamp(data['updated_at'])
+        # For changes which were created just-in-time to fulfill this API request,
+        # created/updated_at will be None, and that's OK.
+        if data['created_at'] and data['updated_at']:
+            data['created_at'] = parse_timestamp(data['created_at'])
+            data['updated_at'] = parse_timestamp(data['updated_at'])
         return result
 
     def list_annotations(self, *, page_id, to_version_id, from_version_id='',
