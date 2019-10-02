@@ -1,0 +1,53 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/wayback
+    docker:
+      - image: circleci/python:3.7
+    steps:
+      - checkout
+      - restore_cache:
+          key: wayback-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "dev-requirements.txt" }}
+
+      # Bundle install dependencies
+      - run:
+          name: Install Dependencies
+          command: |
+            python -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+            pip install -r dev-requirements.txt
+            python setup.py install
+
+      # Store bundle cache
+      - save_cache:
+          key: wayback-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "dev-requirements.txt" }}
+          paths:
+            - venv
+
+      - run:
+          name: Tests
+          command: |
+            . venv/bin/activate
+            coverage run pytest
+      - run:
+          name: Coverage
+          command: |
+            . venv/bin/activate
+            coverage report -m
+      - run:
+          name: Code linting
+          command: |
+            . venv/bin/activate
+            pyflakes web_monitoring
+      - run:
+          name: Build docs
+          command: |
+            . venv/bin/activate
+            make -C docs html
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build
