@@ -13,8 +13,8 @@ jobs:
       - run:
           name: Install Dependencies
           command: |
-            python -m venv venv
-            . venv/bin/activate
+            python -m venv ~/venv
+            . ~/venv/bin/activate
             pip install .
             pip install -r requirements-dev.txt  # extra requirements for tests, docs
 
@@ -22,27 +22,27 @@ jobs:
       - save_cache:
           key: wayback-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
           paths:
-            - venv
+            - ~/venv
 
       - run:
           name: Tests
           command: |
-            . venv/bin/activate
+            . ~/venv/bin/activate
             coverage run -m pytest
       - run:
           name: Coverage
           command: |
-            . venv/bin/activate
+            . ~/venv/bin/activate
             coverage report -m
       - run:
           name: Code linting
           command: |
-            . venv/bin/activate
-            flake8
+            . ~/venv/bin/activate
+            flake8 .
       - run:
           name: Build docs
           command: |
-            . venv/bin/activate
+            . ~/venv/bin/activate
             make -C docs html
 
 workflows:
