@@ -3,15 +3,16 @@ from contextlib import contextmanager
 import hashlib
 import io
 import logging
-import lxml.html
 import os
 import queue
 import re
-import requests
-import requests.adapters
 import signal
 import threading
 import time
+
+import lxml.html
+import requests
+import requests.adapters
 
 
 logger = logging.getLogger(__name__)

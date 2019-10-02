@@ -20,11 +20,11 @@ import hashlib
 import logging
 import urllib.parse
 import re
-import requests
 import time
-from urllib3.connectionpool import HTTPConnectionPool
-from web_monitoring import utils, __version__
+from . import _utils, __version__
 
+import requests
+from urllib3.connectionpool import HTTPConnectionPool
 from requests.exceptions import (
     ConnectionError,
     ProxyError,
@@ -219,7 +219,7 @@ HTTPConnectionPool.ResponseCls = WaybackResponse
 # TODO: make rate limiting configurable at the session level, rather than
 # arbitrarily set inside get_memento(). Idea: have a rate limit lock type and
 # pass an instance to the constructor here.
-class WaybackSession(utils.DisableAfterCloseSession, requests.Session):
+class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
     """
     A custom session object that network pools connections and resources for
     requests to the Wayback Machine.
@@ -344,7 +344,7 @@ class WaybackSession(utils.DisableAfterCloseSession, requests.Session):
 
 # TODO: add retry, backoff, cross_thread_backoff, and rate_limit options that
 # create a custom instance of urllib3.utils.Retry
-class WaybackClient(utils.DepthCountedContext):
+class WaybackClient(_utils.DepthCountedContext):
     """
     A client for retrieving data from the Internet Archive's Wayback Machine.
 
@@ -671,7 +671,7 @@ class WaybackClient(utils.DepthCountedContext):
         if exact_redirects is None:
             exact_redirects = exact
 
-        with utils.rate_limited(calls_per_second=30, group='get_memento'):
+        with _utils.rate_limited(calls_per_second=30, group='get_memento'):
             # Correctly following redirects is actually pretty complicated. In
             # the simplest case, a memento is a simple web page, and that's
             # no problem. However...
@@ -796,8 +796,8 @@ class WaybackClient(utils.DepthCountedContext):
             suitable for passing to :class:`Client.add_versions`
         """
         res = self.get_memento(uri, exact_redirects=False)
-        version_hash = utils.hash_content(res.content)
-        title = utils.extract_title(res.content)
+        version_hash = _utils.hash_content(res.content)
+        title = _utils.extract_title(res.content)
         content_type = (res.headers['content-type'] or '').split(';', 1)
 
         # Get all headers from original response
