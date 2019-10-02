@@ -1,0 +1,73 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "GET",
+                "uri": "http://localhost:3000/api/v0/versions?source_type=versionista&source_metadata%5Bversion_id%5D=__nonexistent__",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "python-requests/2.17.3"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Authorization": [
+                        "Basic cm9iK3Rlc3QxQHJvYmJyYWNrZXR0LmNvbTptaW5zaXg="
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "X-Request-Id": [
+                        "f2cd7043-8965-43b0-b03b-af8cf38af8bd"
+                    ],
+                    "X-XSS-Protection": [
+                        "1; mode=block"
+                    ],
+                    "X-Content-Type-Options": [
+                        "nosniff"
+                    ],
+                    "Set-Cookie": [
+                        "_webpage-versions-db_session=elVrQ3pVYjRXSWFFOFArYm9hQXZHdk9Bak01c3JaZ1cxZzZuNWx2SkM2TldManBXTExmS2NieGh3WXlldllpZzBtdjl2UU41VmZ5SWZjdEpsb29HZHc9PS0tNThrRnNyME96TFV6TUxUbStid0JqZz09--78f197be263e3c27987abee063af3099d203f85c; path=/; HttpOnly"
+                    ],
+                    "Content-Type": [
+                        "application/json; charset=utf-8"
+                    ],
+                    "Vary": [
+                        "Origin"
+                    ],
+                    "Cache-Control": [
+                        "max-age=0, private, must-revalidate"
+                    ],
+                    "X-Runtime": [
+                        "0.134574"
+                    ],
+                    "X-Environment": [
+                        "development"
+                    ],
+                    "X-Frame-Options": [
+                        "SAMEORIGIN"
+                    ],
+                    "ETag": [
+                        "W/\"166789c1ac2fcccc95be4f0754c46bc7\""
+                    ]
+                },
+                "body": {
+                    "string": "{\"links\":{\"first\":\"http://localhost:3000/api/v0/versions?chunk=1\\u0026chunk_size=100\\u0026source_metadata%5Bversion_id%5D=__nonexistent__\\u0026source_type=versionista\",\"last\":\"http://localhost:3000/api/v0/versions?chunk=1\\u0026chunk_size=100\\u0026source_metadata%5Bversion_id%5D=__nonexistent__\\u0026source_type=versionista\",\"prev\":null,\"next\":null},\"meta\":{\"total_results\":0},\"data\":[]}"
+                }
+            }
+        }
+    ]
+}

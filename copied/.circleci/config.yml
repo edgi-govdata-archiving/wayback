@@ -1,0 +1,96 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/web-monitoring-processing
+    docker:
+      - image: circleci/python:3.7
+    steps:
+      - checkout
+      - restore_cache:
+          key: processing-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "dev-requirements.txt" }}
+
+      # Bundle install dependencies
+      - run:
+          name: Install Dependencies
+          command: |
+            python -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+            pip install -r dev-requirements.txt
+            python setup.py install
+
+      # Store bundle cache
+      - save_cache:
+          key: processing-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "dev-requirements.txt" }}
+          paths:
+            - venv
+
+      - run:
+          name: Tests
+          command: |
+            . venv/bin/activate
+            coverage run run_tests.py -v web_monitoring/tests/
+      - run:
+          name: Coverage
+          command: |
+            . venv/bin/activate
+            coverage report -m
+      - run:
+          name: Code linting
+          command: |
+            . venv/bin/activate
+            pyflakes web_monitoring
+      - run:
+          name: Build docs
+          command: |
+            . venv/bin/activate
+            cd docs && make html
+
+  build_docker:
+    machine: true
+    steps:
+      - checkout
+      - run: |
+          docker build -t envirodgi/processing:$CIRCLE_SHA1 .
+      - run:
+          name: Save Image
+          command: |
+            mkdir /tmp/workspace
+            docker save --output /tmp/workspace/docker-image envirodgi/processing:$CIRCLE_SHA1
+      - persist_to_workspace:
+          root: /tmp/workspace
+          paths:
+            - docker-image
+
+  publish_docker:
+    machine: true
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - run:
+          name: Load Built Docker Image
+          command: docker load --input /tmp/workspace/docker-image
+      - run:
+          name: Re-tag Image
+          command: docker image tag envirodgi/processing:$CIRCLE_SHA1 envirodgi/processing:latest
+      - run:
+          name: Publish to Docker Hub
+          command: |
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker push envirodgi/processing:$CIRCLE_SHA1
+            docker push envirodgi/processing:latest
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build
+      - build_docker
+      - publish_docker:
+          requires:
+            - build
+            - build_docker
+          filters:
+            branches:
+              only:
+                - release

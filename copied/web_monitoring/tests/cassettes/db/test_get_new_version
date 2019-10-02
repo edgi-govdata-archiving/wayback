@@ -1,0 +1,73 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "GET",
+                "uri": "http://localhost:3000/api/v0/versions/06620776-d347-4abd-a423-a871620299a9",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "python-requests/2.17.3"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Authorization": [
+                        "Basic cm9iK3Rlc3QxQHJvYmJyYWNrZXR0LmNvbTptaW5zaXg="
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "X-Request-Id": [
+                        "28709297-7f39-44bc-8b51-dedbe541fc33"
+                    ],
+                    "X-XSS-Protection": [
+                        "1; mode=block"
+                    ],
+                    "X-Content-Type-Options": [
+                        "nosniff"
+                    ],
+                    "Set-Cookie": [
+                        "_webpage-versions-db_session=SkpNMmZwbWd3ZTVJSFJOZXJWRDZjSThLZC9DQXF1UzcrcXBXVFJyWHo3L3BtUnk4bmhUenVHOUw4VEpuVUxTQkZCd1hPd3VudU03YjdBaUwzUnZsTlE9PS0tVzl0aFE5c0ptenRFRmFmbUt0dEJydz09--3c84e1d329a6768f1a8f8b1f53d701e4edf003dd; path=/; HttpOnly"
+                    ],
+                    "Content-Type": [
+                        "application/json; charset=utf-8"
+                    ],
+                    "Vary": [
+                        "Origin"
+                    ],
+                    "Cache-Control": [
+                        "max-age=0, private, must-revalidate"
+                    ],
+                    "X-Runtime": [
+                        "0.135011"
+                    ],
+                    "X-Environment": [
+                        "development"
+                    ],
+                    "X-Frame-Options": [
+                        "SAMEORIGIN"
+                    ],
+                    "ETag": [
+                        "W/\"6fa4a5c48f0a518d6db92b292d1fe10c\""
+                    ]
+                },
+                "body": {
+                    "string": "{\"links\":{\"page\":\"http://localhost:3000/api/v0/pages/3d068c64-967a-4ec7-af49-f8fa0f19e6f1\",\"previous\":\"http://localhost:3000/api/v0/versions/74bc3155-58d7-4c30-b4aa-7d86f8cc83dd\",\"next\":\"http://localhost:3000/api/v0/versions/795e6ff4-fcc0-444c-9f31-2b156f7dd4d4\"},\"data\":{\"uuid\":\"06620776-d347-4abd-a423-a871620299a9\",\"page_uuid\":\"3d068c64-967a-4ec7-af49-f8fa0f19e6f1\",\"capture_time\":\"2017-11-15T00:00:00.000Z\",\"uri\":\"file:///Users/rbrackett/Dev/datarescue/web-monitoring-db/tmp/storage/archive/3587cb776ce0e4e8237f215800b7dffba0f25865cb84550e87ea8bbac838c423\",\"version_hash\":\"3587cb776ce0e4e8237f215800b7dffba0f25865cb84550e87ea8bbac838c423\",\"source_type\":\"test\",\"source_metadata\":{},\"created_at\":\"2018-03-02T07:06:01.656Z\",\"updated_at\":\"2018-03-02T07:06:01.656Z\",\"title\":\"title_placeholder\",\"capture_url\":null}}"
+                }
+            }
+        }
+    ]
+}

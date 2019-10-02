@@ -1,0 +1,155 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&collapse=digest&showResumeKey=true&resolveRevisits=true
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAALWWPXOmNhSFe/+Kt3GRSWYNV1cS73biQ4BAgBASEq0nM1vEuyk84/z8gDcpsqag
+        yNYw95lzj86Rnr+9/Pb89esvTzdIkjTBNIGU3Ely+/L6+ufnp6e3t7dP+/dPz99ePmfJ0+31979e
+        n768vvxx/H+LS2XMvHY9ct+4VXoYQuChr8ZGD+vGbincER6ef4QQSCCheA3SYgMYwoxbKzpVoRhF
+        YNw2eh6qykZ3SwlCegYhiJhdgxjC50lNZN1yjbbVbVuCmyeqRcsUTMsOSTNyCqEZ3q9BZom+0rW0
+        FTMYJSu9oMyv4Do5ct20B4SeQDBJkNOLSmbKc+fLPN+C4h78xqehdj5QEidkrT0g5H4KoelVTySf
+        xSoMJ/VaRW5rUzXjPPRu4l3hCjUdEKTnkDu5uC5lNhI0I7ifJsZE7rnig+DLGJwnqA8lCUk+QrKE
+        7xLJRSWjmBazeNLnU7fUORUzjI1bajspq2R9Ow4r/gihyaGPw0VPohj3VEyyX7rG2FbYpo9DLvuO
+        kWaCkR5KMnYGydIM0n8h5wCSwI20CA2xbBikAW39HsKtiyLaIlCTR3WD9IMb/4yncE2DABxkq4Xg
+        qiyZKtd6Y4zX1aR5gSSWh+XJhxgekDsB4Bch6GYf+raZYyeHRmmndD0AqhLAk6V6X9SZG5ACS/+f
+        RZ358D7+otmr3Egc1iB8WZRAZBc3nBouSduFUbs95ZCxD6V4QIBkycXmNdp5x3pdt4vR5UwaoArQ
+        lZ1CubJuO5r3frIoTGDHsItV4l0Q+WireTeDVFqHtits2wjVTEtvjnrPkJ9B2N7uF1Me8lLmW+fb
+        qALVZjW+KGnZCS5DxQ3VO4STE08wucN+V/0sy7+Pv1iH01qaxs099iWpx4rJIdJQuYZUBVkXvR5u
+        nOX7gBDAn5Xv7+PpNQ0drsZCPTgkLIBFq+beYdUZZAOzY3do+Hg57ZAU0nt6sUTsfmo9VZJZ2BrS
+        H3GfpBEVbbWrCredPxh2yP5gSOnFEol10a5B5nzSvaoEYdauLSeSFVM/+QmPpoITN2hy3E8XIdCz
+        WILsGCsxROuh4jOUnKu1XIvGiHfLT+rwcAWvritCZENs2WCw3Twrg2rCZoLaUOtNzPX7gyF9OCiP
+        UOxzHuH+CPLX/7DIw9+ZGFVZ5QkAAA==
+    headers:
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Type: [text/plain;charset=UTF-8]
+      Date: ['Thu, 13 Sep 2018 19:43:43 GMT']
+      Server: [nginx/1.13.11]
+      X-App-Server: [wwwb-app6]
+      X-Cache-Key: ['httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&collapse=digest&showResumeKey=true&resolveRevisits=trueUS']
+      X-Page-Cache: [BYPASS]
+      X-location: [cdx]
+      X-ts: ['----']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&collapse=digest&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010505040413&resolveRevisits=true
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAALWVy26cMBhG93mK2WRRtcqAr5CdDZirwWAMtrejSlk0SRcjpY9fSFVFVZiKxYyQ
+        YAH6jg7+/fn0+vzt9PLy5XgAQRAGeLkQBCg4PJ3PPx+Px7e3t4fl/cPp9fkxCo6H8/df5+PT+fnH
+        +v2hY1aw0XQ9nRx3hWUIMYtUJWhilS+bQwjDKLg7fYZEGIPwL2QbAANwgCUCBdSkbUUPpJ4stb52
+        zOnE4p676gBCfCEegn0OuhWiGLDWc0W7RqUEMShQntsm9Qyl8yEEMYi3IHEQguh2Dmt8vM9BjDkG
+        qvAIpJMwCnBJgIJllaGpJsD0qwO54EDxddaBbMdHwc51qDMCNcO8wNqJwTRSs7mn3lhfTYRUZHWI
+        L0E+BvYmDninQ8GSEaYzpqXP28wN+aDGtvJl2jCPXAdWhwhsQkKA4Q1naYnfOUvVPNFJC2+W/ZA0
+        uChzR0VPkKwyno51uTpQuAEJwX5IQzODM0WWJ5GeG05b2Mgs9aolvWXrj6LxlkkIg+CjOP4PyZFo
+        WOs651wteVlzmXd0BsLMCMukgqsJDDchCAG4D5JkTlo7kNKo1EhTtVkmckmhM9ArS+U7hH6GkPUB
+        yK3G9k883ecAq1TwDEoDy6EvLNZTSo3JvHZjMoCufK/xCw4IXacCL8bvnKip4DpVVqcM2UIY3Hud
+        0cYRXWmKVI9Xhzjahiz745YOONx5nNq5qLKa+JZSP5qc5NXIer8MMaMlYyVfHAK0UR8rhKDr1PgF
+        B4J2ViAeRweFMG5yYzHDBLKxTC1P3NAP3ZTTdR3gRn2sEBpep8YvONBwZ3GwYerqIi3AWFtY8ilJ
+        J14wKUxH+wzVenEAW8cpWe4E7dx0RvK5qtu+kzUjSpVKJLm3WI0K5QIkboEgAu9Wyj1Ilpx7EN8D
+        8fUfVnT3Gz/pX9TBCQAA
+    headers:
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Type: [text/plain;charset=UTF-8]
+      Date: ['Thu, 13 Sep 2018 19:43:43 GMT']
+      Server: [nginx/1.13.11]
+      X-App-Server: [wwwb-app1]
+      X-Cache-Key: ['httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&collapse=digest&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010505040413&resolveRevisits=trueUS']
+      X-Page-Cache: [BYPASS]
+      X-location: [cdx]
+      X-ts: ['----']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&collapse=digest&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010506010648&resolveRevisits=true
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAALWVPY+mNhSF+/kVbzNFlGhfc/0F24HBYAzYxnwYt6NIW2R2U4w0+fmBt4i0Crui
+        2GloQPfROeeey8u31z9evn797X4DhBJEEUsQZDS5fXl7+/vz/f7+/v5pf//p5dvr5xTdb29//vN2
+        //L2+tfx/S2Xql9lH+2slzB55yYihoU7UYSwQSxvCSYYP738H4IhI/9BzgEYwQ0rAg32bBikg94v
+        gYeot3zzIlBXbO0NEv6j8XBNAy69scwN3AjLqA9zQSbd98qS2jMV464B0+wUQjNCP1DDPp5d09Aa
+        0fVjodRsl8ISBk3XCEnVMLNYFoEcGs4hJAGafZwGkmCEr2lY244tpR91KcW4rT0dKFg8diszlLUk
+        PHJAJxBIgJDsGqRbCafNljsleFdbUTBbDrHmFOcb4K7aIYidLSzsi4zSDzPqMf6iBmnmhfFps20N
+        zUj9Gvla00WPgVILmO4aAE6M4ghBSvk1CMvnapnZYHQdulBDWdqWrHGYVr8Uy1ofaaD0DAIJpek1
+        iCgI19aRQZm5DVI7346UBMXpLINtjjRwxs4gmGRX7dpEN+VjX9e6dT5XTDdSeSqX1sZWysHskOSs
+        3xzRJEUX7cpr70q8abs50CWvoxBQqAi5qst+s+ORCSFnkAynycVry71svPAyEq1jv/rJqllOVVdw
+        pSpfywNyaleSEI4unpLFuBwb4HU1uAXK3lS2q/t9B6wWuarmWwJZctIQvt8rdtWumeAS+7VY6aYb
+        ZYacEUHKNlS482KL7nGv6BkkRQTgl9Tw1Kjvxv9cA1270Cx7TaItZE+h6KtqJcGaUZVGeHMYxc72
+        aoek8GtOyQ8sSuFiN1qlI60500KzGNuwqbyaK9XOoo/amOUR9pkGQPjyD5b1XdP4vpp7x+fo8NyU
+        bismtXYVTBvBBwSdQFK0P8jFbpASB1nOTU0mKWMnWpwvk8SMOQbgzbG2KTuxK0WY4qsFNLmr1NAS
+        I4kaSpYr7ZpiJczmNucTjgeEnOzVAwIXIbGdmJAWb12LR7eOxcirac/CNCroFU8PJfzpoDyD2Oc8
+        Q/YM8vfvWPD0L1JugwfZCQAA
+    headers:
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Type: [text/plain;charset=UTF-8]
+      Date: ['Thu, 13 Sep 2018 19:43:43 GMT']
+      Server: [nginx/1.13.11]
+      X-App-Server: [wwwb-app53]
+      X-Cache-Key: ['httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&collapse=digest&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010506010648&resolveRevisits=trueUS']
+      X-Page-Cache: [BYPASS]
+      X-location: [cdx]
+      X-ts: ['----']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&collapse=digest&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010508035322&resolveRevisits=true
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAALWVu47kNhBF8/2KTg0YO1Tx1dpMT1ISSfEliWI6MLCBZ9dBA+PPt3oMZzKgYCdi
+        IKKObt1bxdefb7+//vjx28sNECoQRXfEEdDy9v3x+Ovby8vx7evrz7dvd/Rye/zx9+Pl++PtzxtG
+        cMMDAYkDM6Z3oMOaeMrTXu2hSdTV+3iDgn55PSuPEfqv/Pv7+9dzxHH/5oeRBEz6aB3WFfXLmhve
+        Y9WMYafei1sBJdzPIZTAZ2qgBF/TIJRSwWjVq46niuxLK7DtF7foJo94xIeG+x2fQxgUn6mBAVzT
+        ULWSr5w0OmpMhlEY3kY1eMtM9FKZ5sMHOIEUBS4Kcg3CI+l8a0TbRumnRlbOGjvmbh1j7AbmbgU+
+        /vkMQg5IcQ1iGRsFnhdby9CL6ILZYO6glTIJWJN/KilOIZQwhH+JG+z/yl9s1D6FVSwwVkaHFLla
+        x7TS3q8NYXHHG30mCpUnkOPkxUXL25Sz6YdkeRvizJ3Nsx/6ae5qysic4rNR/CS2JSoKjvg1yGz2
+        3KYlj5bslZjFPCu7JBIhV5VI7EPJ/SRXJQLMcXkNko3Dm5xVkDQp5SKMux6mOOAhtxvU7qmEnVhe
+        IkYoZdcg9cSsqCZFhJQVWcGsre5sH40eKZlpekLKE+OPsAGFi0q8z0vciXGtXcy+TIxRCH7BSgvt
+        Nq2fE1KetasAwq62S+7Bd1XEpBINdRxrHIOFNueB462m9gm5kzMIwbSgnzUh/5a/6EYT+33s6hQa
+        lmbZmErNW11za6PzTpLp0ADFaaM4RXAxvGHIDoDppmai77VlI2k3k7znYp9kPFbJsZb4GeReYEyv
+        QfCgeJ1t3/HAROhhc2PcuUmViFqExD5ydQYBjAhcfWbDoKPchI+pnrco28arHI9lbOtuVi19Wo7O
+        Zh0wpeTqeoehadO452EDXruqNn3ChG6ShmbdoP94Q8ov/wAh+k0YkAgAAA==
+    headers:
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Type: [text/plain;charset=UTF-8]
+      Date: ['Thu, 13 Sep 2018 19:43:44 GMT']
+      Server: [nginx/1.13.11]
+      X-App-Server: [wwwb-app31]
+      X-Cache-Key: ['httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&collapse=digest&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010508035322&resolveRevisits=trueUS']
+      X-Page-Cache: [BYPASS]
+      X-location: [cdx]
+      X-ts: ['----']
+    status: {code: 200, message: OK}
+version: 1

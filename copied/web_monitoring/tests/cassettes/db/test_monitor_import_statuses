@@ -1,0 +1,531 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "GET",
+                "uri": "http://localhost:3000/api/v0/imports/46",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "python-requests/2.17.3"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Authorization": [
+                        "Basic cm9iK3Rlc3QxQHJvYmJyYWNrZXR0LmNvbTptaW5zaXg="
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 202,
+                    "message": "Accepted"
+                },
+                "headers": {
+                    "X-Request-Id": [
+                        "0b124e32-6e9f-4c52-8e8b-ab276be3bb57"
+                    ],
+                    "X-XSS-Protection": [
+                        "1; mode=block"
+                    ],
+                    "X-Content-Type-Options": [
+                        "nosniff"
+                    ],
+                    "Set-Cookie": [
+                        "_webpage-versions-db_session=RVNuRHNSQUtQbnlxTGRZc3hlTmt5UW9xMTUzQTdCS216Q2pzdjBhQWd2YjdLVTBoVm0vZFd6RE80eURiMUhEUVdGRTl0MXhJRVJidENhVDFHOTlZUlE9PS0tV1ZYQzFoOGJRY28rZzhWV0VDM29Udz09--6b85f69951013b987f7da8250e1328bed95798c6; path=/; HttpOnly"
+                    ],
+                    "Content-Type": [
+                        "application/json; charset=utf-8"
+                    ],
+                    "Vary": [
+                        "Origin"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "X-Runtime": [
+                        "0.128705"
+                    ],
+                    "X-Environment": [
+                        "development"
+                    ],
+                    "X-Frame-Options": [
+                        "SAMEORIGIN"
+                    ]
+                },
+                "body": {
+                    "string": "{\"data\":{\"id\":46,\"user_id\":2,\"status\":\"pending\",\"file\":\"295895d7-0bfc-4750-84df-9fe2c3b43023\",\"processing_errors\":[],\"created_at\":\"2018-03-02T07:11:28.296Z\",\"updated_at\":\"2018-03-02T07:11:28.296Z\",\"update_behavior\":\"skip\"}}"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "http://localhost:3000/api/v0/imports/47",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "python-requests/2.17.3"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Authorization": [
+                        "Basic cm9iK3Rlc3QxQHJvYmJyYWNrZXR0LmNvbTptaW5zaXg="
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 202,
+                    "message": "Accepted"
+                },
+                "headers": {
+                    "X-Request-Id": [
+                        "6193023b-93f2-472d-bee4-22de7f02d052"
+                    ],
+                    "X-XSS-Protection": [
+                        "1; mode=block"
+                    ],
+                    "X-Content-Type-Options": [
+                        "nosniff"
+                    ],
+                    "Set-Cookie": [
+                        "_webpage-versions-db_session=cTJ5LytYdEtyL3BRK3B2dGxhMnNsZlcyQ21tcnNqS25JSlNxYjd4WHJpZDEwMmRCQWdFcDhsY0ZJWXEzS0lGVXpLenVXUG5sd1paVHJPNTdQcmdZM0E9PS0tMWpQMHdYV0RVZ2pvclY1MitqSzlrdz09--7ab8fcfa8e2b4607350df4e3a68f16edf4450a91; path=/; HttpOnly"
+                    ],
+                    "Content-Type": [
+                        "application/json; charset=utf-8"
+                    ],
+                    "Vary": [
+                        "Origin"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "X-Runtime": [
+                        "0.128116"
+                    ],
+                    "X-Environment": [
+                        "development"
+                    ],
+                    "X-Frame-Options": [
+                        "SAMEORIGIN"
+                    ]
+                },
+                "body": {
+                    "string": "{\"data\":{\"id\":47,\"user_id\":2,\"status\":\"pending\",\"file\":\"af979f08-2923-4ed6-92be-fa120bc11dfd\",\"processing_errors\":[],\"created_at\":\"2018-03-02T07:11:28.458Z\",\"updated_at\":\"2018-03-02T07:11:28.458Z\",\"update_behavior\":\"skip\"}}"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "http://localhost:3000/api/v0/imports/46",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "python-requests/2.17.3"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Authorization": [
+                        "Basic cm9iK3Rlc3QxQHJvYmJyYWNrZXR0LmNvbTptaW5zaXg="
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 202,
+                    "message": "Accepted"
+                },
+                "headers": {
+                    "X-Request-Id": [
+                        "24c4004b-ff6d-45c1-ab30-96aa472d28cf"
+                    ],
+                    "X-XSS-Protection": [
+                        "1; mode=block"
+                    ],
+                    "X-Content-Type-Options": [
+                        "nosniff"
+                    ],
+                    "Set-Cookie": [
+                        "_webpage-versions-db_session=dXdsKzNCYllrSDlOQXA3Zm5oVE9LaytpZ2RNRGlTZEhjeDZaVHA2UFl4NUZ2anFpTEkvUkdEZWRwYVlXTi9ZdTZUQ1NYc0hkaU1QYnV1UTdXdFpmd2c9PS0tRUFSLzhIdUpzTlZRa2ZMNlJYNEladz09--4516234acbeb62ac6a6f49a5c89dce9377e2ed3b; path=/; HttpOnly"
+                    ],
+                    "Content-Type": [
+                        "application/json; charset=utf-8"
+                    ],
+                    "Vary": [
+                        "Origin"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "X-Runtime": [
+                        "0.129913"
+                    ],
+                    "X-Environment": [
+                        "development"
+                    ],
+                    "X-Frame-Options": [
+                        "SAMEORIGIN"
+                    ]
+                },
+                "body": {
+                    "string": "{\"data\":{\"id\":46,\"user_id\":2,\"status\":\"pending\",\"file\":\"295895d7-0bfc-4750-84df-9fe2c3b43023\",\"processing_errors\":[],\"created_at\":\"2018-03-02T07:11:28.296Z\",\"updated_at\":\"2018-03-02T07:11:28.296Z\",\"update_behavior\":\"skip\"}}"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "http://localhost:3000/api/v0/imports/47",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "python-requests/2.17.3"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Authorization": [
+                        "Basic cm9iK3Rlc3QxQHJvYmJyYWNrZXR0LmNvbTptaW5zaXg="
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 202,
+                    "message": "Accepted"
+                },
+                "headers": {
+                    "X-Request-Id": [
+                        "0a9ea533-d77f-4b9c-9289-fa45a5bd8738"
+                    ],
+                    "X-XSS-Protection": [
+                        "1; mode=block"
+                    ],
+                    "X-Content-Type-Options": [
+                        "nosniff"
+                    ],
+                    "Set-Cookie": [
+                        "_webpage-versions-db_session=TVlVZWlzRzU5SGc4SXdqMEJWYVhGV0FoMmhJOTBLWWJQS0h6OUQzSXFUTnpqV3VqVHRXK2FQZkJHbk5lWUZtT2VDSXdWODUrM0hDYURwSnlWd2hrT0E9PS0tMEFNQW80c25Sa2NVaGE2OXBqNGphdz09--5768d9db7a2b2c3dadee388d719a0c08e91faba7; path=/; HttpOnly"
+                    ],
+                    "Content-Type": [
+                        "application/json; charset=utf-8"
+                    ],
+                    "Vary": [
+                        "Origin"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "X-Runtime": [
+                        "0.126121"
+                    ],
+                    "X-Environment": [
+                        "development"
+                    ],
+                    "X-Frame-Options": [
+                        "SAMEORIGIN"
+                    ]
+                },
+                "body": {
+                    "string": "{\"data\":{\"id\":47,\"user_id\":2,\"status\":\"pending\",\"file\":\"af979f08-2923-4ed6-92be-fa120bc11dfd\",\"processing_errors\":[],\"created_at\":\"2018-03-02T07:11:28.458Z\",\"updated_at\":\"2018-03-02T07:11:28.458Z\",\"update_behavior\":\"skip\"}}"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "http://localhost:3000/api/v0/imports/46",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "python-requests/2.17.3"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Authorization": [
+                        "Basic cm9iK3Rlc3QxQHJvYmJyYWNrZXR0LmNvbTptaW5zaXg="
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 202,
+                    "message": "Accepted"
+                },
+                "headers": {
+                    "X-Request-Id": [
+                        "bb8f092f-ec83-4c26-a079-79c47e102006"
+                    ],
+                    "X-XSS-Protection": [
+                        "1; mode=block"
+                    ],
+                    "X-Content-Type-Options": [
+                        "nosniff"
+                    ],
+                    "Set-Cookie": [
+                        "_webpage-versions-db_session=N1h3OUY1Qmd6amx5eXZyeGN3Z0hsYy9oVU95WDFiZUtTRjZYeUdNbUVhTXFvYkNRMGNDb0k5K0l0QWpNdFIwUzRzQXdTQVdMaWR1ZnhNMDA3dVNHblE9PS0tQm5Pa3hsQVRPd0ZwVXJWY2tVNXViQT09--95c468900187a7a2e00eac78fcc0a0bd141f456d; path=/; HttpOnly"
+                    ],
+                    "Content-Type": [
+                        "application/json; charset=utf-8"
+                    ],
+                    "Vary": [
+                        "Origin"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "X-Runtime": [
+                        "0.126648"
+                    ],
+                    "X-Environment": [
+                        "development"
+                    ],
+                    "X-Frame-Options": [
+                        "SAMEORIGIN"
+                    ]
+                },
+                "body": {
+                    "string": "{\"data\":{\"id\":46,\"user_id\":2,\"status\":\"pending\",\"file\":\"295895d7-0bfc-4750-84df-9fe2c3b43023\",\"processing_errors\":[],\"created_at\":\"2018-03-02T07:11:28.296Z\",\"updated_at\":\"2018-03-02T07:11:28.296Z\",\"update_behavior\":\"skip\"}}"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "http://localhost:3000/api/v0/imports/47",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "python-requests/2.17.3"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Authorization": [
+                        "Basic cm9iK3Rlc3QxQHJvYmJyYWNrZXR0LmNvbTptaW5zaXg="
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 202,
+                    "message": "Accepted"
+                },
+                "headers": {
+                    "X-Request-Id": [
+                        "1c1e8e1b-015c-4dcc-a8d2-26627e13132a"
+                    ],
+                    "X-XSS-Protection": [
+                        "1; mode=block"
+                    ],
+                    "X-Content-Type-Options": [
+                        "nosniff"
+                    ],
+                    "Set-Cookie": [
+                        "_webpage-versions-db_session=WjhXWVBXQ1NuL3VRTlVUSTArdGxzeHZraXFHM0d3NllpYjZ3M2VOZkMyUU9tRzM1L0tQQzRXR0RseitnQUxXMmFDY1JINTRFdUNrTHBCWmUvVW5DS3c9PS0tdVRRbEZ3ZnJMQ0FSYmQxZjlaQ21QQT09--9aa7933dc3ba111836e86b0618ca86be75898c9e; path=/; HttpOnly"
+                    ],
+                    "Content-Type": [
+                        "application/json; charset=utf-8"
+                    ],
+                    "Vary": [
+                        "Origin"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "X-Runtime": [
+                        "0.129398"
+                    ],
+                    "X-Environment": [
+                        "development"
+                    ],
+                    "X-Frame-Options": [
+                        "SAMEORIGIN"
+                    ]
+                },
+                "body": {
+                    "string": "{\"data\":{\"id\":47,\"user_id\":2,\"status\":\"pending\",\"file\":\"af979f08-2923-4ed6-92be-fa120bc11dfd\",\"processing_errors\":[],\"created_at\":\"2018-03-02T07:11:28.458Z\",\"updated_at\":\"2018-03-02T07:11:28.458Z\",\"update_behavior\":\"skip\"}}"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "http://localhost:3000/api/v0/imports/46",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "python-requests/2.17.3"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Authorization": [
+                        "Basic cm9iK3Rlc3QxQHJvYmJyYWNrZXR0LmNvbTptaW5zaXg="
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "X-Request-Id": [
+                        "6408c47e-2f4e-47ac-a9e4-6da77afa64b1"
+                    ],
+                    "X-XSS-Protection": [
+                        "1; mode=block"
+                    ],
+                    "X-Content-Type-Options": [
+                        "nosniff"
+                    ],
+                    "Set-Cookie": [
+                        "_webpage-versions-db_session=L0N1OFA1bjRCa2pHTk1pMDd4aVJ1Z3g3dGZMYXQ1Z1d4bDVabmlZczdqait2a3lnNmpXTTcxaDBHYjYyZWFzMG1hM3pURUxZL1RqemNrQU9YNHJSN1E9PS0tQys0OGNTbGEvUGxDREJoS3dQNGRGdz09--67e21ec36867d9f3c60e5259549e8ff1f40e5422; path=/; HttpOnly"
+                    ],
+                    "Content-Type": [
+                        "application/json; charset=utf-8"
+                    ],
+                    "Vary": [
+                        "Origin"
+                    ],
+                    "Cache-Control": [
+                        "max-age=0, private, must-revalidate"
+                    ],
+                    "X-Runtime": [
+                        "0.127449"
+                    ],
+                    "X-Environment": [
+                        "development"
+                    ],
+                    "X-Frame-Options": [
+                        "SAMEORIGIN"
+                    ],
+                    "ETag": [
+                        "W/\"740e7a001a6876aa158eef85181fb519\""
+                    ]
+                },
+                "body": {
+                    "string": "{\"data\":{\"id\":46,\"user_id\":2,\"status\":\"complete\",\"file\":\"295895d7-0bfc-4750-84df-9fe2c3b43023\",\"processing_errors\":[],\"created_at\":\"2018-03-02T07:11:28.296Z\",\"updated_at\":\"2018-03-02T07:11:32.167Z\",\"update_behavior\":\"skip\"}}"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "http://localhost:3000/api/v0/imports/47",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "python-requests/2.17.3"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Authorization": [
+                        "Basic cm9iK3Rlc3QxQHJvYmJyYWNrZXR0LmNvbTptaW5zaXg="
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "X-Request-Id": [
+                        "8b8c11a4-e26d-404c-ae4b-e1f7ef190e84"
+                    ],
+                    "X-XSS-Protection": [
+                        "1; mode=block"
+                    ],
+                    "X-Content-Type-Options": [
+                        "nosniff"
+                    ],
+                    "Set-Cookie": [
+                        "_webpage-versions-db_session=TGtLUkVhL3BjK2FOU2MwMTRiMFNEajJJak5RSjZwUG1DcjNybW16TnJ4SVIybVVMKzk5cERTK3JMaHhyRlF4Q0F2SjJxMytPekp3NWt5N3Z5eGMySlE9PS0tUHRPOFAvQ0N4cTRTYVVLNGt3ZEtjdz09--7711720c714622ca4b7399c6a6229c16d867f9e4; path=/; HttpOnly"
+                    ],
+                    "Content-Type": [
+                        "application/json; charset=utf-8"
+                    ],
+                    "Vary": [
+                        "Origin"
+                    ],
+                    "Cache-Control": [
+                        "max-age=0, private, must-revalidate"
+                    ],
+                    "X-Runtime": [
+                        "0.128002"
+                    ],
+                    "X-Environment": [
+                        "development"
+                    ],
+                    "X-Frame-Options": [
+                        "SAMEORIGIN"
+                    ],
+                    "ETag": [
+                        "W/\"ce634993f1b4ec9e3b3893df2931ef70\""
+                    ]
+                },
+                "body": {
+                    "string": "{\"data\":{\"id\":47,\"user_id\":2,\"status\":\"complete\",\"file\":\"af979f08-2923-4ed6-92be-fa120bc11dfd\",\"processing_errors\":[],\"created_at\":\"2018-03-02T07:11:28.458Z\",\"updated_at\":\"2018-03-02T07:11:32.655Z\",\"update_behavior\":\"skip\"}}"
+                }
+            }
+        }
+    ]
+}
