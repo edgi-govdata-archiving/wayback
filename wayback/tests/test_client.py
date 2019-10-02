@@ -59,18 +59,26 @@ def test_list_versions_cannot_iterate_after_session_closing():
 
 class TestOriginalUrlForMemento:
     def test_extracts_url(self):
-        url = original_url_for_memento('http://web.archive.org/web/20170813195036/https://arpa-e.energy.gov/?q=engage/events-workshops')
+        url = original_url_for_memento(
+            'http://web.archive.org/web/20170813195036/'
+            'https://arpa-e.energy.gov/?q=engage/events-workshops')
         assert url == 'https://arpa-e.energy.gov/?q=engage/events-workshops'
 
-        url = original_url_for_memento('http://web.archive.org/web/20170813195036id_/https://arpa-e.energy.gov/?q=engage/events-workshops')
+        url = original_url_for_memento(
+            'http://web.archive.org/web/20170813195036id_/'
+            'https://arpa-e.energy.gov/?q=engage/events-workshops')
         assert url == 'https://arpa-e.energy.gov/?q=engage/events-workshops'
 
     def test_decodes_url(self):
-        url = original_url_for_memento('http://web.archive.org/web/20150930233055id_/http%3A%2F%2Fwww.epa.gov%2Fenvironmentaljustice%2Fgrants%2Fej-smgrants.html%3Futm')
+        url = original_url_for_memento(
+            'http://web.archive.org/web/20150930233055id_/'
+            'http%3A%2F%2Fwww.epa.gov%2Fenvironmentaljustice%2Fgrants%2Fej-smgrants.html%3Futm')
         assert url == 'http://www.epa.gov/environmentaljustice/grants/ej-smgrants.html?utm'
 
     def test_does_not_decode_query(self):
-        url = original_url_for_memento('http://web.archive.org/web/20170813195036/https://arpa-e.energy.gov/?q=engage%2Fevents-workshops')
+        url = original_url_for_memento(
+            'http://web.archive.org/web/20170813195036/'
+            'https://arpa-e.energy.gov/?q=engage%2Fevents-workshops')
         assert url == 'https://arpa-e.energy.gov/?q=engage%2Fevents-workshops'
 
     def test_raises_for_non_memento_urls(self):

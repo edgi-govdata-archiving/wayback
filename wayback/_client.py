@@ -74,7 +74,8 @@ CDX_SEARCH_URL = 'http://web.archive.org/cdx/search/cdx'
 # This /web/timemap URL has newer features, but has other bugs and doesn't
 # support some features, like resume keys (for paging). It ignores robots.txt,
 # while /cdx/search obeys robots.txt (for now). It also has different/extra
-# columns. See https://github.com/internetarchive/wayback/blob/bd205b9b26664a6e2ea3c0c2a8948f0dc6ff4519/wayback-cdx-server/src/main/java/org/archive/cdxserver/format/CDX11Format.java#L13-L17
+# columns. See
+# https://github.com/internetarchive/wayback/blob/bd205b9b26664a6e2ea3c0c2a8948f0dc6ff4519/wayback-cdx-server/src/main/java/org/archive/cdxserver/format/CDX11Format.java#L13-L17  # noqa
 # NOTE: the `length` and `robotflags` fields appear to always be empty
 # TODO: support new/upcoming CDX API
 # CDX_SEARCH_URL = 'http://web.archive.org/web/timemap/cdx'
@@ -140,8 +141,11 @@ def memento_url_data(memento_url):
     --------
     Extract original URL and date.
 
-    >>> memento_url_data('http://web.archive.org/web/20170813195036/https://arpa-e.energy.gov/?q=engage/events-workshops')
-    ('https://arpa-e.energy.gov/?q=engage/events-workshops', datetime.datetime(2017, 8, 13, 19, 50, 36))
+    >>> url = ('http://web.archive.org/web/20170813195036/'
+    ...        'https://arpa-e.energy.gov/?q=engage/events-workshops')
+    >>> memento_url_data()
+    ('https://arpa-e.energy.gov/?q=engage/events-workshops',
+     datetime.datetime(2017, 8, 13, 19, 50, 36))
     """
     raw_url, timestamp = split_memento_url(memento_url)
     url = clean_memento_url_component(raw_url)
@@ -158,7 +162,9 @@ def original_url_for_memento(memento_url):
     --------
     Extract original URL.
 
-    >>> original_url_for_memento('http://web.archive.org/web/20170813195036/https://arpa-e.energy.gov/?q=engage/events-workshops')
+    >>> url = ('http://web.archive.org/web/20170813195036/'
+    ...        'https://arpa-e.energy.gov/?q=engage/events-workshops')
+    >>> original_url_for_memento()
     'https://arpa-e.energy.gov/?q=engage/events-workshops'
     """
     return clean_memento_url_component(split_memento_url(memento_url)[0])
@@ -591,7 +597,7 @@ class WaybackClient(_utils.DepthCountedContext):
         >>>     version.date
         datetime.datetime(1996, 12, 31, 23, 58, 47)
         >>>     version.raw_url
-        "http://web.archive.org/web/19961231235847id\_/http://www.nasa.gov:80/"
+        "http://web.archive.org/web/19961231235847id_/http://www.nasa.gov:80/"
 
         Loop through all the snapshots.
 
@@ -715,8 +721,8 @@ class WaybackClient(_utils.DepthCountedContext):
                     # redirect itself. (See 2b)
                     playable = False
                     if response.next and (
-                       (len(history) == 0 and exact == False) or
-                       (len(history) > 0 and (previous_was_memento or exact_redirects == False))):
+                       (len(history) == 0 and not exact) or
+                       (len(history) > 0 and (previous_was_memento or not exact_redirects))):
                         current_url = original_url_for_memento(response.url)
                         target_url, target_date = memento_url_data(response.next.url)
                         # A non-memento redirect is generally taking us to the

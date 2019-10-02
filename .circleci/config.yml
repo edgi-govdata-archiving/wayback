@@ -38,7 +38,7 @@ jobs:
           name: Code linting
           command: |
             . venv/bin/activate
-            pyflakes web_monitoring
+            flake8
       - run:
           name: Build docs
           command: |
