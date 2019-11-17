@@ -1,3 +1,7 @@
 -r ../requirements.txt
 -r ../requirements-dev.txt
+# We need to tell readthedocs to install `wayback` itself as well.
+# Confusingly, we have to specify this directory relative to the repo root
+rather than relative to the directory where this file resides. That is
+inconsistent with the lines above...the mysteries of pip!
 ./
