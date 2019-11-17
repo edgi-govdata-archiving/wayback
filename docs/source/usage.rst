@@ -1,6 +1,6 @@
-**********************************************
-Python API to Internet Archive Wayback Machine
-**********************************************
+*****
+Usage
+*****
 
 Search for historical mementos (archived copies) of a URL. Download metadata
 about the mementos and/or the memento content itself.
