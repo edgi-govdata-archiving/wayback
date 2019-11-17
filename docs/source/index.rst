@@ -3,8 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-wayback Documentation
-=====================
+Wayback
+=======
+
+Wayback is a Python client to the Internet Archive Wayback Machine.
 
 .. toctree::
    :maxdepth: 2
