@@ -16,6 +16,7 @@ Other potentially useful links:
 from base64 import b32encode
 from collections import namedtuple
 from datetime import datetime
+from dateutil.tz import tzutc
 import hashlib
 import logging
 import urllib.parse
@@ -418,10 +419,12 @@ class WaybackClient(_utils.DepthCountedContext):
             Whether output should be gzipped.
         from_date : datetime, optional
             Only include captures after this date. Equivalent to the
-            `from` argument in the CDX API.
+            `from` argument in the CDX API. If it does not have a time zone, it
+            is assumed to be in UTC.
         to_date : str, optional
             Only include captures before this date. Equivalent to the `to`
-            argument in the CDX API.
+            argument in the CDX API. If it does not have a time zone, it is
+            assumed to be in UTC.
         filter_field : str, optional
             A filter for any field in the results. Equivalent to the `filter`
             argument in the CDX API. (format: `[!]field:regex`)
@@ -492,7 +495,12 @@ class WaybackClient(_utils.DepthCountedContext):
                 if isinstance(value, str):
                     final_query[key] = value
                 elif isinstance(value, datetime):
-                    final_query[key] = value.strftime(URL_DATE_FORMAT)
+                    # Make sure we have either a naive datetime (assumed to
+                    # represent UTC) or convert the datetime to UTC.
+                    value_utc = value
+                    if value.tzinfo:
+                        value_utc = value.astimezone(tzutc())
+                    final_query[key] = value_utc.strftime(URL_DATE_FORMAT)
                 else:
                     final_query[key] = str(value).lower()
 

@@ -1,3 +1,4 @@
+python-dateutil
 lxml
 requests
 urllib3
