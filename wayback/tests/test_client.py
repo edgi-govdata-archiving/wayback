@@ -21,11 +21,11 @@ ia_vcr = vcr.VCR(
 
 
 @ia_vcr.use_cassette()
-def test_list_versions():
+def test_search():
     with WaybackClient() as client:
-        versions = client.list_versions('nasa.gov',
-                                        from_date=datetime(1996, 10, 1),
-                                        to_date=datetime(1997, 2, 1))
+        versions = client.search('nasa.gov',
+                                 from_date=datetime(1996, 10, 1),
+                                 to_date=datetime(1997, 2, 1))
         version = next(versions)
         assert version.date == datetime(1996, 12, 31, 23, 58, 47)
 
@@ -34,25 +34,25 @@ def test_list_versions():
 
 
 @ia_vcr.use_cassette()
-def test_list_versions_multipage():
+def test_search_multipage():
     # Set page size limits low enough to guarantee multiple pages
     with WaybackClient() as client:
-        versions = client.list_versions('cnn.com',
-                                        from_date=datetime(2001, 4, 10),
-                                        to_date=datetime(2001, 5, 10),
-                                        cdx_params={'limit': 25})
+        versions = client.search('cnn.com',
+                                 from_date=datetime(2001, 4, 10),
+                                 to_date=datetime(2001, 5, 10),
+                                 limit=25)
 
         # Exhaust the generator and make sure no entries trigger errors.
         list(versions)
 
 
 @ia_vcr.use_cassette()
-def test_list_versions_cannot_iterate_after_session_closing():
+def test_search_cannot_iterate_after_session_closing():
     with pytest.raises(SessionClosedError):
         with WaybackClient() as client:
-            versions = client.list_versions('nasa.gov',
-                                            from_date=datetime(1996, 10, 1),
-                                            to_date=datetime(1997, 2, 1))
+            versions = client.search('nasa.gov',
+                                     from_date=datetime(1996, 10, 1),
+                                     to_date=datetime(1997, 2, 1))
 
         next(versions)
 
@@ -91,36 +91,29 @@ class TestOriginalUrlForMemento:
 
 
 @ia_vcr.use_cassette()
-def test_timestamped_uri_to_version():
+def test_get_memento():
     with WaybackClient() as client:
-        version = client.timestamped_uri_to_version(
-            datetime(2017, 11, 24, 15, 13, 15),
-            'http://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/',
-            url='https://www.fws.gov/birds/')
-        assert isinstance(version, dict)
-        assert version['page_url'] == 'https://www.fws.gov/birds/'
+        response = client.get_memento(
+            'http://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/')
+        assert 'Link' in response.headers
+        original, *_ = response.headers['Link'].split(',', 1)
+        assert original == '<https://www.fws.gov/birds/>; rel="original"'
 
 
 @ia_vcr.use_cassette()
-def test_timestamped_uri_to_version_works_with_redirects():
+def test_get_memento_with_redirects():
     with WaybackClient() as client:
-        version = client.timestamped_uri_to_version(
-            datetime(2018, 8, 8, 9, 41, 44),
-            'http://web.archive.org/web/20180808094144id_/https://www.epa.gov/ghgreporting/san5779-factsheet',
-            url='https://www.epa.gov/ghgreporting/san5779-factsheet')
-        assert isinstance(version, dict)
-        assert version['page_url'] == 'https://www.epa.gov/ghgreporting/san5779-factsheet'
-        assert len(version['source_metadata']['redirects']) == 3
+        response = client.get_memento(
+            'http://web.archive.org/web/20180808094144id_/https://www.epa.gov/ghgreporting/san5779-factsheet')
+        assert len(response.history) == 2  # redirects
 
 
 @ia_vcr.use_cassette()
-def test_timestamped_uri_to_version_should_fail_for_non_playbackable_mementos():
+def test_get_memento_should_fail_for_non_playbackable_mementos():
     with WaybackClient() as client:
         with pytest.raises(MementoPlaybackError):
-            client.timestamped_uri_to_version(
-                datetime(2017, 9, 29, 0, 27, 12),
-                'http://web.archive.org/web/20170929002712id_/https://www.fws.gov/birds/',
-                url='https://www.fws.gov/birds/')
+            client.get_memento(
+                'http://web.archive.org/web/20170929002712id_/https://www.fws.gov/birds/')
 
 
 class TestWaybackSession:
