@@ -11,7 +11,7 @@ from .._client import (WaybackSession,
 
 # This stashes HTTP responses in JSON files (one per test) so that an actual
 # server does not have to be running.
-cassette_library_dir = str(Path(__file__).parent / Path('cassettes/ia'))
+cassette_library_dir = str(Path(__file__).parent / Path('cassettes/'))
 ia_vcr = vcr.VCR(
          serializer='yaml',
          cassette_library_dir=cassette_library_dir,
