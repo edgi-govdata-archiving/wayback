@@ -104,9 +104,7 @@ Memento API. We implement a Python client that can speak both.
 .. autoclass:: wayback.WaybackClient
 
     .. automethod:: search
-    .. automethod:: list_versions
     .. automethod:: get_memento
-    .. automethod:: timestamped_uri_to_version
 
 .. autoclass:: wayback.WaybackSession
 

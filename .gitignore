@@ -78,6 +78,3 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
-
-# vcrpy cache
-wayback/tests/cassettes/

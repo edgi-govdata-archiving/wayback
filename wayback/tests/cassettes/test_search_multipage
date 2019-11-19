@@ -1,0 +1,665 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
+    method: GET
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAO3VPU/DMBAG4J1fkaUDAhHHd7YbNqd1mqR1PpzacbJWSAwUGCKVn08zskUqYkCZ
+        73TP8OruTh/nx9P7+30YUEIighGhEcRAgtdx/HwOw8vl8nStP50+zs9rEgbjy9cYvo7nt6k/6I+q
+        aUy3P6Bwme1SR0vvhT+oKtNlN/AgojHSu9OC3IQAJZQwnIfkmFH03uCQy32hUFbSc9Fm2pRKtb0N
+        IkAaLcjNCCDieh7SgDB1UUM3JBrbXOf5llpTMy1zXtD6eEWiNfxzhK0xnoeYFJ3Su7RVvME+5Vsn
+        GXcdtfu0EjrLJ4QtyK0IEoKCzQzeMJFYt02SwRfCUTeIutxZ5xn0NfK8nRCIF+R2hEVzb1cqjOxk
+        I2DXqV60u0ZllSkPthb7jd0U9YQgW5BfQGKYuYxFM4DXHPD60zmXiROFKKU4Vt46QD0FT4D8DTIp
+        K7q5zlnReEXThx/WCuTdN/WaRFr/CQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/plain;charset=UTF-8
+      Date:
+      - Mon, 18 Nov 2019 17:11:11 GMT
+      Server:
+      - nginx/1.15.8
+      Transfer-Encoding:
+      - chunked
+      X-App-Server:
+      - wwwb-app4
+      X-Cache-Key:
+      - httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=trueUS
+      X-Page-Cache:
+      - BYPASS
+      X-location:
+      - cdx
+      X-ts:
+      - '200'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
+    method: GET
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B2001041400593%253A&resolveRevisits=true
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAO3VPW/CMBAG4J1f4YWhatXYZycObE6C4zjf5IM4a1SJoUCHSPTnFyp1qITUIDpm
+        vtP7DKe7G06Hl+F4fLIQYEwwIy7mlFCK9uP4sbas8/n8eqm/DqfD2sUWGt8+R2s/Ht6v/UjmoqjL
+        uqWJV8R16NliC7lq6rAqdKVliAgFzBbDjDyA2JgSZnNwpyFG5LxLCpnUsSqrSFQqMZknk9ihqoDc
+        viDYdWbkYcQlLpAf5DZAMSAaMVC0crJMlpBWbce7PjbCVH5nl57RCIg9x98fb8O0AQtgmYxSIbgO
+        AkcHu7B3HB5uipT7jJrgMmCCyYw8jKwoAJ+IsGbbdkmktiaWmdJpo9MwA6YDgJbWm++lu3kIZ+Qe
+        BAg45H/W8NYJnOP/ip/4hHaypybbdaIN/ACojE3PCsUljeIuT5sIEXAdWFyVJfiXnCWsliCff1mr
+        xRfrcWSPzQkAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/plain;charset=UTF-8
+      Date:
+      - Mon, 18 Nov 2019 17:11:11 GMT
+      Server:
+      - nginx/1.15.8
+      Transfer-Encoding:
+      - chunked
+      X-App-Server:
+      - wwwb-app4
+      X-Cache-Key:
+      - httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B2001041400593%253A&resolveRevisits=trueUS
+      X-Page-Cache:
+      - BYPASS
+      X-location:
+      - cdx
+      X-ts:
+      - '200'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
+    method: GET
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010503212619&resolveRevisits=true
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAO3UO2+DMBSG4T2/giVD1SqY4wuQjWsAYxLjGExWVClDk3RASn9+YehQqUOUZoqY
+        ffQ+wye5v5ze+vP5xbYAIQdRhAGwh5B1HIbPtW1fr9fV+L7qL6e1h2xreP8a7ONw+pjuLSl0o1kp
+        NvleirjGGdACiI55QdKW8YPlgO+TRf+8CEEwMuw2pG60CcKtSmqeVjgRwuQ8UnkWFNluX0o2Ih5x
+        nxthiBL/NsSEcRoeeJN3haFCtrKJYhrzwE1N4koqRsTFbEb+jfgADv5B/gYwAgvnBDKsWFWlEoRq
+        jGsOvAs6FRkqw66wwJnz9+TJbQPv2lhmui5JGePNNmFp1VGT6AwnEW73op3+KG9GHoFgIA+ZnM75
+        O/L0toE5aaWCTaUJZgYUUUVdapJwSVjF1JZPA1P8RMikLCEaO0vwl5C+/rLY4huByhuvzQkAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/plain;charset=UTF-8
+      Date:
+      - Mon, 18 Nov 2019 17:11:12 GMT
+      Server:
+      - nginx/1.15.8
+      Transfer-Encoding:
+      - chunked
+      X-App-Server:
+      - wwwb-app0
+      X-Cache-Key:
+      - httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010503212619&resolveRevisits=trueUS
+      X-Page-Cache:
+      - BYPASS
+      X-location:
+      - cdx
+      X-ts:
+      - '200'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
+    method: GET
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010504092326&resolveRevisits=true
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAO3WsW6DMBAG4D1PwZKhahXs89lOsjkQBwgQCAVsr1GlDE3SASl9/IahQ6UOVHRk
+        tvV/wy/f+XS7vJyu1yffA0Io4QQp0BUF79x1H2vfv9/vi8f54nS7rJfE97q3z84/d5f3/r5X1U3d
+        8ESLClzEUoX1sdCl2vI4q7dB7TwKK4TZaULGIUCAcjkMsbsgbo3eyCJLk61ioqraWDItgiItmgI9
+        yiiICRmJcEKRkIEIpMKGoPdChGhs1cBWHiGUMmnDNohK1Re/pBMyGsH+QQ4sHqzIbSzyEmPXiNAk
+        kXGlSRxmmVPHXV88n5B/QBggGYYclNHqtT6UsrEbGxmFqAwWiZaBKVyc9siSTMhoZMk50G/kd4AR
+        8FiMELFK5LkuIasaI43bW2WrwPByYxPvMWen+L/Hs6Efhlzr6MgfKymRh7QIBSqmcbczaegUhm0/
+        CGE165U5BI+cOazmoJ9/WGz2BZvML6/lCQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/plain;charset=UTF-8
+      Date:
+      - Mon, 18 Nov 2019 17:11:12 GMT
+      Server:
+      - nginx/1.15.8
+      Transfer-Encoding:
+      - chunked
+      X-App-Server:
+      - wwwb-app6
+      X-Cache-Key:
+      - httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010504092326&resolveRevisits=trueUS
+      X-Page-Cache:
+      - BYPASS
+      X-location:
+      - cdx
+      X-ts:
+      - '200'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
+    method: GET
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010505085533&resolveRevisits=true
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAO2Vu26DMBRA93yFF4aqVTDX2EA23o8EChgI9ooqZShJByT6+YWhQ6WqShSyVMjj
+        vfec4QzuLv1Ldz4/qQgw1jCdnoU1MNFpGD52qjrNtt2l35lYRcPb56Cehv4dEQyIxDpEhLMsCwpI
+        edMardwLW3C3pYUjEgQa3XQr/ma89Y0fx3H7u2LaR0EVUsgjqYPXBHUOTsogJ3Hi682eQV2gicSs
+        VbKAxKDaIsnZir8Zb07XVwXe+4xwmzoR5SIo60PK7WNhyLqVScNYwubA1v+X6PihNVb8H3h6ZeDI
+        diviHakRyzDzRRmWeZUlMvYOttTFK8yBTVgl90s0oOSBv/WC+JmvgDtRFLAUCJ5/WPTNF+7+bHOp
+        CQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/plain;charset=UTF-8
+      Date:
+      - Mon, 18 Nov 2019 17:11:12 GMT
+      Server:
+      - nginx/1.15.8
+      Transfer-Encoding:
+      - chunked
+      X-App-Server:
+      - wwwb-app52
+      X-Cache-Key:
+      - httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010505085533&resolveRevisits=trueUS
+      X-Page-Cache:
+      - BYPASS
+      X-location:
+      - cdx
+      X-ts:
+      - '200'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
+    method: GET
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010505091254&resolveRevisits=true
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAO3VvW6DMBQF4D1PwZKhalXw9V/IFsAQICYQYrBZUaUMTdIBKX38QqUOlVqJNl0a
+        oTvc4VrnG87g9nx8aE+nO9sCx0EO7cdFQF3r0HUvS9u+XC6P/f2xPR+XC8e2uqfXzj50x+fhvZXU
+        Fa/KsFF1wv0NXceR4WHBiEyEF+zT2ELgcjxrbxhBMB7ZcKGoyFm/mWw85fEMb6QImjxjhV5Bj3CX
+        TsjVCHYcQOOQiISbVWa2xphUenHqyWjLawhVTaj0EzwUj9GEXI8QAngc4gsjtd6xWOWBkirJhAgj
+        ybFRuMk1l+8Iv2WEDQvYB/I1gB2wcExgjUuWZWEBsqw0101qVqb0NS08k1iA2BT/i3g+rmCcBKEn
+        sFQ43hVrTcsq4EqJpjR7fwfb/t/AaPFtwRPyA4SQxZ9U/t/jh/w5+H3KHNw5hPefFHf2BgL5K/3T
+        CQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/plain;charset=UTF-8
+      Date:
+      - Mon, 18 Nov 2019 17:11:13 GMT
+      Server:
+      - nginx/1.15.8
+      Transfer-Encoding:
+      - chunked
+      X-App-Server:
+      - wwwb-app6
+      X-Cache-Key:
+      - httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010505091254&resolveRevisits=trueUS
+      X-Page-Cache:
+      - BYPASS
+      X-location:
+      - cdx
+      X-ts:
+      - '200'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
+    method: GET
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010506001449&resolveRevisits=true
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAO2Uu26DMBRA93wFS4aqVTG2sUM2AzEGwsOxITYrqpShSTogpZ9fsrSqVEV0yIIy
+        ebjWOcPRvf35+NKfTk+uAwHwgA/I+GAcOIdh+Fi77uVyeR3nr/35uF4B1xnePgf3MBzfr/+dVoQq
+        ro2KGTaCN77s1IZuLVGZoriWvuMhL1gt+nlLfPAt+VuAAHRQiqFAipQll7BQraGmyy2zKjK+DG3m
+        QI8+8P/He2BaYLMX2SYnXUlpp5uEJJlmsuNbxmjKWBqOgQGGc5cQ7N2zxgN/Ew+nBfa1tojzxrZW
+        iz2KENNpbMLI7uSuahN6vUUIzV1Cf/bhHjUe+Jt4b1pgtmurXMQC6tygNGyjuA0FK3hTUbnBuRoD
+        QxLMW+IBguk0SVOE+ywvZVXkjNR1WvMo6Yxf6xonHEZ2lGCCFlfLEkYjZwmDJeTPv1yrxRfE9GfR
+        tQkAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/plain;charset=UTF-8
+      Date:
+      - Mon, 18 Nov 2019 17:11:13 GMT
+      Server:
+      - nginx/1.15.8
+      Transfer-Encoding:
+      - chunked
+      X-App-Server:
+      - wwwb-app6
+      X-Cache-Key:
+      - httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010506001449&resolveRevisits=trueUS
+      X-Page-Cache:
+      - BYPASS
+      X-location:
+      - cdx
+      X-ts:
+      - '200'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
+    method: GET
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010506010648&resolveRevisits=true
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAO2SO2+DMBRG9/wKLwxVq2BfPyjZwIjiJDxcAzWsqFKGknRAoj+/MLRSpQ5Ro6hq
+        xXyvzhnO1536u+54vHERYEwwx4Jg8DlBh2F43bjuOI7r6b7uTv3mHrtoeH4b3MPQv8z/KIhV+hSn
+        bVHtalsarUsms9rTMrS2gTZChDJKV90iuVBCwWefku8FFAOiikFCjciyWENqauvZdtcEjZGW67DZ
+        IiDegv8BHs4LTCOTF0JnXi4LwY2tQlbu0lQV7MEI1bZTYMr9fy7hPuNXrLHgfxUvztvPNpf79DFU
+        qirqsGACkn0iY66ySrRRaNm8n0XyVySMAPevt6sF/4Gf+Q7IieKA70B8+8Xi0GD1DidkrryxCQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/plain;charset=UTF-8
+      Date:
+      - Mon, 18 Nov 2019 17:11:14 GMT
+      Server:
+      - nginx/1.15.8
+      Transfer-Encoding:
+      - chunked
+      X-App-Server:
+      - wwwb-app14
+      X-Cache-Key:
+      - httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010506010648&resolveRevisits=trueUS
+      X-Page-Cache:
+      - BYPASS
+      X-location:
+      - cdx
+      X-ts:
+      - '200'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
+    method: GET
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B2001050614125%253A&resolveRevisits=true
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAO3Uu26DQBAF0N5fQeMiSmSW2Z1dcMfDvM3TsAstiuQitlMgOZ8fXKSI5ILITRJR
+        z+ie5s4Ml9PLcD4/6RoQYhAk3GAGJVQ7juP7Vtev1+tmmm+Gy2lrEl0bXz9G/Tie3m77moxT3np1
+        lXi+W3VyjxlCQatU8hx5zJRmUIpkNSzIYwgYwJg1D0klExh2dhm5Ig0K1+GFl/WBQGp3QNPdhBBO
+        F+RhhDJKzC/kPkAJaDRiENKaZ5lfwr5ulVB90tld7SosnS7WwBBL/O+Ln9kfP29aLg5dEQcQVljL
+        XsgA26RSiAVQnPoDcPemF+QHiCAETBTzEG43u7bhWZ4EKlUBeF4RM9lnB1m3TiuD258l5oL8DQQM
+        RHMe4jpMJEXJsihvYuUnZR1XyFQksPFVEd6eObX4P0JuyhrcKWcN1hr852+WtfoEFY5HZN8JAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/plain;charset=UTF-8
+      Date:
+      - Mon, 18 Nov 2019 17:11:14 GMT
+      Server:
+      - nginx/1.15.8
+      Transfer-Encoding:
+      - chunked
+      X-App-Server:
+      - wwwb-app0
+      X-Cache-Key:
+      - httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B2001050614125%253A&resolveRevisits=trueUS
+      X-Page-Cache:
+      - BYPASS
+      X-location:
+      - cdx
+      X-ts:
+      - '200'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
+    method: GET
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010507021559&resolveRevisits=true
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAO3UPW+DMBAG4D2/giVD1SrYZ/OVDQwGY74cJwSzokoZmqQDUvrzS4YOlTogpUsk
+        5ju9z3B6b7ie34bL5cW2ACGMHOQhQgMUWKdx/Nza9u1220zzzXA9b31kW+P712ifxvPHfd8yrNiH
+        uzJNZa50KFyZcaEd3uZNn3Ne1RYm2AlWw4I8A+JgH3nzkDDVKiZGNkaBjL20Zwwi0UMo0rg0zW5C
+        gNIFeQ4kID7G8xBP80wzzXsqZV8e9b4RB75PisgTItEpvyOBuyBPgWBMPeTOQ9pahaQGL00q1UJc
+        1klTpGVXdI1koUgOFoYAkwV5GCGOO7fxB0pioo/R0TEyE3UVupTROO8SUmhmejUdfvr1C/Iw4iMK
+        8IP8DRAEFhEUMqLdquIKSt12XtdLExrNOkdFJrcA/1nD/4y/56+BTSlrCNbAX38pZPUNlDG+1vEJ
+        AAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/plain;charset=UTF-8
+      Date:
+      - Mon, 18 Nov 2019 17:11:15 GMT
+      Server:
+      - nginx/1.15.8
+      Transfer-Encoding:
+      - chunked
+      X-App-Server:
+      - wwwb-app1
+      X-Cache-Key:
+      - httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010507021559&resolveRevisits=trueUS
+      X-Page-Cache:
+      - BYPASS
+      X-location:
+      - cdx
+      X-ts:
+      - '200'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
+    method: GET
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010507180423&resolveRevisits=true
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAO3Wu26DMBSA4b1PwcJQtQrm2NiQjWuwucXBBPCKKmVokg5I6eOXVOpQKQNRMrJ4
+        sfV/g2XrDOfj+3A6vVoGIGQjBzHbRS64xmEcv9aWNe2thvNx7SLLGD++R+swHj8NjMDAnECKa1qW
+        iYSi3nes01nv93XYOTLohQG28zIs+bvz3l/+crmsbhPTeUPwTDsbRrMwo1qLrud+3MRcNGGhs6ra
+        GzZ4trcgjyKAsEdgHkKLPE3rIm4KyRotcZNGsg8Ub/MYVE/wFUEL8ijiomkh9jyERLhLoibdEJUk
+        Og8F9vcqwZRKClBXzYS49MZjXJA7EexgeyZS+TLmpSBVQngZUZ9nMg1aQrf+1mcK6ytC6II8A4GZ
+        iBaKhskW97nAO9nugh2L1fQxVinvshar34tnC/IwwhA43pNGiGvfhHCqmOCZkLz9U0zsv/wA9ghU
+        veEJAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/plain;charset=UTF-8
+      Date:
+      - Mon, 18 Nov 2019 17:11:15 GMT
+      Server:
+      - nginx/1.15.8
+      Transfer-Encoding:
+      - chunked
+      X-App-Server:
+      - wwwb-app14
+      X-Cache-Key:
+      - httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010507180423&resolveRevisits=trueUS
+      X-Page-Cache:
+      - BYPASS
+      X-location:
+      - cdx
+      X-ts:
+      - '200'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
+    method: GET
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B2001050807025%253A&resolveRevisits=true
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAO3UTWuDMBzH8XtfhZcexkZN/okP7c36kJjGVGN06lUGPaztDkL38mcHOwzGkD1c
+        iueE3yfwhfTn40N/Ot3ZFiCEkYN85CGCkHUYhpeNbV8ul9V4vurPx42PbGt4eh3sw3B8vt63dCpo
+        SWhi8oJkgaOrugu9hMhQlK2jNbMwrMFf9LeNOBQ+kK8BgsAiKQVOSleppICsrBuv6XZt0JZh4xTb
+        VliAnXn+B/NkWmAmpSxVJhMZe01A2ypiJE+qosrCThBBxsC+T2bkDxAX8H8mn+e/nYdpgYOIe7VH
+        w8xkhKaCKS8yMtW5q4zmUoXvHx7MyG8RjAnGdBriGRrrSLEoMlzvQh4UucpFF9fCmDh1CwuT8c23
+        jdARwdOQ3HUFI/sq3/IyYaYo1SPsY4g4bxjUjb42wbeEXJUlhOPOEtZLSO4/WbB4A7yRbDfNCQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/plain;charset=UTF-8
+      Date:
+      - Mon, 18 Nov 2019 17:11:16 GMT
+      Server:
+      - nginx/1.15.8
+      Transfer-Encoding:
+      - chunked
+      X-App-Server:
+      - wwwb-app0
+      X-Cache-Key:
+      - httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B2001050807025%253A&resolveRevisits=trueUS
+      X-Page-Cache:
+      - BYPASS
+      X-location:
+      - cdx
+      X-ts:
+      - '200'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
+    method: GET
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010508143112&resolveRevisits=true
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAO3Uu27bMBQG4D1PwcVD0SAiD29WNtmK7iR1oWSSq1EgQ510EOA8fuQAHQp4UJCp
+        gScOh/i/4cc5x9fT/fHl5UeEAGOCOd4SzgSm6Hme/zxG0TJ7OL6eHrc4QvOvtzl6nk+/EcWAaMmg
+        oIPQOutADZOTLtQ+8cPe8W7nKwRE3B1v8Z+OZ3/jz+fzw3Vi+Y98PUz5CFWi1eCsbKbKTTzrpz0T
+        1tMDRwS2OL4hX0WWVxJYh6QuBJ2VrpXpYI3s2mD6MqvN044LZpxdkFjSG/JFJMaESCzXIUb7kLox
+        VC3zSW5yY5p2dMxCSJLciY/it/C9EaCSxuuQoDt6KEwzFNw1TWeh8qqsbUnLkB5g1106Efh7I4Jx
+        LtYhu1q0eVI3LC+KhE2gp1Q9tZnVquLMcHdB4iun/oZ8DiEYOKwsvu/DaD3TXdqO2o+1EByGfqSN
+        ylV3UAoRiuNre/K/IhdlA/slZwPxBrKf/1gbmty9A0omznjnCQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/plain;charset=UTF-8
+      Date:
+      - Mon, 18 Nov 2019 17:11:16 GMT
+      Server:
+      - nginx/1.15.8
+      Transfer-Encoding:
+      - chunked
+      X-App-Server:
+      - wwwb-app0
+      X-Cache-Key:
+      - httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010508143112&resolveRevisits=trueUS
+      X-Page-Cache:
+      - BYPASS
+      X-location:
+      - cdx
+      X-ts:
+      - '200'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
+    method: GET
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B2001050910252%253A&resolveRevisits=true
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAO3VO0/DMBQF4J1fkaUDAhH7+tV0i504jzZpYlvYyVohMVBgiFR+Pu3AgMQQUYkB
+        Zb5H5xvOcA9vx/vD6+ttHAFCGDGUYKCcJNHzNL1v4vh0Oj2c7w+Ht+NmjeJoevqY4ufp+HLJR+Vg
+        TZ46QtNCsV6QhjjbQTaOlSBesi7CBK3pzWFBrkQoYZh9IT8DBEFEKgolsbxtdQ+NfQwijNshHawK
+        rJdDHQHmS/0v6vm8gZXTQ53LYBUP+1K16W7vpRRd53rTl3R7HhgwLMjViGAIxDzEVmMPwBsleaF1
+        0/GaZr4Nxohi2JbOnBGMxf9G1pgQNg8h1U7IsdO5sLywGnxfu0G0IS1cU9jAIwxJsiBXI0AQBTQP
+        MbZqXOkL44Lce1dmyuxGl5usk/l+l7HL30BkQa5HGKN0HiKgUlmoh7HyIGSfylYHQpkvmVWPHvRl
+        eEj+BrkoK1DnnhUkK9B33yx28wmFgmZD5QkAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/plain;charset=UTF-8
+      Date:
+      - Mon, 18 Nov 2019 17:11:16 GMT
+      Server:
+      - nginx/1.15.8
+      Transfer-Encoding:
+      - chunked
+      X-App-Server:
+      - wwwb-app53
+      X-Cache-Key:
+      - httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B2001050910252%253A&resolveRevisits=trueUS
+      X-Page-Cache:
+      - BYPASS
+      X-location:
+      - cdx
+      X-ts:
+      - '200'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
+    method: GET
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010509235545&resolveRevisits=true
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAAMAAAAAAAAAAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/plain;charset=UTF-8
+      Date:
+      - Mon, 18 Nov 2019 17:11:17 GMT
+      Server:
+      - nginx/1.15.8
+      Transfer-Encoding:
+      - chunked
+      X-App-Server:
+      - wwwb-app53
+      X-Cache-Key:
+      - httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010509235545&resolveRevisits=trueUS
+      X-Page-Cache:
+      - BYPASS
+      X-location:
+      - cdx
+      X-ts:
+      - '200'
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -1,0 +1,43 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
+    method: GET
+    uri: http://web.archive.org/cdx/search/cdx?url=nasa.gov&from=19961001000000&to=19970201000000&showResumeKey=true&resolveRevisits=true
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAEvPL9PJSyxO1NRXMLS0NDM0MgYiUwsTc4WMkpICK3398vJyPZACvfT8MisLA32F
+        ktSKEv2MktwcBSMDAwVfd093NxP3IHd3N1N37zCzMD9nJ8cIf1dj/yBTp5AoZwVDC0NDrvRhZAsA
+        1PGqVjIBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/plain;charset=UTF-8
+      Date:
+      - Mon, 18 Nov 2019 17:11:10 GMT
+      Server:
+      - nginx/1.15.8
+      Transfer-Encoding:
+      - chunked
+      X-App-Server:
+      - wwwb-app0
+      X-Cache-Key:
+      - httpweb.archive.org/cdx/search/cdx?url=nasa.gov&from=19961001000000&to=19970201000000&showResumeKey=true&resolveRevisits=trueUS
+      X-Page-Cache:
+      - BYPASS
+      X-location:
+      - cdx
+      X-ts:
+      - '200'
+    status:
+      code: 200
+      message: OK
+version: 1
