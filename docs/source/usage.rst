@@ -109,3 +109,8 @@ Memento API. We implement a Python client that can speak both.
 .. autoclass:: wayback.WaybackSession
 
     .. automethod:: reset
+
+Utility functions
+-----------------
+
+.. autofunction:: wayback.original_url_for_memento
