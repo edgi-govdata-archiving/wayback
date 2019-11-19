@@ -15,8 +15,7 @@ Other potentially useful links:
 
 from base64 import b32encode
 from collections import namedtuple
-from datetime import datetime
-from dateutil.tz import tzutc
+from datetime import datetime, timezone
 import hashlib
 import logging
 import urllib.parse
@@ -497,9 +496,10 @@ class WaybackClient(_utils.DepthCountedContext):
                 elif isinstance(value, datetime):
                     # Make sure we have either a naive datetime (assumed to
                     # represent UTC) or convert the datetime to UTC.
-                    value_utc = value
                     if value.tzinfo:
-                        value_utc = value.astimezone(tzutc())
+                        value_utc = value.astimezone(timezone.utc)
+                    else:
+                        value_utc = value
                     final_query[key] = value_utc.strftime(URL_DATE_FORMAT)
                 else:
                     final_query[key] = str(value).lower()
