@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 import pytest
 import vcr
@@ -31,6 +31,28 @@ def test_search():
 
         # Exhaust the generator and make sure no entries trigger errors.
         list(versions)
+
+
+@ia_vcr.use_cassette()
+def test_search_with_timezone():
+    with WaybackClient() as client:
+        # Search using UTC, equivalent to the test above where we provide a
+        # datetime with no timezone.
+        tzinfo = timezone(timedelta(hours=0))
+        t0 = datetime(1996, 12, 31, 23, 58, 47, tzinfo=tzinfo)
+        versions = client.search('nasa.gov',
+                                 from_date=t0)
+        version = next(versions)
+        assert version.date == datetime(1996, 12, 31, 23, 58, 47)
+
+        # Search using UTC - 5, equivalent to (1997, 1, 1, 4, ...) in UTC
+        # so that we miss the result above and expect a different, later one.
+        tzinfo = timezone(timedelta(hours=-5))
+        t0 = datetime(1996, 12, 31, 23, 58, 47, tzinfo=tzinfo)
+        versions = client.search('nasa.gov',
+                                 from_date=t0)
+        version = next(versions)
+        assert version.date == datetime(1997, 6, 5, 23, 5, 59)
 
 
 @ia_vcr.use_cassette()
