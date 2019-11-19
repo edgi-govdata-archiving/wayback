@@ -420,7 +420,7 @@ class WaybackClient(_utils.DepthCountedContext):
             Only include captures after this date. Equivalent to the
             `from` argument in the CDX API. If it does not have a time zone, it
             is assumed to be in UTC.
-        to_date : str, optional
+        to_date : datetime, optional
             Only include captures before this date. Equivalent to the `to`
             argument in the CDX API. If it does not have a time zone, it is
             assumed to be in UTC.
