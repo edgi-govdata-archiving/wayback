@@ -3,6 +3,6 @@ __version__ = get_versions()['version']
 del get_versions
 
 from ._client import (  # noqa
-    original_url_for_memento,
+    memento_url_data,
     WaybackClient,
     WaybackSession)

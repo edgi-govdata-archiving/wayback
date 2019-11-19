@@ -113,4 +113,4 @@ Memento API. We implement a Python client that can speak both.
 Utility functions
 -----------------
 
-.. autofunction:: wayback.original_url_for_memento
+.. autofunction:: wayback.memento_url_data
