@@ -112,6 +112,61 @@ CdxRecord = namedtuple('CdxRecord', (
     'raw_url',
     'view_url'
 ))
+"""
+Item from iterable of results returned by :meth:`WaybackClient.search`
+
+These attributes contain information provided directly by CDX.
+
+.. py:attribute:: digest
+
+   Hash of captured content given as a string, such as
+   :data:`'MGIGF4GRGGF5GKV6VNCBAXOE3OR5BTZC'`.
+
+.. py:attribute:: key
+
+   TODO: Something related to SURT?
+
+.. py:attribute:: length
+
+   Size of captured content in bytes, given as a string such as :data:`'2767'`.
+
+.. py:attribute:: mime_type
+
+   MIME type of record, such as :data:`'text/html'`.
+
+.. py:attribute:: status_code
+
+   Status code returned by the server when the record was captured, given as a
+   string such as :data:`'200'`.
+
+.. py:attribute:: timestamp
+
+   The capture time represented as a string of the form :data:`'YYmmddHHMMSS'`.
+   See the attribute :attr:`date` below for a more convenient representation.
+
+.. py:attribute:: url
+
+   The URL that was captured by this record, such as
+   :data:`'http://www.nasa.gov/'`.
+
+And these attributes are synthesized from the information provided by CDX.
+
+.. py:attribute:: date
+
+   The capture time represented as a :class:`datetime.datetime`, such as
+   :data:`datetime.datetime(1996, 12, 31, 23, 58, 47)`.
+
+.. py:attribute:: raw_url
+
+   The URL to the raw captured content, such as
+   :data:`'http://web.archive.org/web/19961231235847id_/http://www.nasa.gov/'`.
+
+.. py:attribute:: view_url
+
+   The URL to the public view on Wayback Machine, surrounds the captured
+   content with a navigation panel, such as
+   :data:`'http://web.archive.org/web/19961231235847/http://www.nasa.gov/'`.
+"""
 
 
 def split_memento_url(memento_url):

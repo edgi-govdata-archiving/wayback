@@ -106,6 +106,8 @@ Memento API. We implement a Python client that can speak both.
     .. automethod:: search
     .. automethod:: get_memento
 
+.. autoclass:: wayback.CdxRecord
+
 .. autoclass:: wayback.WaybackSession
 
     .. automethod:: reset
