@@ -70,6 +70,10 @@ class WaybackRetryError(WaybackException):
         super().__init__(f'Retried {retries} times over {total_time or "?"} seconds (error: {causal_error})')
 
 
+class UnrecognizedStatusCode(TypeError, WaybackException):
+    ...
+
+
 CDX_SEARCH_URL = 'http://web.archive.org/cdx/search/cdx'
 # This /web/timemap URL has newer features, but has other bugs and doesn't
 # support some features, like resume keys (for paging). It ignores robots.txt,
@@ -108,7 +112,6 @@ CdxRecord = namedtuple('CdxRecord', (
     'digest',
     'length',
     # Synthesized values
-    'date',
     'raw_url',
     'view_url'
 ))
@@ -119,30 +122,33 @@ These attributes contain information provided directly by CDX.
 
 .. py:attribute:: digest
 
-   Hash of captured content given as a string, such as
-   :data:`'MGIGF4GRGGF5GKV6VNCBAXOE3OR5BTZC'`.
+   Content hashed as a base 32 encoded SHA-1.
 
 .. py:attribute:: key
 
-   TODO: Something related to SURT?
+   SURT-formatted URL
 
 .. py:attribute:: length
 
-   Size of captured content in bytes, given as a string such as :data:`'2767'`.
+   Size of captured content in bytes, such as :data:`2767`. This may be
+   innacurate. If the record is a "revisit record", indicated by MIME type
+   :data:`'warc/revisit'`, the length seems to be the length of the reference,
+   not the length of the content itself.
 
 .. py:attribute:: mime_type
 
-   MIME type of record, such as :data:`'text/html'`.
+   MIME type of record, such as :data:`'text/html'`, :data:`'warc/revisit'` or
+   :data:`'unk'` ("unknown") if this information was not captured.
 
 .. py:attribute:: status_code
 
-   Status code returned by the server when the record was captured, given as a
-   string such as :data:`'200'`.
+   Status code returned by the server when the record was captured, such as
+   :data:`200`. This is may be :data:`None` if the record is a revisit record.
 
 .. py:attribute:: timestamp
 
-   The capture time represented as a string of the form :data:`'YYmmddHHMMSS'`.
-   See the attribute :attr:`date` below for a more convenient representation.
+   The capture time represented as a :class:`datetime.datetime`, such as
+   :data:`datetime.datetime(1996, 12, 31, 23, 58, 47)`.
 
 .. py:attribute:: url
 
@@ -151,11 +157,6 @@ These attributes contain information provided directly by CDX.
 
 And these attributes are synthesized from the information provided by CDX.
 
-.. py:attribute:: date
-
-   The capture time represented as a :class:`datetime.datetime`, such as
-   :data:`datetime.datetime(1996, 12, 31, 23, 58, 47)`.
-
 .. py:attribute:: raw_url
 
    The URL to the raw captured content, such as
@@ -163,8 +164,9 @@ And these attributes are synthesized from the information provided by CDX.
 
 .. py:attribute:: view_url
 
-   The URL to the public view on Wayback Machine, surrounds the captured
-   content with a navigation panel, such as
+   The URL to the public view on Wayback Machine. In this view, the links and
+   some subresources in the document are rewritten to point to Wayback URLs.
+   There is also a navigation panel around the content. Example URL:
    :data:`'http://web.archive.org/web/19961231235847/http://www.nasa.gov/'`.
 """
 
@@ -522,6 +524,11 @@ class WaybackClient(_utils.DepthCountedContext):
         References
         ----------
         * https://github.com/internetarchive/wayback/tree/master/wayback-cdx-server
+
+        Yields
+        ------
+        version: CdxRecord
+            A :class:`CdxRecord` encapsulating one capture or revisit
         """
 
         # TODO: support args that can be set multiple times: filter, collapse
@@ -580,7 +587,16 @@ class WaybackClient(_utils.DepthCountedContext):
                 break
 
             try:
-                data = CdxRecord(*text.split(' '), None, '', '')
+                data = CdxRecord(*text.split(' '), '', '')
+                if data.status_code == '-':
+                    # the status code given for a revisit record
+                    status_code = None
+                else:
+                    try:
+                        status_code = int(data.status_code)
+                    except TypeError as err:
+                        raise UnrecognizedStatusCode(status_code) from err
+                length = int(data.length)
                 capture_time = datetime.strptime(data.timestamp,
                                                  URL_DATE_FORMAT)
             except Exception:
@@ -601,7 +617,9 @@ class WaybackClient(_utils.DepthCountedContext):
             # content and following redirects. Maybe nice to do so
             # automatically here.
             data = data._replace(
-                date=capture_time,
+                status_code=status_code,
+                length=length,
+                timestamp=capture_time,
                 raw_url=ARCHIVE_RAW_URL_TEMPLATE.format(
                     timestamp=data.timestamp, url=data.url),
                 view_url=ARCHIVE_VIEW_URL_TEMPLATE.format(

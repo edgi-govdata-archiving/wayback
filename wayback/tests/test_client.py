@@ -27,7 +27,7 @@ def test_search():
                                  from_date=datetime(1996, 10, 1),
                                  to_date=datetime(1997, 2, 1))
         version = next(versions)
-        assert version.date == datetime(1996, 12, 31, 23, 58, 47)
+        assert version.timestamp == datetime(1996, 12, 31, 23, 58, 47)
 
         # Exhaust the generator and make sure no entries trigger errors.
         list(versions)
@@ -43,7 +43,7 @@ def test_search_with_timezone():
         versions = client.search('nasa.gov',
                                  from_date=t0)
         version = next(versions)
-        assert version.date == datetime(1996, 12, 31, 23, 58, 47)
+        assert version.timestamp == datetime(1996, 12, 31, 23, 58, 47)
 
         # Search using UTC - 5, equivalent to (1997, 1, 1, 4, ...) in UTC
         # so that we miss the result above and expect a different, later one.
@@ -52,7 +52,7 @@ def test_search_with_timezone():
         versions = client.search('nasa.gov',
                                  from_date=t0)
         version = next(versions)
-        assert version.date == datetime(1997, 6, 5, 23, 5, 59)
+        assert version.timestamp == datetime(1997, 6, 5, 23, 5, 59)
 
 
 @ia_vcr.use_cassette()
