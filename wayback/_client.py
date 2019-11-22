@@ -143,7 +143,7 @@ def memento_url_data(memento_url):
 
     >>> url = ('http://web.archive.org/web/20170813195036/'
     ...        'https://arpa-e.energy.gov/?q=engage/events-workshops')
-    >>> memento_url_data()
+    >>> memento_url_data(url)
     ('https://arpa-e.energy.gov/?q=engage/events-workshops',
      datetime.datetime(2017, 8, 13, 19, 50, 36))
     """
@@ -164,7 +164,7 @@ def original_url_for_memento(memento_url):
 
     >>> url = ('http://web.archive.org/web/20170813195036/'
     ...        'https://arpa-e.energy.gov/?q=engage/events-workshops')
-    >>> original_url_for_memento()
+    >>> original_url_for_memento(url)
     'https://arpa-e.energy.gov/?q=engage/events-workshops'
     """
     return clean_memento_url_component(split_memento_url(memento_url)[0])

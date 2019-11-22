@@ -2,4 +2,7 @@ from ._version import get_versions
 __version__ = get_versions()['version']
 del get_versions
 
-from ._client import WaybackClient, WaybackSession  # noqa
+from ._client import (  # noqa
+    memento_url_data,
+    WaybackClient,
+    WaybackSession)
