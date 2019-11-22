@@ -599,10 +599,10 @@ class WaybackClient(_utils.DepthCountedContext):
                 length = int(data.length)
                 capture_time = datetime.strptime(data.timestamp,
                                                  URL_DATE_FORMAT)
-            except Exception:
+            except Exception as err:
                 if 'RobotAccessControlException' in text:
                     raise BlockedByRobotsError(query["url"])
-                raise UnexpectedResponseFormat(f'Could not parse CDX output: "{text}" (query: {final_query})')
+                raise UnexpectedResponseFormat(f'Could not parse CDX output: "{text}" (query: {final_query})') from err
 
             clean_url = REDUNDANT_HTTPS_PORT.sub(
                 r'\1\2', REDUNDANT_HTTP_PORT.sub(
