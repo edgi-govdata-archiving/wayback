@@ -50,11 +50,11 @@ Wayback Machine. Looking at the record in detail,
    record
 
 we can find our answer: Wayback's first memento of nasa.gov was in 1996. We
-can use dot access on ``record`` to access the date specifically.
+can use dot access on ``record`` to access the timestamp specifically.
 
 .. ipython:: python
 
-   record.date
+   record.timestamp
 
 How many times does the word 'mars' appear on nasa.gov?
 -------------------------------------------------------
@@ -105,6 +105,8 @@ Memento API. We implement a Python client that can speak both.
 
     .. automethod:: search
     .. automethod:: get_memento
+
+.. autoclass:: wayback.CdxRecord
 
 .. autoclass:: wayback.WaybackSession
 

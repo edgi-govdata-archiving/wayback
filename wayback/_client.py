@@ -108,10 +108,63 @@ CdxRecord = namedtuple('CdxRecord', (
     'digest',
     'length',
     # Synthesized values
-    'date',
     'raw_url',
     'view_url'
 ))
+"""
+Item from iterable of results returned by :meth:`WaybackClient.search`
+
+These attributes contain information provided directly by CDX.
+
+.. py:attribute:: digest
+
+   Content hashed as a base 32 encoded SHA-1.
+
+.. py:attribute:: key
+
+   SURT-formatted URL
+
+.. py:attribute:: length
+
+   Size of captured content in bytes, such as :data:`2767`. This may be
+   innacurate. If the record is a "revisit record", indicated by MIME type
+   :data:`'warc/revisit'`, the length seems to be the length of the reference,
+   not the length of the content itself.
+
+.. py:attribute:: mime_type
+
+   MIME type of record, such as :data:`'text/html'`, :data:`'warc/revisit'` or
+   :data:`'unk'` ("unknown") if this information was not captured.
+
+.. py:attribute:: status_code
+
+   Status code returned by the server when the record was captured, such as
+   :data:`200`. This is may be :data:`None` if the record is a revisit record.
+
+.. py:attribute:: timestamp
+
+   The capture time represented as a :class:`datetime.datetime`, such as
+   :data:`datetime.datetime(1996, 12, 31, 23, 58, 47)`.
+
+.. py:attribute:: url
+
+   The URL that was captured by this record, such as
+   :data:`'http://www.nasa.gov/'`.
+
+And these attributes are synthesized from the information provided by CDX.
+
+.. py:attribute:: raw_url
+
+   The URL to the raw captured content, such as
+   :data:`'http://web.archive.org/web/19961231235847id_/http://www.nasa.gov/'`.
+
+.. py:attribute:: view_url
+
+   The URL to the public view on Wayback Machine. In this view, the links and
+   some subresources in the document are rewritten to point to Wayback URLs.
+   There is also a navigation panel around the content. Example URL:
+   :data:`'http://web.archive.org/web/19961231235847/http://www.nasa.gov/'`.
+"""
 
 
 def split_memento_url(memento_url):
@@ -467,6 +520,11 @@ class WaybackClient(_utils.DepthCountedContext):
         References
         ----------
         * https://github.com/internetarchive/wayback/tree/master/wayback-cdx-server
+
+        Yields
+        ------
+        version: CdxRecord
+            A :class:`CdxRecord` encapsulating one capture or revisit
         """
 
         # TODO: support args that can be set multiple times: filter, collapse
@@ -525,13 +583,20 @@ class WaybackClient(_utils.DepthCountedContext):
                 break
 
             try:
-                data = CdxRecord(*text.split(' '), None, '', '')
+                data = CdxRecord(*text.split(' '), '', '')
+                if data.status_code == '-':
+                    # the status code given for a revisit record
+                    status_code = None
+                else:
+                    status_code = int(data.status_code)
+                length = int(data.length)
                 capture_time = datetime.strptime(data.timestamp,
                                                  URL_DATE_FORMAT)
-            except Exception:
+            except Exception as err:
                 if 'RobotAccessControlException' in text:
                     raise BlockedByRobotsError(query["url"])
-                raise UnexpectedResponseFormat(f'Could not parse CDX output: "{text}" (query: {final_query})')
+                raise UnexpectedResponseFormat(
+                    f'Could not parse CDX output: "{text}" (query: {final_query})') from err
 
             clean_url = REDUNDANT_HTTPS_PORT.sub(
                 r'\1\2', REDUNDANT_HTTP_PORT.sub(
@@ -546,7 +611,9 @@ class WaybackClient(_utils.DepthCountedContext):
             # content and following redirects. Maybe nice to do so
             # automatically here.
             data = data._replace(
-                date=capture_time,
+                status_code=status_code,
+                length=length,
+                timestamp=capture_time,
                 raw_url=ARCHIVE_RAW_URL_TEMPLATE.format(
                     timestamp=data.timestamp, url=data.url),
                 view_url=ARCHIVE_VIEW_URL_TEMPLATE.format(
