@@ -70,10 +70,6 @@ class WaybackRetryError(WaybackException):
         super().__init__(f'Retried {retries} times over {total_time or "?"} seconds (error: {causal_error})')
 
 
-class UnrecognizedStatusCode(TypeError, WaybackException):
-    ...
-
-
 CDX_SEARCH_URL = 'http://web.archive.org/cdx/search/cdx'
 # This /web/timemap URL has newer features, but has other bugs and doesn't
 # support some features, like resume keys (for paging). It ignores robots.txt,
@@ -592,10 +588,7 @@ class WaybackClient(_utils.DepthCountedContext):
                     # the status code given for a revisit record
                     status_code = None
                 else:
-                    try:
-                        status_code = int(data.status_code)
-                    except TypeError as err:
-                        raise UnrecognizedStatusCode(status_code) from err
+                    status_code = int(data.status_code)
                 length = int(data.length)
                 capture_time = datetime.strptime(data.timestamp,
                                                  URL_DATE_FORMAT)
