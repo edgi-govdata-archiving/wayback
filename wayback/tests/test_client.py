@@ -5,8 +5,8 @@ import vcr
 from .._utils import SessionClosedError
 from .._client import (WaybackSession,
                        WaybackClient,
-                       original_url_for_memento,
-                       MementoPlaybackError)
+                       original_url_for_memento)
+from ..exceptions import MementoPlaybackError
 
 
 # This stashes HTTP responses in JSON files (one per test) so that an actual
