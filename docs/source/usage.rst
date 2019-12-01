@@ -112,7 +112,20 @@ Memento API. We implement a Python client that can speak both.
 
     .. automethod:: reset
 
-Utility functions
+Utility Functions
 -----------------
 
 .. autofunction:: wayback.memento_url_data
+
+Exception Classes
+-----------------
+
+.. autoclass:: wayback.exceptions.WaybackException
+
+.. autoclass:: wayback.exceptions.UnexpectedResponseFormat
+
+.. autoclass:: wayback.exceptions.BlockedByRobotsError
+
+.. autoclass:: wayback.exceptions.MementoPlaybackError
+
+.. autoclass:: wayback.exceptions.WaybackRetryError

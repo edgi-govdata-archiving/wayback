@@ -18,57 +18,27 @@ from collections import namedtuple
 from datetime import datetime, timezone
 import hashlib
 import logging
-import urllib.parse
 import re
-import time
-from . import _utils, __version__
-
 import requests
+from requests.exceptions import (ConnectionError,
+                                 ProxyError,
+                                 RetryError,
+                                 Timeout)
+import time
+import urllib.parse
 from urllib3.connectionpool import HTTPConnectionPool
-from requests.exceptions import (
-    ConnectionError,
-    ProxyError,
-    RetryError,
-    Timeout
-)
-from urllib3.exceptions import (
-    ConnectTimeoutError,
-    MaxRetryError,
-    ReadTimeoutError
-)
+from urllib3.exceptions import (ConnectTimeoutError,
+                                MaxRetryError,
+                                ReadTimeoutError)
+from . import _utils, __version__
+from .exceptions import (WaybackException,
+                         UnexpectedResponseFormat,
+                         BlockedByRobotsError,
+                         MementoPlaybackError,
+                         WaybackRetryError)
 
 
 logger = logging.getLogger(__name__)
-
-
-class WaybackException(Exception):
-    # All exceptions raised directly by this package inherit from this.
-    ...
-
-
-class UnexpectedResponseFormat(WaybackException):
-    ...
-
-
-class BlockedByRobotsError(WaybackException):
-    # A URL can't be queried in Wayback because it was blocked by robots.txt
-    ...
-
-
-# TODO: split this up into a family of more specific errors? When playback
-# failed partway into a redirect chain, when a redirect goes outside
-# redirect_target_window, when a memento was circular?
-class MementoPlaybackError(WaybackException):
-    ...
-
-
-class WaybackRetryError(WaybackException):
-    def __init__(self, retries, total_time, causal_error):
-        self.retries = retries
-        self.cause = causal_error
-        self.time = total_time
-        super().__init__(f'Retried {retries} times over {total_time or "?"} seconds (error: {causal_error})')
-
 
 CDX_SEARCH_URL = 'http://web.archive.org/cdx/search/cdx'
 # This /web/timemap URL has newer features, but has other bugs and doesn't
