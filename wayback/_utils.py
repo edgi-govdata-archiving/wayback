@@ -1,14 +1,10 @@
 from collections import defaultdict
 from contextlib import contextmanager
-import logging
 import requests
 import requests.adapters
 import threading
 import time
 from .exceptions import SessionClosedError
-
-
-logger = logging.getLogger(__name__)
 
 
 _last_call_by_group = defaultdict(int)
