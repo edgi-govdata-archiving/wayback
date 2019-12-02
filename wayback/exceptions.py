@@ -53,3 +53,10 @@ class WaybackRetryError(WaybackException):
         self.cause = causal_error
         self.time = total_time
         super().__init__(f'Retried {retries} times over {total_time or "?"} seconds (error: {causal_error})')
+
+
+class SessionClosedError(Exception):
+    """
+    Raised when a Wayback session is used to make a request after it has been
+    closed and disabled.
+    """

@@ -1,11 +1,11 @@
 from collections import defaultdict
 from contextlib import contextmanager
 import logging
-import threading
-import time
-
 import requests
 import requests.adapters
+import threading
+import time
+from .exceptions import SessionClosedError
 
 
 logger = logging.getLogger(__name__)
@@ -75,10 +75,6 @@ class DepthCountedContext:
         overridden in your class.
         """
         pass
-
-
-class SessionClosedError(Exception):
-    ...
 
 
 class DisableAfterCloseSession(requests.Session):
