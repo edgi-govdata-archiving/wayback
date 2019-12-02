@@ -1,8 +1,6 @@
 from collections import defaultdict
 from contextlib import contextmanager
 import logging
-import os
-import signal
 import threading
 import time
 
@@ -103,96 +101,3 @@ class DisableAfterCloseSession(requests.Session):
                                      'and cannot send new HTTP requests.')
 
         return super().send(*args, **kwargs)
-
-
-class Signal:
-    """
-    A context manager to handle signals from the system safely. It keeps track
-    of previous signal handlers and ensures that they are put back into place
-    when the context exits.
-
-    Parameters
-    ----------
-    signals : int or tuple of int
-        The signal or list of signals to handle.
-    handler : callable
-        A signal handler function of the same type used with `signal.signal()`.
-        See: https://docs.python.org/3.6/library/signal.html#signal.signal
-
-    Examples
-    --------
-    Ignore SIGINT (ctrl+c) and print a glib message instead of quitting:
-
-    >>> def ignore_signal(signal_type, frame):
-    >>>     print("Sorry, but you can't quit this program that way!")
-    >>>
-    >>> with Signal((signal.SIGINT, signal.SIGTERM), ignore_signal):
-    >>>     do_some_work_that_cant_be_interrupted()
-    """
-    def __init__(self, signals, handler):
-        self.handler = handler
-        self.old_handlers = {}
-        try:
-            self.signals = tuple(signals)
-        except TypeError:
-            self.signals = (signals,)
-
-    def __enter__(self):
-        for signal_type in self.signals:
-            self.old_handlers[signal_type] = signal.getsignal(signal_type)
-            signal.signal(signal_type, self.handler)
-
-        return self
-
-    def __exit__(self, type, value, traceback):
-        for signal_type in self.signals:
-            signal.signal(signal_type, self.old_handlers[signal_type])
-
-
-class QuitSignal(Signal):
-    """
-    A context manager that handles system signals by triggering a
-    `threading.Event` instance, giving your program an opportunity to clean up
-    and shut down gracefully. If the signal is repeated a second time, the
-    process quits immediately.
-
-    Parameters
-    ----------
-    signals : int or tuple of int
-        The signal or list of signals to handle.
-    graceful_message : string, optional
-        A message to print to stdout when a signal is received.
-    final_message : string, optional
-        A message to print to stdout before exiting the process when a repeat
-        signal is received.
-
-    Examples
-    --------
-    Quit on SIGINT (ctrl+c) or SIGTERM:
-
-    >>> with QuitSignal((signal.SIGINT, signal.SIGTERM)) as cancel:
-    >>>     for item in some_list:
-    >>>         if cancel.is_set():
-    >>>             break
-    >>>         do_some_work()
-    """
-    def __init__(self, signals, graceful_message=None, final_message=None):
-        self.event = threading.Event()
-        self.graceful_message = graceful_message or (
-            'Attempting to finish existing work before exiting. Press ctrl+c '
-            'to stop immediately.')
-        self.final_message = final_message or (
-            'Stopping immediately and aborting all work!')
-        super().__init__(signals, self.handle_interrupt)
-
-    def handle_interrupt(self, signal_type, frame):
-        if not self.event.is_set():
-            print(self.graceful_message)
-            self.event.set()
-        else:
-            print(self.final_message)
-            os._exit(100)
-
-    def __enter__(self):
-        super().__enter__()
-        return self.event
