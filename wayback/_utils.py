@@ -46,23 +46,6 @@ def rate_limited(calls_per_second=2, group='default'):
         yield
 
 
-def get_color_palette():
-    """
-    Read and return the CSS color env variables that indicate the colors in
-    html_diff_render, differs and links_diff.
-
-    Returns
-    ------
-    palette: Dictionary
-        A dictionary containing the differ_insertion and differ_deletion css
-        color codes
-    """
-    differ_insertion = os.environ.get('DIFFER_COLOR_INSERTION', '#a1d76a')
-    differ_deletion = os.environ.get('DIFFER_COLOR_DELETION', '#e8a4c8')
-    return {'differ_insertion': differ_insertion,
-            'differ_deletion': differ_deletion}
-
-
 def iterate_into_queue(queue, iterable):
     """
     Read items from an iterable and place them onto a FiniteQueue.
