@@ -1,40 +1,18 @@
 from collections import defaultdict
 from contextlib import contextmanager
 import hashlib
-import io
 import logging
 import os
 import queue
-import re
 import signal
 import threading
 import time
 
-import lxml.html
 import requests
 import requests.adapters
 
 
 logger = logging.getLogger(__name__)
-
-WHITESPACE_PATTERN = re.compile(r'\s+')
-
-
-def extract_title(content_bytes, encoding='utf-8'):
-    "Return content of <title> tag as string. On failure return empty string."
-    content_str = content_bytes.decode(encoding=encoding, errors='ignore')
-    # The parser expects a file-like, so we mock one.
-    content_as_file = io.StringIO(content_str)
-    try:
-        title = lxml.html.parse(content_as_file).find(".//title")
-    except Exception:
-        return ''
-
-    if title is None or title.text is None:
-        return ''
-
-    # In HTML, all consecutive whitespace (including line breaks) collapses
-    return WHITESPACE_PATTERN.sub(' ', title.text.strip())
 
 
 def hash_content(content_bytes):
