@@ -291,7 +291,8 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
         self.backoff = backoff
         self.timeout = timeout
         self.headers = {
-            'User-Agent': user_agent or f'wayback/{__version__} (+https://github.com/edgi-govdata-archiving/wayback)',
+            'User-Agent': (user_agent or
+                           f'wayback/{__version__} (+https://github.com/edgi-govdata-archiving/wayback)'),
             'Accept-Encoding': 'gzip, deflate'
         }
         # NOTE: the nice way to accomplish retry/backoff is with a urllib3:
