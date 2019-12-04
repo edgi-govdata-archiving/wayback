@@ -541,7 +541,8 @@ class WaybackClient(_utils.DepthCountedContext):
         except requests.exceptions.HTTPError as error:
             raise WaybackException(str(error))
 
-        lines = response.iter_lines()
+        lines = iter(response.content.splitlines())
+        response.close()
         count = 0
 
         for line in lines:
