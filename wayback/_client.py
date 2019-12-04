@@ -271,7 +271,8 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
         no explicit timeout. See the Requests docs for more:
         http://docs.python-requests.org/en/master/user/advanced/#timeouts
     user_agent : str, optional
-        A custom user-agent string to use in all requests.
+        A custom user-agent string to use in all requests. Defaults to:
+        `wayback/{version} (+https://github.com/edgi-govdata-archiving/wayback)`
     """
 
     # It seems Wayback sometimes produces 500 errors for transient issues, so
@@ -290,7 +291,8 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
         self.backoff = backoff
         self.timeout = timeout
         self.headers = {
-            'User-Agent': user_agent or f'edgi.web_monitoring.WaybackClient/{__version__}',
+            'User-Agent': (user_agent or
+                           f'wayback/{__version__} (+https://github.com/edgi-govdata-archiving/wayback)'),
             'Accept-Encoding': 'gzip, deflate'
         }
         # NOTE: the nice way to accomplish retry/backoff is with a urllib3:
