@@ -731,8 +731,14 @@ class WaybackClient(_utils.DepthCountedContext):
 
                 if response.next:
                     previous_was_memento = is_memento
-                    urls.add(response.url)
+
+                    # Read content so it gets cached and close the response so
+                    # we can release the connection for reuse.
+                    response.content
+                    response.close()
+
                     # Wayback sometimes has circular memento redirects ¯\_(ツ)_/¯
+                    urls.add(response.url)
                     if response.next.url in urls:
                         raise MementoPlaybackError(f'Memento at {url} is circular')
 
