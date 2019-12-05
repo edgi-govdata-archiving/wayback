@@ -20,7 +20,9 @@ import hashlib
 import logging
 import re
 import requests
-from requests.exceptions import (ConnectionError,
+from requests.exceptions import (ChunkedEncodingError,
+                                 ConnectionError,
+                                 ContentDecodingError,
                                  ProxyError,
                                  RetryError,
                                  Timeout)
@@ -733,8 +735,12 @@ class WaybackClient(_utils.DepthCountedContext):
                     previous_was_memento = is_memento
 
                     # Read content so it gets cached and close the response so
-                    # we can release the connection for reuse.
-                    response.content
+                    # we can release the connection for reuse. See:
+                    # https://github.com/psf/requests/blob/eedd67462819f8dbf8c1c32e77f9070606605231/requests/sessions.py#L160-L163
+                    try:
+                        response.content
+                    except (ChunkedEncodingError, ContentDecodingError, RuntimeError):
+                        response.raw.read(decode_content=False)
                     response.close()
 
                     # Wayback sometimes has circular memento redirects ¯\_(ツ)_/¯
