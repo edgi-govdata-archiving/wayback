@@ -215,6 +215,17 @@ def cdx_hash(content):
     return b32encode(hashlib.sha1(content).digest()).decode()
 
 
+def read_and_close(response):
+    # Read content so it gets cached and close the response so
+    # we can release the connection for reuse. See:
+    # https://github.com/psf/requests/blob/eedd67462819f8dbf8c1c32e77f9070606605231/requests/sessions.py#L160-L163
+    try:
+        response.content
+    except (ChunkedEncodingError, ContentDecodingError, RuntimeError):
+        response.raw.read(decode_content=False)
+    response.close()
+
+
 #####################################################################
 # HACK: handle malformed Content-Encoding headers from Wayback.
 # When you send `Accept-Encoding: gzip` on a request for a memento, Wayback
@@ -326,6 +337,10 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
                 if retries >= maximum or not self.should_retry(result):
                     return result
             except WaybackSession.handleable_errors as error:
+                response = getattr(error, 'response', None)
+                if response:
+                    read_and_close(response)
+
                 if retries >= maximum:
                     raise WaybackRetryError(retries, total_time, error) from error
                 elif not self.should_retry_error(error):
@@ -539,12 +554,18 @@ class WaybackClient(_utils.DepthCountedContext):
         response = self.session.request('GET', CDX_SEARCH_URL,
                                         params=final_query)
         try:
+            # Read/cache the response and close straightaway. If we need to
+            # raise for status, we want to pre-emptively close the response
+            # so a user handling the error doesn't need to worry about it. If
+            # we don't raise here, we still want to close the connection so it
+            # doesn't leak when we move onto the next of results or when this
+            # iterator ends.
+            read_and_close(response)
             response.raise_for_status()
         except requests.exceptions.HTTPError as error:
             raise WaybackException(str(error))
 
         lines = iter(response.content.splitlines())
-        response.close()
         count = 0
 
         for line in lines:
@@ -723,6 +744,7 @@ class WaybackClient(_utils.DepthCountedContext):
                                 playable = True
 
                     if not playable:
+                        read_and_close(response)
                         message = response.headers.get('X-Archive-Wayback-Runtime-Error')
                         if message:
                             raise MementoPlaybackError(f'Memento at {url} could not be played: {message}')
@@ -733,15 +755,7 @@ class WaybackClient(_utils.DepthCountedContext):
 
                 if response.next:
                     previous_was_memento = is_memento
-
-                    # Read content so it gets cached and close the response so
-                    # we can release the connection for reuse. See:
-                    # https://github.com/psf/requests/blob/eedd67462819f8dbf8c1c32e77f9070606605231/requests/sessions.py#L160-L163
-                    try:
-                        response.content
-                    except (ChunkedEncodingError, ContentDecodingError, RuntimeError):
-                        response.raw.read(decode_content=False)
-                    response.close()
+                    read_and_close(response)
 
                     # Wayback sometimes has circular memento redirects ¯\_(ツ)_/¯
                     urls.add(response.url)
