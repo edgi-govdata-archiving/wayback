@@ -223,7 +223,8 @@ def read_and_close(response):
         response.content
     except (ChunkedEncodingError, ContentDecodingError, RuntimeError):
         response.raw.read(decode_content=False)
-    response.close()
+    finally:
+        response.close()
 
 
 #####################################################################
