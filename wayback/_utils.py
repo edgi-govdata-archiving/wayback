@@ -1,7 +1,5 @@
 from collections import defaultdict
 from contextlib import contextmanager
-import requests
-import requests.adapters
 import threading
 import time
 from .exceptions import SessionClosedError
@@ -75,10 +73,10 @@ class DepthCountedContext:
 
 class DisableAfterCloseSession:
     """
-    A custom session object raises a :class:`SessionClosedError` if you try to
-    use it after closing it, to help identify and avoid potentially dangerous
-    code patterns. (Standard session objects continue to be usable after
-    closing, even if they may not work exactly as expected.)
+    A mixin for session objects that raises a :class:`SessionClosedError` if
+    you try to use it after closing it, to help identify and avoid potentially
+    dangerous code patterns. (Standard session objects continue to be usable
+    after closing, even if they may not work exactly as expected.)
     """
     _closed = False
 
