@@ -434,16 +434,13 @@ class WaybackSession(_utils.DisableAfterCloseSession):
                                          'and cannot send new HTTP requests.')
             session = UnsafeWaybackSession(**self.session_options)
             self.thread_data.unsafe_session = session
-            print(f'Adding session to queue: {session}')
             self.all_sessions.put_nowait(session)
         return session
 
     def close(self):
         while True:
             try:
-                print('Closing proxy session')
                 session = self.all_sessions.get_nowait()
-                print(f'Closing session: {session}')
                 session.close()
             except queue.Empty:
                 break
