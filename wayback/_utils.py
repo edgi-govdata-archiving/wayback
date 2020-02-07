@@ -73,7 +73,7 @@ class DepthCountedContext:
         pass
 
 
-class DisableAfterCloseSession(requests.Session):
+class DisableAfterCloseSession:
     """
     A custom session object raises a :class:`SessionClosedError` if you try to
     use it after closing it, to help identify and avoid potentially dangerous
@@ -83,7 +83,6 @@ class DisableAfterCloseSession(requests.Session):
     _closed = False
 
     def close(self, disable=True):
-        super().close()
         if disable:
             self._closed = True
 

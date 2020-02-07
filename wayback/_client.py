@@ -39,7 +39,8 @@ from .exceptions import (WaybackException,
                          UnexpectedResponseFormat,
                          BlockedByRobotsError,
                          MementoPlaybackError,
-                         WaybackRetryError)
+                         WaybackRetryError,
+                         SessionClosedError)
 
 
 logger = logging.getLogger(__name__)
@@ -428,18 +429,25 @@ class WaybackSession(_utils.DisableAfterCloseSession):
     def get_unsafe_session(self):
         session = getattr(self.thread_data, 'unsafe_session', None)
         if session is None:
+            if self._closed:
+                raise SessionClosedError('This session has already been closed '
+                                         'and cannot send new HTTP requests.')
             session = UnsafeWaybackSession(**self.session_options)
             self.thread_data.unsafe_session = session
+            print(f'Adding session to queue: {session}')
             self.all_sessions.put_nowait(session)
         return session
 
     def close(self):
         while True:
             try:
+                print('Closing proxy session')
                 session = self.all_sessions.get_nowait()
+                print(f'Closing session: {session}')
                 session.close()
             except queue.Empty:
                 break
+        super().close()
 
     def __enter__(self):
         concrete_session = self.get_unsafe_session()
