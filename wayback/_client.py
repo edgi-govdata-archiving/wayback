@@ -262,6 +262,11 @@ HTTPConnectionPool.ResponseCls = WaybackResponse
 #####################################################################
 
 
+class DummyPoolManager:
+    def close(self):
+        pass
+
+
 class PoolManagerAdapter(requests.adapters.HTTPAdapter):
     def __init__(self, pool_manager):
         self.poolmanager = pool_manager
@@ -269,6 +274,15 @@ class PoolManagerAdapter(requests.adapters.HTTPAdapter):
 
     def init_poolmanager(self, *args, **kwargs):
         pass
+
+    def close(self):
+        # We don't own the pool manager, so don't break it when closing.
+        poolmanager = self.poolmanager
+        self.poolmanager = DummyPoolManager()
+        try:
+            super().close()
+        finally:
+            self.poolmanager = poolmanager
 
 
 # TODO: make rate limiting configurable at the session level, rather than
@@ -445,6 +459,13 @@ class WaybackSession(_utils.DisableAfterCloseSession):
             except queue.Empty:
                 break
         super().close()
+
+    def reset(self):
+        # This is a bit of an end-run around around the concrete sessions'
+        # reset methods. Instead, we just reset the pool manager they are all
+        # using. That *does* mean some of the cleanup that happens for an
+        # HTTPAdapter gets missed, but that's probably OK.
+        self.session_options['connection_manager'].clear()
 
     def __enter__(self):
         concrete_session = self.get_unsafe_session()
