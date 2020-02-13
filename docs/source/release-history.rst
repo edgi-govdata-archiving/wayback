@@ -2,12 +2,17 @@
 Release History
 ===============
 
-(In Development)
-----------------
+v0.2.2 (2020-02-13)
+-------------------
 
-- Ensure connections are closed and released when calling ``WaybackClient.get_memento()``.
-- Add repo URL to the default user agent string. It now looks like: ``wayback/0.2.2 (+https://github.com/edgi-govdata-archiving/wayback)``.
-- Remove vestigial code.
+When errors were raised or redirects were involved in
+``WaybackClient.get_memento()``, it was previously possible for connections to
+be left hanging open. Wayback now works harder to make sure connections aren't
+left open.
+
+This release also updates the default user agent string to include the repo
+URL. It now looks like:
+``wayback/0.2.2 (+https://github.com/edgi-govdata-archiving/wayback)``
 
 v0.2.1 (2019-12-01)
 -------------------
