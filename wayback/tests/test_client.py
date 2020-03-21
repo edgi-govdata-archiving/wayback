@@ -37,8 +37,8 @@ def test_search_with_date():
                                  from_date=date(2019, 10, 1),
                                  to_date=date(2020, 3, 1))
         for v in versions:
-            assert v.timestamp >= date(2019, 10, 1)
-            assert v.timestamp <= date(2020, 3, 1)
+            assert v.timestamp >= datetime(2019, 10, 1)
+            assert v.timestamp <= datetime(2020, 3, 1)
 
 @ia_vcr.use_cassette()
 def test_search_with_timezone():

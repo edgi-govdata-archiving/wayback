@@ -15,7 +15,7 @@ Other potentially useful links:
 
 from base64 import b32encode
 from collections import namedtuple
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 import hashlib
 import logging
 import re
@@ -459,11 +459,11 @@ class WaybackClient(_utils.DepthCountedContext):
             return a variable number of results.
         gzip : bool, optional
             Whether output should be gzipped.
-        from_date : datetime, optional
+        from_date : datetime or date, optional
             Only include captures after this date. Equivalent to the
             `from` argument in the CDX API. If it does not have a time zone, it
             is assumed to be in UTC.
-        to_date : datetime, optional
+        to_date : datetime or date, optional
             Only include captures before this date. Equivalent to the `to`
             argument in the CDX API. If it does not have a time zone, it is
             assumed to be in UTC.
@@ -549,6 +549,8 @@ class WaybackClient(_utils.DepthCountedContext):
                     else:
                         value_utc = value
                     final_query[key] = value_utc.strftime(URL_DATE_FORMAT)
+                elif isinstance(value, date):
+                    final_query[key] = value.strftime(URL_DATE_FORMAT)
                 else:
                     final_query[key] = str(value).lower()
 
