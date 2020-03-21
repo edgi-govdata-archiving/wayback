@@ -1,4 +1,4 @@
-from datetime import datetime, timezone, timedelta
+from datetime import date, datetime, timezone, timedelta
 from pathlib import Path
 import pytest
 import vcr
@@ -26,12 +26,19 @@ def test_search():
         versions = client.search('nasa.gov',
                                  from_date=datetime(1996, 10, 1),
                                  to_date=datetime(1997, 2, 1))
-        version = next(versions)
-        assert version.timestamp == datetime(1996, 12, 31, 23, 58, 47)
+        for v in versions:
+            assert v.timestamp >= datetime(1996, 10, 1)
+            assert v.timestamp <= datetime(1997, 2, 1)
 
-        # Exhaust the generator and make sure no entries trigger errors.
-        list(versions)
-
+@ia_vcr.use_cassette()
+def test_search_with_date():
+    with WaybackClient() as client:
+        versions = client.search('dw.com',
+                                 from_date=date(2019, 10, 1),
+                                 to_date=date(2020, 3, 1))
+        for v in versions:
+            assert v.timestamp >= date(2019, 10, 1)
+            assert v.timestamp <= date(2020, 3, 1)
 
 @ia_vcr.use_cassette()
 def test_search_with_timezone():
