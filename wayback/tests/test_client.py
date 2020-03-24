@@ -30,6 +30,7 @@ def test_search():
             assert v.timestamp >= datetime(1996, 10, 1)
             assert v.timestamp <= datetime(1997, 2, 1)
 
+
 @ia_vcr.use_cassette()
 def test_search_with_date():
     with WaybackClient() as client:
@@ -39,6 +40,7 @@ def test_search_with_date():
         for v in versions:
             assert v.timestamp >= datetime(2019, 10, 1)
             assert v.timestamp <= datetime(2020, 3, 1)
+
 
 @ia_vcr.use_cassette()
 def test_search_with_timezone():
