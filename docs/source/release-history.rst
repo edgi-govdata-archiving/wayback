@@ -12,6 +12,8 @@ The ``from_date`` and ``to_date`` arguments for
 :meth:`wayback.WaybackClient.search` can now be ``datetime.date`` instances
 in addition to ``datetime.datetime``.
 
+Huge thanks to @edsu for implementing both of these!
+
 v0.2.2 (2020-02-13)
 -------------------
 
