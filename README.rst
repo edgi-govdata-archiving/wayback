@@ -12,7 +12,9 @@ wayback
 Python API to Internet Archive Wayback Machine
 
 * Free software: 3-clause BSD license
-* Documentation: (COMING SOON!) https://edgi-govdata-archiving.github.io/wayback.
+* Documentation:
+    * Current Release: https://wayback.readthedocs.io/en/stable/
+    * Development: https://wayback.readthedocs.io/en/latest/
 
 
 Features
