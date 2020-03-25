@@ -2,6 +2,16 @@
 Release History
 ===============
 
+v0.2.3 (2020-03-25)
+-------------------
+
+This release downgrades the minimum Python version to 3.6! You can now use
+Wayback in places like Google Colab.
+
+The ``from_date`` and ``to_date`` arguments for
+:meth:`wayback.WaybackClient.search` can now be ``datetime.date`` instances
+in addition to ``datetime.datetime``.
+
 v0.2.2 (2020-02-13)
 -------------------
 
