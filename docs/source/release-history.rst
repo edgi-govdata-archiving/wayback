@@ -2,6 +2,12 @@
 Release History
 ===============
 
+In Development
+--------------
+
+Updates slated for the next release: [TBD]
+
+
 v0.2.3 (2020-03-25)
 -------------------
 
