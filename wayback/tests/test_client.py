@@ -136,7 +136,8 @@ def test_get_memento_with_redirects():
     with WaybackClient() as client:
         response = client.get_memento(
             'http://web.archive.org/web/20180808094144id_/https://www.epa.gov/ghgreporting/san5779-factsheet')
-        assert len(response.history) == 2  # redirects
+        assert len(response.history) == 1        # memento redirects
+        assert len(response.debug_history) == 2  # actual HTTP redirects
 
 
 @ia_vcr.use_cassette()

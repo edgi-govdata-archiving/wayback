@@ -666,7 +666,9 @@ class WaybackClient(_utils.DepthCountedContext):
         -------
         dict : requests.Response
             An HTTP response with the content of the memento, including a
-            history of any redirects involved.
+            history of any redirects involved. (For a complete history of all
+            HTTP requests needed to obtain the memento [rather than historic
+            redirects], check `debug_history` instead of `history`.)
         """
         if exact_redirects is None:
             exact_redirects = exact
@@ -698,6 +700,7 @@ class WaybackClient(_utils.DepthCountedContext):
             #            to actually came from nearby in time (sometimes
             #            Wayback will redirect to captures *months* away).
             history = []
+            debug_history = []
             urls = set()
             previous_was_memento = False
             orginal_url, original_date = memento_url_data(url)
@@ -765,10 +768,15 @@ class WaybackClient(_utils.DepthCountedContext):
                     if response.next.url in urls:
                         raise MementoPlaybackError(f'Memento at {url} is circular')
 
-                    history.append(response)
+                    # All requests are included in `debug_history`, but
+                    # `history` only shows redirects that were mementos.
+                    debug_history.append(response)
+                    if is_memento:
+                        history.append(response)
                     response = self.session.send(response.next, allow_redirects=False)
                 else:
                     break
 
             response.history = history
+            response.debug_history = debug_history
             return response
