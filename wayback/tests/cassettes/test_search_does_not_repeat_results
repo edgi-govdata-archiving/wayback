@@ -1,0 +1,45 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.2.3.post3.dev0+g5a994c7 (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: http://web.archive.org/cdx/search/cdx?url=energystar.gov%2F&from=20200612000000&to=20200613000000&showResumeKey=true&resolveRevisits=true
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAM3UQUvDMBQH8Ps+Ra6CLi/vJen01rlClVJcqNbuNqR0A3XShla/vekuA8HsEsru
+        CT/+7/15zaG/rj/rtvnp7La94gwBAbRAEBIgYjtrv+44Pz2ZN4eeM1t/W76zH++MQLA0y42Oy5ey
+        un+mKk7yitIqzR6e8jLX+jViknDWXIYk5FHqHDUMw/wvN2zbN97W/b7bW3bDVsuYcqnkxmwkrpNl
+        YtTaFES4eiyKzCimQV+Qp4WSFGyS5JcUBk6m/veEm6PQU3RklDB0ssjjoVpM0/5RCt5G386UjDDc
+        zjxtHCWi6XZ2LMmt1zvFc1/Ocy6AZ5LOW1BoT3g8QhIQ0vMWZeQw3NmC2S9DoXwg1QYAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/plain;charset=UTF-8
+      Date:
+      - Wed, 17 Jun 2020 16:24:27 GMT
+      Server:
+      - nginx/1.15.8
+      Transfer-Encoding:
+      - chunked
+      X-App-Server:
+      - wwwb-app15
+      X-Cache-Key:
+      - httpweb.archive.org/cdx/search/cdx?url=energystar.gov%2F&from=20200612000000&to=20200613000000&showResumeKey=true&resolveRevisits=trueUS
+      X-Page-Cache:
+      - BYPASS
+      X-location:
+      - cdx
+      X-ts:
+      - '200'
+    status:
+      code: 200
+      message: OK
+version: 1

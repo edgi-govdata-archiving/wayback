@@ -88,6 +88,18 @@ def test_search_cannot_iterate_after_session_closing():
         next(versions)
 
 
+@ia_vcr.use_cassette()
+def test_search_does_not_repeat_results():
+    with WaybackClient() as client:
+        versions = client.search('energystar.gov/',
+                                 from_date=datetime(2020, 6, 12),
+                                 to_date=datetime(2020, 6, 13))
+        previous = None
+        for version in versions:
+            assert version != previous
+            previous = version
+
+
 class TestOriginalUrlForMemento:
     def test_extracts_url(self):
         url = original_url_for_memento(
