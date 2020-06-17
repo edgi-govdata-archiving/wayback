@@ -589,8 +589,9 @@ class WaybackClient(_utils.DepthCountedContext):
                 else:
                     status_code = int(data.status_code)
                 length = int(data.length)
-                capture_time = datetime.strptime(data.timestamp,
-                                                 URL_DATE_FORMAT)
+                capture_time = (datetime.strptime(data.timestamp,
+                                                  URL_DATE_FORMAT)
+                                        .replace(tzinfo=timezone.utc))
             except Exception as err:
                 if 'RobotAccessControlException' in text:
                     raise BlockedByRobotsError(query["url"])

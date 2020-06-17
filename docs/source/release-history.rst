@@ -9,6 +9,8 @@ Updates slated for the next release:
 
 - The ``history`` attribute of a memento now only includes redirects that were mementos (i.e. redirects that would have been seen when browsing the recorded site at the time it was recorded). Other redirects involved in working with the memento API are still available in ``debug_history``, which includes all redirects, whether or not they were mementos.
 
+- The timestamps in ``CdxRecord`` objects returned by ``WaybackClient.search()`` now include timezone information. (They are always in the UTC timezone.)
+
 
 v0.2.3 (2020-03-25)
 -------------------
