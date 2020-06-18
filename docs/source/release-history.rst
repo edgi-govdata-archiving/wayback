@@ -9,6 +9,8 @@ Updates slated for the next release:
 
 - The ``history`` attribute of a memento now only includes redirects that were mementos (i.e. redirects that would have been seen when browsing the recorded site at the time it was recorded). Other redirects involved in working with the memento API are still available in ``debug_history``, which includes all redirects, whether or not they were mementos.
 
+- Wayback’s CDX search API sometimes returns repeated, identical results. These are now filtered out, so repeat search results will not be yielded from :meth:`wayback.WaybackClient.search`.
+
 
 v0.2.3 (2020-03-25)
 -------------------
