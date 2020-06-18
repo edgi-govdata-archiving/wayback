@@ -420,7 +420,7 @@ class WaybackClient(_utils.DepthCountedContext):
                fastLatest=None, gzip=None, from_date=None, to_date=None,
                filter_field=None, collapse=None, showResumeKey=True,
                resumeKey=None, page=None, pageSize=None, resolveRevisits=True,
-               skip_malformed_results=True, **kwargs):
+               skip_malformed_results=True, previous_result=None, **kwargs):
         """
         Search archive.org's CDX API for all captures of a given URL.
 
@@ -499,6 +499,10 @@ class WaybackClient(_utils.DepthCountedContext):
             or `http://data:image/jpeg;base64,AF34...` and so on. This is a
             filter performed client side and is not a CDX API argument.
             (Default: True)
+        previous_result : str, optional
+            *For internal use.* The CDX API sometimes returns repeated results.
+            This is used to track the previous result so we can filter out the
+            repeats.
         **kwargs
             Any additional CDX API options.
 
@@ -578,8 +582,14 @@ class WaybackClient(_utils.DepthCountedContext):
             if text == '':
                 next_args = query.copy()
                 next_args['resumeKey'] = next(lines).decode()
-                count += yield from self.search(**next_args)
+                count += yield from self.search(previous_result=previous_result,
+                                                **next_args)
                 break
+            elif text == previous_result:
+                # This result line is a repeat. Skip it.
+                continue
+            else:
+                previous_result = text
 
             try:
                 data = CdxRecord(*text.split(' '), '', '')
