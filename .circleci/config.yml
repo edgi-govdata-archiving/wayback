@@ -1,13 +1,17 @@
-version: 2
+version: 2.1
 jobs:
-  test-3.7: &test-template
+  test:
+    parameters:
+      python-version:
+        type: string
+
     working_directory: ~/wayback
     docker:
-      - image: circleci/python:3.7
+      - image: cimg/python:<< parameters.python-version >>
     steps:
       - checkout
       - restore_cache:
-          key: cache_v2-wayback-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
+          key: cache_v3-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
 
       # Bundle install dependencies
       - run:
@@ -20,7 +24,7 @@ jobs:
 
       # Store bundle cache
       - save_cache:
-          key: cache_v2-wayback-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
+          key: cache_v3-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
           paths:
             - ~/venv
 
@@ -45,14 +49,10 @@ jobs:
             . ~/venv/bin/activate
             make -C docs html
 
-  test-3.6:
-    <<: *test-template
-    docker:
-      - image: circleci/python:3.6
-
 workflows:
-  version: 2
   build:
     jobs:
-      - test-3.6
-      - test-3.7
+      - test:
+          matrix:
+            parameters:
+              python-version: ["3.6", "3.7"]
