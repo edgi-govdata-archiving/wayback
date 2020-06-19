@@ -5,10 +5,10 @@ coverage
 flake8
 requests-mock
 pytest
-sphinx
+sphinx ~=3.1.1
 vcrpy
 # These are dependencies of various sphinx extensions for documentation.
 ipython
-numpydoc
-sphinx-copybutton
-sphinx_rtd_theme
+numpydoc ~=1.0.0
+sphinx-copybutton ~=0.2.12
+sphinx_rtd_theme ~=0.5.0
