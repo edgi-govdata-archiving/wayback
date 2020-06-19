@@ -11,7 +11,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: cache_v3-wayback-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
+          key: cache_v3-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
 
       # Bundle install dependencies
       - run:
@@ -24,7 +24,7 @@ jobs:
 
       # Store bundle cache
       - save_cache:
-          key: cache_v3-wayback-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
+          key: cache_v3-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
           paths:
             - ~/venv
 
