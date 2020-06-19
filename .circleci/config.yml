@@ -1,9 +1,13 @@
-version: 2
+version: 2.1
 jobs:
-  test-3.7: &test-template
+  test:
+    parameters:
+      python-version:
+        type: string
+
     working_directory: ~/wayback
     docker:
-      - image: circleci/python:3.7
+      - image: circleci/python:<< parameters.python-version >>
     steps:
       - checkout
       - restore_cache:
@@ -45,14 +49,10 @@ jobs:
             . ~/venv/bin/activate
             make -C docs html
 
-  test-3.6:
-    <<: *test-template
-    docker:
-      - image: circleci/python:3.6
-
 workflows:
-  version: 2
   build:
     jobs:
-      - test-3.6
-      - test-3.7
+      - test:
+          matrix:
+            parameters:
+              python-version: ["3.6", "3.7"]
