@@ -6,7 +6,7 @@ from .._utils import SessionClosedError
 from .._client import (WaybackSession,
                        WaybackClient,
                        original_url_for_memento)
-from ..exceptions import MementoPlaybackError
+from ..exceptions import MementoPlaybackError, RateLimitError
 
 
 # This stashes HTTP responses in JSON files (one per test) so that an actual
@@ -17,6 +17,31 @@ ia_vcr = vcr.VCR(
          cassette_library_dir=cassette_library_dir,
          record_mode='once',
          match_on=['uri', 'method'],
+)
+
+
+# It's tough to capture a rate-limited response. Using VCR to do so would
+# require an overly-complex test and a very verbose recording (with lots of
+# excess requests & responses in order to breach the limit). So this is simply
+# a manual mock based on an actual rate-limited response.
+WAYBACK_RATE_LIMIT_ERROR = dict(
+    status_code=429,
+    headers={
+        'Server': 'nginx/1.15.8',
+        'Date': 'Fri, 19 Jun 2020 23:44:42 GMT',
+        'Content-Type': 'text/html',
+        'Transfer-Encoding': 'chunked',
+        'Connection': 'keep-alive',
+        'Cache-Control': 'no-cache',
+        # NOTE: Wayback does not currently include this header. It's optional,
+        # and is included here to test whether we will handle it nicely if the
+        # Wayback Machine ever adds it.
+        # https://tools.ietf.org/html/rfc6585#section-4
+        'Retry-After': '10'
+    },
+    text='''<html><body><h1>429 Too Many Requests</h1>
+You have sent too many requests in a given amount of time.
+</body></html>'''
 )
 
 
@@ -188,3 +213,17 @@ class TestWaybackSession:
         session = WaybackSession(retries=1, backoff=0.1)
         response = session.request('GET', 'http://test.com')
         assert response.status_code == 400
+
+    def test_raises_rate_limit_error(self, requests_mock):
+        requests_mock.get('http://test.com', [WAYBACK_RATE_LIMIT_ERROR])
+        with pytest.raises(RateLimitError):
+            session = WaybackSession(retries=0)
+            session.request('GET', 'http://test.com')
+
+    def test_rate_limit_error_includes_retry_after(self, requests_mock):
+        requests_mock.get('http://test.com', [WAYBACK_RATE_LIMIT_ERROR])
+        with pytest.raises(RateLimitError) as excinfo:
+            session = WaybackSession(retries=0)
+            session.request('GET', 'http://test.com')
+
+        assert excinfo.value.retry_after == 10

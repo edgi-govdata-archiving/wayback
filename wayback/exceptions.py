@@ -55,6 +55,38 @@ class WaybackRetryError(WaybackException):
         super().__init__(f'Retried {retries} times over {total_time or "?"} seconds (error: {causal_error})')
 
 
+class RateLimitError(WaybackException):
+    """
+    Raised when the Wayback Machine responds with a 429 (too many requests)
+    status code. In general, this package's built-in limits should help you
+    avoid ever hitting this, but if you are running multiple processes in
+    parallel, you could go overboard.
+
+    Attributes
+    ----------
+    retry_after : int, optional
+        Recommended number of seconds to wait before retrying. If the Wayback
+        Machine does not include it in the HTTP response, it will be set to
+        ``None``.
+    """
+
+    def __init__(self, response):
+        self.response = response
+
+        # The Wayback Machine does not generally include a `Retry-After` header
+        # at the time of this writing, but this code is included in case they
+        # add it in the future. The standard recommends it:
+        # https://tools.ietf.org/html/rfc6585#section-4
+        retry_header = response.headers.get('Retry-After')
+        self.retry_after = int(retry_header) if retry_header else None
+
+        message = 'Wayback rate limit exceeded'
+        if self.retry_after:
+            message = f'{message}, retry after {self.retry_after} s'
+
+        super().__init__(message)
+
+
 class SessionClosedError(Exception):
     """
     Raised when a Wayback session is used to make a request after it has been
