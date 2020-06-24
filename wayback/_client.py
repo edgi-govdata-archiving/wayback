@@ -37,7 +37,8 @@ from .exceptions import (WaybackException,
                          UnexpectedResponseFormat,
                          BlockedByRobotsError,
                          MementoPlaybackError,
-                         WaybackRetryError)
+                         WaybackRetryError,
+                         RateLimitError)
 
 
 logger = logging.getLogger(__name__)
@@ -336,6 +337,8 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
             try:
                 result = super().send(*args, **kwargs)
                 if retries >= maximum or not self.should_retry(result):
+                    if result.status_code == 429:
+                        raise RateLimitError(result)
                     return result
             except WaybackSession.handleable_errors as error:
                 response = getattr(error, 'response', None)

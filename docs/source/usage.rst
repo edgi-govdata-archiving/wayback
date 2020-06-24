@@ -128,4 +128,8 @@ Exception Classes
 
 .. autoclass:: wayback.exceptions.MementoPlaybackError
 
+.. autoclass:: wayback.exceptions.RateLimitError
+
 .. autoclass:: wayback.exceptions.WaybackRetryError
+
+.. autoclass:: wayback.exceptions.SessionClosedError
