@@ -197,6 +197,14 @@ def test_get_memento_should_fail_for_non_playbackable_mementos():
                 'http://web.archive.org/web/20170929002712id_/https://www.fws.gov/birds/')
 
 
+@ia_vcr.use_cassette()
+def test_get_memento_raises_blocked_error():
+    with WaybackClient() as client:
+        with pytest.raises(BlockedSiteError):
+            client.get_memento(
+                'http://web.archive.org/web/20170929002712id_/https://nationalpost.com/health/')
+
+
 class TestWaybackSession:
     def test_request_retries(self, requests_mock):
         requests_mock.get('http://test.com', [{'text': 'bad1', 'status_code': 503},

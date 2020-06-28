@@ -771,8 +771,18 @@ class WaybackClient(_utils.DepthCountedContext):
 
                     if not playable:
                         read_and_close(response)
-                        message = response.headers.get('X-Archive-Wayback-Runtime-Error')
-                        if message:
+                        message = response.headers.get('X-Archive-Wayback-Runtime-Error', '')
+                        if (
+                            ('AdministrativeAccessControlException' in message) or
+                            ('URL has been excluded' in response.text)
+                        ):
+                            raise BlockedSiteError(f'{url} is blocked from access')
+                        elif (
+                            ('RobotAccessControlException' in message) or
+                            ('robots.txt' in response.text)
+                        ):
+                            raise BlockedByRobotsError(f'{url} is blocked by robots.txt')
+                        elif message:
                             raise MementoPlaybackError(f'Memento at {url} could not be played: {message}')
                         elif response.ok:
                             raise MementoPlaybackError(f'Memento at {url} could not be played')
