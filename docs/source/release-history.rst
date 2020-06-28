@@ -17,6 +17,8 @@ In Development
 
 - :class:`wayback.exceptions.RateLimitError` will now be raised as an exception any time you breach the Wayback Machine's rate limits. This would previously have been :class:`wayback.exceptions.WaybackException`, :class:`wayback.exceptions.MementoPlaybackError`, or regular HTTP responses, depending on the method you called.
 
+- :class:`wayback.exceptions.BlockedSiteError` will now be raised any time you search for a URL or request a memento that has been blocked from access (for example, in situations where the Internet Archive has received a takedown notice).
+
 
 v0.2.3 (2020-03-25)
 -------------------
