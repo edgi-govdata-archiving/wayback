@@ -131,7 +131,7 @@ def test_search_does_not_repeat_results():
 def test_search_raises_for_blocked_urls():
     with pytest.raises(BlockedSiteError):
         with WaybackClient() as client:
-            versions = client.search('https://nationalpost.com/health/bio-warfare-experts-question-why-canada-was-sending-lethal-viruses-to-china',
+            versions = client.search('https://nationalpost.com/health',
                                      from_date=datetime(2019, 10, 1),
                                      to_date=datetime(2019, 10, 2))
             next(versions)

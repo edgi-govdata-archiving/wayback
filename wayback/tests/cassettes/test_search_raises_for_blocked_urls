@@ -5,9 +5,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - wayback/0.2.3.post8.dev0+g881b219 (+https://github.com/edgi-govdata-archiving/wayback)
+      - wayback/0.2.3.post12.dev0+g6d3e887 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=https%3A%2F%2Fnationalpost.com%2Fhealth%2Fbio-warfare-experts-question-why-canada-was-sending-lethal-viruses-to-china&from=20191001000000&to=20191002000000&showResumeKey=true&resolveRevisits=true
+    uri: http://web.archive.org/cdx/search/cdx?url=https%3A%2F%2Fnationalpost.com%2Fhealth&from=20191001000000&to=20191002000000&showResumeKey=true&resolveRevisits=true
   response:
     body:
       string: !!binary |
@@ -22,13 +22,13 @@ interactions:
       Content-Type:
       - text/plain;charset=UTF-8
       Date:
-      - Sun, 28 Jun 2020 05:29:10 GMT
+      - Sun, 28 Jun 2020 06:33:25 GMT
       Server:
       - nginx/1.15.8
       Transfer-Encoding:
       - chunked
       X-App-Server:
-      - wwwb-app15
+      - wwwb-app14
       X-Archive-Wayback-Runtime-Error:
       - 'org.archive.util.io.RuntimeIOException: org.archive.wayback.exception.AdministrativeAccessControlException:
         Blocked Site Error'
