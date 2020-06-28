@@ -6,7 +6,7 @@ from .._utils import SessionClosedError
 from .._client import (WaybackSession,
                        WaybackClient,
                        original_url_for_memento)
-from ..exceptions import MementoPlaybackError, RateLimitError
+from ..exceptions import MementoPlaybackError, RateLimitError, BlockedSiteError
 
 
 # This stashes HTTP responses in JSON files (one per test) so that an actual
@@ -125,6 +125,16 @@ def test_search_does_not_repeat_results():
         for version in versions:
             assert version != previous
             previous = version
+
+
+@ia_vcr.use_cassette()
+def test_search_raises_for_blocked_urls():
+    with pytest.raises(BlockedSiteError):
+        with WaybackClient() as client:
+            versions = client.search('https://nationalpost.com/health/bio-warfare-experts-question-why-canada-was-sending-lethal-viruses-to-china',
+                                     from_date=datetime(2019, 10, 1),
+                                     to_date=datetime(2019, 10, 2))
+            next(versions)
 
 
 class TestOriginalUrlForMemento:

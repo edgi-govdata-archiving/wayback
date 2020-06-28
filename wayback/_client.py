@@ -36,6 +36,7 @@ from . import _utils, __version__
 from .exceptions import (WaybackException,
                          UnexpectedResponseFormat,
                          BlockedByRobotsError,
+                         BlockedSiteError,
                          MementoPlaybackError,
                          WaybackRetryError,
                          RateLimitError)
@@ -573,7 +574,12 @@ class WaybackClient(_utils.DepthCountedContext):
             read_and_close(response)
             response.raise_for_status()
         except requests.exceptions.HTTPError as error:
-            raise WaybackException(str(error))
+            if 'AdministrativeAccessControlException' in response.text:
+                raise BlockedSiteError(query['url'])
+            elif 'RobotAccessControlException' in response.text:
+                raise BlockedByRobotsError(query['url'])
+            else:
+                raise WaybackException(str(error))
 
         lines = iter(response.content.splitlines())
         count = 0
