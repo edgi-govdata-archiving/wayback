@@ -126,6 +126,8 @@ Exception Classes
 
 .. autoclass:: wayback.exceptions.BlockedByRobotsError
 
+.. autoclass:: wayback.exceptions.BlockedSiteError
+
 .. autoclass:: wayback.exceptions.MementoPlaybackError
 
 .. autoclass:: wayback.exceptions.RateLimitError
