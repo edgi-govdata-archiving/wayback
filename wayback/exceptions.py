@@ -21,6 +21,14 @@ class BlockedByRobotsError(WaybackException):
     """
 
 
+class BlockedSiteError(WaybackException):
+    """
+    Raised when a URL has been blocked from access or querying in Wayback. This
+    is often because of a takedown request. (URLs that are blocked because of
+    ``robots.txt`` get a ``BlockedByRobotsError`` instead.)
+    """
+
+
 # TODO: split this up into a family of more specific errors? When playback
 # failed partway into a redirect chain, when a redirect goes outside
 # redirect_target_window, when a memento was circular?

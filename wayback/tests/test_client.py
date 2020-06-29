@@ -6,7 +6,7 @@ from .._utils import SessionClosedError
 from .._client import (WaybackSession,
                        WaybackClient,
                        original_url_for_memento)
-from ..exceptions import MementoPlaybackError, RateLimitError
+from ..exceptions import MementoPlaybackError, RateLimitError, BlockedSiteError
 
 
 # This stashes HTTP responses in JSON files (one per test) so that an actual
@@ -127,6 +127,16 @@ def test_search_does_not_repeat_results():
             previous = version
 
 
+@ia_vcr.use_cassette()
+def test_search_raises_for_blocked_urls():
+    with pytest.raises(BlockedSiteError):
+        with WaybackClient() as client:
+            versions = client.search('https://nationalpost.com/health',
+                                     from_date=datetime(2019, 10, 1),
+                                     to_date=datetime(2019, 10, 2))
+            next(versions)
+
+
 class TestOriginalUrlForMemento:
     def test_extracts_url(self):
         url = original_url_for_memento(
@@ -185,6 +195,14 @@ def test_get_memento_should_fail_for_non_playbackable_mementos():
         with pytest.raises(MementoPlaybackError):
             client.get_memento(
                 'http://web.archive.org/web/20170929002712id_/https://www.fws.gov/birds/')
+
+
+@ia_vcr.use_cassette()
+def test_get_memento_raises_blocked_error():
+    with WaybackClient() as client:
+        with pytest.raises(BlockedSiteError):
+            client.get_memento(
+                'http://web.archive.org/web/20170929002712id_/https://nationalpost.com/health/')
 
 
 class TestWaybackSession:

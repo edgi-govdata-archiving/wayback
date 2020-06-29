@@ -36,6 +36,7 @@ from . import _utils, __version__
 from .exceptions import (WaybackException,
                          UnexpectedResponseFormat,
                          BlockedByRobotsError,
+                         BlockedSiteError,
                          MementoPlaybackError,
                          WaybackRetryError,
                          RateLimitError)
@@ -573,7 +574,12 @@ class WaybackClient(_utils.DepthCountedContext):
             read_and_close(response)
             response.raise_for_status()
         except requests.exceptions.HTTPError as error:
-            raise WaybackException(str(error))
+            if 'AdministrativeAccessControlException' in response.text:
+                raise BlockedSiteError(query['url'])
+            elif 'RobotAccessControlException' in response.text:
+                raise BlockedByRobotsError(query['url'])
+            else:
+                raise WaybackException(str(error))
 
         lines = iter(response.content.splitlines())
         count = 0
@@ -765,8 +771,18 @@ class WaybackClient(_utils.DepthCountedContext):
 
                     if not playable:
                         read_and_close(response)
-                        message = response.headers.get('X-Archive-Wayback-Runtime-Error')
-                        if message:
+                        message = response.headers.get('X-Archive-Wayback-Runtime-Error', '')
+                        if (
+                            ('AdministrativeAccessControlException' in message) or
+                            ('URL has been excluded' in response.text)
+                        ):
+                            raise BlockedSiteError(f'{url} is blocked from access')
+                        elif (
+                            ('RobotAccessControlException' in message) or
+                            ('robots.txt' in response.text)
+                        ):
+                            raise BlockedByRobotsError(f'{url} is blocked by robots.txt')
+                        elif message:
                             raise MementoPlaybackError(f'Memento at {url} could not be played: {message}')
                         elif response.ok:
                             raise MementoPlaybackError(f'Memento at {url} could not be played')
