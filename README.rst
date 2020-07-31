@@ -8,22 +8,12 @@ We’ve moved development of this repo to the ``main`` branch. You will not be a
 
 If you have a local clone, you can update and change your default branch with the steps below.
 
-.. code-block:: bash
-  git checkout master
-  git branch -m master main
-  git fetch
-  git branch --unset-upstream
-  git branch -u origin/main
-  git symbolic-ref refs/remotes/origin/HEAD refs/remotes/origin/main
-
-The above steps accomplish:
-
-1. Go to the master branch
-2. Rename master to main locally
-3. Get the latest commits from the server
-4. Remove the link to origin/master
-5. Add a link to origin/main
-6. Update the default branch to be origin/main
+1. Go to the master branch: ``git checkout master``
+2. Rename master to main locally: ``git branch -m master main``
+3. Get the latest commits from the server: ``git fetch``
+4. Remove the link to origin/master: ``git branch --unset-upstream``
+5. Add a link to origin/main: ``git branch -u origin/main``
+6. Update the default branch to be origin/main: ``git symbolic-ref refs/remotes/origin/HEAD refs/remotes/origin/main``
 
 
 ===============================
