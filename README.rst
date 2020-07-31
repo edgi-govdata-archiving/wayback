@@ -1,3 +1,31 @@
+===================================================================================================================
+We’ve moved development of this repo to the ``main`` branch. You will not be able to merge changes into ``master``.
+===================================================================================================================
+
+**UPDATING LOCAL CLONES**
+
+(via [this link](https://www.hanselman.com/blog/EasilyRenameYourGitDefaultBranchFromMasterToMain.aspx), thanks!)
+
+If you have a local clone, you can update and change your default branch with the steps below.
+
+.. code-block:: bash
+  git checkout master
+  git branch -m master main
+  git fetch
+  git branch --unset-upstream
+  git branch -u origin/main
+  git symbolic-ref refs/remotes/origin/HEAD refs/remotes/origin/main
+
+The above steps accomplish:
+
+1. Go to the master branch
+2. Rename master to main locally
+3. Get the latest commits from the server
+4. Remove the link to origin/master
+5. Add a link to origin/main
+6. Update the default branch to be origin/main
+
+
 ===============================
 wayback
 ===============================
