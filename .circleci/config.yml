@@ -1,19 +1,15 @@
 version: 2.1
-jobs:
-  test:
-    parameters:
-      python-version:
-        type: string
 
-    working_directory: ~/wayback
-    docker:
-      - image: cimg/python:<< parameters.python-version >>
+commands:
+  setup_pip:
+    description: "Set Up Dependencies"
     steps:
-      - checkout
       - restore_cache:
-          key: cache_v4-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
+          keys:
+            - cache_v4-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
+            - cache_v4-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-
+            - cache_v4-wayback-<< parameters.python-version >>-{{ arch }}-
 
-      # Bundle install dependencies
       - run:
           name: Install Dependencies
           command: |
@@ -22,11 +18,22 @@ jobs:
             pip install .
             pip install -r requirements-dev.txt  # extra requirements for tests, docs
 
-      # Store bundle cache
       - save_cache:
           key: cache_v4-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
           paths:
             - ~/venv
+
+jobs:
+  test:
+    parameters:
+      python-version:
+        type: string
+    working_directory: ~/wayback
+    docker:
+      - image: cimg/python:<< parameters.python-version >>
+    steps:
+      - checkout
+      - setup_pip
 
       - run:
           name: Tests
@@ -38,16 +45,53 @@ jobs:
           command: |
             . ~/venv/bin/activate
             coverage report -m
+
+  lint:
+    working_directory: ~/wayback
+    docker:
+      - image: cimg/python:3.8
+    steps:
+      - checkout
+      - setup_pip
       - run:
           name: Code linting
           command: |
             . ~/venv/bin/activate
             flake8 .
+
+  build:
+    working_directory: ~/wayback
+    docker:
+      - image: cimg/python:3.8
+    steps:
+      - checkout
+      - setup_pip
       - run:
-          name: Build docs
+          name: Build Distribution
           command: |
             . ~/venv/bin/activate
-            make -C docs html
+            python setup.py sdist bdist_wheel
+      - run:
+          name: Check Distribution
+          command: |
+            . ~/venv/bin/activate
+            twine check dist/*
+            check-wheel-contents --toplevel wayback dist
+
+  # NOTE: We currently build docs on Travis, so this isn't relevant.
+  # This job is here for reference.
+  # docs:
+  #   working_directory: ~/wayback
+  #   docker:
+  #     - image: cimg/python:3.8
+  #   steps:
+  #     - checkout
+  #     - setup_pip
+  #     - run:
+  #         name: Build docs
+  #         command: |
+  #           . ~/venv/bin/activate
+  #           make -C docs html
 
 workflows:
   build:
@@ -55,4 +99,6 @@ workflows:
       - test:
           matrix:
             parameters:
-              python-version: ["3.6", "3.7"]
+              python-version: ["3.6", "3.7", "3.8"]
+      - lint
+      - build
