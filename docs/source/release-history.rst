@@ -2,20 +2,22 @@
 Release History
 ===============
 
-In Development
---------------
+v0.2.4 (2020-09-07)
+-------------------
 
-**Breaking changes** slated for the next release:
+This release is focused on improved error handling.
+
+**Breaking Changes:**
 
 - The timestamps in ``CdxRecord`` objects returned by :meth:`wayback.WaybackClient.search` now include timezone information. (They are always in the UTC timezone.)
 
-**Updates** slated for the next release:
+**Updates:**
 
 - The ``history`` attribute of a memento now only includes redirects that were mementos (i.e. redirects that would have been seen when browsing the recorded site at the time it was recorded). Other redirects involved in working with the memento API are still available in ``debug_history``, which includes all redirects, whether or not they were mementos.
 
 - Wayback’s CDX search API sometimes returns repeated, identical results. These are now filtered out, so repeat search results will not be yielded from :meth:`wayback.WaybackClient.search`.
 
-- :class:`wayback.exceptions.RateLimitError` will now be raised as an exception any time you breach the Wayback Machine's rate limits. This would previously have been :class:`wayback.exceptions.WaybackException`, :class:`wayback.exceptions.MementoPlaybackError`, or regular HTTP responses, depending on the method you called.
+- :class:`wayback.exceptions.RateLimitError` will now be raised as an exception any time you breach the Wayback Machine's rate limits. This would previously have been :class:`wayback.exceptions.WaybackException`, :class:`wayback.exceptions.MementoPlaybackError`, or regular HTTP responses, depending on the method you called. It has a ``retry_after`` property that indicates how many seconds you should wait before trying again (if the server sent that information, otherwise it will be ``None``).
 
 - :class:`wayback.exceptions.BlockedSiteError` will now be raised any time you search for a URL or request a memento that has been blocked from access (for example, in situations where the Internet Archive has received a takedown notice).
 
