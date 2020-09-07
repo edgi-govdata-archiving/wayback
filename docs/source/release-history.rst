@@ -2,6 +2,12 @@
 Release History
 ===============
 
+In Development
+--------------
+
+- [Add information about changes in your PR here]
+
+
 v0.2.4 (2020-09-07)
 -------------------
 
