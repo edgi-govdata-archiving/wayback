@@ -18,6 +18,8 @@ commands:
           command: |
             python -m venv ~/venv
             . ~/venv/bin/activate
+            # Ensure pip is up-to-date
+            pip install --upgrade pip
             pip install .
             pip install -r requirements-dev.txt  # extra requirements for tests, docs
 
