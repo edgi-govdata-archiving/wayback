@@ -87,21 +87,24 @@ jobs:
             twine check dist/*
             check-wheel-contents --toplevel wayback dist
 
-  # NOTE: We currently build docs on Travis, so this isn't relevant.
-  # This job is here for reference.
-  # docs:
-  #   working_directory: ~/wayback
-  #   docker:
-  #     - image: cimg/python:3.8
-  #   steps:
-  #     - checkout
-  #     - setup_pip:
-  #         python-version: "3.8"
-  #     - run:
-  #         name: Build docs
-  #         command: |
-  #           . ~/venv/bin/activate
-  #           make -C docs html
+  # NOTE: The docs are mainly built and published directly by readthedocs.com.
+  # This job is meant to verify there are no issues with the docs and it is NOT
+  # responsible for building what actually gets published. (Readthedocs.com
+  # builds with rather loose error handling, and does not fail even when there
+  # may be significant issues.)
+  docs:
+    working_directory: ~/wayback
+    docker:
+      - image: cimg/python:3.8
+    steps:
+      - checkout
+      - setup_pip:
+          python-version: "3.8"
+      - run:
+          name: Build docs
+          command: |
+            . ~/venv/bin/activate
+            make -C docs html
 
 workflows:
   build:
@@ -112,3 +115,4 @@ workflows:
               python-version: ["3.6", "3.7", "3.8"]
       - lint
       - build
+      - docs
