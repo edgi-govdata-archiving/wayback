@@ -11,6 +11,6 @@ Wayback is a Python client to the Internet Archive Wayback Machine.
 .. toctree::
    :maxdepth: 2
 
-   installation
+   installations
    usage
    release-history
