@@ -1,4 +1,33 @@
 version: 2.1
+
+commands:
+  setup_pip:
+    description: "Set Up Dependencies"
+    parameters:
+      python-version:
+        type: string
+    steps:
+      - restore_cache:
+          keys:
+            - cache_v4-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
+            - cache_v4-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-
+            - cache_v4-wayback-<< parameters.python-version >>-{{ arch }}-
+
+      - run:
+          name: Install Dependencies
+          command: |
+            python -m venv ~/venv
+            . ~/venv/bin/activate
+            # Ensure pip is up-to-date
+            pip install --upgrade pip
+            pip install .
+            pip install -r requirements-dev.txt  # extra requirements for tests, docs
+
+      - save_cache:
+          key: cache_v4-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
+          paths:
+            - ~/venv
+
 jobs:
   test:
     parameters:
@@ -10,23 +39,8 @@ jobs:
       - image: cimg/python:<< parameters.python-version >>
     steps:
       - checkout
-      - restore_cache:
-          key: cache_v4-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
-
-      # Bundle install dependencies
-      - run:
-          name: Install Dependencies
-          command: |
-            python -m venv ~/venv
-            . ~/venv/bin/activate
-            pip install .
-            pip install -r requirements-dev.txt  # extra requirements for tests, docs
-
-      # Store bundle cache
-      - save_cache:
-          key: cache_v4-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
-          paths:
-            - ~/venv
+      - setup_pip:
+          python-version: << parameters.python-version >>
 
       - run:
           name: Tests
@@ -38,11 +52,54 @@ jobs:
           command: |
             . ~/venv/bin/activate
             coverage report -m
+
+  lint:
+    working_directory: ~/wayback
+    docker:
+      - image: cimg/python:3.8
+    steps:
+      - checkout
+      - setup_pip:
+          python-version: "3.8"
       - run:
           name: Code linting
           command: |
             . ~/venv/bin/activate
             flake8 .
+
+  build:
+    working_directory: ~/wayback
+    docker:
+      - image: cimg/python:3.8
+    steps:
+      - checkout
+      - setup_pip:
+          python-version: "3.8"
+      - run:
+          name: Build Distribution
+          command: |
+            . ~/venv/bin/activate
+            python setup.py sdist bdist_wheel
+      - run:
+          name: Check Distribution
+          command: |
+            . ~/venv/bin/activate
+            twine check dist/*
+            check-wheel-contents --toplevel wayback dist
+
+  # NOTE: The docs are mainly built and published directly by readthedocs.com.
+  # This job is meant to verify there are no issues with the docs and it is NOT
+  # responsible for building what actually gets published. (Readthedocs.com
+  # builds with rather loose error handling, and does not fail even when there
+  # may be significant issues.)
+  docs:
+    working_directory: ~/wayback
+    docker:
+      - image: cimg/python:3.8
+    steps:
+      - checkout
+      - setup_pip:
+          python-version: "3.8"
       - run:
           name: Build docs
           command: |
@@ -55,4 +112,7 @@ workflows:
       - test:
           matrix:
             parameters:
-              python-version: ["3.6", "3.7"]
+              python-version: ["3.6", "3.7", "3.8"]
+      - lint
+      - build
+      - docs

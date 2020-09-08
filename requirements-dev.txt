@@ -1,5 +1,7 @@
 # These are required for developing the package (running the tests, building
 # the documentation) but not necessarily required for _using_ it.
+wheel
+check-wheel-contents ~=0.1.0
 codecov
 coverage
 flake8
@@ -7,6 +9,7 @@ requests-mock
 pytest
 sphinx ~=3.1.1
 vcrpy
+twine
 # These are dependencies of various sphinx extensions for documentation.
 ipython
 numpydoc ~=1.0.0
