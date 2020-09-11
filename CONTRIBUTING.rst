@@ -5,6 +5,9 @@ Contributing
 Contributions are welcome, and they are greatly appreciated! Every
 little bit helps, and credit will always be given.
 
+Before contributing, please be sure to take a look at our
+`code of conduct <https://github.com/edgi-govdata-archiving/overview/blob/main/CONDUCT.md>`_.
+
 You can contribute in many ways:
 
 Types of Contributions

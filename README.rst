@@ -2,11 +2,14 @@
 wayback
 ===============================
 
-.. image:: https://img.shields.io/travis/edgi-govdata-archiving/wayback.svg
-        :target: https://travis-ci.org/edgi-govdata-archiving/wayback
+.. image:: https://circleci.com/gh/edgi-govdata-archiving/wayback.svg?style=svg
+        :target: https://circleci.com/gh/edgi-govdata-archiving/wayback
 
 .. image:: https://img.shields.io/pypi/v/wayback.svg
         :target: https://pypi.python.org/pypi/wayback
+
+.. image:: https://img.shields.io/badge/%E2%9D%A4-code%20of%20conduct-blue.svg?style=flat
+        :target: https://github.com/edgi-govdata-archiving/overview/blob/main/CONDUCT.md
 
 
 *Wayback* is A Python API to the Internet Archive’s Wayback Machine. It gives you tools to search for and load mementos (captured historical copies of web pages).
@@ -42,10 +45,16 @@ Finally, search for all the mementos of ``nasa.gov`` before 1999 and download th
 Read the `full documentation <https://wayback.readthedocs.io/>`_ for a more in-depth tutorial and complete API reference documentation at https://wayback.readthedocs.io/
 
 
-Contributors
+Code of Conduct
+---------------
+
+This repository falls under EDGI’s `Code of Conduct <https://github.com/edgi-govdata-archiving/overview/blob/main/CONDUCT.md>`_. Pleas take a moment to review it before commenting on or creating issues and pull requests.
+
+
+Contributing
 ------------
 
-Thanks to the following people for their contributions and help on this package! See our `contributing guidelines <https://github.com/edgi-govdata-archiving/wayback/blob/master/CONTRIBUTING.rst>`_ to find out how you can help.
+Thanks to the following people for their contributions and help on this package! See our `contributing guidelines <https://github.com/edgi-govdata-archiving/wayback/blob/main/CONTRIBUTING.rst>`_ to find out how you can help.
 
 - `Dan Allan <https://github.com/danielballan>`_ (Code, Tests, Documentation, Reviews)
 - `Rob Brackett <https://github.com/Mr0grog>`_ (Code, Tests, Documentation, Reviews)
