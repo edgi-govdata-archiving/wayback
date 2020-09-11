@@ -39,7 +39,7 @@ Finally, search for all the mementos of ``nasa.gov`` before 1999 and download th
 
 .. code-block:: python
 
-    for record in client.search('http://nasa.gov', to_date='19990101'):
+    for record in client.search('http://nasa.gov', to_date=date(1999, 1, 1)):
         memento = client.get_memento(record.raw_url)
 
 Read the `full documentation <https://wayback.readthedocs.io/>`_ for a more in-depth tutorial and complete API reference documentation at https://wayback.readthedocs.io/
