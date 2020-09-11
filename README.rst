@@ -9,18 +9,37 @@ wayback
         :target: https://pypi.python.org/pypi/wayback
 
 
-Python API to Internet Archive Wayback Machine
+*Wayback* is A Python API to the Internet Archive’s Wayback Machine. It gives you tools to search for and load mementos (captured historical copies of web pages).
 
-* Free software: 3-clause BSD license
+Hows does this differ from the official `“internetarchive” <https://archive.org/services/docs/api/internetarchive/>`_ Python package? The internetarchive package is mainly concerned with the APIs and tools that manage the Internet Archive as a whole: managing items and collections. These are how e-books, audio recordings, movies, and other content in the Internet Archive are managed. It doesn’t, however, provide particularly good tools for finding or loading historical captures of specific URLs (i.e. the part of the Internet Archive called the “Wayback Machine”). That’s what this package does.
+
 * Documentation:
     * Current Release: https://wayback.readthedocs.io/en/stable/
     * Development: https://wayback.readthedocs.io/en/latest/
 
 
-Features
---------
+Installation & Basic Usage
+--------------------------
 
-* TODO
+Install via pip on the command line::
+
+    $ pip install wayback
+
+Then, in a Python script, import it and create a client:
+
+.. code-block:: python
+
+    import wayback
+    client = wayback.WaybackClient()
+
+Finally, search for all the mementos of ``nasa.gov`` before 1999 and download them:
+
+.. code-block:: python
+
+    for record in client.search('http://nasa.gov', to_date='19990101'):
+        memento = client.get_memento(record.raw_url)
+
+Read the `full documentation <https://wayback.readthedocs.io/>`_ for a more in-depth tutorial and complete API reference documentation at https://wayback.readthedocs.io/
 
 
 Contributors
