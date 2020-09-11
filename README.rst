@@ -2,7 +2,7 @@
 wayback
 ===============================
 
-.. image:: https://circleci.com/gh/edgi-govdata-archiving/wayback.svg?style=svg
+.. image:: https://circleci.com/gh/edgi-govdata-archiving/wayback/tree/main.svg?style=shield
         :target: https://circleci.com/gh/edgi-govdata-archiving/wayback
 
 .. image:: https://img.shields.io/pypi/v/wayback.svg
