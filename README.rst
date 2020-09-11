@@ -4,12 +4,19 @@ wayback
 
 .. image:: https://circleci.com/gh/edgi-govdata-archiving/wayback/tree/main.svg?style=shield
         :target: https://circleci.com/gh/edgi-govdata-archiving/wayback
+        :alt: Build Status
 
 .. image:: https://img.shields.io/pypi/v/wayback.svg
         :target: https://pypi.python.org/pypi/wayback
+        :alt: Download Latest Version from PyPI
 
 .. image:: https://img.shields.io/badge/%E2%9D%A4-code%20of%20conduct-blue.svg?style=flat
         :target: https://github.com/edgi-govdata-archiving/overview/blob/main/CONDUCT.md
+        :alt: Code of Conduct
+
+.. image:: https://readthedocs.org/projects/wayback/badge/?version=stable
+        :target: https://wayback.readthedocs.io/en/stable/?badge=stable
+        :alt: Documentation Status
 
 
 *Wayback* is A Python API to the Internet Archive’s Wayback Machine. It gives you tools to search for and load mementos (captured historical copies of web pages).
