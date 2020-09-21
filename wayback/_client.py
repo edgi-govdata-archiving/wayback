@@ -735,7 +735,10 @@ class WaybackClient(_utils.DepthCountedContext):
             while True:
                 is_memento = 'Memento-Datetime' in response.headers
 
-                if not is_memento:
+                if is_memento:
+                    if not follow_redirects:
+                        break
+                else:
                     # The exactness requirements for redirects from memento
                     # playbacks and non-playbacks is different -- even with
                     # strict matching, a memento that redirects to a non-
