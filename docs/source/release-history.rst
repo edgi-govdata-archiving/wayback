@@ -5,7 +5,11 @@ Release History
 In Development
 --------------
 
-- [Add information about changes in your PR here]
+[Add information about changes in your PR here]
+
+**New Features:**
+
+- ``wayback.WaybackClient.get_memento`` not takes a ``follow_redirects`` parameter. If false, *historical* redirects (i.e. redirects that happened when the requested memento was captured) are not followed. It defaults to ``True``, which is matches the old behavior of this method.
 
 
 v0.2.4 (2020-09-07)
