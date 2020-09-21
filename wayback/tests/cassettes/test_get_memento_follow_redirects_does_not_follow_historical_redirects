@@ -1,0 +1,138 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.2.4.post5.dev0+g4e200c6 (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: http://web.archive.org/web/20200201020357id_/http://epa.gov/climatechange
+  response:
+    body:
+      string: ''
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Mon, 21 Sep 2020 07:37:54 GMT
+      Location:
+      - http://web.archive.org/web/20200201023757id_/https://www.epa.gov/climatechange
+      Server:
+      - nginx/1.15.8
+      Server-Timing:
+      - LoadShardBlock;dur=878.793274, PetaboxLoader3.resolve;dur=511.162483, captures_list;dur=1582.857387,
+        exclusion.robots.policy;dur=0.296416, exclusion.robots;dur=0.311759, load_resource;dur=327.637203,
+        PetaboxLoader3.datanode;dur=537.077622, esindex;dur=0.014197, CDXLines.iter;dur=44.175283,
+        RedisCDXSource;dur=67.855349
+      X-App-Server:
+      - wwwb-app102
+      X-Archive-Redirect-Reason:
+      - found capture at 20200201023757
+      X-Cache-Key:
+      - httpweb.archive.org/web/20200201020357id_/http://epa.gov/climatechangeUS
+      X-Page-Cache:
+      - HIT
+      X-location:
+      - All
+      X-ts:
+      - '302'
+    status:
+      code: 302
+      message: FOUND
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.2.4.post5.dev0+g4e200c6 (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: http://web.archive.org/web/20200201023757id_/https://www.epa.gov/climatechange
+  response:
+    body:
+      string: '<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+
+        <html><head>
+
+        <title>301 Moved Permanently</title>
+
+        </head><body>
+
+        <h1>Moved Permanently</h1>
+
+        <p>The document has moved <a href="https://www.epa.gov/sites/production/files/signpost/cc.html">here</a>.</p>
+
+        </body></html>
+
+        '
+    headers:
+      Cache-Control:
+      - max-age=1800
+      Connection:
+      - keep-alive
+      Content-Security-Policy:
+      - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
+        web.archive.org analytics.archive.org pragma.archivelab.org'
+      Content-Type:
+      - text/html; charset=iso-8859-1
+      Date:
+      - Mon, 21 Sep 2020 07:37:54 GMT
+      Link:
+      - <https://www.epa.gov/climatechange>; rel="original", <http://web.archive.org/web/timemap/link/https://www.epa.gov/climatechange>;
+        rel="timemap"; type="application/link-format", <http://web.archive.org/web/https://www.epa.gov/climatechange>;
+        rel="timegate", <http://web.archive.org/web/20061007193932/http://www.epa.gov/climatechange>;
+        rel="first memento"; datetime="Sat, 07 Oct 2006 19:39:32 GMT", <http://web.archive.org/web/20200201020358/https://epa.gov/climatechange>;
+        rel="prev memento"; datetime="Sat, 01 Feb 2020 02:03:58 GMT", <http://web.archive.org/web/20200201023757/https://www.epa.gov/climatechange>;
+        rel="memento"; datetime="Sat, 01 Feb 2020 02:37:57 GMT", <http://web.archive.org/web/20200201024403/http://www.epa.gov/climatechange/>;
+        rel="next memento"; datetime="Sat, 01 Feb 2020 02:44:03 GMT", <http://web.archive.org/web/20200918065453/https://www.epa.gov/climatechange>;
+        rel="last memento"; datetime="Fri, 18 Sep 2020 06:54:53 GMT"
+      Location:
+      - http://web.archive.org/web/20200201023757id_/https://www.epa.gov/sites/production/files/signpost/cc.html
+      Memento-Datetime:
+      - Sat, 01 Feb 2020 02:37:57 GMT
+      Server:
+      - nginx/1.15.8
+      Server-Timing:
+      - LoadShardBlock;dur=406.800503, PetaboxLoader3.resolve;dur=2173.834148, captures_list;dur=873.446927,
+        exclusion.robots.policy;dur=0.209979, exclusion.robots;dur=0.219064, load_resource;dur=2433.588941,
+        PetaboxLoader3.datanode;dur=631.503882, esindex;dur=0.012231, CDXLines.iter;dur=38.013017,
+        RedisCDXSource;dur=18.884834
+      Transfer-Encoding:
+      - chunked
+      X-App-Server:
+      - wwwb-app102
+      X-Archive-Orig-Cache-Control:
+      - max-age=34196
+      X-Archive-Orig-Connection:
+      - close
+      X-Archive-Orig-Content-Length:
+      - '267'
+      X-Archive-Orig-Date:
+      - Sat, 01 Feb 2020 02:37:57 GMT
+      X-Archive-Orig-Expires:
+      - Sat, 01 Feb 2020 12:07:53 GMT
+      X-Archive-Orig-Server:
+      - Apache
+      X-Archive-Orig-Strict-Transport-Security:
+      - max-age=31536000; preload;
+      X-Archive-Orig-X-Content-Type-Options:
+      - nosniff
+      X-Archive-Src:
+      - epa.gov4-20190324-210417/IA-FOC-epa.gov4-20200201020111-00000.warc.gz
+      X-Cache-Key:
+      - httpweb.archive.org/web/20200201023757id_/https://www.epa.gov/climatechangeUS
+      X-Page-Cache:
+      - HIT
+      X-location:
+      - All
+      X-ts:
+      - '301'
+    status:
+      code: 301
+      message: Moved Permanently
+version: 1

@@ -210,15 +210,18 @@ def test_get_memento_follows_historical_redirects():
         #     http://web.archive.org/web/20200201023757id_/https://www.epa.gov/sites/production/files/signpost/cc.html
         #       ...which is not a memento, and redirects to:
         #       http://web.archive.org/web/20200201024405id_/https://www.epa.gov/sites/production/files/signpost/cc.html
-        response = client.get_memento(
-            'http://web.archive.org/web/20200201020357id_/http://epa.gov/climatechange',
-            exact=False)
-        assert response.url == 'http://web.archive.org/web/20200201024405id_/https://www.epa.gov/sites/production/files/signpost/cc.html'
+        start_url = ('http://web.archive.org/web/20200201020357id_/'
+                     'http://epa.gov/climatechange')
+        target = ('http://web.archive.org/web/20200201024405id_/'
+                  'https://www.epa.gov/sites/production/files/signpost/cc.html')
+        response = client.get_memento(start_url, exact=False)
+        assert response.url == target
         assert len(response.history) == 1
         assert len(response.debug_history) == 3
 
 
-def test_get_memento_with_follow_redirects_false_does_not_follow_historical_redirects():
+@ia_vcr.use_cassette()
+def test_get_memento_follow_redirects_does_not_follow_historical_redirects():
     with WaybackClient() as client:
         # In February 2020, https://www.epa.gov/climatechange redirected to:
         #   https://www.epa.gov/sites/production/files/signpost/cc.html
@@ -232,11 +235,12 @@ def test_get_memento_with_follow_redirects_false_does_not_follow_historical_redi
         #     http://web.archive.org/web/20200201023757id_/https://www.epa.gov/sites/production/files/signpost/cc.html
         #       ...and then to:
         #       http://web.archive.org/web/20200201024405id_/https://www.epa.gov/sites/production/files/signpost/cc.html
-        response = client.get_memento(
-            'http://web.archive.org/web/20200201020357id_/http://epa.gov/climatechange',
-            exact=False,
-            follow_redirects=False)
-        assert response.url == 'http://web.archive.org/web/20200201023757id_/https://www.epa.gov/climatechange'
+        start_url = ('http://web.archive.org/web/20200201020357id_/'
+                     'http://epa.gov/climatechange')
+        target = ('http://web.archive.org/web/20200201023757id_/'
+                  'https://www.epa.gov/climatechange')
+        response = client.get_memento(start_url, exact=False, follow_redirects=False)
+        assert response.url == target
         assert len(response.history) == 0
         assert len(response.debug_history) == 1
 

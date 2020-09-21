@@ -1,0 +1,341 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.2.4.post8.dev0+g4902fb0 (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: http://web.archive.org/web/20200201020357id_/http://epa.gov/climatechange
+  response:
+    body:
+      string: ''
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Mon, 21 Sep 2020 07:11:34 GMT
+      Location:
+      - http://web.archive.org/web/20200201023757id_/https://www.epa.gov/climatechange
+      Server:
+      - nginx/1.15.8
+      Server-Timing:
+      - LoadShardBlock;dur=128.372355, PetaboxLoader3.resolve;dur=88.111288, captures_list;dur=676.633042,
+        exclusion.robots.policy;dur=0.434255, exclusion.robots;dur=0.460561, load_resource;dur=228.035520,
+        PetaboxLoader3.datanode;dur=178.731061, esindex;dur=0.012523, CDXLines.iter;dur=41.799587,
+        RedisCDXSource;dur=1.799221
+      X-App-Server:
+      - wwwb-app102
+      X-Archive-Redirect-Reason:
+      - found capture at 20200201023757
+      X-Cache-Key:
+      - httpweb.archive.org/web/20200201020357id_/http://epa.gov/climatechangeUS
+      X-Page-Cache:
+      - HIT
+      X-location:
+      - All
+      X-ts:
+      - '302'
+    status:
+      code: 302
+      message: FOUND
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.2.4.post8.dev0+g4902fb0 (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: http://web.archive.org/web/20200201023757id_/https://www.epa.gov/climatechange
+  response:
+    body:
+      string: '<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+
+        <html><head>
+
+        <title>301 Moved Permanently</title>
+
+        </head><body>
+
+        <h1>Moved Permanently</h1>
+
+        <p>The document has moved <a href="https://www.epa.gov/sites/production/files/signpost/cc.html">here</a>.</p>
+
+        </body></html>
+
+        '
+    headers:
+      Cache-Control:
+      - max-age=1800
+      Connection:
+      - keep-alive
+      Content-Security-Policy:
+      - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
+        web.archive.org analytics.archive.org pragma.archivelab.org'
+      Content-Type:
+      - text/html; charset=iso-8859-1
+      Date:
+      - Mon, 21 Sep 2020 07:11:35 GMT
+      Link:
+      - <https://www.epa.gov/climatechange>; rel="original", <http://web.archive.org/web/timemap/link/https://www.epa.gov/climatechange>;
+        rel="timemap"; type="application/link-format", <http://web.archive.org/web/https://www.epa.gov/climatechange>;
+        rel="timegate", <http://web.archive.org/web/20061007193932/http://www.epa.gov/climatechange>;
+        rel="first memento"; datetime="Sat, 07 Oct 2006 19:39:32 GMT", <http://web.archive.org/web/20200201020358/https://epa.gov/climatechange>;
+        rel="prev memento"; datetime="Sat, 01 Feb 2020 02:03:58 GMT", <http://web.archive.org/web/20200201023757/https://www.epa.gov/climatechange>;
+        rel="memento"; datetime="Sat, 01 Feb 2020 02:37:57 GMT", <http://web.archive.org/web/20200201024403/http://www.epa.gov/climatechange/>;
+        rel="next memento"; datetime="Sat, 01 Feb 2020 02:44:03 GMT", <http://web.archive.org/web/20200918065453/https://www.epa.gov/climatechange>;
+        rel="last memento"; datetime="Fri, 18 Sep 2020 06:54:53 GMT"
+      Location:
+      - http://web.archive.org/web/20200201023757id_/https://www.epa.gov/sites/production/files/signpost/cc.html
+      Memento-Datetime:
+      - Sat, 01 Feb 2020 02:37:57 GMT
+      Server:
+      - nginx/1.15.8
+      Server-Timing:
+      - PetaboxLoader3.datanode;dur=88.459688, exclusion.robots;dur=0.342737, CDXLines.iter;dur=44.442895,
+        PetaboxLoader3.resolve;dur=240.879729, captures_list;dur=831.237767, esindex;dur=0.015620,
+        RedisCDXSource;dur=6.923281, exclusion.robots.policy;dur=0.327322, LoadShardBlock;dur=130.974809,
+        load_resource;dur=238.652296
+      Transfer-Encoding:
+      - chunked
+      X-App-Server:
+      - wwwb-app57
+      X-Archive-Orig-Cache-Control:
+      - max-age=34196
+      X-Archive-Orig-Connection:
+      - close
+      X-Archive-Orig-Content-Length:
+      - '267'
+      X-Archive-Orig-Date:
+      - Sat, 01 Feb 2020 02:37:57 GMT
+      X-Archive-Orig-Expires:
+      - Sat, 01 Feb 2020 12:07:53 GMT
+      X-Archive-Orig-Server:
+      - Apache
+      X-Archive-Orig-Strict-Transport-Security:
+      - max-age=31536000; preload;
+      X-Archive-Orig-X-Content-Type-Options:
+      - nosniff
+      X-Archive-Src:
+      - epa.gov4-20190324-210417/IA-FOC-epa.gov4-20200201020111-00000.warc.gz
+      X-Cache-Key:
+      - httpweb.archive.org/web/20200201023757id_/https://www.epa.gov/climatechangeUS
+      X-Page-Cache:
+      - MISS
+      X-location:
+      - All
+      X-ts:
+      - '301'
+    status:
+      code: 301
+      message: Moved Permanently
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.2.4.post8.dev0+g4902fb0 (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: http://web.archive.org/web/20200201023757id_/https://www.epa.gov/sites/production/files/signpost/cc.html
+  response:
+    body:
+      string: ''
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Mon, 21 Sep 2020 07:11:37 GMT
+      Location:
+      - http://web.archive.org/web/20200201024405id_/https://www.epa.gov/sites/production/files/signpost/cc.html
+      Server:
+      - nginx/1.15.8
+      Server-Timing:
+      - exclusion.robots;dur=0.229407, CDXLines.iter;dur=114.322314, LoadShardBlock;dur=1166.334650,
+        RedisCDXSource;dur=48.680734, exclusion.robots.policy;dur=0.210801, esindex;dur=0.015335,
+        PetaboxLoader3.resolve;dur=24.256643, PetaboxLoader3.datanode;dur=980.268002
+      X-App-Server:
+      - wwwb-app13
+      X-Archive-Redirect-Reason:
+      - found capture at 20200201024405
+      X-Cache-Key:
+      - httpweb.archive.org/web/20200201023757id_/https://www.epa.gov/sites/production/files/signpost/cc.htmlUS
+      X-Page-Cache:
+      - MISS
+      X-location:
+      - All
+      X-ts:
+      - '302'
+    status:
+      code: 302
+      message: FOUND
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.2.4.post8.dev0+g4902fb0 (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: http://web.archive.org/web/20200201024405id_/https://www.epa.gov/sites/production/files/signpost/cc.html
+  response:
+    body:
+      string: !!binary |
+        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
+        0D1hch+J/18t/wZLsUKU5zIAAA==
+    headers:
+      Cache-Control:
+      - max-age=1800
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
+        web.archive.org analytics.archive.org pragma.archivelab.org'
+      Content-Type:
+      - text/html
+      Date:
+      - Mon, 21 Sep 2020 07:11:41 GMT
+      Link:
+      - <https://www.epa.gov/sites/production/files/signpost/cc.html>; rel="original",
+        <http://web.archive.org/web/timemap/link/https://www.epa.gov/sites/production/files/signpost/cc.html>;
+        rel="timemap"; type="application/link-format", <http://web.archive.org/web/https://www.epa.gov/sites/production/files/signpost/cc.html>;
+        rel="timegate", <http://web.archive.org/web/20170428232846/https://www.epa.gov/sites/production/files/signpost/cc.html>;
+        rel="first memento"; datetime="Fri, 28 Apr 2017 23:28:46 GMT", <http://web.archive.org/web/20200131034551/https://www.epa.gov/sites/production/files/signpost/cc.html>;
+        rel="prev memento"; datetime="Fri, 31 Jan 2020 03:45:51 GMT", <http://web.archive.org/web/20200201024405/https://www.epa.gov/sites/production/files/signpost/cc.html>;
+        rel="memento"; datetime="Sat, 01 Feb 2020 02:44:05 GMT", <http://web.archive.org/web/20200201030423/https://www.epa.gov/sites/production/files/signpost/cc.html>;
+        rel="next memento"; datetime="Sat, 01 Feb 2020 03:04:23 GMT", <http://web.archive.org/web/20200918081202/https://www.epa.gov/sites/production/files/signpost/cc.html>;
+        rel="last memento"; datetime="Fri, 18 Sep 2020 08:12:02 GMT"
+      Memento-Datetime:
+      - Sat, 01 Feb 2020 02:44:05 GMT
+      Server:
+      - nginx/1.15.8
+      Server-Timing:
+      - RedisCDXSource;dur=42.092027, exclusion.robots;dur=1.655946, LoadShardBlock;dur=1075.750584,
+        CDXLines.iter;dur=432.374314, PetaboxLoader3.datanode;dur=995.500261, exclusion.robots.policy;dur=1.547590,
+        esindex;dur=0.096801, PetaboxLoader3.resolve;dur=1791.661807, load_resource;dur=1962.344744
+      Transfer-Encoding:
+      - chunked
+      X-App-Server:
+      - wwwb-app39
+      X-Archive-Orig-Cache-Control:
+      - max-age=1
+      X-Archive-Orig-Connection:
+      - close
+      X-Archive-Orig-Content-Length:
+      - '13031'
+      X-Archive-Orig-Date:
+      - Sat, 01 Feb 2020 02:44:06 GMT
+      X-Archive-Orig-ETag:
+      - '"d4bfbfb8016cc7c58d0972204aa7d8ff:1554207360"'
+      X-Archive-Orig-Expires:
+      - Sat, 01 Feb 2020 02:44:07 GMT
+      X-Archive-Orig-Last-Modified:
+      - Tue, 02 Apr 2019 11:12:12 GMT
+      X-Archive-Orig-Server:
+      - AkamaiNetStorage
+      X-Archive-Orig-Strict-Transport-Security:
+      - max-age=31536000; preload;
+      X-Archive-Orig-X-Content-Type-Options:
+      - nosniff
+      X-Archive-Src:
+      - ofmpub.epa.gov-20171125-095336/IA-FOC-ofmpub.epa.gov-20200201023948-00000.warc.gz
+      X-Cache-Key:
+      - httpweb.archive.org/web/20200201024405id_/https://www.epa.gov/sites/production/files/signpost/cc.htmlUS
+      X-Page-Cache:
+      - MISS
+      X-location:
+      - All
+      X-ts:
+      - '200'
+    status:
+      code: 200
+      message: OK
+version: 1
