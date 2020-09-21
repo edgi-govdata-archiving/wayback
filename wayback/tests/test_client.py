@@ -3,7 +3,8 @@ from pathlib import Path
 import pytest
 import vcr
 from .._utils import SessionClosedError
-from .._client import (WaybackSession,
+from .._client import (CdxRecord,
+                       WaybackSession,
                        WaybackClient,
                        original_url_for_memento)
 from ..exceptions import MementoPlaybackError, RateLimitError, BlockedSiteError
@@ -173,11 +174,82 @@ class TestOriginalUrlForMemento:
 @ia_vcr.use_cassette()
 def test_get_memento():
     with WaybackClient() as client:
+        response = client.get_memento('https://www.fws.gov/birds/',
+                                      date_=datetime(2017, 11, 24, 15, 13, 15))
+        assert 'Link' in response.headers
+        original, *_ = response.headers['Link'].split(',', 1)
+        assert original == '<https://www.fws.gov/birds/>; rel="original"'
+
+
+@ia_vcr.use_cassette()
+def test_get_memento_with_date_date():
+    with WaybackClient() as client:
+        response = client.get_memento('https://www.fws.gov/birds/',
+                                      date_=date(2017, 11, 24),
+                                      exact=False)
+        assert 'Link' in response.headers
+        original, *_ = response.headers['Link'].split(',', 1)
+        assert original == '<https://www.fws.gov/birds/>; rel="original"'
+
+
+@ia_vcr.use_cassette()
+def test_get_memento_with_string_date():
+    with WaybackClient() as client:
+        response = client.get_memento('https://www.fws.gov/birds/',
+                                      date_='20171124151315')
+        assert 'Link' in response.headers
+        original, *_ = response.headers['Link'].split(',', 1)
+        assert original == '<https://www.fws.gov/birds/>; rel="original"'
+
+
+@ia_vcr.use_cassette()
+def test_get_memento_with_archive_url():
+    with WaybackClient() as client:
         response = client.get_memento(
             'http://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/')
         assert 'Link' in response.headers
         original, *_ = response.headers['Link'].split(',', 1)
         assert original == '<https://www.fws.gov/birds/>; rel="original"'
+
+
+@ia_vcr.use_cassette()
+def test_get_memento_with_cdx_record():
+    with WaybackClient() as client:
+        record = CdxRecord('xyz',
+                           datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc),
+                           'https://www.fws.gov/birds/',
+                           '-',
+                           200,
+                           'abc',
+                           100,
+                           'http://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/',
+                           'http://web.archive.org/web/20171124151315/https://www.fws.gov/birds/')
+        response = client.get_memento(record)
+        assert 'Link' in response.headers
+        original, *_ = response.headers['Link'].split(',', 1)
+        assert original == '<https://www.fws.gov/birds/>; rel="original"'
+
+
+@ia_vcr.use_cassette()
+def test_get_memento_with_mode():
+    with WaybackClient() as client:
+        response = client.get_memento('https://www.fws.gov/birds/',
+                                      date_=datetime(2017, 11, 24, 15, 13, 15),
+                                      mode='')
+        assert 'http://web.archive.org/web/20171124151315/https://www.fws.gov/birds/' == response.url
+
+        response = client.get_memento('https://www.fws.gov/birds/',
+                                      date_=datetime(2017, 11, 24, 15, 13, 15))
+        assert 'http://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/' == response.url
+
+
+@ia_vcr.use_cassette()
+def test_get_memento_with_redirects():
+    with WaybackClient() as client:
+        response = client.get_memento(
+            'http://web.archive.org/web/20180808094144id_/https://www.epa.gov/ghgreporting/san5779-factsheet')
+        assert len(response.history) == 1        # memento redirects
+        assert len(response.debug_history) == 2  # actual HTTP redirects
 
 
 @ia_vcr.use_cassette()
