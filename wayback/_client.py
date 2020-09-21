@@ -651,7 +651,7 @@ class WaybackClient(_utils.DepthCountedContext):
     # memento of the same URL, which would be the above argument). Probably
     # call this `follow_redirects=True`?
     def get_memento(self, url, exact=True, exact_redirects=None,
-                    target_window=24 * 60 * 60):
+                    target_window=24 * 60 * 60, follow_redirects=True):
         """
         Fetch a memento from the Wayback Machine. This retrieves the content
         that was ultimately returned from a memento, following any redirects
@@ -681,6 +681,12 @@ class WaybackClient(_utils.DepthCountedContext):
             memento didn't exist and wayback redirects to the next-closest-in-
             -time one. That will always raise a MementoPlaybackError.)
             Defaults to 86,400 (24 hours).
+        follow_redirects : boolean, optional
+            If true (the default), ``get_memento`` will follow historical
+            redirects to return the content that a web browser would have
+            ultimately displayed at the requested URL and time, rather than the
+            memento of an HTTP redirect response (i.e. a 3xx status code).
+            Default: True
 
         Returns
         -------

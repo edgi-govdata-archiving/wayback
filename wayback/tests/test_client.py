@@ -181,15 +181,6 @@ def test_get_memento():
 
 
 @ia_vcr.use_cassette()
-def test_get_memento_with_redirects():
-    with WaybackClient() as client:
-        response = client.get_memento(
-            'http://web.archive.org/web/20180808094144id_/https://www.epa.gov/ghgreporting/san5779-factsheet')
-        assert len(response.history) == 1        # memento redirects
-        assert len(response.debug_history) == 2  # actual HTTP redirects
-
-
-@ia_vcr.use_cassette()
 def test_get_memento_should_fail_for_non_playbackable_mementos():
     with WaybackClient() as client:
         with pytest.raises(MementoPlaybackError):
@@ -203,6 +194,51 @@ def test_get_memento_raises_blocked_error():
         with pytest.raises(BlockedSiteError):
             client.get_memento(
                 'http://web.archive.org/web/20170929002712id_/https://nationalpost.com/health/')
+
+
+@ia_vcr.use_cassette()
+def test_get_memento_follows_historical_redirects():
+    with WaybackClient() as client:
+        # In February 2020, https://www.epa.gov/climatechange redirected to:
+        #   https://www.epa.gov/sites/production/files/signpost/cc.html
+        #
+        # What should happen here under the hood:
+        # http://web.archive.org/web/20200201020357id_/http://epa.gov/climatechange
+        #   Is not a memento, and sends us to:
+        #   http://web.archive.org/web/20200201023757id_/https://www.epa.gov/climatechange
+        #     Which is a memento of a redirect to:
+        #     http://web.archive.org/web/20200201023757id_/https://www.epa.gov/sites/production/files/signpost/cc.html
+        #       ...which is not a memento, and redirects to:
+        #       http://web.archive.org/web/20200201024405id_/https://www.epa.gov/sites/production/files/signpost/cc.html
+        response = client.get_memento(
+            'http://web.archive.org/web/20200201020357id_/http://epa.gov/climatechange',
+            exact=False)
+        assert response.url == 'http://web.archive.org/web/20200201024405id_/https://www.epa.gov/sites/production/files/signpost/cc.html'
+        assert len(response.history) == 1
+        assert len(response.debug_history) == 3
+
+
+def test_get_memento_with_follow_redirects_false_does_not_follow_historical_redirects():
+    with WaybackClient() as client:
+        # In February 2020, https://www.epa.gov/climatechange redirected to:
+        #   https://www.epa.gov/sites/production/files/signpost/cc.html
+        #
+        # What should happen here under the hood:
+        # http://web.archive.org/web/20200201020357id_/http://epa.gov/climatechange
+        #   Is not a memento, and sends us to:
+        #   http://web.archive.org/web/20200201023757id_/https://www.epa.gov/climatechange
+        #     Which is a memento of a redirect. Because follow_redirects=False,
+        #     we should *not* follow it to:
+        #     http://web.archive.org/web/20200201023757id_/https://www.epa.gov/sites/production/files/signpost/cc.html
+        #       ...and then to:
+        #       http://web.archive.org/web/20200201024405id_/https://www.epa.gov/sites/production/files/signpost/cc.html
+        response = client.get_memento(
+            'http://web.archive.org/web/20200201020357id_/http://epa.gov/climatechange',
+            exact=False,
+            follow_redirects=False)
+        assert response.url == 'http://web.archive.org/web/20200201023757id_/https://www.epa.gov/climatechange'
+        assert len(response.history) == 0
+        assert len(response.debug_history) == 1
 
 
 class TestWaybackSession:
