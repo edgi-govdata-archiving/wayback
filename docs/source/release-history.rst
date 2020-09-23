@@ -7,6 +7,40 @@ In Development
 
 [Add information about changes in your PR here]
 
+**Breaking Changes:**
+
+- The order of parameters in :meth:`wayback.WaybackClient.get_memento` has changed, and additional parameters for the date and mode of memento playback have been added. You can now call ``get_memento()`` with the URL and time you want the memento of, rather than needing to compose a complete Wayback memento URL. That is, you can now call:
+
+  .. code-block:: python
+
+     client.get_memento('http://www.noaa.gov/',
+                        datetime(2018, 8, 16, 11, 19, 11))
+
+  Instead of:
+
+  .. code-block:: python
+
+     client.get_memento('http://web.archive.org/web/20180816111911id_/http://www.noaa.gov/')
+
+  All the old parameters besides ``url`` must now be used as keywords. For example, you must now call:
+
+  .. code-block:: python
+
+     client.get_memento('http://www.noaa.gov/',
+                        datetime(2018, 8, 16, 11, 19, 11),
+                        'id',
+                        exact=False)
+
+  Instead of:
+
+  .. code-block:: python
+
+     client.get_memento('http://www.noaa.gov/',
+                        datetime(2018, 8, 16, 11, 19, 11),
+                        'id',
+                        False)
+
+
 **New Features:**
 
 - :meth:`wayback.WaybackClient.get_memento` now takes a ``follow_redirects`` parameter. If false, *historical* redirects (i.e. redirects that happened when the requested memento was captured) are not followed. It defaults to ``True``, which is matches the old behavior of this method.

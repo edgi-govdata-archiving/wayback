@@ -648,9 +648,9 @@ class WaybackClient(_utils.DepthCountedContext):
     # TODO: make this nicer by taking an optional date, so `url` can be a
     # memento url or an original URL + plus date and we'll compose a memento
     # URL.
-    def get_memento(self, url, exact=True, exact_redirects=None,
-                    target_window=24 * 60 * 60, follow_redirects=True,
-                    date_=None, mode='id'):
+    def get_memento(self, url, date_=None, mode='id', *, exact=True,
+                    exact_redirects=None, target_window=24 * 60 * 60,
+                    follow_redirects=True):
         """
         Fetch a memento (an archived HTTP response) from the Wayback Machine.
 
@@ -672,6 +672,26 @@ class WaybackClient(_utils.DepthCountedContext):
               :meth:`wayback.WaybackClient.search`.
             - A URL of the memento in Wayback, e.g.
               ``http://web.archive.org/web/20180816111911id_/http://www.noaa.gov/``
+
+        date_ : datetime.datetime or datetime.date or str, optional
+            The time at which to retrieve a memento of ``url``. If ``url`` is
+            a :class:`wayback.CdxRecord` or full memento URL, this parameter
+            can be omitted.
+        mode : str, optional
+            The playback mode of the memento. Possible values:
+
+            - ``''``: Response body is altered so that it could be loaded in a
+              browser from the Wayback Machine website.
+            - ``'id'``: Response body is unaltered (default).
+            - ``'js'``: Response body is altered for browsers and treated as
+              JavaScript.
+            - ``'cs'``: Response body is altered for browsers and treated as
+              CSS.
+            - ``'im'``: Response body is altered for browsers and treated as an
+              image.
+
+            For more details, see:
+            http://archive-access.sourceforge.net/projects/wayback/administrator_manual.html#Archival_URL_Replay_Mode
 
         exact : boolean, optional
             If false and the requested memento either doesn't exist or can't be
@@ -703,24 +723,6 @@ class WaybackClient(_utils.DepthCountedContext):
             ``/a`` when ``follow_redirects=False`` and the memento for ``/b``
             when ``follow_redirects=True``.
             Default: True
-        date_ : datetime.date or datetime.datetime or str, optional
-            The time at which to retrieve a memento of ``url``. If ``url`` is
-            a ``CdxRecord`` or full memento URL, this parameter can be omitted.
-        mode : str, optional
-            The playback mode of the memento. Possible values:
-
-            - ``''``: Response body is altered so that it could be loaded in a
-              browser from the Wayback Machine website.
-            - ``'id'``: Response body is unaltered (default).
-            - ``'js'``: Response body is altered for browsers and treated as
-              JavaScript.
-            - ``'cs'``: Response body is altered for browsers and treated as
-              CSS.
-            - ``'im'``: Response body is altered for browsers and treated as an
-              image.
-
-            For more details, see:
-            http://archive-access.sourceforge.net/projects/wayback/administrator_manual.html#Archival_URL_Replay_Mode
 
         Returns
         -------
