@@ -719,7 +719,8 @@ class WaybackClient(_utils.DepthCountedContext):
             - ``'im'``: Response body is altered for browsers and treated as an
               image.
 
-            For more details, see http://archive-access.sourceforge.net/projects/wayback/administrator_manual.html#Archival_URL_Replay_Mode
+            For more details, see:
+            http://archive-access.sourceforge.net/projects/wayback/administrator_manual.html#Archival_URL_Replay_Mode
 
         Returns
         -------
