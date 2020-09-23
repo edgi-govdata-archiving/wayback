@@ -646,46 +646,52 @@ class WaybackClient(_utils.DepthCountedContext):
     # TODO: make this nicer by taking an optional date, so `url` can be a
     # memento url or an original URL + plus date and we'll compose a memento
     # URL.
-    # TODO: for generic use, needs to be able to return the memento itself if
-    # the memento was a redirect (different than allowing a nearby-in-time
-    # memento of the same URL, which would be the above argument). Probably
-    # call this `follow_redirects=True`?
     def get_memento(self, url, exact=True, exact_redirects=None,
                     target_window=24 * 60 * 60, follow_redirects=True):
         """
-        Fetch a memento from the Wayback Machine. This retrieves the content
-        that was ultimately returned from a memento, following any redirects
-        that were present at the time the memento was captured. (That is, if
-        `http://example.com/a` redirected to `http://example.com/b`, this
-        returns the memento for `/b` when you request `/a`.)
+        Fetch a memento (an archived HTTP response) from the Wayback Machine.
+
+        Not all mementos can be successfully fetched (or “played back” in
+        Wayback terms). In this case, ``get_memento`` can load the
+        next-closest-in-time memento or it will raise
+        :class:`wayback.exceptions.MementoPlaybackError` depending on the value
+        of the ``exact`` and ``exact_redirects`` parameters (see more details
+        below).
 
         Parameters
         ----------
         url : string
-            URL of memento in Wayback (e.g.
-            `http://web.archive.org/web/20180816111911id_/http://www.nws.noaa.gov/sp/`)
+            URL of memento in Wayback, e.g.
+            ``http://web.archive.org/web/20180816111911id_/http://www.nws.noaa.gov/sp/``.
         exact : boolean, optional
             If false and the requested memento either doesn't exist or can't be
             played back, this returns the closest-in-time memento to the
-            requested one, so long as it is within `target_window`.
+            requested one, so long as it is within ``target_window``. If there
+            was no memento in the target window or if ``exact=True``, then this
+            will raise :class:`wayback.exceptions.MementoPlaybackError`.
             Default: True
         exact_redirects : boolean, optional
             If false and the requested memento is a redirect whose *target*
-            doesn't exist or or can't be played back, this returns the closest-
-            in-time memento to the intended target, so long as it is within
-            `target_window`. If unset, this will be the same as `exact`.
+            doesn't exist or can't be played back, this returns the
+            closest-in-time memento to the intended target, so long as it is
+            within ``target_window``. If unset, this will be the same as
+            ``exact``.
         target_window : int, optional
             If the memento is of a redirect, allow up to this many seconds
-            between the capture of the redirect and the capture of the target
-            URL. (Note this does NOT apply when the originally requested
-            memento didn't exist and wayback redirects to the next-closest-in-
-            -time one. That will always raise a MementoPlaybackError.)
+            between the capture of the redirect and the capture of the
+            redirect's target URL. This window also applies to the first
+            memento if ``exact=False`` and the originally
+            requested memento was not available.
             Defaults to 86,400 (24 hours).
         follow_redirects : boolean, optional
             If true (the default), ``get_memento`` will follow historical
             redirects to return the content that a web browser would have
             ultimately displayed at the requested URL and time, rather than the
             memento of an HTTP redirect response (i.e. a 3xx status code).
+            That is, if ``http://example.com/a`` redirected to
+            ``http://example.com/b``, then this method returns the memento for
+            ``/a`` when ``follow_redirects=False`` and the memento for ``/b``
+            when ``follow_redirects=True``.
             Default: True
 
         Returns
@@ -694,7 +700,7 @@ class WaybackClient(_utils.DepthCountedContext):
             An HTTP response with the content of the memento, including a
             history of any redirects involved. (For a complete history of all
             HTTP requests needed to obtain the memento [rather than historic
-            redirects], check `debug_history` instead of `history`.)
+            redirects], check ``debug_history`` instead of ``history``.)
         """
         if exact_redirects is None:
             exact_redirects = exact
