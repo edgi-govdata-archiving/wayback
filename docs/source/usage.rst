@@ -63,11 +63,11 @@ Above, we access the metadata for the oldest memento on nasa.gov, stored in
 the variable ``record``. Starting from where we left off, we'll access the
 *content* of the memento and do a very simple analysis.
 
-The Wayback Machine provides two ways to look at the data it has captured.
-There is a copy edited for human viewers on the web, available at the record's
-``view_url``, and there is the original copy of what was captured when the page
-was originally scraped, availabe at the record's ``raw_url``. For analysis
-purposes, we generally want the ``raw_url``.
+The Wayback Machine provides multiple modes to view the data it has captured.
+There is a copy edited for human viewers on the web, available via the ``''``
+mode, and there is the original copy of what was captured when the page
+was originally scraped, availabe via the ``'id_'`` mode. For analysis
+purposes, we generally want ``'id_'``.
 
 Let's download the raw content using ``WaybackClient``. (You could download the
 content directly with an HTTP library like ``requests``, but ``WaybackClient``
@@ -75,7 +75,7 @@ adds extra tools for dealing with Wayback Machine servers.)
 
 .. ipython:: python
 
-   response = client.get_memento(record.raw_url)
+   response = client.get_memento(record, mode='id_')
    content = response.content.decode()
 
 We can use the built-in method ``count`` on strings to count the number of
