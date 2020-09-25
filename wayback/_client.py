@@ -248,22 +248,6 @@ def memento_url_data(memento_url):
     return url, date, mode
 
 
-def original_url_for_memento(memento_url):
-    """
-    Get the original URL that a memento URL represents a capture of.
-
-    Examples
-    --------
-    Extract original URL.
-
-    >>> url = ('http://web.archive.org/web/20170813195036/'
-    ...        'https://arpa-e.energy.gov/?q=engage/events-workshops')
-    >>> original_url_for_memento(url)
-    'https://arpa-e.energy.gov/?q=engage/events-workshops'
-    """
-    return clean_memento_url_component(split_memento_url(memento_url)[0])
-
-
 def is_malformed_url(url):
     if DATA_URL_START.search(url):
         return True
@@ -875,6 +859,7 @@ class WaybackClient(_utils.DepthCountedContext):
             protocol_and_www = re.compile(r'^https?://(www\d?\.)?')
             while True:
                 is_memento = 'Memento-Datetime' in response.headers
+                current_url, current_date, _ = memento_url_data(response.url)
 
                 if is_memento:
                     if not follow_redirects:
@@ -890,7 +875,6 @@ class WaybackClient(_utils.DepthCountedContext):
                     if response.next and (
                        (len(history) == 0 and not exact) or
                        (len(history) > 0 and (previous_was_memento or not exact_redirects))):
-                        current_url = original_url_for_memento(response.url)
                         target_url, target_date, _ = memento_url_data(response.next.url)
                         # A non-memento redirect is generally taking us to the
                         # closest-in-time capture of the same URL. Note that is
@@ -957,8 +941,20 @@ class WaybackClient(_utils.DepthCountedContext):
                 else:
                     break
 
-            response.history = history
-            response.debug_history = debug_history
+            # XXX: We need to create the memento earlier so that `history` is
+            # populated with mementos rather than responses.
+            return Memento(encoding=response.encoding,
+                           headers=Memento.parse_memento_headers(response.headers),
+                           history=history,
+                           debug_history=debug_history,
+                           status_code=response.status_code,
+                           mode='id_',  # XXX: This needs https://github.com/edgi-govdata-archiving/wayback/pull/50
+                           timestamp=current_date,
+                           url=current_url,
+                           memento_url=response.url,
+                           media=Memento.parse_memento_media(response),
+                           raw=response,
+                           raw_headers=response.headers)
             return response
 
 
@@ -1081,3 +1077,52 @@ class Memento:
 
     def __exit__(self, *_args):
         self.close()
+
+    @classmethod
+    def parse_memento_headers(self, raw_headers):
+        """
+        Extract historical headers from the Memento's HTTP response.
+
+        Returns
+        -------
+        dict
+        """
+        # Archived, historical headers are all reproduced as headers in the
+        # memento response, but start with "X-Archive-Orig-".
+        prefix = 'X-Archive-Orig-'
+        headers = {
+            key[len(prefix):]: value for key, value in raw_headers.items()
+            if key.startswith(prefix)
+        }
+
+        # Headers that are also needed for a browser to handle the played-back
+        # memento are *not* prefixed, so we need to copy over each of those.
+        for unprefixed in ('Content-Type', 'Content-Encoding', 'Location'):
+            if unprefixed in raw_headers:
+                headers[unprefixed] = raw_headers[unprefixed]
+
+        return headers
+
+    @classmethod
+    def parse_memento_media(self, raw_response):
+        """
+        Determine the media type of the memento from its HTTP response.
+
+        Returns
+        -------
+        str
+            The main media type, e.g. ``'text/html'``.
+        dict
+            The media type's parameters, e.g. ``{'charset': 'utf-8'}`` for the
+            parsed string ``'text/html; charset=utf-8'``.
+        """
+        media, *parameters = raw_response.headers.get('content-type', '').split(';')
+
+        clean_parameters = {}
+        for parameter in parameters:
+            name, value = parameters.split('=', 1)
+            name = name.strip().lower()
+            value = value.strip()
+            clean_parameters[name] = value
+
+        return media, clean_parameters
