@@ -113,6 +113,9 @@ Memento API. We implement a Python client that can speak both.
 
 .. autoclass:: wayback.CdxRecord
 
+.. autoclass:: wayback.Memento
+   :members:
+
 .. autoclass:: wayback.WaybackSession
 
     .. automethod:: reset

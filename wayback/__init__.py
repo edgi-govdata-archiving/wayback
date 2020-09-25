@@ -4,6 +4,7 @@ del get_versions
 
 from ._client import (  # noqa
     CdxRecord,
+    Memento,
     memento_url_data,
     Mode,
     WaybackClient,

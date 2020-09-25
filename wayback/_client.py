@@ -960,3 +960,124 @@ class WaybackClient(_utils.DepthCountedContext):
             response.history = history
             response.debug_history = debug_history
             return response
+
+
+class Memento:
+    """
+    Represents a memento (an archived HTTP response). This object is similar to
+    an response object from the popular "Requests" package, although it has
+    some differences designed to help differentiate and manage historical
+    information vs. current metadata about the stored memento.
+
+    Note that, like an HTTP response, this object represents a potentially open
+    network connection to the Wayback Machine. Reading the ``content`` or
+    ``text`` attributes will read all the data being received and close the
+    connection automatically, but if you do not read those properties, you must
+    make sure to call ``close()`` to close to connection. Alternatively, you
+    can use a Memento as a context manager. The connection will be closed for
+    you when the context ends:
+
+        >>> with a_memento:
+        >>>     do_something()
+        >>> # Connection is automatically closed here.
+
+    Attributes
+    ----------
+    encoding : str
+        The text encoding of the response, e.g. ``'utf-8'``.
+    headers : dict
+        A dict representing the headers of the archived HTTP response. The keys
+        are case-sensitive.
+    history : list of Memento
+        A list of :class:`wayback.Memento` objects that were redirects and were
+        followed to produce this memento.
+    debug_history : List of str
+        List of all URLs redirects followed in order to produce this memento.
+        These are "memento URLs" -- that is, they are absolute URLs to the
+        Wayback machine like
+        ``http://web.archive.org/web/20180816111911id_/http://www.noaa.gov/``,
+        rather than URLs of captured redirects, like ``http://www.noaa.gov``.
+        Many of the URLs in this list do not represent actual mementos.
+    status_code : int
+        The HTTP status code of the archived HTTP response.
+    mode : str
+        The playback mode used to produce the Memento.
+    timestamp : datetime
+        The time the memento was originally captured. This includes ``tzinfo``,
+        and will always be in UTC.
+    url : str
+        The URL that the memento represents, e.g. ``http://www.noaa.gov``.
+    memento_url : str
+        The URL at which the memento was fetched from the Wayback Machine, e.g.
+        ``http://web.archive.org/web/20180816111911id_/http://www.noaa.gov/``.
+    media : str
+        The media type of the response.
+    ok
+    is_redirect
+    content
+    text
+    """
+    encoding = None
+    headers = None
+    history = None
+    debug_history = None
+    status_code = 0
+    mode = ''
+    # XXX: decide whether this is a good name, since it's not the wayback's
+    # actual timestamp string, but a parsed datetime representing it.
+    timestamp = None
+    url = ''
+    memento_url = ''
+    media = None
+    _raw = None
+    _raw_headers = None
+
+    # TODO: determine whether this should take fewer arguments and derive some
+    # of these values.
+    def __init__(self, encoding, headers, history, debug_history, status_code,
+                 mode, timestamp, url, memento_url, media, raw, raw_headers):
+        self.encoding = encoding
+        self.headers = headers
+        self.history = history
+        self.debug_history = debug_history
+        self.status_code = status_code
+        self.mode = mode
+        self.timestamp = timestamp,
+        self.url = url
+        self.memento_url = memento_url
+        self.media = media
+        self._raw = raw
+        self._raw_headers = raw_headers
+
+    @property
+    def ok(self):
+        return self.status_code < 400
+
+    @property
+    def is_redirect(self):
+        return self.ok and self.status_code < 400
+
+    @property
+    def content(self):
+        """The body of the archived HTTP response in bytes."""
+        return self._raw.content
+
+    @property
+    def text(self):
+        """The body of the archived HTTP response decoded as a string."""
+        return self._raw.text
+
+    def close(self):
+        """
+        Close the HTTP response for this Memento. This happens automatically if
+        you read ``content`` or ``text``, and if you use the memento as a
+        context manager. This method is always safe to call -- it does nothing
+        if the response has already been closed.
+        """
+        self._raw.close()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *_args):
+        self.close()
