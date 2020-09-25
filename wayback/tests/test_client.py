@@ -7,7 +7,6 @@ from .._client import (CdxRecord,
                        Mode,
                        WaybackSession,
                        WaybackClient,
-                       original_url_for_memento,
                        memento_url_data)
 from ..exceptions import MementoPlaybackError, RateLimitError, BlockedSiteError
 
@@ -180,94 +179,97 @@ def test_search_removes_malformed_entries(requests_mock):
         assert 2 == len(list(records))
 
 
-class TestOriginalUrlForMemento:
+class TestMementoUrlData:
     def test_extracts_url(self):
-        url = original_url_for_memento(
+        url, timestamp, mode = memento_url_data(
             'http://web.archive.org/web/20170813195036/'
             'https://arpa-e.energy.gov/?q=engage/events-workshops')
         assert url == 'https://arpa-e.energy.gov/?q=engage/events-workshops'
+        assert timestamp == datetime(2017, 8, 13, 19, 50, 36, tzinfo=timezone.utc)
+        assert mode == ''
 
-        url = original_url_for_memento(
+        url, timestamp, mode = memento_url_data(
             'http://web.archive.org/web/20170813195036id_/'
             'https://arpa-e.energy.gov/?q=engage/events-workshops')
         assert url == 'https://arpa-e.energy.gov/?q=engage/events-workshops'
+        assert timestamp == datetime(2017, 8, 13, 19, 50, 36, tzinfo=timezone.utc)
+        assert mode == 'id_'
 
     def test_decodes_url(self):
-        url = original_url_for_memento(
+        url, _, _ = memento_url_data(
             'http://web.archive.org/web/20150930233055id_/'
             'http%3A%2F%2Fwww.epa.gov%2Fenvironmentaljustice%2Fgrants%2Fej-smgrants.html%3Futm')
         assert url == 'http://www.epa.gov/environmentaljustice/grants/ej-smgrants.html?utm'
 
     def test_does_not_decode_query(self):
-        url = original_url_for_memento(
+        url, _, _ = memento_url_data(
             'http://web.archive.org/web/20170813195036/'
             'https://arpa-e.energy.gov/?q=engage%2Fevents-workshops')
         assert url == 'https://arpa-e.energy.gov/?q=engage%2Fevents-workshops'
 
     def test_raises_for_non_memento_urls(self):
         with pytest.raises(ValueError):
-            original_url_for_memento('http://whatever.com')
+            memento_url_data('http://whatever.com')
 
     def test_raises_for_non_string_input(self):
         with pytest.raises(TypeError):
-            original_url_for_memento(None)
+            memento_url_data(None)
 
 
 @ia_vcr.use_cassette()
 def test_get_memento():
     with WaybackClient() as client:
-        response = client.get_memento('https://www.fws.gov/birds/',
-                                      datetime=datetime(2017, 11, 24, 15, 13, 15))
-        assert 'Link' in response.headers
-        original, *_ = response.headers['Link'].split(',', 1)
-        assert original == '<https://www.fws.gov/birds/>; rel="original"'
+        memento = client.get_memento('https://www.fws.gov/birds/',
+                                     datetime=datetime(2017, 11, 24, 15, 13, 15))
+        assert 'https://www.fws.gov/birds/' == memento.url
+        assert datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc) == memento.timestamp
+        assert 'id_' == memento.mode
 
 
 @ia_vcr.use_cassette()
 def test_get_memento_with_date_datetime():
     with WaybackClient() as client:
-        response = client.get_memento('https://www.fws.gov/birds/',
-                                      datetime=date(2017, 11, 24),
-                                      exact=False)
-        assert 'Link' in response.headers
-        original, *_ = response.headers['Link'].split(',', 1)
-        assert original == '<https://www.fws.gov/birds/>; rel="original"'
+        memento = client.get_memento('https://www.fws.gov/birds/',
+                                     datetime=date(2017, 11, 24),
+                                     exact=False)
+        assert 'https://www.fws.gov/birds/' == memento.url
+        assert datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc) == memento.timestamp
+        assert 'id_' == memento.mode
 
 
 @ia_vcr.use_cassette()
 def test_get_memento_with_string_datetime():
     with WaybackClient() as client:
-        response = client.get_memento('https://www.fws.gov/birds/',
-                                      datetime='20171124151315')
-        assert 'Link' in response.headers
-        original, *_ = response.headers['Link'].split(',', 1)
-        assert original == '<https://www.fws.gov/birds/>; rel="original"'
+        memento = client.get_memento('https://www.fws.gov/birds/',
+                                     datetime='20171124151315')
+        assert 'https://www.fws.gov/birds/' == memento.url
+        assert datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc) == memento.timestamp
+        assert 'id_' == memento.mode
 
 
 @ia_vcr.use_cassette()
 def test_get_memento_with_inexact_string_datetime():
     with WaybackClient() as client:
-        response = client.get_memento('https://www.fws.gov/birds/',
-                                      datetime='20171124151310',
-                                      exact=False)
-        assert 'Link' in response.headers
-        original, *_ = response.headers['Link'].split(',', 1)
-        assert original == '<https://www.fws.gov/birds/>; rel="original"'
+        memento = client.get_memento('https://www.fws.gov/birds/',
+                                     datetime='20171124151310',
+                                     exact=False)
+        assert 'https://www.fws.gov/birds/' == memento.url
+        assert datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc) == memento.timestamp
+        assert 'id_' == memento.mode
 
 
 @ia_vcr.use_cassette()
 def test_get_memento_handles_non_utc_datetime():
     with WaybackClient() as client:
-        # Note the offset between requested_time and expected_timestamp.
+        # Note the offset between requested_time and memento.timestamp.
         requested_time = datetime(2017, 11, 24, 8, 13, 15,
                                   tzinfo=timezone(timedelta(hours=-7)))
-        expected_time = '20171124151315'
-        expected_url = (f'http://web.archive.org/web/{expected_time}id_/'
-                        'https://www.fws.gov/birds/')
+        memento = client.get_memento('https://www.fws.gov/birds/',
+                                     datetime=requested_time)
 
-        response = client.get_memento('https://www.fws.gov/birds/',
-                                      datetime=requested_time)
-        assert expected_url == response.url
+        assert 'https://www.fws.gov/birds/' == memento.url
+        assert datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc) == memento.timestamp
+        assert 'id_' == memento.mode
 
 
 @ia_vcr.use_cassette()
@@ -288,11 +290,11 @@ def test_get_memento_with_requires_datetime_with_regular_url():
 @ia_vcr.use_cassette()
 def test_get_memento_with_archive_url():
     with WaybackClient() as client:
-        response = client.get_memento(
+        memento = client.get_memento(
             'http://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/')
-        assert 'Link' in response.headers
-        original, *_ = response.headers['Link'].split(',', 1)
-        assert original == '<https://www.fws.gov/birds/>; rel="original"'
+        assert 'https://www.fws.gov/birds/' == memento.url
+        assert datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc) == memento.timestamp
+        assert 'id_' == memento.mode
 
 
 @ia_vcr.use_cassette()
@@ -307,32 +309,35 @@ def test_get_memento_with_cdx_record():
                            100,
                            'http://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/',
                            'http://web.archive.org/web/20171124151315/https://www.fws.gov/birds/')
-        response = client.get_memento(record)
-        assert 'Link' in response.headers
-        original, *_ = response.headers['Link'].split(',', 1)
-        assert original == '<https://www.fws.gov/birds/>; rel="original"'
+        memento = client.get_memento(record)
+        assert 'https://www.fws.gov/birds/' == memento.url
+        assert datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc) == memento.timestamp
+        assert 'id_' == memento.mode
 
 
 @ia_vcr.use_cassette()
 def test_get_memento_with_mode():
     with WaybackClient() as client:
-        response = client.get_memento('https://www.fws.gov/birds/',
-                                      datetime=datetime(2017, 11, 24, 15, 13, 15),
-                                      mode=Mode.view)
-        assert 'http://web.archive.org/web/20171124151315/https://www.fws.gov/birds/' == response.url
+        memento = client.get_memento('https://www.fws.gov/birds/',
+                                     datetime=datetime(2017, 11, 24, 15, 13, 15),
+                                     mode=Mode.view)
+        assert '' == memento.mode
+        assert 'http://web.archive.org/web/20171124151315/https://www.fws.gov/birds/' == memento.memento_url
 
-        response = client.get_memento('https://www.fws.gov/birds/',
-                                      datetime=datetime(2017, 11, 24, 15, 13, 15))
-        assert 'http://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/' == response.url
+        memento = client.get_memento('https://www.fws.gov/birds/',
+                                     datetime=datetime(2017, 11, 24, 15, 13, 15))
+        assert 'id_' == memento.mode
+        assert 'http://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/' == memento.memento_url
 
 
 @ia_vcr.use_cassette()
 def test_get_memento_with_mode_string():
     with WaybackClient() as client:
-        response = client.get_memento('https://www.fws.gov/birds/',
-                                      datetime=datetime(2017, 11, 24, 15, 13, 15),
-                                      mode='id_')
-        assert 'http://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/' == response.url
+        memento = client.get_memento('https://www.fws.gov/birds/',
+                                     datetime=datetime(2017, 11, 24, 15, 13, 15),
+                                     mode='id_')
+        assert 'id_' == memento.mode
+        assert 'http://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/' == memento.memento_url
 
 
 @ia_vcr.use_cassette()
@@ -347,10 +352,10 @@ def test_get_memento_with_mode_boolean_is_not_allowed():
 @ia_vcr.use_cassette()
 def test_get_memento_with_redirects():
     with WaybackClient() as client:
-        response = client.get_memento(
+        memento = client.get_memento(
             'http://web.archive.org/web/20180808094144id_/https://www.epa.gov/ghgreporting/san5779-factsheet')
-        assert len(response.history) == 1        # memento redirects
-        assert len(response.debug_history) == 2  # actual HTTP redirects
+        assert len(memento.history) == 1        # memento redirects
+        assert len(memento.debug_history) == 2  # actual HTTP redirects
 
 
 @ia_vcr.use_cassette()
@@ -358,27 +363,25 @@ def test_get_memento_raises_for_mementos_that_redirect_in_a_loop():
     with WaybackClient() as client:
         with pytest.raises(MementoPlaybackError):
             client.get_memento(
-                'http://web.archive.org/web/20200925075402id_/'
-                'https://link.springer.com/article/10.1007/s00382-012-1331-2')
+                'https://link.springer.com/article/10.1007/s00382-012-1331-2',
+                '20200925075402')
 
 
 @ia_vcr.use_cassette()
 def test_get_memento_should_fail_for_non_playbackable_mementos():
     with WaybackClient() as client:
         with pytest.raises(MementoPlaybackError):
-            client.get_memento(
-                'http://web.archive.org/web/20170929002712id_/https://www.fws.gov/birds/')
+            client.get_memento('https://www.fws.gov/birds/', '20170929002712')
 
 
 @ia_vcr.use_cassette()
 def test_get_memento_target_window():
     with WaybackClient() as client:
-        response = client.get_memento('https://www.fws.gov/birds/',
-                                      datetime(2017, 11, 1),
-                                      exact=False,
-                                      target_window=25 * 24 * 60 * 60)
-        _, memento_time, _ = memento_url_data(response.url)
-        assert memento_time == datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc)
+        memento = client.get_memento('https://www.fws.gov/birds/',
+                                     date(2017, 11, 1),
+                                     exact=False,
+                                     target_window=25 * 24 * 60 * 60)
+        assert memento.timestamp == datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc)
 
 
 @ia_vcr.use_cassette()
@@ -386,7 +389,7 @@ def test_get_memento_raises_when_memento_is_outside_target_window():
     with pytest.raises(MementoPlaybackError):
         with WaybackClient() as client:
             client.get_memento('https://www.fws.gov/birds/',
-                               datetime(2017, 11, 1),
+                               date(2017, 11, 1),
                                exact=False,
                                target_window=24 * 60 * 60)
 
@@ -395,8 +398,7 @@ def test_get_memento_raises_when_memento_is_outside_target_window():
 def test_get_memento_raises_blocked_error():
     with WaybackClient() as client:
         with pytest.raises(BlockedSiteError):
-            client.get_memento(
-                'http://web.archive.org/web/20170929002712id_/https://nationalpost.com/health/')
+            client.get_memento('https://nationalpost.com/health/', '20170929002712')
 
 
 @ia_vcr.use_cassette()
@@ -417,10 +419,11 @@ def test_get_memento_follows_historical_redirects():
                      'http://epa.gov/climatechange')
         target = ('http://web.archive.org/web/20200201024405id_/'
                   'https://www.epa.gov/sites/production/files/signpost/cc.html')
-        response = client.get_memento(start_url, exact=False)
-        assert response.url == target
-        assert len(response.history) == 1
-        assert len(response.debug_history) == 3
+        memento = client.get_memento(start_url, exact=False)
+        assert 'https://www.epa.gov/sites/production/files/signpost/cc.html' == memento.url
+        assert target == memento.memento_url
+        assert len(memento.history) == 1
+        assert len(memento.debug_history) == 3
 
 
 @ia_vcr.use_cassette()
@@ -442,10 +445,13 @@ def test_get_memento_follow_redirects_does_not_follow_historical_redirects():
                      'http://epa.gov/climatechange')
         target = ('http://web.archive.org/web/20200201023757id_/'
                   'https://www.epa.gov/climatechange')
-        response = client.get_memento(start_url, exact=False, follow_redirects=False)
-        assert response.url == target
-        assert len(response.history) == 0
-        assert len(response.debug_history) == 1
+        memento = client.get_memento(start_url, exact=False, follow_redirects=False)
+        assert 'https://www.epa.gov/climatechange' == memento.url
+        assert target == memento.memento_url
+        assert memento.status_code == 301
+        assert 'https://www.epa.gov/sites/production/files/signpost/cc.html' == memento.headers['Location']
+        assert len(memento.history) == 0
+        assert len(memento.debug_history) == 1
 
 
 class TestWaybackSession:

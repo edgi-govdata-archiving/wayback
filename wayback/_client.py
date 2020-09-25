@@ -201,7 +201,7 @@ def split_memento_url(memento_url):
     if match is None:
         raise ValueError(f'"{memento_url}" is not a memento URL')
 
-    return match.group(3), match.group(1), match.group(2)
+    return match.group(3), match.group(1), match.group(2) or ''
 
 
 def clean_memento_url_component(url):
@@ -857,14 +857,28 @@ class WaybackClient(_utils.DepthCountedContext):
 
             response = self.session.request('GET', url, allow_redirects=False)
             protocol_and_www = re.compile(r'^https?://(www\d?\.)?')
+            memento = None
             while True:
                 is_memento = 'Memento-Datetime' in response.headers
-                current_url, current_date, _ = memento_url_data(response.url)
+                current_url, current_date, current_mode = memento_url_data(response.url)
 
                 if is_memento:
+                    memento = Memento(encoding=response.encoding,
+                                      headers=Memento.parse_memento_headers(response.headers),
+                                      history=tuple(history),
+                                      debug_history=tuple(debug_history),
+                                      status_code=response.status_code,
+                                      mode=current_mode,
+                                      timestamp=current_date,
+                                      url=current_url,
+                                      memento_url=response.url,
+                                      media=Memento.parse_memento_media(response),
+                                      raw=response,
+                                      raw_headers=response.headers)
                     if not follow_redirects:
                         break
                 else:
+                    memento = None
                     # The exactness requirements for redirects from memento
                     # playbacks and non-playbacks is different -- even with
                     # strict matching, a memento that redirects to a non-
@@ -934,28 +948,14 @@ class WaybackClient(_utils.DepthCountedContext):
 
                     # All requests are included in `debug_history`, but
                     # `history` only shows redirects that were mementos.
-                    debug_history.append(response)
+                    debug_history.append(response.url)
                     if is_memento:
-                        history.append(response)
+                        history.append(memento)
                     response = self.session.send(response.next, allow_redirects=False)
                 else:
                     break
 
-            # XXX: We need to create the memento earlier so that `history` is
-            # populated with mementos rather than responses.
-            return Memento(encoding=response.encoding,
-                           headers=Memento.parse_memento_headers(response.headers),
-                           history=history,
-                           debug_history=debug_history,
-                           status_code=response.status_code,
-                           mode='id_',  # XXX: This needs https://github.com/edgi-govdata-archiving/wayback/pull/50
-                           timestamp=current_date,
-                           url=current_url,
-                           memento_url=response.url,
-                           media=Memento.parse_memento_media(response),
-                           raw=response,
-                           raw_headers=response.headers)
-            return response
+            return memento
 
 
 class Memento:
@@ -984,10 +984,10 @@ class Memento:
     headers : dict
         A dict representing the headers of the archived HTTP response. The keys
         are case-sensitive.
-    history : list of Memento
+    history : tuple of Memento
         A list of :class:`wayback.Memento` objects that were redirects and were
         followed to produce this memento.
-    debug_history : List of str
+    debug_history : tuple of str
         List of all URLs redirects followed in order to produce this memento.
         These are "memento URLs" -- that is, they are absolute URLs to the
         Wayback machine like
@@ -1038,7 +1038,7 @@ class Memento:
         self.debug_history = debug_history
         self.status_code = status_code
         self.mode = mode
-        self.timestamp = timestamp,
+        self.timestamp = timestamp
         self.url = url
         self.memento_url = memento_url
         self.media = media
@@ -1097,9 +1097,15 @@ class Memento:
 
         # Headers that are also needed for a browser to handle the played-back
         # memento are *not* prefixed, so we need to copy over each of those.
-        for unprefixed in ('Content-Type', 'Content-Encoding', 'Location'):
+        for unprefixed in ('Content-Type', 'Content-Encoding'):
             if unprefixed in raw_headers:
                 headers[unprefixed] = raw_headers[unprefixed]
+
+        # The `Location` header for a redirect does not have an X-Archive-Orig-
+        # version, and the normal location header point to the next *Wayback*
+        # URL, so we need to parse it to get the historical redirect URL.
+        if 'Location' in raw_headers:
+            headers['Location'], _, _ = memento_url_data(raw_headers['Location'])
 
         return headers
 
@@ -1120,7 +1126,7 @@ class Memento:
 
         clean_parameters = {}
         for parameter in parameters:
-            name, value = parameters.split('=', 1)
+            name, value = parameter.split('=', 1)
             name = name.strip().lower()
             value = value.strip()
             clean_parameters[name] = value
