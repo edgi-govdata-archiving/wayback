@@ -872,7 +872,6 @@ class WaybackClient(_utils.DepthCountedContext):
                                       timestamp=current_date,
                                       url=current_url,
                                       memento_url=response.url,
-                                      media=Memento.parse_memento_media(response),
                                       raw=response,
                                       raw_headers=response.headers)
                     if not follow_redirects:
@@ -1024,14 +1023,13 @@ class Memento:
     timestamp = None
     url = ''
     memento_url = ''
-    media = None
     _raw = None
     _raw_headers = None
 
     # TODO: determine whether this should take fewer arguments and derive some
     # of these values.
     def __init__(self, encoding, headers, history, debug_history, status_code,
-                 mode, timestamp, url, memento_url, media, raw, raw_headers):
+                 mode, timestamp, url, memento_url, raw, raw_headers):
         self.encoding = encoding
         self.headers = headers
         self.history = history
@@ -1041,7 +1039,6 @@ class Memento:
         self.timestamp = timestamp
         self.url = url
         self.memento_url = memento_url
-        self.media = media
         self._raw = raw
         self._raw_headers = raw_headers
 
@@ -1108,27 +1105,3 @@ class Memento:
             headers['Location'], _, _ = memento_url_data(raw_headers['Location'])
 
         return headers
-
-    @classmethod
-    def parse_memento_media(self, raw_response):
-        """
-        Determine the media type of the memento from its HTTP response.
-
-        Returns
-        -------
-        str
-            The main media type, e.g. ``'text/html'``.
-        dict
-            The media type's parameters, e.g. ``{'charset': 'utf-8'}`` for the
-            parsed string ``'text/html; charset=utf-8'``.
-        """
-        media, *parameters = raw_response.headers.get('content-type', '').split(';')
-
-        clean_parameters = {}
-        for parameter in parameters:
-            name, value = parameter.split('=', 1)
-            name = name.strip().lower()
-            value = value.strip()
-            clean_parameters[name] = value
-
-        return media, clean_parameters
