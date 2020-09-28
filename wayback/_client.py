@@ -1044,20 +1044,46 @@ class Memento:
 
     @property
     def ok(self):
+        """
+        Whether the response had an non-error status (i.e. < 400).
+
+        Returns
+        -------
+        boolean
+        """
         return self.status_code < 400
 
     @property
     def is_redirect(self):
+        """
+        Whether the response was a redirect (i.e. had a 3xx status).
+
+        Returns
+        -------
+        boolean
+        """
         return self.ok and self.status_code < 400
 
     @property
     def content(self):
-        """The body of the archived HTTP response in bytes."""
+        """
+        The body of the archived HTTP response in bytes.
+
+        Returns
+        -------
+        bytes
+        """
         return self._raw.content
 
     @property
     def text(self):
-        """The body of the archived HTTP response decoded as a string."""
+        """
+        The body of the archived HTTP response decoded as a string.
+
+        Returns
+        -------
+        str
+        """
         return self._raw.text
 
     def close(self):
@@ -1076,7 +1102,7 @@ class Memento:
         self.close()
 
     @classmethod
-    def parse_memento_headers(self, raw_headers):
+    def parse_memento_headers(cls, raw_headers):
         """
         Extract historical headers from the Memento's HTTP response.
 
