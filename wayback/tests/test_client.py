@@ -47,6 +47,13 @@ You have sent too many requests in a given amount of time.
 )
 
 
+def get_file(filepath):
+    """Return the content of a file in the test_files directory."""
+    full_path = Path(__file__).parent / 'test_files' / filepath
+    with open(full_path, 'rb') as file:
+        return file.read()
+
+
 @ia_vcr.use_cassette()
 def test_search():
     with WaybackClient() as client:
@@ -292,9 +299,29 @@ def test_get_memento_with_archive_url():
     with WaybackClient() as client:
         memento = client.get_memento(
             'http://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/')
+
+        # Metadata About the Memento
         assert 'https://www.fws.gov/birds/' == memento.url
         assert datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc) == memento.timestamp
         assert 'id_' == memento.mode
+        assert 'http://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/' == memento.memento_url
+        assert () == memento.history
+        assert () == memento.debug_history
+
+        # Archived HTTP Response
+        assert 200 == memento.status_code
+        assert memento.ok
+        assert not memento.is_redirect
+        assert {'Content-Encoding': 'gzip',
+                'Content-Type': 'text/html',
+                'Date': 'Fri, 24 Nov 2017 15:13:14 GMT',
+                'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
+                'Transfer-Encoding': 'chunked'} == memento.headers
+        assert 'ISO-8859-1' == memento.encoding
+
+        content = get_file('fws-gov-birds.txt')
+        assert content == memento.content
+        assert content.decode('iso-8859-1') == memento.text
 
 
 @ia_vcr.use_cassette()

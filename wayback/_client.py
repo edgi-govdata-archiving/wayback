@@ -1062,7 +1062,7 @@ class Memento:
         -------
         boolean
         """
-        return self.ok and self.status_code < 400
+        return self.ok and self.status_code >= 300
 
     @property
     def content(self):
