@@ -175,7 +175,7 @@ class TestOriginalUrlForMemento:
 def test_get_memento():
     with WaybackClient() as client:
         response = client.get_memento('https://www.fws.gov/birds/',
-                                      date_=datetime(2017, 11, 24, 15, 13, 15))
+                                      datetime=datetime(2017, 11, 24, 15, 13, 15))
         assert 'Link' in response.headers
         original, *_ = response.headers['Link'].split(',', 1)
         assert original == '<https://www.fws.gov/birds/>; rel="original"'
@@ -185,7 +185,7 @@ def test_get_memento():
 def test_get_memento_with_date_date():
     with WaybackClient() as client:
         response = client.get_memento('https://www.fws.gov/birds/',
-                                      date_=date(2017, 11, 24),
+                                      datetime=date(2017, 11, 24),
                                       exact=False)
         assert 'Link' in response.headers
         original, *_ = response.headers['Link'].split(',', 1)
@@ -196,7 +196,7 @@ def test_get_memento_with_date_date():
 def test_get_memento_with_string_date():
     with WaybackClient() as client:
         response = client.get_memento('https://www.fws.gov/birds/',
-                                      date_='20171124151315')
+                                      datetime='20171124151315')
         assert 'Link' in response.headers
         original, *_ = response.headers['Link'].split(',', 1)
         assert original == '<https://www.fws.gov/birds/>; rel="original"'
@@ -234,12 +234,12 @@ def test_get_memento_with_cdx_record():
 def test_get_memento_with_mode():
     with WaybackClient() as client:
         response = client.get_memento('https://www.fws.gov/birds/',
-                                      date_=datetime(2017, 11, 24, 15, 13, 15),
+                                      datetime=datetime(2017, 11, 24, 15, 13, 15),
                                       mode='')
         assert 'http://web.archive.org/web/20171124151315/https://www.fws.gov/birds/' == response.url
 
         response = client.get_memento('https://www.fws.gov/birds/',
-                                      date_=datetime(2017, 11, 24, 15, 13, 15))
+                                      datetime=datetime(2017, 11, 24, 15, 13, 15))
         assert 'http://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/' == response.url
 
 

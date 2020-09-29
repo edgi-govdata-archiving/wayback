@@ -15,7 +15,7 @@ Other potentially useful links:
 
 from base64 import b32encode
 from collections import namedtuple
-from datetime import date, datetime, timezone
+from datetime import date, datetime as Datetime, timezone
 import hashlib
 import logging
 import re
@@ -177,7 +177,7 @@ def memento_url_data(memento_url):
     """
     raw_url, timestamp = split_memento_url(memento_url)
     url = clean_memento_url_component(raw_url)
-    date = datetime.strptime(timestamp, URL_DATE_FORMAT)
+    date = Datetime.strptime(timestamp, URL_DATE_FORMAT)
     date = date.replace(tzinfo=timezone.utc)
 
     return url, date
@@ -551,7 +551,7 @@ class WaybackClient(_utils.DepthCountedContext):
             if value is not None:
                 if isinstance(value, str):
                     final_query[key] = value
-                elif isinstance(value, datetime):
+                elif isinstance(value, Datetime):
                     # Make sure we have either a naive datetime (assumed to
                     # represent UTC) or convert the datetime to UTC.
                     if value.tzinfo:
@@ -610,7 +610,7 @@ class WaybackClient(_utils.DepthCountedContext):
                 else:
                     status_code = int(data.status_code)
                 length = int(data.length)
-                capture_time = (datetime.strptime(data.timestamp,
+                capture_time = (Datetime.strptime(data.timestamp,
                                                   URL_DATE_FORMAT)
                                         .replace(tzinfo=timezone.utc))
             except Exception as err:
@@ -648,7 +648,7 @@ class WaybackClient(_utils.DepthCountedContext):
     # TODO: make this nicer by taking an optional date, so `url` can be a
     # memento url or an original URL + plus date and we'll compose a memento
     # URL.
-    def get_memento(self, url, date_=None, mode='id', *, exact=True,
+    def get_memento(self, url, datetime=None, mode='id', *, exact=True,
                     exact_redirects=None, target_window=24 * 60 * 60,
                     follow_redirects=True):
         """
@@ -667,13 +667,13 @@ class WaybackClient(_utils.DepthCountedContext):
             URL to retrieve a memento of. This can be any of:
 
             - A normal URL (e.g. ``http://www.noaa.gov/``). When using this
-              form, you must also specify ``date_``.
+              form, you must also specify ``datetime``.
             - A ``CdxRecord`` retrieved from
               :meth:`wayback.WaybackClient.search`.
             - A URL of the memento in Wayback, e.g.
               ``http://web.archive.org/web/20180816111911id_/http://www.noaa.gov/``
 
-        date_ : datetime.datetime or datetime.date or str, optional
+        datetime : datetime.datetime or datetime.date or str, optional
             The time at which to retrieve a memento of ``url``. If ``url`` is
             a :class:`wayback.CdxRecord` or full memento URL, this parameter
             can be omitted.
@@ -746,20 +746,20 @@ class WaybackClient(_utils.DepthCountedContext):
                 original_url, original_date = memento_url_data(url)
             except ValueError:
                 original_url = url
-                if isinstance(date_, str):
-                    original_date = datetime.strptime(date_, URL_DATE_FORMAT)
-                elif isinstance(date_, datetime):
-                    if date_.tzinfo:
-                        original_date = date_.astimezone(timezone.utc)
+                if isinstance(datetime, str):
+                    original_date = Datetime.strptime(datetime, URL_DATE_FORMAT)
+                elif isinstance(datetime, Datetime):
+                    if datetime.tzinfo:
+                        original_date = datetime.astimezone(timezone.utc)
                     else:
-                        original_date = date_.replace(tzinfo=timezone.utc)
-                elif isinstance(date_, date):
-                    original_date = datetime(date_.year, date_.month, date_.day, tzinfo=timezone.utc)
-                elif not date_:
-                    raise TypeError('You must specify `date_` when using a '
+                        original_date = datetime.replace(tzinfo=timezone.utc)
+                elif isinstance(datetime, date):
+                    original_date = Datetime(datetime.year, datetime.month, datetime.day, tzinfo=timezone.utc)
+                elif not datetime:
+                    raise TypeError('You must specify `datetime` when using a '
                                     'normal URL for get_memento()')
                 else:
-                    raise TypeError('`date_` must be a string, date, or datetime')
+                    raise TypeError('`datetime` must be a string, date, or datetime')
 
         original_date_wayback = original_date.strftime(URL_DATE_FORMAT)
         url = ARCHIVE_URL_TEMPLATE.format(timestamp=original_date_wayback,
