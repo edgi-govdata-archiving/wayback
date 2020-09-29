@@ -74,6 +74,50 @@ In Development
 
 - :func:`wayback.memento_url_data` now returns 3 values instead of 2. The last value is a string representing the playback mode (see above description of the new ``mode`` parameter on :meth:`wayback.WaybackClient.get_memento` for more about playback modes).
 
+- :meth:`wayback.WaybackClient.get_memento` now returns a :class:`wayback.Memento` instance instead of a ``requests.Response`` object. It has a similar interface, but provides more useful information about the Memento than just the HTTP response from Wayback. For example, ``memento.url`` is the original URL the memento is a capture of (e.g. ``http://www.noaa.gov/``) rather than the Wayback URL (e.g. ``http://web.archive.org/web/20180816111911id_/http://www.noaa.gov/``). You can still get the full Wayback URL from ``memento.memento_url``.
+
+  You can check out the full API docs for :class:`wayback.Memento`, but here’s a quick guide to what’s available:
+
+  .. code-block:: python
+
+     memento = client.get_memento('http://web.archive.org/web/20180816111911id_/http://www.noaa.gov/home',
+                                  exact=False)
+
+     # These values were previously not available except by parsing
+     # `memento.url`. The old `memento.url` is now `memento.memento_url`.
+     memento.url == 'http://www.noaa.gov/'
+     memento.timestamp == datetime.datetime(2018, 8, 29, 8, 8, 49, tzinfo=timezone.utc)
+     memento.mode == 'id_'
+
+     # Used to be `memento.url`:
+     memento.memento_url == 'http://web.archive.org/web/20180816111911id_/http://www.noaa.gov/'
+
+     # Used to be a list of `Response` objects, now a *tuple* of Mementos. It
+     # Still lists only the redirects that are actual Mementos and not part of
+     # Wayback's internal machinery:
+     memento.history == (Memento<url='http://noaa.gov/home'>,)
+
+     # Used to be a list of `Response` objects, now a *tuple* URL strings:
+     memento.debug_history == ('http://web.archive.org/web/20180816111911id_/http://noaa.gov/home',
+                               'http://web.archive.org/web/20180829092926id_/http://noaa.gov/home',
+                               'http://web.archive.org/web/20180829092926id_/http://noaa.gov/')
+
+     # Headers now only lists headers from the original, archived response, not
+     # additional headers from the Wayback Machine itself. (If there's
+     # important information you needed in the headers, file an issue and let
+     # us know! We'd like to surface that kind of information as attributes on
+     # the Memento now.
+     memento.headers = {'header_name': 'header_value',
+                        'another_header': 'another_value',
+                        'and': 'so on'}
+
+     # Same as before:
+     memento.status_code
+     memento.ok
+     memento.is_redirect
+     memento.encoding
+     memento.content
+     memento.text
 
 **New Features:**
 
