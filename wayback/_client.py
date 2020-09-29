@@ -957,6 +957,10 @@ class WaybackClient(_utils.DepthCountedContext):
             return memento
 
 
+# NOTE: We use `py:attribute::` listings instead of the standard Numpy
+# "Attributes" section (which is formatted like function parameters) because it
+# doesn't do a great job of handling properties. See this issue:
+# https://github.com/numpy/numpydoc/issues/299
 class Memento:
     """
     Represents a memento (an archived HTTP response). This object is similar to
@@ -976,41 +980,81 @@ class Memento:
         >>>     do_something()
         >>> # Connection is automatically closed here.
 
-    Attributes
-    ----------
-    encoding : str
+    **Fields**
+
+    .. py:attribute:: encoding
+        :type: str
+
         The text encoding of the response, e.g. ``'utf-8'``.
-    headers : dict
+
+    .. py:attribute:: headers
+        :type: dict
+
         A dict representing the headers of the archived HTTP response. The keys
         are case-sensitive.
-    history : tuple of Memento
+
+    .. py:attribute:: history
+        :type: tuple[wayback.Memento]
+
         A list of :class:`wayback.Memento` objects that were redirects and were
         followed to produce this memento.
-    debug_history : tuple of str
+
+    .. py:attribute:: debug_history
+        :type: tuple[str]
+
         List of all URLs redirects followed in order to produce this memento.
         These are "memento URLs" -- that is, they are absolute URLs to the
         Wayback machine like
         ``http://web.archive.org/web/20180816111911id_/http://www.noaa.gov/``,
         rather than URLs of captured redirects, like ``http://www.noaa.gov``.
         Many of the URLs in this list do not represent actual mementos.
-    status_code : int
+
+    .. py:attribute:: status_code
+        :type: int
+
         The HTTP status code of the archived HTTP response.
-    mode : str
+
+    .. py:attribute:: mode
+        :type: str
+
         The playback mode used to produce the Memento.
-    timestamp : datetime
+
+    .. py:attribute:: timestamp
+        :type: datetime.datetime
+
         The time the memento was originally captured. This includes ``tzinfo``,
         and will always be in UTC.
-    url : str
+
+    .. py:attribute:: url
+        :type: str
+
         The URL that the memento represents, e.g. ``http://www.noaa.gov``.
-    memento_url : str
+
+    .. py:attribute:: memento_url
+        :type: str
+
         The URL at which the memento was fetched from the Wayback Machine, e.g.
         ``http://web.archive.org/web/20180816111911id_/http://www.noaa.gov/``.
-    media : str
-        The media type of the response.
-    ok
-    is_redirect
-    content
-    text
+
+    .. py:attribute:: ok
+        :type: bool
+
+        Whether the response had an non-error status (i.e. < 400).
+
+    .. py:attribute:: is_redirect
+        :type: bool
+
+        Whether the response was a redirect (i.e. had a 3xx status).
+
+    .. py:attribute:: content
+        :type: bytes
+
+        The body of the archived HTTP response in bytes.
+
+    .. py:attribute:: text
+        :type: str
+
+        The body of the archived HTTP response decoded as a string.
     """
     encoding = None
     headers = None
