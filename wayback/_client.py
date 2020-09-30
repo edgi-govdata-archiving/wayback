@@ -56,11 +56,9 @@ CDX_SEARCH_URL = 'http://web.archive.org/cdx/search/cdx'
 # CDX_SEARCH_URL = 'http://web.archive.org/web/timemap/cdx'
 
 ARCHIVE_URL_TEMPLATE = 'http://web.archive.org/web/{timestamp}{mode}/{url}'
-ARCHIVE_RAW_URL_TEMPLATE = 'http://web.archive.org/web/{timestamp}id_/{url}'
-ARCHIVE_VIEW_URL_TEMPLATE = 'http://web.archive.org/web/{timestamp}/{url}'
 URL_DATE_FORMAT = '%Y%m%d%H%M%S'
 MEMENTO_URL_PATTERN = re.compile(
-    r'^http(?:s)?://web.archive.org/web/(\d+)(?:id_)?/(.+)$')
+    r'^http(?:s)?://web.archive.org/web/(\d+)(?:\w\w_)?/(.+)$')
 REDUNDANT_HTTP_PORT = re.compile(r'^(http://[^:/]+):80(.*)$')
 REDUNDANT_HTTPS_PORT = re.compile(r'^(https://[^:/]+):443(.*)$')
 DATA_URL_START = re.compile(r'data:[\w]+/[\w]+;base64')
@@ -174,7 +172,7 @@ These attributes contain information provided directly by CDX.
 .. py:attribute:: timestamp
 
    The capture time represented as a :class:`datetime.datetime`, such as
-   :data:`datetime.datetime(1996, 12, 31, 23, 58, 47)`.
+   :data:`datetime.datetime(1996, 12, 31, 23, 58, 47, tzinfo=timezone.utc)`.
 
 .. py:attribute:: url
 
@@ -690,19 +688,20 @@ class WaybackClient(_utils.DepthCountedContext):
                 status_code=status_code,
                 length=length,
                 timestamp=capture_time,
-                raw_url=ARCHIVE_RAW_URL_TEMPLATE.format(
-                    timestamp=data.timestamp, url=data.url),
-                view_url=ARCHIVE_VIEW_URL_TEMPLATE.format(
-                    timestamp=data.timestamp, url=data.url)
+                raw_url=ARCHIVE_URL_TEMPLATE.format(
+                    url=data.url,
+                    timestamp=data.timestamp,
+                    mode=Mode.original.value),
+                view_url=ARCHIVE_URL_TEMPLATE.format(
+                    url=data.url,
+                    timestamp=data.timestamp,
+                    mode=Mode.view.value)
             )
             count += 1
             yield data
 
         return count
 
-    # TODO: make this nicer by taking an optional date, so `url` can be a
-    # memento url or an original URL + plus date and we'll compose a memento
-    # URL.
     def get_memento(self, url, datetime=None, mode=Mode.original, *,
                     exact=True, exact_redirects=None,
                     target_window=24 * 60 * 60, follow_redirects=True):
