@@ -9,36 +9,67 @@ In Development
 
 **Breaking Changes:**
 
-- The order of parameters in :meth:`wayback.WaybackClient.get_memento` has changed, and additional parameters for the date and mode of memento playback have been added. You can now call ``get_memento()`` with the URL and time you want the memento of, rather than needing to compose a complete Wayback memento URL. That is, you can now call:
+- The parameters in :meth:`wayback.WaybackClient.get_memento` have been re-organized. All parameters from earlier versions must be specified with keywords instead of positionally, and two new parameters (``datetime`` and ``mode``) have been added.
 
-  .. code-block:: python
+  1. If you previously used keywords, your code will be fine and no changes are necessary:
 
-     client.get_memento('http://www.noaa.gov/',
-                        datetime(2018, 8, 16, 11, 19, 11))
+     .. code-block:: python
 
-  Instead of:
+        client.get_memento('http://web.archive.org/web/20180816111911id_/http://www.noaa.gov/',
+                           exact=False,
+                           exact_redirects=False,
+                           target_window=3600)
 
-  .. code-block:: python
+     However, positional parameters like the following will now cause problems, and you should switch to the above keyword form:
 
-     client.get_memento('http://web.archive.org/web/20180816111911id_/http://www.noaa.gov/')
+     .. code-block:: python
 
-  All the old parameters besides ``url`` must now be used as keywords. For example, you must now call:
+        client.get_memento('http://web.archive.org/web/20180816111911id_/http://www.noaa.gov/',
+                           False,
+                           False,
+                           3600)
 
-  .. code-block:: python
+  2. The ``url`` parameter can now be a non-Wayback URL or a :class:`wayback.CdxRecord`, and new ``datetime`` and ``mode`` parameters have been added.
 
-     client.get_memento('http://www.noaa.gov/',
-                        datetime(2018, 8, 16, 11, 19, 11),
-                        'id',
-                        exact=False)
+     Previously, if you wanted to get a memento of what ``http://www.noaa.gov/`` looked like on August 1, 2018, you would have had to construct a complex string to pass to ``get_memento()``:
 
-  Instead of:
+     .. code-block:: python
 
-  .. code-block:: python
+        client.get_memento('http://web.archive.org/web/20180801000000id_/http://www.noaa.gov/')
 
-     client.get_memento('http://www.noaa.gov/',
-                        datetime(2018, 8, 16, 11, 19, 11),
-                        'id',
-                        False)
+     Now you can pass the URL and time you want as separate parameters:
+
+     .. code-block:: python
+
+        client.get_memento('http://www.noaa.gov/', datetime.datetime(2018, 8, 1))
+
+        # The time can also be passed as the `datetime` keyword:
+        client.get_memento('http://www.noaa.gov/', datetime=datetime.datetime(2018, 8, 1))
+
+     If the ``datetime`` parameter does not specify a timezone, it will be interpreted as UTC (*not* local time).
+
+     You can also pass a :class:`wayback.CdxRecord` that you received from :meth:`wayback.WaybackClient.search` instead of a URL and time:
+
+     .. code-block:: python
+
+        for record in client.search('http://www.noaa.gov/'):
+            client.get_memento(record)
+
+     Finally, you can now specify the *playback mode* of a memento using the ``mode`` parameter:
+
+     .. code-block:: python
+
+        client.get_memento('http://www.noaa.gov/',
+                           datetime=datetime.datetime(2018, 8, 1),
+                           mode=wayback.Mode.view)
+
+     The default mode is :attr:`wayback.Mode.original`, which returns the exact HTTP response body as was originally archived. Other modes reformat the response body so it’s more friendly for browsing by changing the URLs or links, images, etc. and by adding informational content to the page (or other file type) about the memento you are viewing. They are the modes typically used when you view the Wayback Machine in a web browser.
+
+     Don’t worry, though — complete Wayback URLs are still supported. This code still works fine:
+
+     .. code-block:: python
+
+        client.get_memento('http://web.archive.org/web/20180801000000id_/http://www.noaa.gov/')
 
 
 **New Features:**
