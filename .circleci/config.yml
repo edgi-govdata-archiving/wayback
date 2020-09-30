@@ -9,9 +9,9 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - cache_v4-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
-            - cache_v4-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-
-            - cache_v4-wayback-<< parameters.python-version >>-{{ arch }}-
+            - cache_v5-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
+            - cache_v5-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-
+            - cache_v5-wayback-<< parameters.python-version >>-{{ arch }}-
 
       - run:
           name: Install Dependencies
@@ -24,7 +24,7 @@ commands:
             pip install -r requirements-dev.txt  # extra requirements for tests, docs
 
       - save_cache:
-          key: cache_v4-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
+          key: cache_v5-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
           paths:
             - ~/venv
 
