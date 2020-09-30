@@ -4,6 +4,7 @@ import pytest
 import vcr
 from .._utils import SessionClosedError
 from .._client import (CdxRecord,
+                       Mode,
                        WaybackSession,
                        WaybackClient,
                        original_url_for_memento)
@@ -235,11 +236,20 @@ def test_get_memento_with_mode():
     with WaybackClient() as client:
         response = client.get_memento('https://www.fws.gov/birds/',
                                       datetime=datetime(2017, 11, 24, 15, 13, 15),
-                                      mode='')
+                                      mode=Mode.view)
         assert 'http://web.archive.org/web/20171124151315/https://www.fws.gov/birds/' == response.url
 
         response = client.get_memento('https://www.fws.gov/birds/',
                                       datetime=datetime(2017, 11, 24, 15, 13, 15))
+        assert 'http://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/' == response.url
+
+
+@ia_vcr.use_cassette()
+def test_get_memento_with_mode_string():
+    with WaybackClient() as client:
+        response = client.get_memento('https://www.fws.gov/birds/',
+                                      datetime=datetime(2017, 11, 24, 15, 13, 15),
+                                      mode='id_')
         assert 'http://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/' == response.url
 
 

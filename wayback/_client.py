@@ -16,6 +16,7 @@ Other potentially useful links:
 from base64 import b32encode
 from collections import namedtuple
 from datetime import date, datetime as Datetime, timezone
+from enum import Enum
 import hashlib
 import logging
 import re
@@ -72,6 +73,60 @@ DATA_URL_START = re.compile(r'data:[\w]+/[\w]+;base64')
 EMAILISH_URL = re.compile(r'^https?://(<*)((mailto:)|([^/@:]*@))')
 # Make sure it roughly starts with a valid protocol + domain + port?
 URL_ISH = re.compile(r'^[\w+\-]+://[^/?=&]+\.\w\w+(:\d+)?(/|$)')
+
+
+class Mode(Enum):
+    """
+    An enum describing the playback mode of a memento. When requesting a
+    memento (e.g. with :meth:`wayback.WaybackClient.get_memento`), you can use
+    these values to determine how the response body should be formatted.
+
+    For more details, see:
+    http://archive-access.sourceforge.net/projects/wayback/administrator_manual.html#Archival_URL_Replay_Mode
+
+    Examples
+    --------
+    >>> waybackClient.get_memento('https://noaa.gov/',
+    >>>                           datetime=datetime.datetime(2018, 1, 2),
+    >>>                           mode=wayback.Mode.view)
+
+    **Values**
+
+    .. py:attribute:: original
+
+        Returns the HTTP response body as originally captured.
+
+    .. py:attribute:: view
+
+        Formats the response body so it can be viewed with a web
+        browser. URLs for links and subresources like scripts, stylesheets,
+        images, etc. will be modified to point to the equivalent memento in the
+        Wayback Machine so that the resulting page looks as similar as possible
+        to how it would have appeared when originally captured. It's mainly meant
+        for use with HTML pages. This is the playback mode you typically use when
+        browsing the Wayback Machine with a web browser.
+
+    .. py:attribute:: javascript
+
+        Formats the response body by updating URLs, similar
+        to ``Mode.view``, but designed for JavaScript instead of HTML.
+
+    .. py:attribute:: css
+
+        Formats the response body by updating URLs, similar to
+        ``Mode.view``, but designed for CSS instead of HTML.
+
+    .. py:attribute:: image
+
+        formats the response body similar to ``Mode.view``, but
+        designed for image files instead of HTML.
+    """
+    original = 'id_'
+    view = ''
+    javascript = 'js_'
+    css = 'cs_'
+    image = 'im_'
+
 
 CdxRecord = namedtuple('CdxRecord', (
     # Raw CDX values
@@ -648,9 +703,9 @@ class WaybackClient(_utils.DepthCountedContext):
     # TODO: make this nicer by taking an optional date, so `url` can be a
     # memento url or an original URL + plus date and we'll compose a memento
     # URL.
-    def get_memento(self, url, datetime=None, mode='id', *, exact=True,
-                    exact_redirects=None, target_window=24 * 60 * 60,
-                    follow_redirects=True):
+    def get_memento(self, url, datetime=None, mode=Mode.original, *,
+                    exact=True, exact_redirects=None,
+                    target_window=24 * 60 * 60, follow_redirects=True):
         """
         Fetch a memento (an archived HTTP response) from the Wayback Machine.
 
@@ -677,21 +732,16 @@ class WaybackClient(_utils.DepthCountedContext):
             The time at which to retrieve a memento of ``url``. If ``url`` is
             a :class:`wayback.CdxRecord` or full memento URL, this parameter
             can be omitted.
-        mode : str, optional
-            The playback mode of the memento. Possible values:
-
-            - ``''``: Response body is altered so that it could be loaded in a
-              browser from the Wayback Machine website.
-            - ``'id'``: Response body is unaltered (default).
-            - ``'js'``: Response body is altered for browsers and treated as
-              JavaScript.
-            - ``'cs'``: Response body is altered for browsers and treated as
-              CSS.
-            - ``'im'``: Response body is altered for browsers and treated as an
-              image.
+        mode : wayback.Mode or str, optional
+            The playback mode of the memento. This determines whether the
+            content of the returned memento is exactly as originally captured
+            (the default) or modified in some way. See :class:`wayback.Mode`
+            for a description of possible values.
 
             For more details, see:
             http://archive-access.sourceforge.net/projects/wayback/administrator_manual.html#Archival_URL_Replay_Mode
+
+            Default: :py:attr:`wayback.Mode.original`
 
         exact : boolean, optional
             If false and the requested memento either doesn't exist or can't be
@@ -735,8 +785,19 @@ class WaybackClient(_utils.DepthCountedContext):
         if exact_redirects is None:
             exact_redirects = exact
 
-        if mode and not mode.endswith('_'):
-            mode += '_'
+        # Convert Mode enum values to strings rather than the other way around.
+        # There is a very real possibility of other undocumented modes and we
+        # don't want converting them via `Mode(str_value)` to raise an error
+        # and make them impossible to use. Wayback folks have been unclear
+        # about exactly what all the options are, and it sounds kind of like
+        # this is an old and kind of messy part of the codebase, where things
+        # may have been changed around a few times and the people who worked on
+        # it are now off doing other things.
+        if isinstance(mode, Mode):
+            mode = mode.value
+        elif mode is not None and not isinstance(mode, str):
+            raise TypeError('`mode` must be a wayback.Mode or string '
+                            f'(received {mode!r})')
 
         if isinstance(url, CdxRecord):
             original_date = url.timestamp
