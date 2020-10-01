@@ -204,6 +204,36 @@ def test_get_memento_with_string_date():
 
 
 @ia_vcr.use_cassette()
+def test_get_memento_handles_non_utc_datetimes():
+    with WaybackClient() as client:
+        # Note the offset between requested_time and expected_timestamp.
+        requested_time = datetime(2017, 11, 24, 8, 13, 15,
+                                  tzinfo=timezone(timedelta(hours=-7)))
+        expected_time = '20171124151315'
+        expected_url = (f'http://web.archive.org/web/{expected_time}id_/'
+                        'https://www.fws.gov/birds/')
+
+        response = client.get_memento('https://www.fws.gov/birds/',
+                                      datetime=requested_time)
+        assert expected_url == response.url
+
+
+@ia_vcr.use_cassette()
+def test_get_memento_with_invalid_date_type():
+    with WaybackClient() as client:
+        with pytest.raises(TypeError):
+            client.get_memento('https://www.fws.gov/birds/',
+                               datetime=True)
+
+
+@ia_vcr.use_cassette()
+def test_get_memento_with_requires_datetime_with_regular_url():
+    with WaybackClient() as client:
+        with pytest.raises(TypeError):
+            client.get_memento('https://www.fws.gov/birds/')
+
+
+@ia_vcr.use_cassette()
 def test_get_memento_with_archive_url():
     with WaybackClient() as client:
         response = client.get_memento(
@@ -254,12 +284,29 @@ def test_get_memento_with_mode_string():
 
 
 @ia_vcr.use_cassette()
+def test_get_memento_with_mode_boolean_is_not_allowed():
+    with WaybackClient() as client:
+        with pytest.raises(TypeError):
+            client.get_memento('https://www.fws.gov/birds/',
+                               datetime=datetime(2017, 11, 24, 15, 13, 15),
+                               mode=True)
+
+
+@ia_vcr.use_cassette()
 def test_get_memento_with_redirects():
     with WaybackClient() as client:
         response = client.get_memento(
             'http://web.archive.org/web/20180808094144id_/https://www.epa.gov/ghgreporting/san5779-factsheet')
         assert len(response.history) == 1        # memento redirects
         assert len(response.debug_history) == 2  # actual HTTP redirects
+
+
+@ia_vcr.use_cassette()
+def test_get_memento_raises_for_mementos_that_redirect_in_a_loop():
+    with WaybackClient() as client:
+        with pytest.raises(MementoPlaybackError):
+            client.get_memento(
+                'http://web.archive.org/web/20200925075402id_/https://link.springer.com/article/10.1007/s00382-012-1331-2')
 
 
 @ia_vcr.use_cassette()
