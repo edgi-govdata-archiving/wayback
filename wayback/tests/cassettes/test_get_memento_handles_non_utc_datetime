@@ -5,7 +5,7 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - wayback/0.2.4.post9.dev0+g0fed660 (+https://github.com/edgi-govdata-archiving/wayback)
+      - wayback/0.2.4.post17.dev0+g64f9364 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
     uri: http://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/
   response:
@@ -453,7 +453,7 @@ interactions:
       Content-Type:
       - text/html
       Date:
-      - Tue, 29 Sep 2020 23:19:21 GMT
+      - Thu, 01 Oct 2020 01:55:51 GMT
       Link:
       - <https://www.fws.gov/birds/>; rel="original", <http://web.archive.org/web/timemap/link/https://www.fws.gov/birds/>;
         rel="timemap"; type="application/link-format", <http://web.archive.org/web/https://www.fws.gov/birds/>;
@@ -468,14 +468,14 @@ interactions:
       Server:
       - nginx/1.15.8
       Server-Timing:
-      - esindex;dur=0.011059, exclusion.robots.policy;dur=0.339846, exclusion.robots;dur=0.355646,
-        RedisCDXSource;dur=202.738760, PetaboxLoader3.datanode;dur=426.311293, captures_list;dur=837.874270,
-        LoadShardBlock;dur=590.226482, CDXLines.iter;dur=23.917466, PetaboxLoader3.resolve;dur=557.864758,
-        load_resource;dur=954.231417
+      - CDXLines.iter;dur=39.348423, LoadShardBlock;dur=84.148153, PetaboxLoader3.datanode;dur=59.468829,
+        PetaboxLoader3.resolve;dur=55.289672, exclusion.robots.policy;dur=0.434554,
+        esindex;dur=0.020524, RedisCDXSource;dur=1.221761, captures_list;dur=168.721678,
+        load_resource;dur=85.222307, exclusion.robots;dur=0.455185
       Transfer-Encoding:
       - chunked
       X-App-Server:
-      - wwwb-app57
+      - wwwb-app29
       X-Archive-Orig-Date:
       - Fri, 24 Nov 2017 15:13:14 GMT
       X-Archive-Orig-Strict-Transport-Security:
