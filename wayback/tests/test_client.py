@@ -306,7 +306,8 @@ def test_get_memento_raises_for_mementos_that_redirect_in_a_loop():
     with WaybackClient() as client:
         with pytest.raises(MementoPlaybackError):
             client.get_memento(
-                'http://web.archive.org/web/20200925075402id_/https://link.springer.com/article/10.1007/s00382-012-1331-2')
+                'http://web.archive.org/web/20200925075402id_/'
+                'https://link.springer.com/article/10.1007/s00382-012-1331-2')
 
 
 @ia_vcr.use_cassette()
