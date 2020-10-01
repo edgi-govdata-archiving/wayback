@@ -71,6 +71,8 @@ In Development
 
         client.get_memento('http://web.archive.org/web/20180801000000id_/http://www.noaa.gov/')
 
+- :func:`wayback.memento_url_data` now returns 3 values instead of 2. The last value is a string representing the playback mode (see above description of the new ``mode`` parameter on :meth:`wayback.WaybackClient.get_memento` for more about playback modes).
+
 
 **New Features:**
 
