@@ -63,19 +63,24 @@ Above, we access the metadata for the oldest memento on nasa.gov, stored in
 the variable ``record``. Starting from where we left off, we'll access the
 *content* of the memento and do a very simple analysis.
 
-The Wayback Machine provides multiple modes to view the data it has captured.
-There is a copy edited for human viewers on the web, available via the ``''``
-mode, and there is the original copy of what was captured when the page
-was originally scraped, availabe via the ``'id_'`` mode. For analysis
-purposes, we generally want ``'id_'``.
+The Wayback Machine provides multiple *playback modes* to view the data it has
+captured. The :attr:`wayback.Mode.view` mode is a copy edited for human viewers
+on the web, and the :attr:`wayback.Mode.original` mode is the original copy of
+what was captured when the page was scraped. For analysis purposes, we
+generally want ``original``. (Check the documentation of :class:`wayback.Mode`
+for a few other, less commonly used modes.)
 
-Let's download the raw content using ``WaybackClient``. (You could download the
-content directly with an HTTP library like ``requests``, but ``WaybackClient``
-adds extra tools for dealing with Wayback Machine servers.)
+Let's download the original content using ``WaybackClient``. (You could
+download the content directly with an HTTP library like ``requests``, but
+``WaybackClient`` adds extra tools for dealing with Wayback Machine servers.)
 
 .. ipython:: python
 
-   response = client.get_memento(record, mode='id_')
+   from wayback import Mode
+
+   # `Mode.original` is the default and doesn't need to be explicitly set;
+   # we've set it here to show how you might choose other modes.
+   response = client.get_memento(record, mode=Mode.original)
    content = response.content.decode()
 
 We can use the built-in method ``count`` on strings to count the number of
