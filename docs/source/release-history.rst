@@ -24,6 +24,7 @@ In Development
 
      .. code-block:: python
 
+        # This no longer works.
         client.get_memento('http://web.archive.org/web/20180816111911id_/http://www.noaa.gov/',
                            False,
                            False,
@@ -46,7 +47,7 @@ In Development
         # The time can also be passed as the `datetime` keyword:
         client.get_memento('http://www.noaa.gov/', datetime=datetime.datetime(2018, 8, 1))
 
-     If the ``datetime`` parameter does not specify a timezone, it will be interpreted as UTC (*not* local time).
+     If the ``datetime`` parameter does not specify a timezone, it will be treated as UTC (*not* local time).
 
      You can also pass a :class:`wayback.CdxRecord` that you received from :meth:`wayback.WaybackClient.search` instead of a URL and time:
 
