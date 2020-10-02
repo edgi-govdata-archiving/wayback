@@ -15,7 +15,8 @@ Other potentially useful links:
 
 from base64 import b32encode
 from collections import namedtuple
-from datetime import date, datetime, timezone
+from datetime import date, datetime as Datetime, timezone
+from enum import Enum
 import hashlib
 import logging
 import re
@@ -54,11 +55,10 @@ CDX_SEARCH_URL = 'http://web.archive.org/cdx/search/cdx'
 # TODO: support new/upcoming CDX API
 # CDX_SEARCH_URL = 'http://web.archive.org/web/timemap/cdx'
 
-ARCHIVE_RAW_URL_TEMPLATE = 'http://web.archive.org/web/{timestamp}id_/{url}'
-ARCHIVE_VIEW_URL_TEMPLATE = 'http://web.archive.org/web/{timestamp}/{url}'
+ARCHIVE_URL_TEMPLATE = 'http://web.archive.org/web/{timestamp}{mode}/{url}'
 URL_DATE_FORMAT = '%Y%m%d%H%M%S'
 MEMENTO_URL_PATTERN = re.compile(
-    r'^http(?:s)?://web.archive.org/web/(\d+)(?:id_)?/(.+)$')
+    r'^http(?:s)?://web.archive.org/web/(\d+)(\w\w_)?/(.+)$')
 REDUNDANT_HTTP_PORT = re.compile(r'^(http://[^:/]+):80(.*)$')
 REDUNDANT_HTTPS_PORT = re.compile(r'^(https://[^:/]+):443(.*)$')
 DATA_URL_START = re.compile(r'data:[\w]+/[\w]+;base64')
@@ -71,6 +71,60 @@ DATA_URL_START = re.compile(r'data:[\w]+/[\w]+;base64')
 EMAILISH_URL = re.compile(r'^https?://(<*)((mailto:)|([^/@:]*@))')
 # Make sure it roughly starts with a valid protocol + domain + port?
 URL_ISH = re.compile(r'^[\w+\-]+://[^/?=&]+\.\w\w+(:\d+)?(/|$)')
+
+
+class Mode(Enum):
+    """
+    An enum describing the playback mode of a memento. When requesting a
+    memento (e.g. with :meth:`wayback.WaybackClient.get_memento`), you can use
+    these values to determine how the response body should be formatted.
+
+    For more details, see:
+    http://archive-access.sourceforge.net/projects/wayback/administrator_manual.html#Archival_URL_Replay_Mode
+
+    Examples
+    --------
+    >>> waybackClient.get_memento('https://noaa.gov/',
+    >>>                           datetime=datetime.datetime(2018, 1, 2),
+    >>>                           mode=wayback.Mode.view)
+
+    **Values**
+
+    .. py:attribute:: original
+
+        Returns the HTTP response body as originally captured.
+
+    .. py:attribute:: view
+
+        Formats the response body so it can be viewed with a web
+        browser. URLs for links and subresources like scripts, stylesheets,
+        images, etc. will be modified to point to the equivalent memento in the
+        Wayback Machine so that the resulting page looks as similar as possible
+        to how it would have appeared when originally captured. It's mainly meant
+        for use with HTML pages. This is the playback mode you typically use when
+        browsing the Wayback Machine with a web browser.
+
+    .. py:attribute:: javascript
+
+        Formats the response body by updating URLs, similar
+        to ``Mode.view``, but designed for JavaScript instead of HTML.
+
+    .. py:attribute:: css
+
+        Formats the response body by updating URLs, similar to
+        ``Mode.view``, but designed for CSS instead of HTML.
+
+    .. py:attribute:: image
+
+        formats the response body similar to ``Mode.view``, but
+        designed for image files instead of HTML.
+    """
+    original = 'id_'
+    view = ''
+    javascript = 'js_'
+    css = 'cs_'
+    image = 'im_'
+
 
 CdxRecord = namedtuple('CdxRecord', (
     # Raw CDX values
@@ -118,7 +172,7 @@ These attributes contain information provided directly by CDX.
 .. py:attribute:: timestamp
 
    The capture time represented as a :class:`datetime.datetime`, such as
-   :data:`datetime.datetime(1996, 12, 31, 23, 58, 47)`.
+   :data:`datetime.datetime(1996, 12, 31, 23, 58, 47, tzinfo=timezone.utc)`.
 
 .. py:attribute:: url
 
@@ -147,7 +201,7 @@ def split_memento_url(memento_url):
     if match is None:
         raise ValueError(f'"{memento_url}" is not a memento URL')
 
-    return match.group(2), match.group(1)
+    return match.group(3), match.group(1), match.group(2)
 
 
 def clean_memento_url_component(url):
@@ -162,23 +216,36 @@ def clean_memento_url_component(url):
 
 def memento_url_data(memento_url):
     """
-    Get the original URL and date that a memento URL represents a capture of.
+    Get the original URL, time, and mode that a memento URL represents a
+    capture of.
+
+    Returns
+    -------
+    url : str, datetime.datetime, str
+        The URL that the memento is a capture of.
+    time : datetime.datetime
+        The time the memento was captured in the UTC timezone.
+    mode : str
+        The playback mode.
 
     Examples
     --------
-    Extract original URL and date.
+    Extract original URL, time and mode.
 
-    >>> url = ('http://web.archive.org/web/20170813195036/'
+    >>> url = ('http://web.archive.org/web/20170813195036id_/'
     ...        'https://arpa-e.energy.gov/?q=engage/events-workshops')
     >>> memento_url_data(url)
     ('https://arpa-e.energy.gov/?q=engage/events-workshops',
-     datetime.datetime(2017, 8, 13, 19, 50, 36))
+     datetime.datetime(2017, 8, 13, 19, 50, 36, tzinfo=timezone.utc),
+     'id_')
     """
-    raw_url, timestamp = split_memento_url(memento_url)
+    raw_url, timestamp, mode = split_memento_url(memento_url)
     url = clean_memento_url_component(raw_url)
-    date = datetime.strptime(timestamp, URL_DATE_FORMAT)
+    date = (Datetime
+            .strptime(timestamp, URL_DATE_FORMAT)
+            .replace(tzinfo=timezone.utc))
 
-    return url, date
+    return url, date, mode
 
 
 def original_url_for_memento(memento_url):
@@ -549,7 +616,7 @@ class WaybackClient(_utils.DepthCountedContext):
             if value is not None:
                 if isinstance(value, str):
                     final_query[key] = value
-                elif isinstance(value, datetime):
+                elif isinstance(value, Datetime):
                     # Make sure we have either a naive datetime (assumed to
                     # represent UTC) or convert the datetime to UTC.
                     if value.tzinfo:
@@ -608,7 +675,7 @@ class WaybackClient(_utils.DepthCountedContext):
                 else:
                     status_code = int(data.status_code)
                 length = int(data.length)
-                capture_time = (datetime.strptime(data.timestamp,
+                capture_time = (Datetime.strptime(data.timestamp,
                                                   URL_DATE_FORMAT)
                                         .replace(tzinfo=timezone.utc))
             except Exception as err:
@@ -633,20 +700,22 @@ class WaybackClient(_utils.DepthCountedContext):
                 status_code=status_code,
                 length=length,
                 timestamp=capture_time,
-                raw_url=ARCHIVE_RAW_URL_TEMPLATE.format(
-                    timestamp=data.timestamp, url=data.url),
-                view_url=ARCHIVE_VIEW_URL_TEMPLATE.format(
-                    timestamp=data.timestamp, url=data.url)
+                raw_url=ARCHIVE_URL_TEMPLATE.format(
+                    url=data.url,
+                    timestamp=data.timestamp,
+                    mode=Mode.original.value),
+                view_url=ARCHIVE_URL_TEMPLATE.format(
+                    url=data.url,
+                    timestamp=data.timestamp,
+                    mode=Mode.view.value)
             )
             count += 1
             yield data
 
         return count
 
-    # TODO: make this nicer by taking an optional date, so `url` can be a
-    # memento url or an original URL + plus date and we'll compose a memento
-    # URL.
-    def get_memento(self, url, exact=True, exact_redirects=None,
+    def get_memento(self, url, datetime=None, mode=Mode.original, *,
+                    exact=True, exact_redirects=None,
                     target_window=24 * 60 * 60, follow_redirects=True):
         """
         Fetch a memento (an archived HTTP response) from the Wayback Machine.
@@ -660,9 +729,31 @@ class WaybackClient(_utils.DepthCountedContext):
 
         Parameters
         ----------
-        url : string
-            URL of memento in Wayback, e.g.
-            ``http://web.archive.org/web/20180816111911id_/http://www.nws.noaa.gov/sp/``.
+        url : string or CdxRecord
+            URL to retrieve a memento of. This can be any of:
+
+            - A normal URL (e.g. ``http://www.noaa.gov/``). When using this
+              form, you must also specify ``datetime``.
+            - A ``CdxRecord`` retrieved from
+              :meth:`wayback.WaybackClient.search`.
+            - A URL of the memento in Wayback, e.g.
+              ``http://web.archive.org/web/20180816111911id_/http://www.noaa.gov/``
+
+        datetime : datetime.datetime or datetime.date or str, optional
+            The time at which to retrieve a memento of ``url``. If ``url`` is
+            a :class:`wayback.CdxRecord` or full memento URL, this parameter
+            can be omitted.
+        mode : wayback.Mode or str, optional
+            The playback mode of the memento. This determines whether the
+            content of the returned memento is exactly as originally captured
+            (the default) or modified in some way. See :class:`wayback.Mode`
+            for a description of possible values.
+
+            For more details, see:
+            http://archive-access.sourceforge.net/projects/wayback/administrator_manual.html#Archival_URL_Replay_Mode
+
+            Default: :py:attr:`wayback.Mode.original`
+
         exact : boolean, optional
             If false and the requested memento either doesn't exist or can't be
             played back, this returns the closest-in-time memento to the
@@ -705,6 +796,50 @@ class WaybackClient(_utils.DepthCountedContext):
         if exact_redirects is None:
             exact_redirects = exact
 
+        # Convert Mode enum values to strings rather than the other way around.
+        # There is a very real possibility of other undocumented modes and we
+        # don't want converting them via `Mode(str_value)` to raise an error
+        # and make them impossible to use. Wayback folks have been unclear
+        # about exactly what all the options are, and it sounds kind of like
+        # this is an old and kind of messy part of the codebase, where things
+        # may have been changed around a few times and the people who worked on
+        # it are now off doing other things.
+        if isinstance(mode, Mode):
+            mode = mode.value
+        elif not isinstance(mode, str):
+            raise TypeError('`mode` must be a wayback.Mode or string '
+                            f'(received {mode!r})')
+
+        if isinstance(url, CdxRecord):
+            original_date = url.timestamp
+            original_url = url.url
+        else:
+            try:
+                original_url, original_date, mode = memento_url_data(url)
+            except ValueError:
+                original_url = url
+                if isinstance(datetime, str):
+                    original_date = (Datetime
+                                     .strptime(datetime, URL_DATE_FORMAT)
+                                     .replace(tzinfo=timezone.utc))
+                elif isinstance(datetime, Datetime):
+                    if datetime.tzinfo:
+                        original_date = datetime.astimezone(timezone.utc)
+                    else:
+                        original_date = datetime.replace(tzinfo=timezone.utc)
+                elif isinstance(datetime, date):
+                    original_date = Datetime(datetime.year, datetime.month, datetime.day, tzinfo=timezone.utc)
+                elif not datetime:
+                    raise TypeError('You must specify `datetime` when using a '
+                                    'normal URL for get_memento()')
+                else:
+                    raise TypeError('`datetime` must be a string, date, or datetime')
+
+        original_date_wayback = original_date.strftime(URL_DATE_FORMAT)
+        url = ARCHIVE_URL_TEMPLATE.format(timestamp=original_date_wayback,
+                                          mode=mode,
+                                          url=original_url)
+
         with _utils.rate_limited(calls_per_second=30, group='get_memento'):
             # Correctly following redirects is actually pretty complicated. In
             # the simplest case, a memento is a simple web page, and that's
@@ -735,7 +870,7 @@ class WaybackClient(_utils.DepthCountedContext):
             debug_history = []
             urls = set()
             previous_was_memento = False
-            orginal_url, original_date = memento_url_data(url)
+
             response = self.session.request('GET', url, allow_redirects=False)
             protocol_and_www = re.compile(r'^https?://(www\d?\.)?')
             while True:
@@ -756,7 +891,7 @@ class WaybackClient(_utils.DepthCountedContext):
                        (len(history) == 0 and not exact) or
                        (len(history) > 0 and (previous_was_memento or not exact_redirects))):
                         current_url = original_url_for_memento(response.url)
-                        target_url, target_date = memento_url_data(response.next.url)
+                        target_url, target_date, _ = memento_url_data(response.next.url)
                         # A non-memento redirect is generally taking us to the
                         # closest-in-time capture of the same URL. Note that is
                         # NOT the next capture -- i.e. the one that would have

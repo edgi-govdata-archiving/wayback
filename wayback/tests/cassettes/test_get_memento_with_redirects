@@ -1,0 +1,457 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.2.4.post9.dev0+g0fed660 (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: http://web.archive.org/web/20180808094144id_/https://www.epa.gov/ghgreporting/san5779-factsheet
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - max-age=1800
+      Connection:
+      - keep-alive
+      Content-Security-Policy:
+      - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
+        web.archive.org analytics.archive.org pragma.archivelab.org'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Tue, 29 Sep 2020 23:18:15 GMT
+      Link:
+      - <https://www.epa.gov/ghgreporting/san5779-factsheet>; rel="original", <http://web.archive.org/web/timemap/link/https://www.epa.gov/ghgreporting/san5779-factsheet>;
+        rel="timemap"; type="application/link-format", <http://web.archive.org/web/https://www.epa.gov/ghgreporting/san5779-factsheet>;
+        rel="timegate", <http://web.archive.org/web/20150921195814/http://www2.epa.gov/ghgreporting/san5779-factsheet>;
+        rel="first memento"; datetime="Mon, 21 Sep 2015 19:58:14 GMT", <http://web.archive.org/web/20180807093520/https://www.epa.gov/ghgreporting/san5779-factsheet>;
+        rel="prev memento"; datetime="Tue, 07 Aug 2018 09:35:20 GMT", <http://web.archive.org/web/20180808094144/https://www.epa.gov/ghgreporting/san5779-factsheet>;
+        rel="memento"; datetime="Wed, 08 Aug 2018 09:41:44 GMT", <http://web.archive.org/web/20180809102441/https://www.epa.gov/ghgreporting/san5779-factsheet>;
+        rel="next memento"; datetime="Thu, 09 Aug 2018 10:24:41 GMT", <http://web.archive.org/web/20200927103712/https://www.epa.gov/ghgreporting/san5779-factsheet>;
+        rel="last memento"; datetime="Sun, 27 Sep 2020 10:37:12 GMT"
+      Location:
+      - http://web.archive.org/web/20180808094144id_/https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming
+      Memento-Datetime:
+      - Wed, 08 Aug 2018 09:41:44 GMT
+      Server:
+      - nginx/1.15.8
+      Server-Timing:
+      - LoadShardBlock;dur=263.639014, exclusion.robots;dur=0.328327, PetaboxLoader3.datanode;dur=337.217569,
+        captures_list;dur=363.996943, CDXLines.iter;dur=18.788320, load_resource;dur=561.706085,
+        esindex;dur=0.012665, PetaboxLoader3.resolve;dur=179.138723, exclusion.robots.policy;dur=0.312665,
+        RedisCDXSource;dur=53.034850
+      Transfer-Encoding:
+      - chunked
+      X-App-Server:
+      - wwwb-app102
+      X-Archive-Orig-Cache-Control:
+      - no-cache, must-revalidate
+      X-Archive-Orig-Connection:
+      - close
+      X-Archive-Orig-Content-Length:
+      - '0'
+      X-Archive-Orig-Date:
+      - Wed, 08 Aug 2018 09:41:44 GMT
+      X-Archive-Orig-Expires:
+      - Wed, 08 Aug 2018 09:41:44 GMT
+      X-Archive-Orig-Server:
+      - Apache
+      X-Archive-Orig-Strict-Transport-Security:
+      - max-age=31536000; preload;
+      X-Archive-Orig-X-Content-Type-Options:
+      - nosniff
+      X-Archive-Orig-X-Redirect-ID:
+      - '87045'
+      X-Archive-Orig-X-UA-Compatible:
+      - IE=Edge
+      X-Archive-Screenname:
+      - '0'
+      X-Archive-Src:
+      - epa.gov3-20180302-214937/IA-FOC-epa.gov3-20180808091414-00000.warc.gz
+      X-Cache-Key:
+      - httpweb.archive.org/web/20180808094144id_/https://www.epa.gov/ghgreporting/san5779-factsheetUS
+      X-Page-Cache:
+      - MISS
+      X-location:
+      - All
+      X-ts:
+      - '301'
+    status:
+      code: 301
+      message: Moved Permanently
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.2.4.post9.dev0+g0fed660 (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: http://web.archive.org/web/20180808094144id_/https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming
+  response:
+    body:
+      string: ''
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Tue, 29 Sep 2020 23:18:17 GMT
+      Location:
+      - http://web.archive.org/web/20180808104500id_/https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming
+      Server:
+      - nginx/1.15.8
+      Server-Timing:
+      - LoadShardBlock;dur=1368.549596, exclusion.robots;dur=0.328292, PetaboxLoader3.datanode;dur=537.847837,
+        captures_list;dur=1479.072065, CDXLines.iter;dur=21.985989, esindex;dur=0.012177,
+        PetaboxLoader3.resolve;dur=795.852493, exclusion.robots.policy;dur=0.313821,
+        RedisCDXSource;dur=51.499485
+      X-App-Server:
+      - wwwb-app102
+      X-Archive-Redirect-Reason:
+      - found capture at 20180808104500
+      X-Archive-Screenname:
+      - '0'
+      X-Cache-Key:
+      - httpweb.archive.org/web/20180808094144id_/https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warmingUS
+      X-Page-Cache:
+      - MISS
+      X-location:
+      - All
+      X-ts:
+      - '302'
+    status:
+      code: 302
+      message: FOUND
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.2.4.post9.dev0+g0fed660 (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: http://web.archive.org/web/20180808104500id_/https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Cache-Control:
+      - max-age=1800
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
+        web.archive.org analytics.archive.org pragma.archivelab.org'
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Tue, 29 Sep 2020 23:18:18 GMT
+      Link:
+      - <https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming>;
+        rel="original", <http://web.archive.org/web/timemap/link/https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming>;
+        rel="timemap"; type="application/link-format", <http://web.archive.org/web/https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming>;
+        rel="timegate", <http://web.archive.org/web/20150922221816/http://www2.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming>;
+        rel="first memento"; datetime="Tue, 22 Sep 2015 22:18:16 GMT", <http://web.archive.org/web/20180807105844/https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming>;
+        rel="prev memento"; datetime="Tue, 07 Aug 2018 10:58:44 GMT", <http://web.archive.org/web/20180808104500/https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming>;
+        rel="memento"; datetime="Wed, 08 Aug 2018 10:45:00 GMT", <http://web.archive.org/web/20180809112339/https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming>;
+        rel="next memento"; datetime="Thu, 09 Aug 2018 11:23:39 GMT", <http://web.archive.org/web/20200926182800/https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming>;
+        rel="last memento"; datetime="Sat, 26 Sep 2020 18:28:00 GMT"
+      Memento-Datetime:
+      - Wed, 08 Aug 2018 10:45:00 GMT
+      Server:
+      - nginx/1.15.8
+      Server-Timing:
+      - exclusion.robots;dur=0.281202, esindex;dur=0.018126, CDXLines.iter;dur=22.416030,
+        exclusion.robots.policy;dur=0.267380, PetaboxLoader3.resolve;dur=67.044030,
+        load_resource;dur=409.373925, PetaboxLoader3.datanode;dur=611.257159, LoadShardBlock;dur=395.590861,
+        captures_list;dur=459.812762, RedisCDXSource;dur=4.799063
+      Transfer-Encoding:
+      - chunked
+      X-App-Server:
+      - wwwb-app31
+      X-Archive-Orig-Cache-Control:
+      - no-cache, must-revalidate
+      X-Archive-Orig-Connection:
+      - close
+      X-Archive-Orig-Content-Language:
+      - en
+      X-Archive-Orig-Content-Length:
+      - '40310'
+      X-Archive-Orig-Date:
+      - Wed, 08 Aug 2018 10:45:00 GMT
+      X-Archive-Orig-Expires:
+      - Wed, 08 Aug 2018 10:45:00 GMT
+      X-Archive-Orig-Link:
+      - <https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming>;
+        rel="canonical",<https://www.epa.gov/node/95755>; rel="shortlink"
+      X-Archive-Orig-Server:
+      - Apache
+      X-Archive-Orig-Strict-Transport-Security:
+      - max-age=31536000; preload;
+      X-Archive-Orig-X-Content-Type-Options:
+      - nosniff
+      X-Archive-Orig-X-Frame-Options:
+      - SAMEORIGIN
+      X-Archive-Orig-X-Generator:
+      - Drupal 7 (http://drupal.org)
+      X-Archive-Orig-X-UA-Compatible:
+      - IE=Edge
+      X-Archive-Screenname:
+      - '0'
+      X-Archive-Src:
+      - epa.gov3-20180302-214937/IA-FOC-epa.gov3-20180808091414-00000.warc.gz
+      X-Cache-Key:
+      - httpweb.archive.org/web/20180808104500id_/https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warmingUS
+      X-Page-Cache:
+      - MISS
+      X-location:
+      - All
+      X-ts:
+      - '200'
+    status:
+      code: 200
+      message: OK
+version: 1
