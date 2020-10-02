@@ -204,6 +204,17 @@ def test_get_memento_with_string_datetime():
 
 
 @ia_vcr.use_cassette()
+def test_get_memento_with_inexact_string_datetime():
+    with WaybackClient() as client:
+        response = client.get_memento('https://www.fws.gov/birds/',
+                                      datetime='20171124151310',
+                                      exact=False)
+        assert 'Link' in response.headers
+        original, *_ = response.headers['Link'].split(',', 1)
+        assert original == '<https://www.fws.gov/birds/>; rel="original"'
+
+
+@ia_vcr.use_cassette()
 def test_get_memento_handles_non_utc_datetime():
     with WaybackClient() as client:
         # Note the offset between requested_time and expected_timestamp.

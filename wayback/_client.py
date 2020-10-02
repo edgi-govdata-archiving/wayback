@@ -241,8 +241,9 @@ def memento_url_data(memento_url):
     """
     raw_url, timestamp, mode = split_memento_url(memento_url)
     url = clean_memento_url_component(raw_url)
-    date = Datetime.strptime(timestamp, URL_DATE_FORMAT)
-    date = date.replace(tzinfo=timezone.utc)
+    date = (Datetime
+            .strptime(timestamp, URL_DATE_FORMAT)
+            .replace(tzinfo=timezone.utc))
 
     return url, date, mode
 
@@ -818,7 +819,9 @@ class WaybackClient(_utils.DepthCountedContext):
             except ValueError:
                 original_url = url
                 if isinstance(datetime, str):
-                    original_date = Datetime.strptime(datetime, URL_DATE_FORMAT)
+                    original_date = (Datetime
+                                     .strptime(datetime, URL_DATE_FORMAT)
+                                     .replace(tzinfo=timezone.utc))
                 elif isinstance(datetime, Datetime):
                     if datetime.tzinfo:
                         original_date = datetime.astimezone(timezone.utc)
