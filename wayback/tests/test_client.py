@@ -139,6 +139,46 @@ def test_search_raises_for_blocked_urls():
             next(versions)
 
 
+@pytest.mark.parametrize('parameter', ('output', 'fl', 'showDupeCount',
+                                       'showSkipCount', 'lastSkipTimestamp',
+                                       'showNumPages', 'showPagedIndex'))
+def test_search_raises_for_unsupported_parameters(parameter):
+    with pytest.raises(ValueError) as excinfo:
+        with WaybackClient() as client:
+            versions = client.search(**{'url': 'https://energystar.gov/',
+                                        parameter: 'arbitrary_value'})
+            next(versions)
+
+    assert parameter in str(excinfo.value)
+
+
+def test_search_removes_malformed_entries(requests_mock):
+    """
+    The CDX index contains many lines for things that can't actually be
+    archived and will have no corresponding memento, like `mailto:` and `data:`
+    URLs. We should be stripping these out.
+
+    Because these are rare and hard to get all in a single CDX query that isn't
+    *huge*, we use a made-up mock for this one instead of a VCR recording. All
+    the lines in the mock file are lines from real CDX queries (we lost track
+    of the specific cases that triggered that one, and it was *very* rare).
+    """
+    with open(Path(__file__).parent / 'test_files' / 'malformed_cdx.txt') as f:
+        bad_cdx_data = f.read()
+
+    with WaybackClient() as client:
+        requests_mock.get('http://web.archive.org/cdx/search/cdx'
+                          '?url=https%3A%2F%2Fepa.gov%2F%2A'
+                          '&from=20200418000000&to=20200419000000'
+                          '&showResumeKey=true&resolveRevisits=true',
+                          [{'status_code': 200, 'text': bad_cdx_data}])
+        records = client.search('https://epa.gov/*',
+                                from_date=datetime(2020, 4, 18),
+                                to_date=datetime(2020, 4, 19))
+
+        assert 2 == len(list(records))
+
+
 class TestOriginalUrlForMemento:
     def test_extracts_url(self):
         url = original_url_for_memento(
