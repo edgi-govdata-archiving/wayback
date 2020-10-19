@@ -198,7 +198,7 @@ def test_get_memento_should_fail_for_non_playbackable_mementos():
                 'http://web.archive.org/web/20170929002712id_/https://www.fws.gov/birds/')
 
 
-# @ia_vcr.use_cassette()
+@ia_vcr.use_cassette()
 def test_get_memento_target_window():
     with WaybackClient() as client:
         response = client.get_memento('http://web.archive.org/web/20171101000000id_/'
@@ -209,7 +209,7 @@ def test_get_memento_target_window():
         assert memento_time == datetime(2017, 11, 24, 15, 13, 15)
 
 
-# @ia_vcr.use_cassette()
+@ia_vcr.use_cassette()
 def test_get_memento_raises_when_memento_is_outside_target_window():
     with pytest.raises(MementoPlaybackError):
         with WaybackClient() as client:
