@@ -5,7 +5,7 @@ Release History
 v0.2.5 (2020-10-19)
 -------------------
 
-This release fixes a bug where the ``target_window`` parameter for :meth:`wayback.WaybackClient.get_memento` did not work correctly if the memento you were redirected to was off by more than a day. See `#53 <https://github.com/edgi-govdata-archiving/wayback/pull/53>`_ for more.
+This release fixes a bug where the ``target_window`` parameter for :meth:`wayback.WaybackClient.get_memento` did not work correctly if the memento you were redirected to was off by more than a day from the reequested time. See `#53 <https://github.com/edgi-govdata-archiving/wayback/pull/53>`_ for more.
 
 
 v0.2.4 (2020-09-07)
