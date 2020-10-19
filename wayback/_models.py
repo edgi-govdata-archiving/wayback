@@ -78,9 +78,11 @@ And these attributes are synthesized from the information provided by CDX.
 class Memento:
     """
     Represents a memento (an archived HTTP response). This object is similar to
-    an response object from the popular "Requests" package, although it has
-    some differences designed to help differentiate and manage historical
-    information vs. current metadata about the stored memento.
+    a response object from the popular "Requests" package, although it has some
+    differences designed to differentiate historical information vs. current
+    metadata about the stored memento (for example, the ``headers`` attribute
+    lists the headers recorded in the memento, and does not include additional
+    headers that provide metadata about the Wayback Machine).
 
     Note that, like an HTTP response, this object represents a potentially open
     network connection to the Wayback Machine. Reading the ``content`` or
@@ -249,7 +251,12 @@ class Memento:
     @classmethod
     def parse_memento_headers(cls, raw_headers):
         """
-        Extract historical headers from the Memento's HTTP response.
+        Extract historical headers from the Memento HTTP response's headers.
+
+        Parameters
+        ----------
+        raw_headers : dict
+            A dict of HTTP headers from the Memento's HTTP response.
 
         Returns
         -------

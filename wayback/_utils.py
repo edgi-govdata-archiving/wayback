@@ -78,16 +78,11 @@ def ensure_utc_datetime(value):
         raise TypeError('`datetime` must be a string, date, or datetime')
 
 
-def split_memento_url(memento_url):
-    'Extract the raw date and URL components from a memento URL.'
-    match = MEMENTO_URL_PATTERN.match(memento_url)
-    if match is None:
-        raise ValueError(f'"{memento_url}" is not a memento URL')
-
-    return match.group(3), match.group(1), match.group(2) or ''
-
-
 def clean_memento_url_component(url):
+    """
+    Attempt to fix encoding or other issues with the target URL that was
+    embedded in a memento URL.
+    """
     # A URL *may* be percent encoded, decode ONLY if so (we don’t want to
     # accidentally decode the querystring if there is one)
     lower_url = url.lower()
@@ -104,7 +99,7 @@ def memento_url_data(memento_url):
 
     Returns
     -------
-    url : str, datetime.datetime, str
+    url : str
         The URL that the memento is a capture of.
     time : datetime.datetime
         The time the memento was captured in the UTC timezone.
@@ -122,9 +117,13 @@ def memento_url_data(memento_url):
      datetime.datetime(2017, 8, 13, 19, 50, 36, tzinfo=timezone.utc),
      'id_')
     """
-    raw_url, timestamp, mode = split_memento_url(memento_url)
-    url = clean_memento_url_component(raw_url)
-    date = parse_timestamp(timestamp)
+    match = MEMENTO_URL_PATTERN.match(memento_url)
+    if match is None:
+        raise ValueError(f'"{memento_url}" is not a memento URL')
+
+    url = clean_memento_url_component(match.group(3))
+    date = parse_timestamp(match.group(1))
+    mode = match.group(2) or ''
 
     return url, date, mode
 
