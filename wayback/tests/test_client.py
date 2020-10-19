@@ -274,8 +274,7 @@ def test_get_memento_with_archive_url():
         assert 200 == memento.status_code
         assert memento.ok
         assert not memento.is_redirect
-        assert {'Content-Encoding': 'gzip',
-                'Content-Type': 'text/html',
+        assert {'Content-Type': 'text/html',
                 'Date': 'Fri, 24 Nov 2017 15:13:14 GMT',
                 'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
                 'Transfer-Encoding': 'chunked'} == memento.headers

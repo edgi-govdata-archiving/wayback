@@ -265,7 +265,9 @@ class Memento:
 
         # Headers that are also needed for a browser to handle the played-back
         # memento are *not* prefixed, so we need to copy over each of those.
-        for unprefixed in ('Content-Type', 'Content-Encoding'):
+        # NOTE: Historical 'Content-Encoding' headers cannot be determined from
+        # the Wayback Machine; we shouldn't pick up `Content-Encoding` here.
+        for unprefixed in ('Content-Type',):
             if unprefixed in raw_headers:
                 headers[unprefixed] = raw_headers[unprefixed]
 
