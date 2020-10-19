@@ -80,6 +80,12 @@ In Development
 - :meth:`wayback.WaybackClient.get_memento` now takes a ``follow_redirects`` parameter. If false, *historical* redirects (i.e. redirects that happened when the requested memento was captured) are not followed. It defaults to ``True``, which is matches the old behavior of this method.
 
 
+v0.2.5 (2020-10-19)
+-------------------
+
+This release fixes a bug where the ``target_window`` parameter for :meth:`wayback.WaybackClient.get_memento` did not work correctly if the memento you were redirected to was off by more than a day from the requested time. See `#53 <https://github.com/edgi-govdata-archiving/wayback/pull/53>`_ for more.
+
+
 v0.2.4 (2020-09-07)
 -------------------
 

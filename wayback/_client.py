@@ -898,7 +898,7 @@ class WaybackClient(_utils.DepthCountedContext):
                         # been produced by an earlier memento redirect -- it's
                         # just the *closest* one. The first job here is to make
                         # sure it fits within our target window.
-                        if abs(target_date - original_date).seconds <= target_window:
+                        if abs(target_date - original_date).total_seconds() <= target_window:
                             # The redirect will point to the closest-in-time
                             # SURT URL, which will often not be an exact URL
                             # match. If we aren't looking for exact matches,

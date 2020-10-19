@@ -7,7 +7,8 @@ from .._client import (CdxRecord,
                        Mode,
                        WaybackSession,
                        WaybackClient,
-                       original_url_for_memento)
+                       original_url_for_memento,
+                       memento_url_data)
 from ..exceptions import MementoPlaybackError, RateLimitError, BlockedSiteError
 
 
@@ -367,6 +368,27 @@ def test_get_memento_should_fail_for_non_playbackable_mementos():
         with pytest.raises(MementoPlaybackError):
             client.get_memento(
                 'http://web.archive.org/web/20170929002712id_/https://www.fws.gov/birds/')
+
+
+@ia_vcr.use_cassette()
+def test_get_memento_target_window():
+    with WaybackClient() as client:
+        response = client.get_memento('https://www.fws.gov/birds/',
+                                      datetime(2017, 11, 1),
+                                      exact=False,
+                                      target_window=25 * 24 * 60 * 60)
+        _, memento_time, _ = memento_url_data(response.url)
+        assert memento_time == datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc)
+
+
+@ia_vcr.use_cassette()
+def test_get_memento_raises_when_memento_is_outside_target_window():
+    with pytest.raises(MementoPlaybackError):
+        with WaybackClient() as client:
+            client.get_memento('https://www.fws.gov/birds/',
+                               datetime(2017, 11, 1),
+                               exact=False,
+                               target_window=24 * 60 * 60)
 
 
 @ia_vcr.use_cassette()
