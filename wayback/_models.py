@@ -31,7 +31,7 @@ These attributes contain information provided directly by CDX.
 .. py:attribute:: length
 
    Size of captured content in bytes, such as :data:`2767`. This may be
-   innacurate. If the record is a "revisit record", indicated by MIME type
+   inaccurate. If the record is a "revisit record", indicated by MIME type
    :data:`'warc/revisit'`, the length seems to be the length of the reference,
    not the length of the content itself.
 
