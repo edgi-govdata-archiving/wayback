@@ -1,10 +1,131 @@
 from collections import defaultdict
 from contextlib import contextmanager
+from datetime import date, datetime, timezone
+import re
 import requests
 import requests.adapters
 import threading
 import time
+import urllib.parse
 from .exceptions import SessionClosedError
+
+
+URL_DATE_FORMAT = '%Y%m%d%H%M%S'
+MEMENTO_URL_PATTERN = re.compile(
+    r'^http(?:s)?://web.archive.org/web/(\d+)(\w\w_)?/(.+)$')
+
+
+def format_timestamp(value):
+    """
+    Format a value as a Wayback-style timestamp string.
+
+    Parameters
+    ----------
+    value : str or datetime.datetime or datetime.date
+
+    Returns
+    -------
+    str
+    """
+    if isinstance(value, str):
+        return value
+    elif isinstance(value, datetime):
+        # Make sure we have either a naive datetime (assumed to
+        # represent UTC) or convert the datetime to UTC.
+        if value.tzinfo:
+            value_utc = value.astimezone(timezone.utc)
+        else:
+            value_utc = value
+        return value_utc.strftime(URL_DATE_FORMAT)
+    elif isinstance(value, date):
+        return value.strftime(URL_DATE_FORMAT)
+    else:
+        raise TypeError('Timestamp must be a datetime, date, or string')
+
+
+def parse_timestamp(time_string):
+    """
+    Given a Wayback-style timestamp string, return an equivalent ``datetime``.
+    """
+    return (datetime
+            .strptime(time_string, URL_DATE_FORMAT)
+            .replace(tzinfo=timezone.utc))
+
+
+def ensure_utc_datetime(value):
+    """
+    Given a datetime, date, or Wayback-style timestamp string, return an
+    equivalent datetime in UTC.
+
+    Parameters
+    ----------
+    value : str or datetime.datetime or datetime.date
+
+    Returns
+    -------
+    datetime.datetime
+    """
+    if isinstance(value, str):
+        return parse_timestamp(value)
+    elif isinstance(value, datetime):
+        if value.tzinfo:
+            return value.astimezone(timezone.utc)
+        else:
+            return value.replace(tzinfo=timezone.utc)
+    elif isinstance(value, date):
+        return datetime(value.year, value.month, value.day, tzinfo=timezone.utc)
+    else:
+        raise TypeError('`datetime` must be a string, date, or datetime')
+
+
+def clean_memento_url_component(url):
+    """
+    Attempt to fix encoding or other issues with the target URL that was
+    embedded in a memento URL.
+    """
+    # A URL *may* be percent encoded, decode ONLY if so (we don’t want to
+    # accidentally decode the querystring if there is one)
+    lower_url = url.lower()
+    if lower_url.startswith('http%3a') or lower_url.startswith('https%3a'):
+        url = urllib.parse.unquote(url)
+
+    return url
+
+
+def memento_url_data(memento_url):
+    """
+    Get the original URL, time, and mode that a memento URL represents a
+    capture of.
+
+    Returns
+    -------
+    url : str
+        The URL that the memento is a capture of.
+    time : datetime.datetime
+        The time the memento was captured in the UTC timezone.
+    mode : str
+        The playback mode.
+
+    Examples
+    --------
+    Extract original URL, time and mode.
+
+    >>> url = ('http://web.archive.org/web/20170813195036id_/'
+    ...        'https://arpa-e.energy.gov/?q=engage/events-workshops')
+    >>> memento_url_data(url)
+    ('https://arpa-e.energy.gov/?q=engage/events-workshops',
+     datetime.datetime(2017, 8, 13, 19, 50, 36, tzinfo=timezone.utc),
+     'id_')
+    """
+    match = MEMENTO_URL_PATTERN.match(memento_url)
+    if match is None:
+        raise ValueError(f'"{memento_url}" is not a memento URL')
+
+    url = clean_memento_url_component(match.group(3))
+    date = parse_timestamp(match.group(1))
+    mode = match.group(2) or ''
+
+    return url, date, mode
 
 
 _last_call_by_group = defaultdict(int)

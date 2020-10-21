@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"><!-- InstanceBegin template="/Templates/home.dwt.php" codeOutsideHTMLIsLocked="false" -->
+<!--<![endif]-->
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>U.S. Fish &amp; Wildlife Service - Migratory Bird Program | Conserving America's Birds</title>
+<!-- InstanceEndEditable -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="shortcut icon" href="/birds/favicon.ico?" type="image/x-icon">
+<link rel="apple-touch-icon" href="/birds/apple-touch-icon.png" />
+
+<script src="/birdhabitat/js/vendor/modernizr-2.6.2.min.js"></script>
+<script type="text/javascript" src="//use.typekit.net/dhg2ksl.js"></script>
+<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+<!-- THIS IS THE TYPEKIT HOSTED BY BLUEWATER
+<script type="text/javascript" src="//use.typekit.net/xmt4eti.js"></script>
+<script type="text/javascript">try{Typekit.load();}catch(e){}</script> -->
+
+<link rel="stylesheet" href="/birdhabitat/css/normalize.min.css">
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" type="text/css">
+<link type="text/css" rel="stylesheet" media="all" href="/birdhabitat/css/mobile-menu/jquery.mmenu.css" />
+<link type="text/css" rel="stylesheet" media="all" href="/birdhabitat/css/mobile-menu/extensions/jquery.mmenu.positioning.css" />
+<link rel="stylesheet" href="/birdhabitat/css/main.css">
+<link rel="stylesheet" href="/birdhabitat/css/custom-styling.css">
+<!-- InstanceBeginEditable name="head" -->
+<!--edit <head> data here-->
+<meta name="google-site-verification" content="P-7u2YYPVRbLDLfQrAV737B5lDn-HIl3FU15agfYFNQ">
+<!-- InstanceEndEditable -->
+<!-- InstanceParam name="News Row 2 Optional" type="boolean" value="true" -->
+</head>
+
+<body class="home-page">
+<!--this wrapping div is used for the mobile nav-->
+<div>
+
+<header id="masthead">
+	<div id="skip"><a href="#content">Skip to Main Content</a></div>
+	<div class="wrap" id="main-logo">
+		<div class="logo"><a href="https://www.fws.gov"><img src="/birdhabitat/img/framework/logo.png" width="143" height="171" alt="U.S. Fish & Wildlife Service - Department of the Interior"/></a></div>
+	</div>
+	
+	<div class="row-1">
+		<div class="wrap">
+			<!--<h1><a href="http://www.fws.gov">U.S. Fish &amp; Wildlife Service</a></h1>-->
+      <div class="logo"><a href="https://www.fws.gov"><img src="/birdhabitat/img/framework/us-fish-and-wildlife-service.png" width="168" height="14" alt="U.S. Fish &amp; Wildlife Service"></a></div>
+			<nav>
+				<ul>
+					<li class="home"><a href="/birds/index.php"><i class="fa fa-fw fa-home"></i> <span>Home</span></a></li>
+					<li class="about"><a href="/birds/about-us.php"><i class="fa fa-fw fa-tree"></i> About Us</a></li>
+                    <li class="faqs"><a href="/birds/faqs.php"><i class="fa fa-fw fa-question"></i> <span>FAQs</span></a></li>
+					<li class="email button"><a href="mailto:migratorybirds@fws.gov"><i class="fa fa-fw fa-envelope"></i> <span>Email</span></a></li>
+                    <li class="facebook button"><a href="https://www.facebook.com/usfwsmigratorybirds" title="Link to non-FWS site"><i class="fa fa-fw fa-facebook"></i> <span>Facebook</span></a></li>
+					<li class="twitter button"><a href="https://twitter.com/usfwsbirds" title="Link to non-FWS site"><i class="fa fa-fw fa-twitter"></i> <span>Twitter</span></a></li>
+					<li class="search button"><a href="#"><i class="fa fa-fw fa-search"></i>  <span>Search</span></a>
+            <form accept-charset="UTF-8" action="https://search.usa.gov/search" id="search_form" method="get">
+              <div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /></div>
+              <input id="affiliate" name="affiliate" type="hidden" value="fws.gov" />
+              <label for="query">Enter Search Term(s):</label>
+              <input autocomplete="off" class="usagov-search-autocomplete" id="query" name="query" type="text" />
+              <input name="commit" type="submit" value="Search" />
+            </form>
+          </li>
+					<li class="menu button"><a href="#mobile-menu"><i class="fa fa-fw fa-bars"></i>  <span>Menu</span></a></li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+	<div class="row-2">
+		<div class="wrap"><div class="logo"><a href="/birds/index.php"><img src="/birdhabitat/img/framework/migratory-bird-program.png" width="336" height="17" alt="Migratory Bird Program | Conserving America's Birds"></a></div></div>
+	</div>
+	<div id="main-nav">
+		<div class="wrap">
+			<nav class="animenu">
+<ul>
+	<li class="first"><a href="/birds/bird-enthusiasts.php">Bird Enthusiasts</a>
+    <ul>
+      <li><a href="/birds/bird-enthusiasts/bird-watching.php">Bird Watching</a>
+        <ul>
+          <li><a href="/birds/bird-enthusiasts/bird-watching/bird-identification.php">Bird Identification</a></li>
+          <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification.php">Waterfowl Identification</a>
+          	<ul>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/american-black-duck.php">American Black Duck</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/american-wigeon.php">Aerican Wigeon</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/barrows-goldeneye.php">Barrows Goldeneye</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/black-scoter.php">Black Scoter</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/blue-winged-teal.php">Blue-winged Teal</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/brant.php">Brant</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/bufflehead.php">Bufflehead</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/canada-goose.php">Canada Goose</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/canvasback.php">Canvasback</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/cinnamon-teal.php">Cinnamon Teal</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/common-eider.php">Common Eider</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/common-goldeneye.php">Common Goldeneye</a></li>
+        	  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/common-merganser.php">Common Merganser</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/gadwall.php">Gadwall</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/greater-scaup.php">Greater Scaup</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/green-winged-teal.php">Green-winged Teal</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/harlequin-duck.php">Harlequin Duck</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/hooded-merganser.php">Hooded Merganser</a></li>
+        	  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/king-eider.php">King Eider</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/lesser-scaup.php">Lesser Scaup</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/long-tailed-duck.php">Long-tailed Duck</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/mallard.php">Mallard</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/mottled-duck.php">Mottled Duck</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/northern-pintail.php">Northern Pintail</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/northern-shoveler.php">Northern Shoveler</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/red-breasted-merganser.php">Red-breasted Merganser</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/redhead.php">Redhead</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/ring-necked-duck.php">Ring-necked Duck</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/ruddy-duck.php">Ruddy Duck</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/snow-goose.php">Snow Goose</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/surf-scoter.php">Surf Scoter</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/trumpeter-swan.php">Trumpeter Swan</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/tundra-swan.php">Tundra Swan</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/whistling-duck.php">Whistling Duck</a></li>
+        	  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/white-fronted-goose.php">White-fronted Goose</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/white-winged-scoter.php">White-winged Scoter</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/wood-duck.php">Wood Duck</a></li>
+			</ul>
+         </li>
+          <li><a href="/birds/bird-enthusiasts/bird-watching/finding-birds.php">Finding Birds</a></li>
+          <li><a href="/birds/bird-enthusiasts/bird-watching/festivals-and-events.php">Festivals &amp; Events</a></li>
+          <li><a href="/birds/bird-enthusiasts/bird-watching/birdwalk.php">Bird Walks</a></li>
+          <li><a href="/birds/bird-enthusiasts/bird-watching/youth-birding.php">Youth Birding</a></li>
+          <li><a href="/birds/bird-enthusiasts/bird-watching/bird-watching-tools.php">Bird Watching Tools</a></li>
+          <li><a href="/birds/bird-enthusiasts/bird-watching/valuing-birds.php">Economic Impact</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/bird-enthusiasts/hunting.php">Hunting</a></li>
+      <li><a href="/birds/bird-enthusiasts/backyard.php">Backyard Birding</a></li>
+      <li><a href="/birds/bird-enthusiasts/threats-to-birds.php">Threats to Birds</a>
+        <ul>
+          <li><a href="/birds/bird-enthusiasts/threats-to-birds/collisions.php">Collisions</a>
+            <ul>
+              <li><a href="/birds/bird-enthusiasts/threats-to-birds/collisions/buildings-and-glass.php">Buildings &amp; Glass</a></li>
+              <li><a href="/birds/bird-enthusiasts/threats-to-birds/collisions/road-vehicles.php">Road Vehicles</a></li>
+              <li><a href="/birds/bird-enthusiasts/threats-to-birds/collisions/aircrafts.php">Aircraft</a></li>
+              <li><a href="/birds/bird-enthusiasts/threats-to-birds/collisions/electric-utility-lines.php">Electric Utility Lines</a></li>
+              <li><a href="/birds/bird-enthusiasts/threats-to-birds/collisions/communication-towers.php">Communication Towers</a></li>
+              <li><a href="/birds/bird-enthusiasts/threats-to-birds/collisions/wind-turbines.php">Wind Turbines</a></li>
+            </ul>
+          </li>
+<li><a href="/birds/bird-enthusiasts/threats-to-birds/disease.php">Disease</a></li>
+          <li><a href="/birds/bird-enthusiasts/threats-to-birds/entrapment-entanglement-drowning.php">Entrapment, Entanglement &amp; Drowning</a></li>
+          <li><a href="/birds/bird-enthusiasts/threats-to-birds/electrocutions.php">Electrocutions</a></li>
+          <li><a href="/birds/bird-enthusiasts/threats-to-birds/habitat-impacts.php">Habitat Impacts</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/faqs.php">FAQs/Commonly Asked Questions</a></li>
+      <li><a href="/birds/about-us/timeline.php">Bird Conservation Timeline</a></li>
+    </ul>
+  </li>
+  
+  <li><a href="/birds/surveys-and-data.php">Surveys &amp; Data</a>
+    <ul>
+      <li><a href="/birds/surveys-and-data/population-surveys.php">Population Surveys</a>
+        <ul>
+          <li><a href="/birds/surveys-and-data/population-surveys/aerial-ground-crew-blog.php">Aerial &amp; Ground Crew Blog</a></li>
+        </ul>
+        </li>
+      <li><a href="/birds/surveys-and-data/bird-banding.php">Bird Banding</a>
+        <ul>
+          <li><a href="/birds/surveys-and-data/bird-banding/reporting-banded-birds.php">Reporting Banded Birds</a></li>
+          <li><a href="/birds/surveys-and-data/bird-banding/reward-bands.php">Reward Bands</a></li>
+          <li><a href="/birds/surveys-and-data/bird-banding/waterfowl-banding-blog.php">Waterfowl Banding Blog</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/surveys-and-data/harvest-surveys.php">Harvest Surveys</a>
+        <ul>
+          <li><a href="/birds/surveys-and-data/harvest-surveys/harvest-information-program.php">Harvest Information Program</a></li>
+          <li><a href="/birds/surveys-and-data/harvest-surveys/diary-surveys.php">Diary Surveys</a></li>
+          <li><a href="/birds/surveys-and-data/harvest-surveys/parts-collection-surveys.php">Parts Collection Surveys</a>          </li>
+              <li><a href="/birds/surveys-and-data/harvest-surveys/bird-and-wing-id.php">Bird &amp; Wing ID</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/surveys-and-data/webless-migratory-game-birds.php">Webless Migratory Game Birds</a>
+        <ul>
+          <li><a href="/birds/surveys-and-data/webless-migratory-game-birds/webless-migratory-game-bird-program.php">Webless Migratory Game Bird Program</a>
+            <ul>
+              <li><a href="/birds/surveys-and-data/webless-migratory-game-birds/webless-migratory-game-bird-program/request-for-proposals.php">Request for Proposals</a></li>
+              <li><a href="/birds/surveys-and-data/webless-migratory-game-birds/webless-migratory-game-bird-program/project-abstracts.php">Project Abstracts</a></li>
+            </ul>
+          </li>
+          <li><a href="/birds/surveys-and-data/webless-migratory-game-birds/priority-information-needs.php">Priority Information Needs</a></li>
+          <li><a href="/birds/surveys-and-data/webless-migratory-game-birds/american-woodcock.php">American Woodcock</a></li>
+          <li><a href="/birds/surveys-and-data/webless-migratory-game-birds/doves-and-pigeons.php">Doves &amp; Pigeons</a></li>
+          <li><a href="/birds/surveys-and-data/webless-migratory-game-birds/sandhill-cranes.php">Sandhill Cranes</a></li>
+          <li><a href="/birds/surveys-and-data/webless-migratory-game-birds/marshbirds.php">Marshbirds</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/surveys-and-data/migratory-bird-data-center.php">Migratory Bird Data Center</a></li>
+      <li><a href="/birds/surveys-and-data/aviation.php">Aviation</a></li>
+      <li><a href="/birds/surveys-and-data/reports-and-publications.php">Reports &amp; Publications</a>
+        <ul>
+          <li><a href="/birds/surveys-and-data/reports-and-publications/population-status.php">Population Status</a></li>
+          <li><a href="/birds/surveys-and-data/reports-and-publications/hunting-activity-and-harvest.php">Hunting Activity &amp; Harvest</a></li>
+          <li><a href="/birds/surveys-and-data/reports-and-publications/flyway-data-books.php">Flyway Data Books</a></li>
+          <li><a href="/birds/management/adaptive-harvest-management/publications-and-reports.php">Adaptive Harvest Management Report</a>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  
+  <li><a href="/birds/management.php">Management</a>
+    <ul>
+      <li><a href="/birds/management/managed-species.php">Managed Species</a>
+        <ul>
+          <li><a href="/birds/management/managed-species/bald-and-golden-eagle-information.php">Bald &amp; Golden Eagle Information</a>
+          <ul>
+          <li><a href="/birds/management/managed-species/eagle-management.php">Eagle Management</a></li>
+          </ul>
+          <li><a href="/birds/management/managed-species/migratory-bird-treaty-act-protected-species.php">Migratory Bird Treaty Act Protected Species (10.13 List)</a></li>
+              <li><a href="/birds/management/managed-species/birds-of-conservation-concern.php">Birds of Conservation Concern</a></li>
+              <li><a href="/birds/management/managed-species/focal-species.php">Focal Species</a></li>
+              <li><a href="/birds/management/managed-species/birds-of-management-concern.php">Birds of Management Concern</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/bird-enthusiasts/threats-to-birds.php">Managing Threats to Birds</a></li>
+      <li><a href="/birds/policies-and-regulations/incidental-take.php">Managing Incidental Take</a>
+      <li><a href="/birds/management/project-assessment-tools-and-guidance.php">Project Assessment Tools &amp; Guidance</a>
+        <ul>
+          <li><a href="/birds/management/project-assessment-tools-and-guidance/guidance-documents.php">Guidance Documents</a>
+            <ul>
+              <li><a href="/birds/management/project-assessment-tools-and-guidance/guidance-documents/communication-towers.php">Communication Tower</a></li>
+      <li><a href="/birds/management/project-assessment-tools-and-guidance/guidance-documents/electric-utility-lines.php">Electric Utility Line</a></li>
+      <li><a href="/birds/management/project-assessment-tools-and-guidance/guidance-documents/oil-and-gas.php">Oil &amp; Gas</a></li>
+      <li><a href="/birds/management/project-assessment-tools-and-guidance/guidance-documents/wind-energy.php">Wind Energy</a></li>
+      <li><a href="/birds/management/project-assessment-tools-and-guidance/guidance-documents/eagles.php">Eagles</a></li>
+            </ul>
+          </li>
+          <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures.php">Conservation Measures</a>
+          <ul>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/nationwide-standard-conservation-measures.php">Nationwide Conservation Measures</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/building-glass-and-lighting.php">Buildings, Glass &amp; Lighting</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/guidance-documents/communication-towers.php">Communication Towers</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/coal-bed-methane.php">Coal-bed Methane</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/hunting-and-fishing.php">Hunting &amp; Fishing</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/electric-utility.php">Electric Utility</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/fluid-minerals.php">Fluid Mineral Practices</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/mining-claim-markers.php">Mining Claim Markers</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/outdoor-lighting.php">Outdoor Lighting</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/transportation.php">Transportation</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/vegetation-management.php">Vegetation Management</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/guidance-documents/wind-energy.php">Wind Energy</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/guidance-documents/eagles.php">Eagles</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/sage-grouse.php">Sage-Grouse</a></li>
+            </ul>
+            </li>
+          <li><a href="/birds/management/project-assessment-tools-and-guidance/decision-support-tools.php">Decision Support Tools</a>
+          <ul>
+              <li><a href="/birds/management/project-assessment-tools-and-guidance/decision-support-tools/akn-histogram-tools.php">Avian Knowledge Network Histogram Tools</a></li>
+      <li><a href="/birds/management/project-assessment-tools-and-guidance/decision-support-tools/imr.php">Injury and Mortality Reporting System</a></li>
+      <li><a href="/birds/management/project-assessment-tools-and-guidance/decision-support-tools/ipac.php">Information for Planning and Conservation System</a></li>
+      <li><a href="/birds/management/project-assessment-tools-and-guidance/decision-support-tools/bird-data-and-information.php">Other Bird Data and Information Resources</a></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li><a href="/birds/management/adaptive-harvest-management.php">Adaptive Harvest Management</a>
+        <ul>
+          <li><a href="/birds/management/adaptive-harvest-management/publications-and-reports.php">Publications &amp; Reports</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/management/flyways.php">Flyways</a></li>
+      <li><a href="/birds/management/bird-management-plans.php">Bird Management Plans</a>
+        <ul>
+          <li><a href="/birds/management/bird-management-plans/north-american-waterfowl-management-plan.php">North American Waterfowl Management Plan</a>
+           <ul>
+              <li><a href="/birds/management/bird-management-plans/north-american-waterfowl-management-plan/integrating-waterfowl-management.php">Integrating Waterfowl Management</a></li>
+              <li><a href="/birds/management/bird-management-plans/north-american-waterfowl-management-plan/plan-committee.php">Plan Committee</a></li>
+              <li><a href="/birds/management/bird-management-plans/north-american-waterfowl-management-plan/working-groups-and-subcommittees.php">Working Groups &amp; Subcommittees</a></li>
+              <li><a href="/birds/management/bird-management-plans/north-american-waterfowl-management-plan/plan-documents.php">Plan Documents</a></li>
+              <li><a href="/birds/management/bird-management-plans/north-american-waterfowl-management-plan/plan-awards.php">Plan Awards</a></li>
+              <li><a href="/birds/management/bird-management-plans/north-american-waterfowl-management-plan/nawmp-science-support-team.php">NAWMP Science Support Team</a></li>
+            </ul>
+            </li>
+          <li><a href="/birds/management/bird-management-plans/partners-in-flight-north-american-landbird-conservation-plan.php">Partners in Flight North American Landbird Conservation Plan</a></li>
+          <li><a href="/birds/management/bird-management-plans/waterbird-conservation-for-the-americas.php">Waterbird Conservation for the Americas</a></li>
+          <li><a href="/birds/management/bird-management-plans/the-us-shorebird-conservation-plan.php">The U.S. Shorebird Conservation Plan</a></li>
+          <li><a href="/birds/management/managed-species/focal-species.php">Focal Species Plans</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/management/bird-conservation-partnership-and-initiatives.php">Bird Conservation Partnerships &amp; Initiatives</a>
+        <ul>
+          <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/council-for-the-conservation-of-migratory-birds.php">Council for the Conservation of Migratory Birds</a>
+            <ul>
+                        <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/council-for-the-conservation-of-migratory-birds/participating-council-agencies.php">Participating Council Agencies</a></li>
+                        <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/council-for-the-conservation-of-migratory-birds/partnership-agreements.php">Partnership Agreements</a></li>
+                        <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/council-for-the-conservation-of-migratory-birds/council-annual-reports.php">Council Annual Reports</a></li>
+                        <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/council-for-the-conservation-of-migratory-birds/presidential-award.php">Presidential Award</a></li>
+                        <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/council-for-the-conservation-of-migratory-birds/council-newsletter.php">Council Newsletter</a></li>
+                    
+            </ul>
+          </li>
+          <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/migratory-bird-joint-ventures.php">Migratory Bird Joint Ventures</a>
+          <ul>
+              <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/migratory-bird-joint-ventures/joint-venture-directory.php">Joint Venture Directory</a></li>
+              <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/migratory-bird-joint-ventures/map-products.php">Map Products</a></li>
+              <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/migratory-bird-joint-ventures/policy.php">Policy</a></li>
+            </ul>
+          </li>
+            <li><a href="/birds/management/flyways.php">Migratory Bird Flyways</a></li>
+          <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/north-american-bird-conservation-initiative.php">North American Bird Conservation Initiative</a></li>
+          <li><a href="/birds/grants/urban-bird-treaty.php">Urban Bird Treaty Program</a></li>
+          <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/shorebird-conservation.php">Shorebird Conservation</a></li>
+          <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/waterbird-conservation.php">Waterbird Conservation</a></li>
+          <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/partners-in-flight.php">Partners in Flight</a></li>
+          <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/waterfowl-conservation.php">Waterfowl Conservation</a></li>
+          <li><a href="/birds/about-us/International.php">International Cooperation</a></li>
+          <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/partners.php">Other Partners</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/management/training.php">Training</a>
+        <ul>
+          <li><a href="/birds/management/training/migratory-bird-conservation-a-trust-responsibility.php">Migratory Bird Conservation: A Trust Responsibility</a></li>
+          <li><a href="/birds/management/training/migratory-bird-conservation-for-federal-partners.php">Migratory Bird Conservation for Federal Partners</a></li>
+          <li><a href="/birds/management/training/basic-bird-biology.php">Basic Bird Biology</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  
+  <li><a href="/birds/grants.php">Grants</a>
+    <ul>
+      <li><a href="/birds/grants/north-american-wetland-conservation-act.php">North American Wetlands Conservation Act</a>
+        <ul>
+          <li><a href="/birds/grants/north-american-wetland-conservation-act/how-to-apply-for-a-nawca-grant.php">How to Apply for a NAWCA Grant</a></li>
+          <li><a href="/birds/grants/north-american-wetland-conservation-act/information-for-nawca-grantees.php">Information for NAWCA Grantees</a>
+            <ul>
+              <li><a href="/birds/grants/north-american-wetland-conservation-act/information-for-nawca-grantees/guidance-and-standards.php">Guidance &amp; Standards</a></li>
+              <li><a href="/birds/grants/north-american-wetland-conservation-act/information-for-nawca-grantees/forms.php">Forms</a></li>
+            </ul>
+          </li>
+          <li><a href="/birds/grants/north-american-wetland-conservation-act/standard-grants.php">Standard Grants</a>
+            <ul>
+              <li><a href="/birds/grants/north-american-wetland-conservation-act/standard-grants/united-states.php">United States</a></li>
+              <li><a href="/birds/grants/north-american-wetland-conservation-act/standard-grants/canada.php">Canada</a></li>
+              <li><a href="/birds/grants/north-american-wetland-conservation-act/standard-grants/mexico.php">Mexico</a></li>
+            </ul>
+          </li>
+          <li><a href="/birds/grants/north-american-wetland-conservation-act/nawca-project-summaries.php">NAWCA Project Summaries</a></li>
+          <li><a href="/birds/grants/north-american-wetland-conservation-act/small-grants.php">Small Grants</a></li>
+          <li><a href="/birds/grants/north-american-wetland-conservation-act/north-american-wetland-conservation-council.php">North American Wetlands Conservation Council</a></li>
+          <li><a href="/birds/grants/north-american-wetland-conservation-act/biennial-reports.php">Biennial Reports</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act.php">Neotropical Migratory Bird Conservation Act</a>
+        <ul>
+          <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/how-to-apply.php">How to Apply</a></li>
+          <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/nmbca-project-summaries.php">NMBCA Project Summaries</a></li>
+         
+          <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/information-for-nmbca-grantees.php">Information for NMBCA Grantees</a>
+            <ul>
+              <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/information-for-nmbca-grantees/managing-your-grant.php">Managing Your Grant</a></li>
+              <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/information-for-nmbca-grantees/annual-reporting-obligations.php">Annual Reporting Obligations</a></li>
+              <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/information-for-nmbca-grantees/grant-guidelines.php">Grant Guidelines</a></li>
+              <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/information-for-nmbca-grantees/faq.php">FAQ</a></li>
+            </ul>
+          </li>
+          <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/advisory-group.php">Advisory Group</a></li>
+          <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/nmbca-bird-list.php">NMBCA Bird List</a></li>
+          <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/communications-toolkit.php">Communications Toolkit</a></li>
+          <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/nmbca-espanol.php">En Español</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/grants/urban-bird-treaty.php">Urban Bird Treaty</a>
+        <ul>
+          <li><a href="/birds/grants/urban-bird-treaty/urban-bird-treaty-grant.php">Urban Bird Treaty Grant Information</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/grants/funding-sources-and-how-to-apply.php">Funding Sources &amp; How to Apply</a>
+      <ul>
+      <li><a href="/birds/grants/urban-bird-treaty/urban-bird-treaty-grant.php">Urban Bird Treaty Grant Information</a></li>
+      <li><a href="/birds/surveys-and-data/webless-migratory-game-birds/webless-migratory-game-bird-program/request-for-proposals.php">Webless Migratory Game Bird Program</a></li>
+      </ul>
+      </li>
+      <li><a href="/birds/grants/payments.php">Payments</a></li>
+    </ul>
+  </li>
+  
+  <li><a href="/birds/education.php">Education</a>
+    <ul>
+      <li><a href="/birds/education/junior-duck-stamp-conservation-program.php">Junior Duck Stamp Conservation Program</a>
+        <ul>
+          <li><a href="/birds/education/junior-duck-stamp-conservation-program/buy-junior-duck-stamps.php">Buy Junior Duck Stamps</a></li>
+          <li><a href="/birds/education/junior-duck-stamp-conservation-program/conservation-education-curriculum.php">Conservation Education Curriculum</a></li>
+          <li><a href="/birds/education/junior-duck-stamp-conservation-program/junior-duck-stamp-contest-information.php">Junior Duck Stamp Contest Information</a></li>
+          <li><a href="/birds/education/junior-duck-stamp-conservation-program/junior-duck-stamp-in-your-state.php">Junior Duck Stamp in Your State</a></li>
+          <li><a href="/birds/education/junior-duck-stamp-conservation-program/junior-duck-stamp-gallery.php">Junior Duck Stamp Gallery</a></li>
+          <li><a href="/birds/education/junior-duck-stamp-conservation-program/junior-duck-stamp-art-tour.php">Junior Duck Stamp Art Exhibit Tour</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/education/education-resources.php">Education Resources</a>
+        <ul>
+          <li><a href="/birds/bird-enthusiasts/bird-watching/youth-birding.php">Youth Birding</a></li>
+          <li><a href="/birds/education/education-resources/educators.php">Educators</a></li>
+          <li><a href="/birds/education/education-resources/parents.php">Parents</a></li>
+          <li><a href="/birds/education/education-resources/fact-sheets.php">Fact Sheets</a></li>
+          <li><a href="/birds/education/education-resources/multimedia.php">Multimedia</a></li>
+          <li><a href="/birds/education/education-resources/educational-activities.php">Activities</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/grants/urban-bird-treaty.php">Urban Birds</a></li>
+      <li><a href="/birds/education/international-migratory-bird-day.php">International Migratory Bird Day</a></li>
+    </ul>
+  </li>
+  
+  <li><a href="/birds/get-involved.php">Get Involved</a>
+    <ul>
+      <li><a href="/birds/get-involved/duck-stamp.php">Duck Stamp</a>
+        <ul>
+          <li><a href="/birds/get-involved/duck-stamp/history-of-the-federal-duck-stamp.php">History of the Federal Duck Stamp</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/buy-duck-stamp.php">Buy Duck Stamps</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/e-stamp.php">E-Stamp</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/duck-stamp-dollars-at-work.php">Duck Stamp Dollars at Work</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/duck-stamp-contest-and-event-information.php">Duck Stamp Contest &amp; Event Information</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/duck-stamp-information-for-hunters.php">Duck Stamp Information for Hunters</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/duck-stamp-information-for-birders-and-photographers.php">Duck Stamp Information for Birders &amp; Photographers</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/duck-stamp-information-for-stamp-collectors.php">Duck Stamp Information for Stamp Collectors</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/sell-duck-stamp.php">Sell Duck Stamps</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/federal-duck-stamp-gallery.php">Federal Duck Stamp Gallery</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/federal-duck-stamp-art-exhibit-tour.php">Federal Duck Stamp Art Exhibit Tour</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/duck-stamp-design-products-and-licensing-program.php">Duck Stamp Design Products &amp; Licensing Program</a></li>
+          <li><a href="/birds/education/junior-duck-stamp-conservation-program.php">Junior Duck Stamp Conservation Program</a>
+        </ul>
+      </li>
+      <li><a href="/birds/get-involved/invest-in-conservation.php">Invest in Conservation</a>
+        <ul>
+          <li><a href="/birds/get-involved/invest-in-conservation/donate.php">Donate</a></li>
+          <li><a href="/birds/get-involved/invest-in-conservation/provide-matching-funds.php">Provide Matching Funds</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/get-involved/citizen-science.php">Citizen Science</a></li>
+      <li><a href="/birds/get-involved/engaging-others.php">Engaging Others</a>
+        <ul>
+          <li><a href="/birds/get-involved/engaging-others/event.php">Special Event Tips & Examples</a></li>
+          <li><a href="/birds/get-involved/engaging-others/getting-publicity.php">Getting Publicity for Your Event</a></li>
+          <li><a href="/birds/get-involved/engaging-others/partnerships.php">Building Partnerships</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/about-us/strategicplan.php">Strategic Plan</a></li>
+    </ul>
+  </li>
+  
+  <li class="last submenus-left"><a href="/birds/policies-and-regulations.php">Policies &amp; Regulations</a>
+    <ul>
+      <li><a href="/birds/policies-and-regulations/laws-legislations.php">Laws/Legislation</a>
+        <ul>
+          <li><a href="/birds/policies-and-regulations/laws-legislations/migratory-bird-treaty-act.php">Migratory Bird Treaty Act</a></li>
+          <li><a href="/birds/policies-and-regulations/laws-legislations/migratory-bird-hunting-and-conservation-stamp-act.php">Migratory Bird Hunting &amp; Conservation Stamp Act</a></li>
+          <li><a href="/birds/policies-and-regulations/laws-legislations/bald-and-golden-eagle-protection-act.php">Bald &amp; Golden Eagle Protection Act</a></li>
+          <li><a href="/birds/policies-and-regulations/laws-legislations/other-relevant-laws.php">Other Relevant Laws</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/policies-and-regulations/policies.php">Policies</a></li>
+      <li><a href="/birds/policies-and-regulations/regulations.php">Regulations</a>
+        <ul>
+          <li><a href="/birds/policies-and-regulations/regulations/migratory-bird-hunting-regulations.php">Migratory Bird Hunting Regulations</a></li>
+          <li><a href="/birds/policies-and-regulations/regulations/national-environmental-policy-act.php">National Environmental Policy Act</a></li>
+          <li><a href="/birds/policies-and-regulations/regulations/how-regulations-are-set-the-process.php">How Regulations Are Set - The Process</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/policies-and-regulations/executive-orders.php">Executive Orders</a>
+        <ul>
+          <li><a href="/birds/policies-and-regulations/executive-orders/e0-13186.php">EO 13186</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/policies-and-regulations/federal-register-notices.php">Federal Register Notices</a></li>
+      <li><a href="/birds/policies-and-regulations/permits.php">Permits</a>
+        <ul>
+          <li><a href="/birds/policies-and-regulations/permits/regional-permit-contacts.php">Regional Permit Contacts</a></li>
+          <li><a href="/birds/policies-and-regulations/permits/permit-policies-and-regulations.php">Permit Policies &amp; Regulations</a></li>
+          <li><a href="/birds/policies-and-regulations/permits/need-a-permit.php">Need a Permit</a></li>
+        </ul>
+      </li>
+    <li><a href="/birds/policies-and-regulations/incidental-take.php">Incidental Take</a></ul>
+  </li>  
+</ul>			</nav>
+		</div>
+	</div>
+    </header>
+
+
+
+
+<!--Home Hero-->
+<div id="home-hero">
+	<div class="hero-wrap">
+		<figure>
+    <!-- InstanceBeginEditable name="Hero Image" -->
+    <!--please note that this uses responsive images-->
+    <span data-picture data-alt="">
+      <span data-src="/birdhabitat/img/home-hero/impact-02-mobile.png"></span>
+      <span data-src="/birdhabitat/img/home-hero/impact-02-desktop.png" data-media="(min-width: 481px)"></span>
+      <span data-src="/birdhabitat/img/home-hero/impact-02-fullscreen.png" data-media="(min-width: 1320px)"></span>
+      <noscript><img src="/birdhabitat/img/home-hero/impact-02-mobile.png" alt="Gadwall_GaryKramer"></noscript>
+    </span>
+    <!-- InstanceEndEditable -->
+    </figure>
+		<div class="hero-content">
+    <!-- InstanceBeginEditable name="Hero Content" -->
+		  <h1>2017 Federal Duck Stamp Art Contest!</h1>
+      <p>Bob Hautman Wins Federal Duck Stamp Contest</p>
+      <p class="button"><a href="news/170916duck-stamp.php" class="blue-button">Learn more</a></p>
+		<!-- InstanceEndEditable -->
+    </div>
+	</div>
+</div>
+
+<!--Driver to Persona Pages-->
+<div class="what-matters">
+  <div class="wrap">
+    <h2>What Matters Most?</h2>
+<div class="jump-nav">
+  <div class="label">Migratory bird resources just for you: <span>I am</span></div>
+  <div class="i-am">I am</div>
+  <div class="menu">
+    <ul>
+      <li><a href="#">select one...</a>
+        <ul>
+          <li><a href="/birds/partner.php">a partner</a></li>
+          <li><a href="/birds/hunter.php">a hunter</a></li>
+          <li><a href="/birds/birder.php">a birder</a></li>
+          <li><a href="/birds/artist.php">an artist</a></li>
+          <li><a href="/birds/media.php">the media</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>  </div>
+</div>
+
+
+<!--Main Call To Actions / Content -->
+<section class="cta">
+	<div class="wrap">
+  <!-- InstanceBeginRepeat name="Home CTAs" --><!-- InstanceBeginRepeatEntry -->
+	  <article>
+	    <figure>
+      <!-- InstanceBeginEditable name="CTA Image" -->
+      <!--Please note that this uses responsive images-->
+      <span data-picture data-alt="">
+		  <span data-src="/birdhabitat/img/home-cta/commtower-mobile.jpg"></span>
+		  <span data-src="/birdhabitat/img/home-cta/commtower.jpg" data-media="(min-width: 481px)"></span>
+					<noscript><img src="/birdhabitat/img/home-cta/commtower-mobile.jpg" alt="Coast Guard members participating in the tower climb training rotate through the begining stages of rescue training by ascending and descending from the 150-foot point of the 300-foot tower at Communications Station Kodiak Aug. 25, 2003, in Kodiak, Alaska. U.S. Coast Guard photo by Petty officer 3rd Class Sara Raymer." /></noscript>
+		  </span>
+      <!-- InstanceEndEditable -->
+      </figure>
+      <div class="text">
+        <h3><!-- InstanceBeginEditable name="CTA Title" --><strong>Communication Towers</strong><!-- InstanceEndEditable --></h3>
+        <!-- InstanceBeginEditable name="CTA Content" -->
+	    <p>Communication towers are in the <a href="bird-enthusiasts/threats-to-birds.php">list of top human-caused threats to birds</a>. The good news is, there are some things that tower owners and operators can do to ensure towers are minimizing the impacts to birds. Some of these solutions even save maintenance costs for tower owners. These recommendations can be both <a href="../migratorybirds/pdf/management/usfwscommtowerguidance.pdf" class="pdf file-icons"><span class="icon">&nbsp;</span>proactive (340.3KB)</a> and <a href="../migratorybirds/pdf/management/fccopportunitiestoreducebirdcollisions.pdf" class="pdf file-icons"><span class="icon">&nbsp;</span>retroactive (219.2KB)</a> in nature.</p>
+	    <!-- InstanceEndEditable -->
+      </div>
+      <div class="button"><!-- InstanceBeginEditable name="CTA Link" --><a href="bird-enthusiasts/threats-to-birds/collisions/communication-towers.php" class="blue-button"> Learn More</a><!-- InstanceEndEditable --></div>
+    </article>
+	<!-- InstanceEndRepeatEntry --><!-- InstanceBeginRepeatEntry -->
+	  <article>
+	    <figure>
+      <!-- InstanceBeginEditable name="CTA Image" -->
+      <!--Please note that this uses responsive images-->
+        <span data-picture data-alt="">
+					<span data-src="/birdhabitat/img/home-cta/permit-ospreyMarvinDeJongUSFWS-mobile.jpg"></span>
+					<span data-src="/birdhabitat/img/home-cta/permit-ospreyMarvinDeJongUSFWS.jpg" data-media="(min-width: 481px)"></span>
+					<noscript><img src="/birdhabitat/img/home-cta/permit-ospreyMarvinDeJongUSFWS-mobile.jpg" alt="2016 Jr. Duck Stamp
+/USFWS"/></noscript>
+		  </span>
+      <!-- InstanceEndEditable -->
+      </figure>
+      <div class="text">
+        <h3><!-- InstanceBeginEditable name="CTA Title" -->​<strong>Need a Permit</strong><!-- InstanceEndEditable --></h3>
+        <!-- InstanceBeginEditable name="CTA Content" -->
+	    <p>Permits provide a means to balance use and conservation of protected species. Permits can be important as a conservation tool, to promote long-term conservation of animals, plants, and their habitats, and encourage joint stewardship with others.</p>
+	    <!-- InstanceEndEditable -->
+      </div>
+      <div class="button"><!-- InstanceBeginEditable name="CTA Link" --><a href="policies-and-regulations/permits.php" class="blue-button">Learn More!</a><!-- InstanceEndEditable --></div>
+    </article>
+	<!-- InstanceEndRepeatEntry --><!-- InstanceBeginRepeatEntry -->
+	  <article>
+	    <figure>
+      <!-- InstanceBeginEditable name="CTA Image" -->
+      <!--Please note that this uses responsive images-->
+        <span data-picture data-alt="">
+		  <span data-src="/birdhabitat/img/home-cta/duck-stamp-contest-mobile.jpg"></span>
+		  <span data-src="/birdhabitat/img/home-cta/duck-stamp-contest.jpg" data-media="(min-width: 481px)"></span>
+					<noscript><img src="/birdhabitat/img/home-cta/duck-stamp-contest-mobile.jpg" alt="Judges voting." /></noscript>
+		  </span>
+      <!-- InstanceEndEditable -->
+      </figure>
+      <div class="text">
+        <h3><!-- InstanceBeginEditable name="CTA Title" --><strong>Art &amp; Wildlife Collide</strong><!-- InstanceEndEditable --></h3>
+        <!-- InstanceBeginEditable name="CTA Content" -->
+	    <p>The nation's oldest and most prestigious wildlife art contest takes place Sept. 15 &amp; 16 in Stevens Point, WI. Whose art will grace the 2018-2019 Federal Duck Stamp, which will raise millions of dollars for conservation? Join us in person or online to see.</p>
+	    <!-- InstanceEndEditable -->
+      </div>
+      <div class="button"><!-- InstanceBeginEditable name="CTA Link" --><a href="get-involved/duck-stamp/duck-stamp-contest-and-event-information.php" class="blue-button"> Learn More</a><!-- InstanceEndEditable --></div>
+    </article>
+	<!-- InstanceEndRepeatEntry --><!-- InstanceEndRepeat --></div>
+</section>
+
+
+<!--news-->
+<div class="news" id="home-news">
+	<div class="wrap">
+		<header>
+			<h2>Featured News</h2>
+			<div class="more-news">
+				<ul>
+					<li class="all-news"><a href="/birds/news.php">All News</a></li>
+					<li class="facebook"><a href="https://www.facebook.com/usfwsmigratorybirds" title="Link to non-FWS site"><i class="fa fa-facebook fa-fw"></i></a></li>
+					<li class="twitter"><a href="https://twitter.com/usfwsbirds" title="Link to non-FWS site"><i class="fa fa-twitter fa-fw"></i></a></li>
+				</ul>
+			</div>
+		</header>
+		<!-- InstanceBeginEditable name="News" -->
+		
+    <!--wrap up to 3 items per "row"-->
+   <div class="row first">
+     <div class="item">
+				<a href="/birds/news/171025hautman-brothers.php">
+					<span class="date">October 25, 2017</span>
+					<span class="title h3">View all 13 of the Hautman brothers' Original Winning Duck Stamp Paintings</span>
+				</a>
+        </div>
+      <div class="item">
+				<a href="/birds/news/170916duck-stamp.php">
+					<span class="date">September 16, 2017</span>
+					<span class="title h3">Minnesota Artist Bob Hautman Wins 2017 Federal Duck Stamp Art Contest</span>
+				</a>
+        </div>
+       <div class="item">
+				<a href="/birds/news/170908press-release.php">
+					<span class="date">September 9, 2017</span>
+					<span class="title h3">North American Wetlands Conservation Act Grants Announced</span>
+				</a>
+        </div>
+		</div>
+              <!--end row--> 
+              
+               <!--start row-->
+               <div class="row">
+               <div class="item">
+				<a href="/birds/news/170901adaptiveharvestmanagement.php">
+					<span class="date">September 1, 2017</span>
+					<span class="title h3">Adaptive Harvest Management Report for 2018 Hunting Season</span>
+				</a>
+        </div>
+        <div class="item">
+				<a href="/birds/news/170829duck-stamps-contest.php">
+					<span class="date">August 29, 2017</span>
+					<span class="title h3">Witness History at the 2017 Federal Duck Stamp Art Contest</span>
+				</a>
+        </div>
+    <div class="item">
+				<a href="/birds/news/170824SOTB.php">
+					<span class="date">August 24, 2017</span>
+					<span class="title h3">Report Shows Farm Bill Benefits to Birds</span>
+				</a>
+        </div>
+	   </div>
+    <!--end row-->
+    
+    <!-- InstanceEndEditable -->
+    
+  </div>
+</div>
+
+
+<div id="update"><div class="wrap">
+  <p>Last Updated: <!-- #BeginDate format:Am1 -->October 25, 2017<!-- #EndDate --></p>
+</div></div>
+
+<footer id="framework-footer">
+
+	<div id="smartfooter">
+		<div class="wrap">
+			<nav>
+<ul>
+	<li class="first"><a href="/birds/bird-enthusiasts.php">Bird Enthusiasts</a>
+    <ul>
+      <li><a href="/birds/bird-enthusiasts/bird-watching.php">Bird Watching</a>
+        <ul>
+          <li><a href="/birds/bird-enthusiasts/bird-watching/bird-identification.php">Bird Identification</a></li>
+          <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification.php">Waterfowl Identification</a>
+          	<ul>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/american-black-duck.php">American Black Duck</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/american-wigeon.php">Aerican Wigeon</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/barrows-goldeneye.php">Barrows Goldeneye</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/black-scoter.php">Black Scoter</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/blue-winged-teal.php">Blue-winged Teal</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/brant.php">Brant</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/bufflehead.php">Bufflehead</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/canada-goose.php">Canada Goose</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/canvasback.php">Canvasback</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/cinnamon-teal.php">Cinnamon Teal</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/common-eider.php">Common Eider</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/common-goldeneye.php">Common Goldeneye</a></li>
+        	  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/common-merganser.php">Common Merganser</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/gadwall.php">Gadwall</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/greater-scaup.php">Greater Scaup</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/green-winged-teal.php">Green-winged Teal</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/harlequin-duck.php">Harlequin Duck</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/hooded-merganser.php">Hooded Merganser</a></li>
+        	  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/king-eider.php">King Eider</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/lesser-scaup.php">Lesser Scaup</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/long-tailed-duck.php">Long-tailed Duck</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/mallard.php">Mallard</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/mottled-duck.php">Mottled Duck</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/northern-pintail.php">Northern Pintail</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/northern-shoveler.php">Northern Shoveler</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/red-breasted-merganser.php">Red-breasted Merganser</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/redhead.php">Redhead</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/ring-necked-duck.php">Ring-necked Duck</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/ruddy-duck.php">Ruddy Duck</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/snow-goose.php">Snow Goose</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/surf-scoter.php">Surf Scoter</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/trumpeter-swan.php">Trumpeter Swan</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/tundra-swan.php">Tundra Swan</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/whistling-duck.php">Whistling Duck</a></li>
+        	  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/white-fronted-goose.php">White-fronted Goose</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/white-winged-scoter.php">White-winged Scoter</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/wood-duck.php">Wood Duck</a></li>
+			</ul>
+         </li>
+          <li><a href="/birds/bird-enthusiasts/bird-watching/finding-birds.php">Finding Birds</a></li>
+          <li><a href="/birds/bird-enthusiasts/bird-watching/festivals-and-events.php">Festivals &amp; Events</a></li>
+          <li><a href="/birds/bird-enthusiasts/bird-watching/birdwalk.php">Bird Walks</a></li>
+          <li><a href="/birds/bird-enthusiasts/bird-watching/youth-birding.php">Youth Birding</a></li>
+          <li><a href="/birds/bird-enthusiasts/bird-watching/bird-watching-tools.php">Bird Watching Tools</a></li>
+          <li><a href="/birds/bird-enthusiasts/bird-watching/valuing-birds.php">Economic Impact</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/bird-enthusiasts/hunting.php">Hunting</a></li>
+      <li><a href="/birds/bird-enthusiasts/backyard.php">Backyard Birding</a></li>
+      <li><a href="/birds/bird-enthusiasts/threats-to-birds.php">Threats to Birds</a>
+        <ul>
+          <li><a href="/birds/bird-enthusiasts/threats-to-birds/collisions.php">Collisions</a>
+            <ul>
+              <li><a href="/birds/bird-enthusiasts/threats-to-birds/collisions/buildings-and-glass.php">Buildings &amp; Glass</a></li>
+              <li><a href="/birds/bird-enthusiasts/threats-to-birds/collisions/road-vehicles.php">Road Vehicles</a></li>
+              <li><a href="/birds/bird-enthusiasts/threats-to-birds/collisions/aircrafts.php">Aircraft</a></li>
+              <li><a href="/birds/bird-enthusiasts/threats-to-birds/collisions/electric-utility-lines.php">Electric Utility Lines</a></li>
+              <li><a href="/birds/bird-enthusiasts/threats-to-birds/collisions/communication-towers.php">Communication Towers</a></li>
+              <li><a href="/birds/bird-enthusiasts/threats-to-birds/collisions/wind-turbines.php">Wind Turbines</a></li>
+            </ul>
+          </li>
+<li><a href="/birds/bird-enthusiasts/threats-to-birds/disease.php">Disease</a></li>
+          <li><a href="/birds/bird-enthusiasts/threats-to-birds/entrapment-entanglement-drowning.php">Entrapment, Entanglement &amp; Drowning</a></li>
+          <li><a href="/birds/bird-enthusiasts/threats-to-birds/electrocutions.php">Electrocutions</a></li>
+          <li><a href="/birds/bird-enthusiasts/threats-to-birds/habitat-impacts.php">Habitat Impacts</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/faqs.php">FAQs/Commonly Asked Questions</a></li>
+      <li><a href="/birds/about-us/timeline.php">Bird Conservation Timeline</a></li>
+    </ul>
+  </li>
+  
+  <li><a href="/birds/surveys-and-data.php">Surveys &amp; Data</a>
+    <ul>
+      <li><a href="/birds/surveys-and-data/population-surveys.php">Population Surveys</a>
+        <ul>
+          <li><a href="/birds/surveys-and-data/population-surveys/aerial-ground-crew-blog.php">Aerial &amp; Ground Crew Blog</a></li>
+        </ul>
+        </li>
+      <li><a href="/birds/surveys-and-data/bird-banding.php">Bird Banding</a>
+        <ul>
+          <li><a href="/birds/surveys-and-data/bird-banding/reporting-banded-birds.php">Reporting Banded Birds</a></li>
+          <li><a href="/birds/surveys-and-data/bird-banding/reward-bands.php">Reward Bands</a></li>
+          <li><a href="/birds/surveys-and-data/bird-banding/waterfowl-banding-blog.php">Waterfowl Banding Blog</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/surveys-and-data/harvest-surveys.php">Harvest Surveys</a>
+        <ul>
+          <li><a href="/birds/surveys-and-data/harvest-surveys/harvest-information-program.php">Harvest Information Program</a></li>
+          <li><a href="/birds/surveys-and-data/harvest-surveys/diary-surveys.php">Diary Surveys</a></li>
+          <li><a href="/birds/surveys-and-data/harvest-surveys/parts-collection-surveys.php">Parts Collection Surveys</a>          </li>
+              <li><a href="/birds/surveys-and-data/harvest-surveys/bird-and-wing-id.php">Bird &amp; Wing ID</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/surveys-and-data/webless-migratory-game-birds.php">Webless Migratory Game Birds</a>
+        <ul>
+          <li><a href="/birds/surveys-and-data/webless-migratory-game-birds/webless-migratory-game-bird-program.php">Webless Migratory Game Bird Program</a>
+            <ul>
+              <li><a href="/birds/surveys-and-data/webless-migratory-game-birds/webless-migratory-game-bird-program/request-for-proposals.php">Request for Proposals</a></li>
+              <li><a href="/birds/surveys-and-data/webless-migratory-game-birds/webless-migratory-game-bird-program/project-abstracts.php">Project Abstracts</a></li>
+            </ul>
+          </li>
+          <li><a href="/birds/surveys-and-data/webless-migratory-game-birds/priority-information-needs.php">Priority Information Needs</a></li>
+          <li><a href="/birds/surveys-and-data/webless-migratory-game-birds/american-woodcock.php">American Woodcock</a></li>
+          <li><a href="/birds/surveys-and-data/webless-migratory-game-birds/doves-and-pigeons.php">Doves &amp; Pigeons</a></li>
+          <li><a href="/birds/surveys-and-data/webless-migratory-game-birds/sandhill-cranes.php">Sandhill Cranes</a></li>
+          <li><a href="/birds/surveys-and-data/webless-migratory-game-birds/marshbirds.php">Marshbirds</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/surveys-and-data/migratory-bird-data-center.php">Migratory Bird Data Center</a></li>
+      <li><a href="/birds/surveys-and-data/aviation.php">Aviation</a></li>
+      <li><a href="/birds/surveys-and-data/reports-and-publications.php">Reports &amp; Publications</a>
+        <ul>
+          <li><a href="/birds/surveys-and-data/reports-and-publications/population-status.php">Population Status</a></li>
+          <li><a href="/birds/surveys-and-data/reports-and-publications/hunting-activity-and-harvest.php">Hunting Activity &amp; Harvest</a></li>
+          <li><a href="/birds/surveys-and-data/reports-and-publications/flyway-data-books.php">Flyway Data Books</a></li>
+          <li><a href="/birds/management/adaptive-harvest-management/publications-and-reports.php">Adaptive Harvest Management Report</a>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  
+  <li><a href="/birds/management.php">Management</a>
+    <ul>
+      <li><a href="/birds/management/managed-species.php">Managed Species</a>
+        <ul>
+          <li><a href="/birds/management/managed-species/bald-and-golden-eagle-information.php">Bald &amp; Golden Eagle Information</a>
+          <ul>
+          <li><a href="/birds/management/managed-species/eagle-management.php">Eagle Management</a></li>
+          </ul>
+          <li><a href="/birds/management/managed-species/migratory-bird-treaty-act-protected-species.php">Migratory Bird Treaty Act Protected Species (10.13 List)</a></li>
+              <li><a href="/birds/management/managed-species/birds-of-conservation-concern.php">Birds of Conservation Concern</a></li>
+              <li><a href="/birds/management/managed-species/focal-species.php">Focal Species</a></li>
+              <li><a href="/birds/management/managed-species/birds-of-management-concern.php">Birds of Management Concern</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/bird-enthusiasts/threats-to-birds.php">Managing Threats to Birds</a></li>
+      <li><a href="/birds/policies-and-regulations/incidental-take.php">Managing Incidental Take</a>
+      <li><a href="/birds/management/project-assessment-tools-and-guidance.php">Project Assessment Tools &amp; Guidance</a>
+        <ul>
+          <li><a href="/birds/management/project-assessment-tools-and-guidance/guidance-documents.php">Guidance Documents</a>
+            <ul>
+              <li><a href="/birds/management/project-assessment-tools-and-guidance/guidance-documents/communication-towers.php">Communication Tower</a></li>
+      <li><a href="/birds/management/project-assessment-tools-and-guidance/guidance-documents/electric-utility-lines.php">Electric Utility Line</a></li>
+      <li><a href="/birds/management/project-assessment-tools-and-guidance/guidance-documents/oil-and-gas.php">Oil &amp; Gas</a></li>
+      <li><a href="/birds/management/project-assessment-tools-and-guidance/guidance-documents/wind-energy.php">Wind Energy</a></li>
+      <li><a href="/birds/management/project-assessment-tools-and-guidance/guidance-documents/eagles.php">Eagles</a></li>
+            </ul>
+          </li>
+          <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures.php">Conservation Measures</a>
+          <ul>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/nationwide-standard-conservation-measures.php">Nationwide Conservation Measures</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/building-glass-and-lighting.php">Buildings, Glass &amp; Lighting</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/guidance-documents/communication-towers.php">Communication Towers</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/coal-bed-methane.php">Coal-bed Methane</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/hunting-and-fishing.php">Hunting &amp; Fishing</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/electric-utility.php">Electric Utility</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/fluid-minerals.php">Fluid Mineral Practices</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/mining-claim-markers.php">Mining Claim Markers</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/outdoor-lighting.php">Outdoor Lighting</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/transportation.php">Transportation</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/vegetation-management.php">Vegetation Management</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/guidance-documents/wind-energy.php">Wind Energy</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/guidance-documents/eagles.php">Eagles</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/sage-grouse.php">Sage-Grouse</a></li>
+            </ul>
+            </li>
+          <li><a href="/birds/management/project-assessment-tools-and-guidance/decision-support-tools.php">Decision Support Tools</a>
+          <ul>
+              <li><a href="/birds/management/project-assessment-tools-and-guidance/decision-support-tools/akn-histogram-tools.php">Avian Knowledge Network Histogram Tools</a></li>
+      <li><a href="/birds/management/project-assessment-tools-and-guidance/decision-support-tools/imr.php">Injury and Mortality Reporting System</a></li>
+      <li><a href="/birds/management/project-assessment-tools-and-guidance/decision-support-tools/ipac.php">Information for Planning and Conservation System</a></li>
+      <li><a href="/birds/management/project-assessment-tools-and-guidance/decision-support-tools/bird-data-and-information.php">Other Bird Data and Information Resources</a></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li><a href="/birds/management/adaptive-harvest-management.php">Adaptive Harvest Management</a>
+        <ul>
+          <li><a href="/birds/management/adaptive-harvest-management/publications-and-reports.php">Publications &amp; Reports</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/management/flyways.php">Flyways</a></li>
+      <li><a href="/birds/management/bird-management-plans.php">Bird Management Plans</a>
+        <ul>
+          <li><a href="/birds/management/bird-management-plans/north-american-waterfowl-management-plan.php">North American Waterfowl Management Plan</a>
+           <ul>
+              <li><a href="/birds/management/bird-management-plans/north-american-waterfowl-management-plan/integrating-waterfowl-management.php">Integrating Waterfowl Management</a></li>
+              <li><a href="/birds/management/bird-management-plans/north-american-waterfowl-management-plan/plan-committee.php">Plan Committee</a></li>
+              <li><a href="/birds/management/bird-management-plans/north-american-waterfowl-management-plan/working-groups-and-subcommittees.php">Working Groups &amp; Subcommittees</a></li>
+              <li><a href="/birds/management/bird-management-plans/north-american-waterfowl-management-plan/plan-documents.php">Plan Documents</a></li>
+              <li><a href="/birds/management/bird-management-plans/north-american-waterfowl-management-plan/plan-awards.php">Plan Awards</a></li>
+              <li><a href="/birds/management/bird-management-plans/north-american-waterfowl-management-plan/nawmp-science-support-team.php">NAWMP Science Support Team</a></li>
+            </ul>
+            </li>
+          <li><a href="/birds/management/bird-management-plans/partners-in-flight-north-american-landbird-conservation-plan.php">Partners in Flight North American Landbird Conservation Plan</a></li>
+          <li><a href="/birds/management/bird-management-plans/waterbird-conservation-for-the-americas.php">Waterbird Conservation for the Americas</a></li>
+          <li><a href="/birds/management/bird-management-plans/the-us-shorebird-conservation-plan.php">The U.S. Shorebird Conservation Plan</a></li>
+          <li><a href="/birds/management/managed-species/focal-species.php">Focal Species Plans</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/management/bird-conservation-partnership-and-initiatives.php">Bird Conservation Partnerships &amp; Initiatives</a>
+        <ul>
+          <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/council-for-the-conservation-of-migratory-birds.php">Council for the Conservation of Migratory Birds</a>
+            <ul>
+                        <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/council-for-the-conservation-of-migratory-birds/participating-council-agencies.php">Participating Council Agencies</a></li>
+                        <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/council-for-the-conservation-of-migratory-birds/partnership-agreements.php">Partnership Agreements</a></li>
+                        <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/council-for-the-conservation-of-migratory-birds/council-annual-reports.php">Council Annual Reports</a></li>
+                        <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/council-for-the-conservation-of-migratory-birds/presidential-award.php">Presidential Award</a></li>
+                        <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/council-for-the-conservation-of-migratory-birds/council-newsletter.php">Council Newsletter</a></li>
+                    
+            </ul>
+          </li>
+          <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/migratory-bird-joint-ventures.php">Migratory Bird Joint Ventures</a>
+          <ul>
+              <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/migratory-bird-joint-ventures/joint-venture-directory.php">Joint Venture Directory</a></li>
+              <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/migratory-bird-joint-ventures/map-products.php">Map Products</a></li>
+              <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/migratory-bird-joint-ventures/policy.php">Policy</a></li>
+            </ul>
+          </li>
+            <li><a href="/birds/management/flyways.php">Migratory Bird Flyways</a></li>
+          <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/north-american-bird-conservation-initiative.php">North American Bird Conservation Initiative</a></li>
+          <li><a href="/birds/grants/urban-bird-treaty.php">Urban Bird Treaty Program</a></li>
+          <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/shorebird-conservation.php">Shorebird Conservation</a></li>
+          <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/waterbird-conservation.php">Waterbird Conservation</a></li>
+          <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/partners-in-flight.php">Partners in Flight</a></li>
+          <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/waterfowl-conservation.php">Waterfowl Conservation</a></li>
+          <li><a href="/birds/about-us/International.php">International Cooperation</a></li>
+          <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/partners.php">Other Partners</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/management/training.php">Training</a>
+        <ul>
+          <li><a href="/birds/management/training/migratory-bird-conservation-a-trust-responsibility.php">Migratory Bird Conservation: A Trust Responsibility</a></li>
+          <li><a href="/birds/management/training/migratory-bird-conservation-for-federal-partners.php">Migratory Bird Conservation for Federal Partners</a></li>
+          <li><a href="/birds/management/training/basic-bird-biology.php">Basic Bird Biology</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  
+  <li><a href="/birds/grants.php">Grants</a>
+    <ul>
+      <li><a href="/birds/grants/north-american-wetland-conservation-act.php">North American Wetlands Conservation Act</a>
+        <ul>
+          <li><a href="/birds/grants/north-american-wetland-conservation-act/how-to-apply-for-a-nawca-grant.php">How to Apply for a NAWCA Grant</a></li>
+          <li><a href="/birds/grants/north-american-wetland-conservation-act/information-for-nawca-grantees.php">Information for NAWCA Grantees</a>
+            <ul>
+              <li><a href="/birds/grants/north-american-wetland-conservation-act/information-for-nawca-grantees/guidance-and-standards.php">Guidance &amp; Standards</a></li>
+              <li><a href="/birds/grants/north-american-wetland-conservation-act/information-for-nawca-grantees/forms.php">Forms</a></li>
+            </ul>
+          </li>
+          <li><a href="/birds/grants/north-american-wetland-conservation-act/standard-grants.php">Standard Grants</a>
+            <ul>
+              <li><a href="/birds/grants/north-american-wetland-conservation-act/standard-grants/united-states.php">United States</a></li>
+              <li><a href="/birds/grants/north-american-wetland-conservation-act/standard-grants/canada.php">Canada</a></li>
+              <li><a href="/birds/grants/north-american-wetland-conservation-act/standard-grants/mexico.php">Mexico</a></li>
+            </ul>
+          </li>
+          <li><a href="/birds/grants/north-american-wetland-conservation-act/nawca-project-summaries.php">NAWCA Project Summaries</a></li>
+          <li><a href="/birds/grants/north-american-wetland-conservation-act/small-grants.php">Small Grants</a></li>
+          <li><a href="/birds/grants/north-american-wetland-conservation-act/north-american-wetland-conservation-council.php">North American Wetlands Conservation Council</a></li>
+          <li><a href="/birds/grants/north-american-wetland-conservation-act/biennial-reports.php">Biennial Reports</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act.php">Neotropical Migratory Bird Conservation Act</a>
+        <ul>
+          <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/how-to-apply.php">How to Apply</a></li>
+          <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/nmbca-project-summaries.php">NMBCA Project Summaries</a></li>
+         
+          <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/information-for-nmbca-grantees.php">Information for NMBCA Grantees</a>
+            <ul>
+              <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/information-for-nmbca-grantees/managing-your-grant.php">Managing Your Grant</a></li>
+              <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/information-for-nmbca-grantees/annual-reporting-obligations.php">Annual Reporting Obligations</a></li>
+              <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/information-for-nmbca-grantees/grant-guidelines.php">Grant Guidelines</a></li>
+              <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/information-for-nmbca-grantees/faq.php">FAQ</a></li>
+            </ul>
+          </li>
+          <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/advisory-group.php">Advisory Group</a></li>
+          <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/nmbca-bird-list.php">NMBCA Bird List</a></li>
+          <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/communications-toolkit.php">Communications Toolkit</a></li>
+          <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/nmbca-espanol.php">En Español</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/grants/urban-bird-treaty.php">Urban Bird Treaty</a>
+        <ul>
+          <li><a href="/birds/grants/urban-bird-treaty/urban-bird-treaty-grant.php">Urban Bird Treaty Grant Information</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/grants/funding-sources-and-how-to-apply.php">Funding Sources &amp; How to Apply</a>
+      <ul>
+      <li><a href="/birds/grants/urban-bird-treaty/urban-bird-treaty-grant.php">Urban Bird Treaty Grant Information</a></li>
+      <li><a href="/birds/surveys-and-data/webless-migratory-game-birds/webless-migratory-game-bird-program/request-for-proposals.php">Webless Migratory Game Bird Program</a></li>
+      </ul>
+      </li>
+      <li><a href="/birds/grants/payments.php">Payments</a></li>
+    </ul>
+  </li>
+  
+  <li><a href="/birds/education.php">Education</a>
+    <ul>
+      <li><a href="/birds/education/junior-duck-stamp-conservation-program.php">Junior Duck Stamp Conservation Program</a>
+        <ul>
+          <li><a href="/birds/education/junior-duck-stamp-conservation-program/buy-junior-duck-stamps.php">Buy Junior Duck Stamps</a></li>
+          <li><a href="/birds/education/junior-duck-stamp-conservation-program/conservation-education-curriculum.php">Conservation Education Curriculum</a></li>
+          <li><a href="/birds/education/junior-duck-stamp-conservation-program/junior-duck-stamp-contest-information.php">Junior Duck Stamp Contest Information</a></li>
+          <li><a href="/birds/education/junior-duck-stamp-conservation-program/junior-duck-stamp-in-your-state.php">Junior Duck Stamp in Your State</a></li>
+          <li><a href="/birds/education/junior-duck-stamp-conservation-program/junior-duck-stamp-gallery.php">Junior Duck Stamp Gallery</a></li>
+          <li><a href="/birds/education/junior-duck-stamp-conservation-program/junior-duck-stamp-art-tour.php">Junior Duck Stamp Art Exhibit Tour</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/education/education-resources.php">Education Resources</a>
+        <ul>
+          <li><a href="/birds/bird-enthusiasts/bird-watching/youth-birding.php">Youth Birding</a></li>
+          <li><a href="/birds/education/education-resources/educators.php">Educators</a></li>
+          <li><a href="/birds/education/education-resources/parents.php">Parents</a></li>
+          <li><a href="/birds/education/education-resources/fact-sheets.php">Fact Sheets</a></li>
+          <li><a href="/birds/education/education-resources/multimedia.php">Multimedia</a></li>
+          <li><a href="/birds/education/education-resources/educational-activities.php">Activities</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/grants/urban-bird-treaty.php">Urban Birds</a></li>
+      <li><a href="/birds/education/international-migratory-bird-day.php">International Migratory Bird Day</a></li>
+    </ul>
+  </li>
+  
+  <li><a href="/birds/get-involved.php">Get Involved</a>
+    <ul>
+      <li><a href="/birds/get-involved/duck-stamp.php">Duck Stamp</a>
+        <ul>
+          <li><a href="/birds/get-involved/duck-stamp/history-of-the-federal-duck-stamp.php">History of the Federal Duck Stamp</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/buy-duck-stamp.php">Buy Duck Stamps</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/e-stamp.php">E-Stamp</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/duck-stamp-dollars-at-work.php">Duck Stamp Dollars at Work</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/duck-stamp-contest-and-event-information.php">Duck Stamp Contest &amp; Event Information</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/duck-stamp-information-for-hunters.php">Duck Stamp Information for Hunters</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/duck-stamp-information-for-birders-and-photographers.php">Duck Stamp Information for Birders &amp; Photographers</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/duck-stamp-information-for-stamp-collectors.php">Duck Stamp Information for Stamp Collectors</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/sell-duck-stamp.php">Sell Duck Stamps</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/federal-duck-stamp-gallery.php">Federal Duck Stamp Gallery</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/federal-duck-stamp-art-exhibit-tour.php">Federal Duck Stamp Art Exhibit Tour</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/duck-stamp-design-products-and-licensing-program.php">Duck Stamp Design Products &amp; Licensing Program</a></li>
+          <li><a href="/birds/education/junior-duck-stamp-conservation-program.php">Junior Duck Stamp Conservation Program</a>
+        </ul>
+      </li>
+      <li><a href="/birds/get-involved/invest-in-conservation.php">Invest in Conservation</a>
+        <ul>
+          <li><a href="/birds/get-involved/invest-in-conservation/donate.php">Donate</a></li>
+          <li><a href="/birds/get-involved/invest-in-conservation/provide-matching-funds.php">Provide Matching Funds</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/get-involved/citizen-science.php">Citizen Science</a></li>
+      <li><a href="/birds/get-involved/engaging-others.php">Engaging Others</a>
+        <ul>
+          <li><a href="/birds/get-involved/engaging-others/event.php">Special Event Tips & Examples</a></li>
+          <li><a href="/birds/get-involved/engaging-others/getting-publicity.php">Getting Publicity for Your Event</a></li>
+          <li><a href="/birds/get-involved/engaging-others/partnerships.php">Building Partnerships</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/about-us/strategicplan.php">Strategic Plan</a></li>
+    </ul>
+  </li>
+  
+  <li class="last submenus-left"><a href="/birds/policies-and-regulations.php">Policies &amp; Regulations</a>
+    <ul>
+      <li><a href="/birds/policies-and-regulations/laws-legislations.php">Laws/Legislation</a>
+        <ul>
+          <li><a href="/birds/policies-and-regulations/laws-legislations/migratory-bird-treaty-act.php">Migratory Bird Treaty Act</a></li>
+          <li><a href="/birds/policies-and-regulations/laws-legislations/migratory-bird-hunting-and-conservation-stamp-act.php">Migratory Bird Hunting &amp; Conservation Stamp Act</a></li>
+          <li><a href="/birds/policies-and-regulations/laws-legislations/bald-and-golden-eagle-protection-act.php">Bald &amp; Golden Eagle Protection Act</a></li>
+          <li><a href="/birds/policies-and-regulations/laws-legislations/other-relevant-laws.php">Other Relevant Laws</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/policies-and-regulations/policies.php">Policies</a></li>
+      <li><a href="/birds/policies-and-regulations/regulations.php">Regulations</a>
+        <ul>
+          <li><a href="/birds/policies-and-regulations/regulations/migratory-bird-hunting-regulations.php">Migratory Bird Hunting Regulations</a></li>
+          <li><a href="/birds/policies-and-regulations/regulations/national-environmental-policy-act.php">National Environmental Policy Act</a></li>
+          <li><a href="/birds/policies-and-regulations/regulations/how-regulations-are-set-the-process.php">How Regulations Are Set - The Process</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/policies-and-regulations/executive-orders.php">Executive Orders</a>
+        <ul>
+          <li><a href="/birds/policies-and-regulations/executive-orders/e0-13186.php">EO 13186</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/policies-and-regulations/federal-register-notices.php">Federal Register Notices</a></li>
+      <li><a href="/birds/policies-and-regulations/permits.php">Permits</a>
+        <ul>
+          <li><a href="/birds/policies-and-regulations/permits/regional-permit-contacts.php">Regional Permit Contacts</a></li>
+          <li><a href="/birds/policies-and-regulations/permits/permit-policies-and-regulations.php">Permit Policies &amp; Regulations</a></li>
+          <li><a href="/birds/policies-and-regulations/permits/need-a-permit.php">Need a Permit</a></li>
+        </ul>
+      </li>
+    <li><a href="/birds/policies-and-regulations/incidental-take.php">Incidental Take</a></ul>
+  </li>  
+</ul>			</nav>
+			<div id="expand-button"><a href="#"><span class="expand"><i class="fa fa-plus"></i> Expand</span> <span class="minimize"><i class="fa fa-minus"></i> Minimize</span></a></div>
+		</div>
+	</div>
+		
+	<div id="subfooter">
+		<div class="wrap">
+			<nav>
+<ul>
+	<li><a href="/birds/index.php">Home</a></li>
+	<li><a href="https://www.fws.gov/">U.S. Fish And Wildlife Service Home</a></li>
+	<li><a href="http://www.doi.gov/" title="Link to non-FWS site">Department Of The Interior</a></li>
+	<li><a href="http://www.usa.gov/" title="Link to non-FWS site">USA.gov</a></li>
+	<li><a href="https://www.fws.gov/help/about_us.html">About The Fish And Wildlife Service</a></li>
+	<li><a href="https://www.fws.gov/help/accessibility.html">Accessibility</a></li>
+	<li><a href="https://www.fws.gov/help/policies.html">Privacy</a></li>
+	<li><a href="https://www.fws.gov/help/notices.html">Notices</a></li>
+	<li><a href="https://www.fws.gov/help/disclaimer.html">Disclaimer</a></li>
+	<li><a href="https://www.fws.gov/irm/bpim/foia.html">FOIA</a></li>
+</ul>			</nav>
+		</div>
+	</div>
+
+</footer><nav id="mobile-menu"><ul>
+	<li class="first"><a href="/birds/bird-enthusiasts.php">Bird Enthusiasts</a>
+    <ul>
+      <li><a href="/birds/bird-enthusiasts/bird-watching.php">Bird Watching</a>
+        <ul>
+          <li><a href="/birds/bird-enthusiasts/bird-watching/bird-identification.php">Bird Identification</a></li>
+          <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification.php">Waterfowl Identification</a>
+          	<ul>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/american-black-duck.php">American Black Duck</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/american-wigeon.php">Aerican Wigeon</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/barrows-goldeneye.php">Barrows Goldeneye</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/black-scoter.php">Black Scoter</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/blue-winged-teal.php">Blue-winged Teal</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/brant.php">Brant</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/bufflehead.php">Bufflehead</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/canada-goose.php">Canada Goose</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/canvasback.php">Canvasback</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/cinnamon-teal.php">Cinnamon Teal</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/common-eider.php">Common Eider</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/common-goldeneye.php">Common Goldeneye</a></li>
+        	  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/common-merganser.php">Common Merganser</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/gadwall.php">Gadwall</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/greater-scaup.php">Greater Scaup</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/green-winged-teal.php">Green-winged Teal</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/harlequin-duck.php">Harlequin Duck</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/hooded-merganser.php">Hooded Merganser</a></li>
+        	  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/king-eider.php">King Eider</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/lesser-scaup.php">Lesser Scaup</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/long-tailed-duck.php">Long-tailed Duck</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/mallard.php">Mallard</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/mottled-duck.php">Mottled Duck</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/northern-pintail.php">Northern Pintail</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/northern-shoveler.php">Northern Shoveler</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/red-breasted-merganser.php">Red-breasted Merganser</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/redhead.php">Redhead</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/ring-necked-duck.php">Ring-necked Duck</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/ruddy-duck.php">Ruddy Duck</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/snow-goose.php">Snow Goose</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/surf-scoter.php">Surf Scoter</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/trumpeter-swan.php">Trumpeter Swan</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/tundra-swan.php">Tundra Swan</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/whistling-duck.php">Whistling Duck</a></li>
+        	  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/white-fronted-goose.php">White-fronted Goose</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/white-winged-scoter.php">White-winged Scoter</a></li>
+			  <li><a href="/birds/bird-enthusiasts/bird-watching/waterfowl-identification/wood-duck.php">Wood Duck</a></li>
+			</ul>
+         </li>
+          <li><a href="/birds/bird-enthusiasts/bird-watching/finding-birds.php">Finding Birds</a></li>
+          <li><a href="/birds/bird-enthusiasts/bird-watching/festivals-and-events.php">Festivals &amp; Events</a></li>
+          <li><a href="/birds/bird-enthusiasts/bird-watching/birdwalk.php">Bird Walks</a></li>
+          <li><a href="/birds/bird-enthusiasts/bird-watching/youth-birding.php">Youth Birding</a></li>
+          <li><a href="/birds/bird-enthusiasts/bird-watching/bird-watching-tools.php">Bird Watching Tools</a></li>
+          <li><a href="/birds/bird-enthusiasts/bird-watching/valuing-birds.php">Economic Impact</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/bird-enthusiasts/hunting.php">Hunting</a></li>
+      <li><a href="/birds/bird-enthusiasts/backyard.php">Backyard Birding</a></li>
+      <li><a href="/birds/bird-enthusiasts/threats-to-birds.php">Threats to Birds</a>
+        <ul>
+          <li><a href="/birds/bird-enthusiasts/threats-to-birds/collisions.php">Collisions</a>
+            <ul>
+              <li><a href="/birds/bird-enthusiasts/threats-to-birds/collisions/buildings-and-glass.php">Buildings &amp; Glass</a></li>
+              <li><a href="/birds/bird-enthusiasts/threats-to-birds/collisions/road-vehicles.php">Road Vehicles</a></li>
+              <li><a href="/birds/bird-enthusiasts/threats-to-birds/collisions/aircrafts.php">Aircraft</a></li>
+              <li><a href="/birds/bird-enthusiasts/threats-to-birds/collisions/electric-utility-lines.php">Electric Utility Lines</a></li>
+              <li><a href="/birds/bird-enthusiasts/threats-to-birds/collisions/communication-towers.php">Communication Towers</a></li>
+              <li><a href="/birds/bird-enthusiasts/threats-to-birds/collisions/wind-turbines.php">Wind Turbines</a></li>
+            </ul>
+          </li>
+<li><a href="/birds/bird-enthusiasts/threats-to-birds/disease.php">Disease</a></li>
+          <li><a href="/birds/bird-enthusiasts/threats-to-birds/entrapment-entanglement-drowning.php">Entrapment, Entanglement &amp; Drowning</a></li>
+          <li><a href="/birds/bird-enthusiasts/threats-to-birds/electrocutions.php">Electrocutions</a></li>
+          <li><a href="/birds/bird-enthusiasts/threats-to-birds/habitat-impacts.php">Habitat Impacts</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/faqs.php">FAQs/Commonly Asked Questions</a></li>
+      <li><a href="/birds/about-us/timeline.php">Bird Conservation Timeline</a></li>
+    </ul>
+  </li>
+  
+  <li><a href="/birds/surveys-and-data.php">Surveys &amp; Data</a>
+    <ul>
+      <li><a href="/birds/surveys-and-data/population-surveys.php">Population Surveys</a>
+        <ul>
+          <li><a href="/birds/surveys-and-data/population-surveys/aerial-ground-crew-blog.php">Aerial &amp; Ground Crew Blog</a></li>
+        </ul>
+        </li>
+      <li><a href="/birds/surveys-and-data/bird-banding.php">Bird Banding</a>
+        <ul>
+          <li><a href="/birds/surveys-and-data/bird-banding/reporting-banded-birds.php">Reporting Banded Birds</a></li>
+          <li><a href="/birds/surveys-and-data/bird-banding/reward-bands.php">Reward Bands</a></li>
+          <li><a href="/birds/surveys-and-data/bird-banding/waterfowl-banding-blog.php">Waterfowl Banding Blog</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/surveys-and-data/harvest-surveys.php">Harvest Surveys</a>
+        <ul>
+          <li><a href="/birds/surveys-and-data/harvest-surveys/harvest-information-program.php">Harvest Information Program</a></li>
+          <li><a href="/birds/surveys-and-data/harvest-surveys/diary-surveys.php">Diary Surveys</a></li>
+          <li><a href="/birds/surveys-and-data/harvest-surveys/parts-collection-surveys.php">Parts Collection Surveys</a>          </li>
+              <li><a href="/birds/surveys-and-data/harvest-surveys/bird-and-wing-id.php">Bird &amp; Wing ID</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/surveys-and-data/webless-migratory-game-birds.php">Webless Migratory Game Birds</a>
+        <ul>
+          <li><a href="/birds/surveys-and-data/webless-migratory-game-birds/webless-migratory-game-bird-program.php">Webless Migratory Game Bird Program</a>
+            <ul>
+              <li><a href="/birds/surveys-and-data/webless-migratory-game-birds/webless-migratory-game-bird-program/request-for-proposals.php">Request for Proposals</a></li>
+              <li><a href="/birds/surveys-and-data/webless-migratory-game-birds/webless-migratory-game-bird-program/project-abstracts.php">Project Abstracts</a></li>
+            </ul>
+          </li>
+          <li><a href="/birds/surveys-and-data/webless-migratory-game-birds/priority-information-needs.php">Priority Information Needs</a></li>
+          <li><a href="/birds/surveys-and-data/webless-migratory-game-birds/american-woodcock.php">American Woodcock</a></li>
+          <li><a href="/birds/surveys-and-data/webless-migratory-game-birds/doves-and-pigeons.php">Doves &amp; Pigeons</a></li>
+          <li><a href="/birds/surveys-and-data/webless-migratory-game-birds/sandhill-cranes.php">Sandhill Cranes</a></li>
+          <li><a href="/birds/surveys-and-data/webless-migratory-game-birds/marshbirds.php">Marshbirds</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/surveys-and-data/migratory-bird-data-center.php">Migratory Bird Data Center</a></li>
+      <li><a href="/birds/surveys-and-data/aviation.php">Aviation</a></li>
+      <li><a href="/birds/surveys-and-data/reports-and-publications.php">Reports &amp; Publications</a>
+        <ul>
+          <li><a href="/birds/surveys-and-data/reports-and-publications/population-status.php">Population Status</a></li>
+          <li><a href="/birds/surveys-and-data/reports-and-publications/hunting-activity-and-harvest.php">Hunting Activity &amp; Harvest</a></li>
+          <li><a href="/birds/surveys-and-data/reports-and-publications/flyway-data-books.php">Flyway Data Books</a></li>
+          <li><a href="/birds/management/adaptive-harvest-management/publications-and-reports.php">Adaptive Harvest Management Report</a>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  
+  <li><a href="/birds/management.php">Management</a>
+    <ul>
+      <li><a href="/birds/management/managed-species.php">Managed Species</a>
+        <ul>
+          <li><a href="/birds/management/managed-species/bald-and-golden-eagle-information.php">Bald &amp; Golden Eagle Information</a>
+          <ul>
+          <li><a href="/birds/management/managed-species/eagle-management.php">Eagle Management</a></li>
+          </ul>
+          <li><a href="/birds/management/managed-species/migratory-bird-treaty-act-protected-species.php">Migratory Bird Treaty Act Protected Species (10.13 List)</a></li>
+              <li><a href="/birds/management/managed-species/birds-of-conservation-concern.php">Birds of Conservation Concern</a></li>
+              <li><a href="/birds/management/managed-species/focal-species.php">Focal Species</a></li>
+              <li><a href="/birds/management/managed-species/birds-of-management-concern.php">Birds of Management Concern</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/bird-enthusiasts/threats-to-birds.php">Managing Threats to Birds</a></li>
+      <li><a href="/birds/policies-and-regulations/incidental-take.php">Managing Incidental Take</a>
+      <li><a href="/birds/management/project-assessment-tools-and-guidance.php">Project Assessment Tools &amp; Guidance</a>
+        <ul>
+          <li><a href="/birds/management/project-assessment-tools-and-guidance/guidance-documents.php">Guidance Documents</a>
+            <ul>
+              <li><a href="/birds/management/project-assessment-tools-and-guidance/guidance-documents/communication-towers.php">Communication Tower</a></li>
+      <li><a href="/birds/management/project-assessment-tools-and-guidance/guidance-documents/electric-utility-lines.php">Electric Utility Line</a></li>
+      <li><a href="/birds/management/project-assessment-tools-and-guidance/guidance-documents/oil-and-gas.php">Oil &amp; Gas</a></li>
+      <li><a href="/birds/management/project-assessment-tools-and-guidance/guidance-documents/wind-energy.php">Wind Energy</a></li>
+      <li><a href="/birds/management/project-assessment-tools-and-guidance/guidance-documents/eagles.php">Eagles</a></li>
+            </ul>
+          </li>
+          <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures.php">Conservation Measures</a>
+          <ul>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/nationwide-standard-conservation-measures.php">Nationwide Conservation Measures</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/building-glass-and-lighting.php">Buildings, Glass &amp; Lighting</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/guidance-documents/communication-towers.php">Communication Towers</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/coal-bed-methane.php">Coal-bed Methane</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/hunting-and-fishing.php">Hunting &amp; Fishing</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/electric-utility.php">Electric Utility</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/fluid-minerals.php">Fluid Mineral Practices</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/mining-claim-markers.php">Mining Claim Markers</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/outdoor-lighting.php">Outdoor Lighting</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/transportation.php">Transportation</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/vegetation-management.php">Vegetation Management</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/guidance-documents/wind-energy.php">Wind Energy</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/guidance-documents/eagles.php">Eagles</a></li>
+             <li><a href="/birds/management/project-assessment-tools-and-guidance/conservation-measures/sage-grouse.php">Sage-Grouse</a></li>
+            </ul>
+            </li>
+          <li><a href="/birds/management/project-assessment-tools-and-guidance/decision-support-tools.php">Decision Support Tools</a>
+          <ul>
+              <li><a href="/birds/management/project-assessment-tools-and-guidance/decision-support-tools/akn-histogram-tools.php">Avian Knowledge Network Histogram Tools</a></li>
+      <li><a href="/birds/management/project-assessment-tools-and-guidance/decision-support-tools/imr.php">Injury and Mortality Reporting System</a></li>
+      <li><a href="/birds/management/project-assessment-tools-and-guidance/decision-support-tools/ipac.php">Information for Planning and Conservation System</a></li>
+      <li><a href="/birds/management/project-assessment-tools-and-guidance/decision-support-tools/bird-data-and-information.php">Other Bird Data and Information Resources</a></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li><a href="/birds/management/adaptive-harvest-management.php">Adaptive Harvest Management</a>
+        <ul>
+          <li><a href="/birds/management/adaptive-harvest-management/publications-and-reports.php">Publications &amp; Reports</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/management/flyways.php">Flyways</a></li>
+      <li><a href="/birds/management/bird-management-plans.php">Bird Management Plans</a>
+        <ul>
+          <li><a href="/birds/management/bird-management-plans/north-american-waterfowl-management-plan.php">North American Waterfowl Management Plan</a>
+           <ul>
+              <li><a href="/birds/management/bird-management-plans/north-american-waterfowl-management-plan/integrating-waterfowl-management.php">Integrating Waterfowl Management</a></li>
+              <li><a href="/birds/management/bird-management-plans/north-american-waterfowl-management-plan/plan-committee.php">Plan Committee</a></li>
+              <li><a href="/birds/management/bird-management-plans/north-american-waterfowl-management-plan/working-groups-and-subcommittees.php">Working Groups &amp; Subcommittees</a></li>
+              <li><a href="/birds/management/bird-management-plans/north-american-waterfowl-management-plan/plan-documents.php">Plan Documents</a></li>
+              <li><a href="/birds/management/bird-management-plans/north-american-waterfowl-management-plan/plan-awards.php">Plan Awards</a></li>
+              <li><a href="/birds/management/bird-management-plans/north-american-waterfowl-management-plan/nawmp-science-support-team.php">NAWMP Science Support Team</a></li>
+            </ul>
+            </li>
+          <li><a href="/birds/management/bird-management-plans/partners-in-flight-north-american-landbird-conservation-plan.php">Partners in Flight North American Landbird Conservation Plan</a></li>
+          <li><a href="/birds/management/bird-management-plans/waterbird-conservation-for-the-americas.php">Waterbird Conservation for the Americas</a></li>
+          <li><a href="/birds/management/bird-management-plans/the-us-shorebird-conservation-plan.php">The U.S. Shorebird Conservation Plan</a></li>
+          <li><a href="/birds/management/managed-species/focal-species.php">Focal Species Plans</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/management/bird-conservation-partnership-and-initiatives.php">Bird Conservation Partnerships &amp; Initiatives</a>
+        <ul>
+          <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/council-for-the-conservation-of-migratory-birds.php">Council for the Conservation of Migratory Birds</a>
+            <ul>
+                        <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/council-for-the-conservation-of-migratory-birds/participating-council-agencies.php">Participating Council Agencies</a></li>
+                        <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/council-for-the-conservation-of-migratory-birds/partnership-agreements.php">Partnership Agreements</a></li>
+                        <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/council-for-the-conservation-of-migratory-birds/council-annual-reports.php">Council Annual Reports</a></li>
+                        <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/council-for-the-conservation-of-migratory-birds/presidential-award.php">Presidential Award</a></li>
+                        <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/council-for-the-conservation-of-migratory-birds/council-newsletter.php">Council Newsletter</a></li>
+                    
+            </ul>
+          </li>
+          <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/migratory-bird-joint-ventures.php">Migratory Bird Joint Ventures</a>
+          <ul>
+              <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/migratory-bird-joint-ventures/joint-venture-directory.php">Joint Venture Directory</a></li>
+              <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/migratory-bird-joint-ventures/map-products.php">Map Products</a></li>
+              <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/migratory-bird-joint-ventures/policy.php">Policy</a></li>
+            </ul>
+          </li>
+            <li><a href="/birds/management/flyways.php">Migratory Bird Flyways</a></li>
+          <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/north-american-bird-conservation-initiative.php">North American Bird Conservation Initiative</a></li>
+          <li><a href="/birds/grants/urban-bird-treaty.php">Urban Bird Treaty Program</a></li>
+          <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/shorebird-conservation.php">Shorebird Conservation</a></li>
+          <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/waterbird-conservation.php">Waterbird Conservation</a></li>
+          <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/partners-in-flight.php">Partners in Flight</a></li>
+          <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/waterfowl-conservation.php">Waterfowl Conservation</a></li>
+          <li><a href="/birds/about-us/International.php">International Cooperation</a></li>
+          <li><a href="/birds/management/bird-conservation-partnership-and-initiatives/partners.php">Other Partners</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/management/training.php">Training</a>
+        <ul>
+          <li><a href="/birds/management/training/migratory-bird-conservation-a-trust-responsibility.php">Migratory Bird Conservation: A Trust Responsibility</a></li>
+          <li><a href="/birds/management/training/migratory-bird-conservation-for-federal-partners.php">Migratory Bird Conservation for Federal Partners</a></li>
+          <li><a href="/birds/management/training/basic-bird-biology.php">Basic Bird Biology</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  
+  <li><a href="/birds/grants.php">Grants</a>
+    <ul>
+      <li><a href="/birds/grants/north-american-wetland-conservation-act.php">North American Wetlands Conservation Act</a>
+        <ul>
+          <li><a href="/birds/grants/north-american-wetland-conservation-act/how-to-apply-for-a-nawca-grant.php">How to Apply for a NAWCA Grant</a></li>
+          <li><a href="/birds/grants/north-american-wetland-conservation-act/information-for-nawca-grantees.php">Information for NAWCA Grantees</a>
+            <ul>
+              <li><a href="/birds/grants/north-american-wetland-conservation-act/information-for-nawca-grantees/guidance-and-standards.php">Guidance &amp; Standards</a></li>
+              <li><a href="/birds/grants/north-american-wetland-conservation-act/information-for-nawca-grantees/forms.php">Forms</a></li>
+            </ul>
+          </li>
+          <li><a href="/birds/grants/north-american-wetland-conservation-act/standard-grants.php">Standard Grants</a>
+            <ul>
+              <li><a href="/birds/grants/north-american-wetland-conservation-act/standard-grants/united-states.php">United States</a></li>
+              <li><a href="/birds/grants/north-american-wetland-conservation-act/standard-grants/canada.php">Canada</a></li>
+              <li><a href="/birds/grants/north-american-wetland-conservation-act/standard-grants/mexico.php">Mexico</a></li>
+            </ul>
+          </li>
+          <li><a href="/birds/grants/north-american-wetland-conservation-act/nawca-project-summaries.php">NAWCA Project Summaries</a></li>
+          <li><a href="/birds/grants/north-american-wetland-conservation-act/small-grants.php">Small Grants</a></li>
+          <li><a href="/birds/grants/north-american-wetland-conservation-act/north-american-wetland-conservation-council.php">North American Wetlands Conservation Council</a></li>
+          <li><a href="/birds/grants/north-american-wetland-conservation-act/biennial-reports.php">Biennial Reports</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act.php">Neotropical Migratory Bird Conservation Act</a>
+        <ul>
+          <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/how-to-apply.php">How to Apply</a></li>
+          <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/nmbca-project-summaries.php">NMBCA Project Summaries</a></li>
+         
+          <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/information-for-nmbca-grantees.php">Information for NMBCA Grantees</a>
+            <ul>
+              <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/information-for-nmbca-grantees/managing-your-grant.php">Managing Your Grant</a></li>
+              <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/information-for-nmbca-grantees/annual-reporting-obligations.php">Annual Reporting Obligations</a></li>
+              <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/information-for-nmbca-grantees/grant-guidelines.php">Grant Guidelines</a></li>
+              <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/information-for-nmbca-grantees/faq.php">FAQ</a></li>
+            </ul>
+          </li>
+          <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/advisory-group.php">Advisory Group</a></li>
+          <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/nmbca-bird-list.php">NMBCA Bird List</a></li>
+          <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/communications-toolkit.php">Communications Toolkit</a></li>
+          <li><a href="/birds/grants/neotropical-migratory-bird-conservation-act/nmbca-espanol.php">En Español</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/grants/urban-bird-treaty.php">Urban Bird Treaty</a>
+        <ul>
+          <li><a href="/birds/grants/urban-bird-treaty/urban-bird-treaty-grant.php">Urban Bird Treaty Grant Information</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/grants/funding-sources-and-how-to-apply.php">Funding Sources &amp; How to Apply</a>
+      <ul>
+      <li><a href="/birds/grants/urban-bird-treaty/urban-bird-treaty-grant.php">Urban Bird Treaty Grant Information</a></li>
+      <li><a href="/birds/surveys-and-data/webless-migratory-game-birds/webless-migratory-game-bird-program/request-for-proposals.php">Webless Migratory Game Bird Program</a></li>
+      </ul>
+      </li>
+      <li><a href="/birds/grants/payments.php">Payments</a></li>
+    </ul>
+  </li>
+  
+  <li><a href="/birds/education.php">Education</a>
+    <ul>
+      <li><a href="/birds/education/junior-duck-stamp-conservation-program.php">Junior Duck Stamp Conservation Program</a>
+        <ul>
+          <li><a href="/birds/education/junior-duck-stamp-conservation-program/buy-junior-duck-stamps.php">Buy Junior Duck Stamps</a></li>
+          <li><a href="/birds/education/junior-duck-stamp-conservation-program/conservation-education-curriculum.php">Conservation Education Curriculum</a></li>
+          <li><a href="/birds/education/junior-duck-stamp-conservation-program/junior-duck-stamp-contest-information.php">Junior Duck Stamp Contest Information</a></li>
+          <li><a href="/birds/education/junior-duck-stamp-conservation-program/junior-duck-stamp-in-your-state.php">Junior Duck Stamp in Your State</a></li>
+          <li><a href="/birds/education/junior-duck-stamp-conservation-program/junior-duck-stamp-gallery.php">Junior Duck Stamp Gallery</a></li>
+          <li><a href="/birds/education/junior-duck-stamp-conservation-program/junior-duck-stamp-art-tour.php">Junior Duck Stamp Art Exhibit Tour</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/education/education-resources.php">Education Resources</a>
+        <ul>
+          <li><a href="/birds/bird-enthusiasts/bird-watching/youth-birding.php">Youth Birding</a></li>
+          <li><a href="/birds/education/education-resources/educators.php">Educators</a></li>
+          <li><a href="/birds/education/education-resources/parents.php">Parents</a></li>
+          <li><a href="/birds/education/education-resources/fact-sheets.php">Fact Sheets</a></li>
+          <li><a href="/birds/education/education-resources/multimedia.php">Multimedia</a></li>
+          <li><a href="/birds/education/education-resources/educational-activities.php">Activities</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/grants/urban-bird-treaty.php">Urban Birds</a></li>
+      <li><a href="/birds/education/international-migratory-bird-day.php">International Migratory Bird Day</a></li>
+    </ul>
+  </li>
+  
+  <li><a href="/birds/get-involved.php">Get Involved</a>
+    <ul>
+      <li><a href="/birds/get-involved/duck-stamp.php">Duck Stamp</a>
+        <ul>
+          <li><a href="/birds/get-involved/duck-stamp/history-of-the-federal-duck-stamp.php">History of the Federal Duck Stamp</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/buy-duck-stamp.php">Buy Duck Stamps</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/e-stamp.php">E-Stamp</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/duck-stamp-dollars-at-work.php">Duck Stamp Dollars at Work</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/duck-stamp-contest-and-event-information.php">Duck Stamp Contest &amp; Event Information</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/duck-stamp-information-for-hunters.php">Duck Stamp Information for Hunters</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/duck-stamp-information-for-birders-and-photographers.php">Duck Stamp Information for Birders &amp; Photographers</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/duck-stamp-information-for-stamp-collectors.php">Duck Stamp Information for Stamp Collectors</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/sell-duck-stamp.php">Sell Duck Stamps</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/federal-duck-stamp-gallery.php">Federal Duck Stamp Gallery</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/federal-duck-stamp-art-exhibit-tour.php">Federal Duck Stamp Art Exhibit Tour</a></li>
+          <li><a href="/birds/get-involved/duck-stamp/duck-stamp-design-products-and-licensing-program.php">Duck Stamp Design Products &amp; Licensing Program</a></li>
+          <li><a href="/birds/education/junior-duck-stamp-conservation-program.php">Junior Duck Stamp Conservation Program</a>
+        </ul>
+      </li>
+      <li><a href="/birds/get-involved/invest-in-conservation.php">Invest in Conservation</a>
+        <ul>
+          <li><a href="/birds/get-involved/invest-in-conservation/donate.php">Donate</a></li>
+          <li><a href="/birds/get-involved/invest-in-conservation/provide-matching-funds.php">Provide Matching Funds</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/get-involved/citizen-science.php">Citizen Science</a></li>
+      <li><a href="/birds/get-involved/engaging-others.php">Engaging Others</a>
+        <ul>
+          <li><a href="/birds/get-involved/engaging-others/event.php">Special Event Tips & Examples</a></li>
+          <li><a href="/birds/get-involved/engaging-others/getting-publicity.php">Getting Publicity for Your Event</a></li>
+          <li><a href="/birds/get-involved/engaging-others/partnerships.php">Building Partnerships</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/about-us/strategicplan.php">Strategic Plan</a></li>
+    </ul>
+  </li>
+  
+  <li class="last submenus-left"><a href="/birds/policies-and-regulations.php">Policies &amp; Regulations</a>
+    <ul>
+      <li><a href="/birds/policies-and-regulations/laws-legislations.php">Laws/Legislation</a>
+        <ul>
+          <li><a href="/birds/policies-and-regulations/laws-legislations/migratory-bird-treaty-act.php">Migratory Bird Treaty Act</a></li>
+          <li><a href="/birds/policies-and-regulations/laws-legislations/migratory-bird-hunting-and-conservation-stamp-act.php">Migratory Bird Hunting &amp; Conservation Stamp Act</a></li>
+          <li><a href="/birds/policies-and-regulations/laws-legislations/bald-and-golden-eagle-protection-act.php">Bald &amp; Golden Eagle Protection Act</a></li>
+          <li><a href="/birds/policies-and-regulations/laws-legislations/other-relevant-laws.php">Other Relevant Laws</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/policies-and-regulations/policies.php">Policies</a></li>
+      <li><a href="/birds/policies-and-regulations/regulations.php">Regulations</a>
+        <ul>
+          <li><a href="/birds/policies-and-regulations/regulations/migratory-bird-hunting-regulations.php">Migratory Bird Hunting Regulations</a></li>
+          <li><a href="/birds/policies-and-regulations/regulations/national-environmental-policy-act.php">National Environmental Policy Act</a></li>
+          <li><a href="/birds/policies-and-regulations/regulations/how-regulations-are-set-the-process.php">How Regulations Are Set - The Process</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/policies-and-regulations/executive-orders.php">Executive Orders</a>
+        <ul>
+          <li><a href="/birds/policies-and-regulations/executive-orders/e0-13186.php">EO 13186</a></li>
+        </ul>
+      </li>
+      <li><a href="/birds/policies-and-regulations/federal-register-notices.php">Federal Register Notices</a></li>
+      <li><a href="/birds/policies-and-regulations/permits.php">Permits</a>
+        <ul>
+          <li><a href="/birds/policies-and-regulations/permits/regional-permit-contacts.php">Regional Permit Contacts</a></li>
+          <li><a href="/birds/policies-and-regulations/permits/permit-policies-and-regulations.php">Permit Policies &amp; Regulations</a></li>
+          <li><a href="/birds/policies-and-regulations/permits/need-a-permit.php">Need a Permit</a></li>
+        </ul>
+      </li>
+    <li><a href="/birds/policies-and-regulations/incidental-take.php">Incidental Take</a></ul>
+  </li>  
+</ul></nav>
+</div>
+
+<!--jquery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script> 
+<script>window.jQuery || document.write('<script src="/birdhabitat/js/vendor/jquery-1.10.1.min.js"><\/script>')</script> 
+
+<!--mobile menu-->
+<script type="text/javascript" src="/birdhabitat/js/jquery.mmenu.js"></script>
+
+<!--responsive images-->
+<!--Picturefill-->
+<script src="/birdhabitat/js/picturefill/matchmedia.js"></script>
+<script src="/birdhabitat/js/picturefill/picturefill.js"></script>
+
+<!--custom scripts-->
+<script src="/birdhabitat/js/main.js"></script> 
+
+
+<!--MM_jumpMenu-->
+<script type='text/javascript' src='/birdhabitat/files/reloadJumpmenu.js'></script>
+
+<!--Google Analytics-->
+<script>
+	var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-24008743-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<!--expandable faq custom scripts-->
+<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+
+<script>
+ $(document).ready(function() {
+ 
+    $('.faq_question').click(function() {
+ 
+        if ($(this).parent().is('.open')){
+            $(this).closest('.faq').find('.faq_answer_container').animate({'height':'0'},500);
+            $(this).closest('.faq').removeClass('open');
+ 
+            }else{
+                var newHeight =$(this).closest('.faq').find('.faq_answer').height() +'px';
+                $(this).closest('.faq').find('.faq_answer_container').animate({'height':newHeight},500);
+                $(this).closest('.faq').addClass('open');
+            }
+ 
+    });
+ 
+});
+</script>
+
+
+<!--ncshare scripts-->
+<script type="text/javascript" src="/birdhabitat/js/ncshare/ncshare.min.js"></script>
+
+
+<script>
+function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+	tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+	tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+	document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+	document.getElementById("defaultOpen").click();
+</script>
+<!-- InstanceBeginEditable name="content-footer" -->
+<!--bottom include: used for scripts, footers, etc-->
+<!-- InstanceEndEditable -->
+</body>
+<!-- InstanceEnd --></html>
