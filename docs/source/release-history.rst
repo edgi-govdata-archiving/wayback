@@ -2,10 +2,8 @@
 Release History
 ===============
 
-In Development
---------------
-
-[Add information about changes in your PR here]
+v0.3.0 Alpha 1 (2020-10-20)
+---------------------------
 
 **Breaking Changes:**
 
