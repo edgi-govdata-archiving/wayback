@@ -721,7 +721,7 @@ class WaybackClient(_utils.DepthCountedContext):
                                       mode=current_mode,
                                       memento_url=response.url,
                                       status_code=response.status_code,
-                                      headers=Memento.parse_memento_headers(response.headers),
+                                      headers=Memento.parse_memento_headers(response.headers, response.url),
                                       encoding=response.encoding,
                                       raw=response,
                                       raw_headers=response.headers,

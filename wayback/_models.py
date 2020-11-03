@@ -1,4 +1,5 @@
 from collections import namedtuple
+from urllib.parse import urlparse
 from ._utils import memento_url_data
 
 
@@ -249,7 +250,7 @@ class Memento:
         self.close()
 
     @classmethod
-    def parse_memento_headers(cls, raw_headers):
+    def parse_memento_headers(cls, raw_headers, url='http://web.archive.org/'):
         """
         Extract historical headers from the Memento HTTP response's headers.
 
@@ -257,6 +258,9 @@ class Memento:
         ----------
         raw_headers : dict
             A dict of HTTP headers from the Memento's HTTP response.
+        url : str, optional
+            The URL of the resource the headers are being parsed for. It's used
+            when header data contains relative/incomplete URL information.
 
         Returns
         -------
@@ -281,7 +285,14 @@ class Memento:
         # The `Location` header for a redirect does not have an X-Archive-Orig-
         # version, and the normal location header point to the next *Wayback*
         # URL, so we need to parse it to get the historical redirect URL.
-        if 'Location' in raw_headers:
-            headers['Location'], _, _ = memento_url_data(raw_headers['Location'])
+        if 'Location' not in headers and 'Location' in raw_headers:
+            raw_location = raw_headers['Location']
+            # Some Wayback redirects provide a complete URL with a scheme and
+            # host in the `Location` header, but others provide only a path.
+            if raw_location.startswith('/'):
+                base_data = urlparse(url)
+                raw_location = f'{base_data.scheme}://{base_data.netloc}{raw_location}'
+
+            headers['Location'], _, _ = memento_url_data(raw_location)
 
         return headers

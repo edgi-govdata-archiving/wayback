@@ -367,6 +367,22 @@ def test_get_memento_with_redirects():
 
 
 @ia_vcr.use_cassette()
+def test_get_memento_with_path_based_redirects():
+    """
+    Most redirects in Wayback redirect to a complete URL, with headers like:
+        Location: http://web.archive.org/web/20201027215555id_/https://www.whitehouse.gov/administration/eop/ostp/about/student/faqs
+    But some include only an absolute path, e.g:
+        Location: /web/20201027215555id_/https://www.whitehouse.gov/ostp/about/student/faqs
+    This tests that we correctly handle the latter situation.
+    """
+    with WaybackClient() as client:
+        memento = client.get_memento('https://www.whitehouse.gov/administration/eop/ostp/about/student/faqs',
+                                     datetime(2020, 10, 27, 21, 55, 55))
+        assert len(memento.history) == 1
+        assert memento.url == memento.history[0].headers['Location']
+
+
+@ia_vcr.use_cassette()
 def test_get_memento_raises_for_mementos_that_redirect_in_a_loop():
     with WaybackClient() as client:
         with pytest.raises(MementoPlaybackError):
