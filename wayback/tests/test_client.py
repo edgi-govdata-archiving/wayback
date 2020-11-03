@@ -370,7 +370,7 @@ def test_get_memento_with_redirects():
 def test_get_memento_with_path_based_redirects():
     """
     Most redirects in Wayback redirect to a complete URL, with headers like:
-        Location: http://web.archive.org/web/20201027215555id_/https://www.whitehouse.gov/administration/eop/ostp/about/student/faqs
+        Location: http://web.archive.org/web/20201027215555id_/https://www.whitehouse.gov/administration
     But some include only an absolute path, e.g:
         Location: /web/20201027215555id_/https://www.whitehouse.gov/ostp/about/student/faqs
     This tests that we correctly handle the latter situation.
