@@ -1,0 +1,2038 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.3.0a2.post0.dev0+gc2ca979 (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: http://web.archive.org/web/20201102232816id_/https://www.census.gov/geography/gss-initiative.html
+  response:
+    body:
+      string: "\n\n                    \n\n                    \n                    \n
+        \                   \n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"
+        \  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\"
+        xml:lang=\"en\" lang=\"en\">\n\n\n\n\n\n<head>\n<!--[if lt IE 9]><meta http-equiv=\"X-UA-Compatible\"
+        content=\"IE=EmulateIE8\"  /><![endif]-->\n<!--[if gte IE 9]><meta http-equiv=\"X-UA-Compatible\"
+        content=\"IE=edge\"> <![endif]-->\t\n\t<meta http-equiv=\"Content-Type\" content=\"text/html;
+        charset=utf-8\" />\n\t<link rel=\"stylesheet\" href=\"/etc.clientlibs/census/clientlibs/bootstrap.css\"
+        type=\"text/css\"/>\n\n\t<link rel=\"stylesheet\" href=\"/etc.clientlibs/census/clientlibs/jquery.css\"
+        type=\"text/css\"/>\n\n\t<link rel=\"stylesheet\" href=\"/etc.clientlibs/census/clientlibs/common-site.css\"
+        type=\"text/css\"/>\n<link rel=\"stylesheet\" href=\"/etc.clientlibs/census/clientlibs/census-pattern-library.css\"
+        type=\"text/css\"/>\n<link rel=\"stylesheet\" href=\"/etc.clientlibs/census/clientlibs/census-css.css\"
+        type=\"text/css\"/>\n\n    <link rel=\"stylesheet\" href=\"/etc.clientlibs/census-core/clientlibs.css\"
+        type=\"text/css\"/>\n\n\t<link rel=\"stylesheet\" href=\"/etc.clientlibs/census/clientlibs/core-overrides.css\"
+        type=\"text/css\"/>\n\n\t\n\t\n\n\t\n\t    \t  <link rel=\"icon\" sizes=\"192x192\"
+        href=\"/etc.clientlibs/census/clientlibs/census-pattern-library/resources/images/icons/android-chrome-192x192.png\">\n
+        \   <link rel=\"icon\" sizes=\"256x256\" href=\"/etc.clientlibs/census/clientlibs/census-pattern-library/resources/images/icons/android-chrome-256x256.png\">\n
+        \    <link rel=\"shortcut icon\" sizes=\"32x32\" href=\"/etc.clientlibs/census/clientlibs/census-pattern-library/resources/images/icons/favicon.ico\">\n
+        \   <link rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"/etc.clientlibs/census/clientlibs/census-pattern-library/resources/images/icons/apple-touch-icon-180x180.png\">
+        \    \n    <meta name=\"msapplication-square150x150logo\" content=\"/etc.clientlibs/census/clientlibs/census-pattern-library/resources/images/icons/mstile-150x150.png\">
+        \n\n\t<link rel=\"canonical\" href=\"https://www.census.gov/geography/gss-initiative.html\"/>\n\t\n\t\n\t\t<title>GSS
+        Initiative</title>\n\t\t\n        \n            <style id=\"antiClickjack\">
+        \n                body { display: none; }\n            </style>\n\n            <script
+        type=\"text/javascript\"> \n                if (self === top) {\n                    var
+        antiClickjack =  document.getElementById(\"antiClickjack\");\n                    antiClickjack.parentNode.removeChild(antiClickjack);\n
+        \               } else {\n                    top.location = self.location\n
+        \               }\n            </script>\n        \n\n\t\t<style type=\"text/css\">\n\t\t\t.content_area{\n\t\t\t\tdisplay:block;\n\t\t\t}\n\t\t</style>\n\t\n\t\n\t\t\t<link
+        href=\"/etc.clientlibs/census/clientlibs/census-css/resources/print.css\"
+        rel=\"stylesheet\" type=\"text/css\" media=\"print\"/>\n\t\n\t\r\n\r\n\r\n\r\n\r\n\r\n\r\n
+        \                  \r\n<meta name=\"viewport\" content=\"width=device-width,
+        initial-scale=1\">\r\n<meta name=\"DC.title\" property=\"og:title\" content=\"GSS
+        Initiative\" />\r\n<meta name=\"DC.creator\" content=\"US Census Bureau\"
+        />\r\n<meta name=\"DC.date.created\" property=\"article:published_time\" scheme=\"ISO8601\"
+        content=\"\" />\r\n<meta name=\"DC.date.reviewed\" property=\"article:modified_time\"
+        scheme=\"ISO8601\" content=\"2016-06-30T12:47:40.735-04:00\" />\r\n<meta name=\"DC.language\"
+        scheme=\"DCTERMS.RFC1766\" content=\"EN-US\" />\r\n<meta name=\"robots\" content=\"noodp,
+        noydir\" />\r\n<meta name=\"description\" content=\"The Geographic Support
+        System Initiative will integrate improved address coverage, spatial feature
+        updates, and enhanced quality assessment and measurement.\" />\r\n<meta name=\"author\"
+        content=\"US Census Bureau\"  />\r\n<meta http-equiv=\"content-type\" content=\"text/html;
+        charset=UTF-8\" />\r\n<meta http-equiv=\"keywords\" content=\"\" />\r\n<meta
+        property=\"og:locale\" content=\"en_US\" />\r\n<meta property=\"og:site_name\"
+        content=\"The United States Census Bureau\" />\r\n<meta property=\"og:type\"
+        content=\"article\" />\r\n<meta property=\"og:url\" content=\"https://www.census.gov/geography/gss-initiative.html\"
+        />\r\n\r\n    <meta property=\"og:image\" content=\"https://www.census.gov/content/dam/Census/public/brand/census-logo-sharing-card.jpg\"
+        />\r\n    <meta name=\"twitter:image\" content=\"https://www.census.gov/content/dam/Census/public/brand/census-logo-sharing-card.jpg\"/>\r\n\r\n<meta
+        name=\"twitter:card\" content=\"summary_large_image\"/>\r\n<meta name=\"twitter:site\"
+        content=\"@uscensusbureau\">\r\n<meta name=\"twitter:creator\" content=\"@uscensusbureau\"/>\r\n<meta
+        name=\"twitter:title\" content=\"GSS Initiative\"/>\r\n<meta property=\"article:publisher\"
+        content=\"https://census.gov /\" />\r\n<meta property=\"article:section\"
+        content=\"Government\" />\r\n\r\n\r\n<!-- context hub -->\r\n\r\n<!--Data
+        Layer-->\r\n<script src=\"//assets.adobedtm.com/526d5084b7f8f688ea81a3aba09755d76a81f8e8/satelliteLib-5b0c69cba9998404374755048324ea6deb6c9db5.js\"></script>\n\r\n\n\n
+        \   \n\n\n        <script type=\"text/javascript\" src=\"//assets.adobedtm.com/launch-ENdc1ca6bab15e46a5b880a2c3f9d462ab.min.js\"></script>\n\n\r\n<script
+        type=\"text/javascript\">\r\n\tvar d = new Date();\r\n\tvar days = [\"Sunday\",\"Monday\",\"Tuesday\",\"Wednesday\",\"Thursday\",\"Friday\",\"Saturday\"];\r\n\tvar
+        digitalData = digitalData || {};\r\n    digitalData = {\r\n       \t\"page\"
+        : {\r\n            \"pageInfo\" : {                \r\n                \"pageName\"
+        \t\t\t: \"GSS Initiative_144948\",\r\n                \"legacyPageName\" \t:
+        \"en>geographORY>GSS Initiative\",\r\n                \"pageURL\" \t\t\t:
+        window.location.href,\r\n                \"language\" \t\t\t: \"en\",\r\n
+        \               \"pageTemplate\" \t\t: \"CensusListPage\",\r\n                \"topic\"
+        \t\t\t: \"\",\r\n                \"programTag\" \t\t: \"\",\r\n                \"collectionYear\"
+        \t: \"\",\r\n                \"AEMtopic\" \t\t\t: \"\",\r\n                \"contentType\"
+        \t\t: \"\",\r\n                \"geoTag\" \t\t\t: \"Geography\",\r\n                \"seriesTag\"
+        \t\t: \"\",\r\n                \"publishDate\" \t\t: \"\",\r\n                \"timeOfDay\"
+        \t\t: twoDigits(d.getHours()) + \":\" + twoDigits(d.getMinutes()),\r\n                \"tool\"
+        \t\t\t\t: \"aem\",\r\n                \"dayOfWeek\" \t\t: days[d.getDay()],\r\n
+        \               \"siteSection\" : \"geography\",\"subSectionOne\" : \"gss-initiative\"\r\n
+        \           },\r\n            \"pageTag\" : {\r\n                \"geography\"
+        : \"Geography\"                \r\n            }\r\n        },\r\n        \"event\"
+        : {\r\n        \t\"eventName\" : {},\r\n          \t\"eventInfo\" : {\r\n\t
+        \           \"share\" \t\t\t : {},\r\n\t            \"download\" \t\t\t :
+        {},\r\n\t            \"search\" \t\t\t : {},\r\n\t            \"expandCollapseList\"
+        : {},\r\n\t            \"language\" \t\t\t : {\r\n\t            \tpageLanguage\t
+        : \"en\"\r\n\t            },\r\n\t            \"landingPageTab\" \t : {}\r\n
+        \         }\r\n        },\r\n        \"browserInfo\" : {\r\n        \t\"browserWidth\"
+        : getBrowserWidth()\r\n        }\r\n    };    \r\n\r\n    if ( typeof(Storage)
+        !== \"undefined\" ) {\r\n      if ( localStorage.getItem(\"pageLanguage\")
+        != null ) {\r\n        digitalData.event.eventInfo.language.pageLanguage =
+        localStorage.getItem(\"pageLanguage\");\r\n      }\r\n      if ( localStorage.getItem(\"langEventName\")
+        != null ) {\r\n        digitalData.event.eventName = localStorage.getItem(\"langEventName\");\r\n
+        \     }\r\n      if ( localStorage.getItem(\"clickValue\") != null ) {\r\n
+        \       digitalData.event.eventInfo.search.clickValue = localStorage.getItem(\"clickValue\");\r\n
+        \     }\r\n      if ( localStorage.getItem(\"searchEventName\") != null )
+        {\r\n        digitalData.event.eventInfo.eventName = localStorage.getItem(\"searchEventName\");\r\n
+        \     }       \r\n      if ( localStorage.getItem(\"tabEventName\") != null
+        ) {\r\n        digitalData.event.eventName = localStorage.getItem(\"tabEventName\");\r\n
+        \     } \r\n      if ( localStorage.getItem(\"pageName\") != null ) {\r\n
+        \       digitalData.page.pageInfo.pageName = localStorage.getItem(\"pageName\");\r\n
+        \     } \r\n      if ( localStorage.getItem(\"eventInfoEventName\") != null
+        ) {\r\n    \t  digitalData.event.eventInfo.eventName = localStorage.getItem(\"eventInfoEventName\");
+        \ \t  \r\n      }\r\n      if ( localStorage.getItem(\"eventInfoLanguage\")
+        != null ) {\r\n    \t  digitalData.event.eventInfo.language.pageLanguage =
+        localStorage.getItem(\"eventInfoLanguage\");\r\n      }\r\n      if ( localStorage.getItem(\"searchTerm\")
+        != null ) {\r\n    \t  digitalData.event.eventInfo.search.term = localStorage.getItem(\"searchTerm\");\r\n
+        \     }\r\n      if ( localStorage.getItem(\"blogSearchPhrase\") != null )
+        {\r\n    \t  digitalData.event.eventInfo.blogSearchPhrase = localStorage.getItem(\"blogSearchPhrase\");\r\n
+        \     }\r\n      if ( localStorage.getItem(\"blogEventName\") != null ) {\r\n
+        \   \t  digitalData.event.eventInfo.eventName = localStorage.getItem(\"blogEventName\");\r\n
+        \     }      \r\n      if ( localStorage.getItem(\"blogName\") != null ) {\r\n
+        \   \t  digitalData.event.eventInfo.blogName = localStorage.getItem(\"blogName\");\r\n
+        \     }\r\n      if ( localStorage.getItem(\"buttonClickCount\") != null )
+        {\r\n    \t  digitalData.event.eventInfo.buttonClickCount = localStorage.getItem(\"buttonClickCount\");\r\n
+        \     }\r\n      //After assigning the value to digitalData, clear the localStorage
+        variable's content\r\n      localStorage.removeItem(\"pageLanguage\");\r\n
+        \     localStorage.removeItem(\"langEventName\");\r\n      localStorage.removeItem(\"clickValue\");\r\n
+        \     localStorage.removeItem(\"searchEventName\");\r\n      localStorage.removeItem(\"landingPageTabClickValue\");\r\n
+        \     localStorage.removeItem(\"tabEventName\");\r\n      localStorage.removeItem(\"pageName\");\r\n
+        \     localStorage.removeItem(\"eventInfoEventName\");\r\n      localStorage.removeItem(\"eventInfoLanguage\");\r\n
+        \     localStorage.removeItem(\"searchTerm\");\r\n      localStorage.removeItem(\"blogSearchPhrase\");\r\n
+        \     localStorage.removeItem(\"blogEventName\");\r\n      localStorage.removeItem(\"blogName\");\r\n
+        \     localStorage.removeItem(\"buttonClickCount\");\r\n    } else {\r\n      if
+        ( getCookie(\"pageLanguage\") != \"\" ) {\r\n        digitalData.event.eventInfo.language.pageLanguage
+        = getCookie(\"pageLanguage\");\r\n      }\r\n      if ( getCookie(\"langEventName\")
+        != \"\" ) {\r\n        digitalData.event.eventName = getCookie(\"langEventName\");\r\n
+        \     }\r\n      if ( getCookie(\"clickValue\") != \"\" ) {\r\n        digitalData.event.eventInfo.search.clickValue
+        = getCookie(\"clickValue\");\r\n      }\r\n      if ( getCookie(\"searchEventName\")
+        != \"\" ) {\r\n        digitalData.event.eventInfo.eventName = getCookie(\"searchEventName\");\r\n
+        \     }\r\n      if ( getCookie(\"landingPageTabClickValue\") != \"\" ) {\r\n
+        \       digitalData.event.eventInfo.landingPageTab.clickValue = getCookie(\"landingPageTabClickValue\");\r\n
+        \     }\r\n      if ( getCookie(\"tabEventName\") != \"\" ) {\r\n        digitalData.event.eventName
+        = getCookie(\"tabEventName\");\r\n      }\r\n      if ( getCookie(\"pageName\")
+        != \"\" ) {\r\n        digitalData.page.pageInfo.pageName = getCookie(\"pageName\");\r\n
+        \     }\r\n      if ( getCookie(\"eventInfoEventName\") != \"\" ) {\r\n    \t
+        \ digitalData.event.eventInfo.eventName = getCookie(\"eventInfoEventName\");
+        \ \r\n      }\r\n      if ( getCookie(\"eventInfoLanguage\") ) {\r\n    \t
+        \ digitalData.event.eventInfo.language.pageLanguage = getCookie(\"eventInfoLanguage\");\r\n
+        \     }\r\n      if ( getCookie(\"searchTerm\") ) {\r\n    \t  digitalData.event.eventInfo.search.term
+        = getCookie(\"searchTerm\");\r\n      }\r\n      if ( getCookie(\"blogSearchPhrase\")
+        ) {\r\n    \t  digitalData.event.eventInfo.blogSearchPhrase = getCookie(\"blogSearchPhrase\");\r\n
+        \     }\r\n      if ( getCookie(\"blogEventName\") ) {\r\n    \t  digitalData.event.eventInfo.eventName
+        = getCookie(\"blogEventName\");\r\n      }\r\n      if ( getCookie(\"blogName\")
+        ) {\r\n    \t  digitalData.event.eventInfo.blogName = getCookie(\"blogName\");\r\n
+        \     }\r\n      if ( getCookie(\"buttonClickCount\") ) {\r\n    \t  digitalData.event.eventInfo.buttonClickCount
+        = getCookie(\"buttonClickCount\");\r\n      }\r\n      //After assigning the
+        value to digitalData, clear the localStorage variable's content\r\n      setCookie(\"pageLanguage\",
+        \"\");\r\n      setCookie(\"langEventName\", \"\");\r\n      setCookie(\"clickValue\",
+        \"\");\r\n      setCookie(\"searchEventName\", \"\");\r\n      setCookie(\"landingPageTabClickValue\",
+        \"\");\r\n      setCookie(\"pageName\", \"\");\r\n      setCookie(\"eventInfoEventName\",
+        \"\");\r\n      setCookie(\"eventInfoLanguage\", \"\");\r\n      setCookie(\"searchTerm\",
+        \"\");\r\n      setCookie(\"blogSearchPhrase\", \"\");\r\n      setCookie(\"blogName\",
+        \"\");\r\n      setCookie(\"buttonClickCount\", \"\");\r\n    }\r\n\r\n    function
+        setCookie(cname, cvalue, exdays) {\r\n       var d = new Date();\r\n       d.setTime(d.getTime()
+        + (exdays*24*60*60*1000));\r\n       var expires = \"expires=\"+d.toUTCString();\r\n
+        \      document.cookie = cname + \"=\" + cvalue + \";\" + expires + \";path=/\";\r\n
+        \   }\r\n\r\n    function getCookie(cname) {\r\n       var name = cname +
+        \"=\";\r\n       var ca = document.cookie.split(';');\r\n       for(var i
+        = 0; i < ca.length; i++) {\r\n           var c = ca[i];\r\n           while
+        (c.charAt(0) == ' ') {\r\n               c = c.substring(1);\r\n           }\r\n
+        \          if (c.indexOf(name) == 0) {\r\n               return c.substring(name.length,
+        c.length);\r\n           }\r\n       }\r\n       return \"\";\r\n    }\r\n
+        \   \r\n    function getBrowserWidth() {         \r\n   \t  \treturn window.innerWidth;\r\n
+        \  \t}\r\n    \r\n    function twoDigits(n){\r\n        return n > 9 ? \"\"
+        + n: \"0\" + n;\r\n    }\r\n    \r\n    document.addEventListener('click',
+        function (event) {    \t\r\n    \tif (typeof(event.target.href) !== 'undefined'
+        && event.target.href.toLowerCase().indexOf('tel:') >= 0) {\r\n    \t\tdigitalData.event.eventName
+        = 'phoneNumber';\r\n    \t\tdigitalData.event.eventInfo.eventName = 'Telephone
+        Click';\r\n    \t\tvar splittedData = event.target.href.toLowerCase().split(':');\r\n
+        \   \t\tif (splittedData.length > 0) {\r\n    \t\t\tdigitalData.event.eventInfo.telephoneNumber
+        = splittedData[splittedData.length - 1];\t\r\n    \t\t}    \t\t\r\n    \t}\r\n
+        \   \t\r\n    \tif (typeof(event.target.href) !== 'undefined' && event.target.href.toLowerCase().indexOf('mailto:')
+        >= 0) {\r\n    \t\tdigitalData.event.eventName = 'emailClick';\r\n    \t\tdigitalData.event.eventInfo.eventName
+        = 'Email Click';\r\n    \t\tvar splittedData = event.target.href.toLowerCase().split(':');\r\n
+        \   \t\tif (splittedData.length > 0) {\r\n    \t\t\tdigitalData.event.eventInfo.emailAddress
+        = splittedData[splittedData.length - 1 ]\r\n    \t\t}\r\n    \t}\r\n    \t\r\n
+        \   \t//For links that are added via RTE\r\n    \tif (typeof(event.target.href)
+        !== 'undefined') {    \t\t\r\n    \t\tlinkClick(event.target, 'RTE');    \t\t\r\n
+        \   \t}\r\n    });\r\n    \r\n    document.addEventListener(\"DOMContentLoaded\",
+        function() {   \t\t\r\n   \t  \tif (typeof(getCookie('visitor')) !== 'undefined'
+        && getCookie('visitor') !== '') {\r\n   \t  \t    date = new Date();   \t
+        \ \t    \r\n   \t\t\tdigitalData.event.eventInfo.newVsRepeat = 'repeat';\r\n
+        \  \t\t\tvar dateLastVisited = Date.parse(getCookie('dateLastVisited'));   \t\t\t\r\n
+        \  \t\t\tvar differenceInTime = date.getTime() - dateLastVisited;   \t\t\t\r\n
+        \  \t\t\tvar seconds = (differenceInTime * .001) >> 0;\r\n   \t\t\t\r\n   \t\t\tif
+        (seconds > 0) {   \t\t\t\t\r\n\t   \t        var minutes = seconds / 60;\r\n\t
+        \  \t        var hours = minutes / 60;\t   \t        \r\n\t   \t        var
+        days = hours / 24;\t   \t        \r\n   \t        \tdigitalData.event.eventInfo.secondsSinceLastVisit
+        = seconds.toFixed(2);\r\n   \t        \tdigitalData.event.eventInfo.minutesSinceLastVisit
+        = minutes.toFixed(2);\r\n   \t        \tdigitalData.event.eventInfo.hoursSinceLastVisit
+        = hours.toFixed(2);\r\n   \t        \tdigitalData.event.eventInfo.daysSinceLastVisit
+        = days.toFixed(2);\r\n   \t        }   \t\t\t\r\n   \t\t\t\r\n   \t\t\tsetCookie('dateLastVisited',
+        date, 365); \r\n   \t\t\tvar visitNumber = parseInt(getCookie('visitNumber'))
+        + 1;\r\n   \t\t\tsetCookie('visitNumber', visitNumber, 365);\r\n   \t\t\tdigitalData.event.eventInfo.visitNumber
+        = visitNumber;\r\n   \t  \t} else {\r\n   \t  \t\tdate = new Date();\r\n   \t
+        \ \t\tsetCookie('visitor', 'census website visitor', 365);\r\n   \t  \t\tsetCookie('dateLastVisited',
+        date, 365);\r\n   \t  \t\tsetCookie('visitNumber', 1, 365);\r\n   \t  \t\tdigitalData.event.eventInfo.newVsRepeat
+        = 'new';\r\n   \t  \t\tdigitalData.event.eventInfo.visitNumber = 1;\r\n   \t
+        \ \t}\r\n   \t});\r\n</script>\r\n<!--Asset Ref, Content-Language -->\r\n<script
+        type=\"text/javascript\">    \r\n   \t'use strict';\r\n   \t\r\n   \tdocument.addEventListener('click',
+        function (event) {\r\n    \tif (typeof(event.target.href) !== 'undefined'
+        && event.target.href.toLowerCase().indexOf('pdf') >= 0) {\r\n    \t\tvar pdfXhr
+        = new XMLHttpRequest();\r\n    \t\tpdfXhr.open('GET', '/bin/custom/header/asset?pdfPath='
+        + event.target.href, true);\r\n    \t\tpdfXhr.send();\r\n    \t}\r\n   \t});\r\n
+        \  \t\r\n</script>\r\n\n\t\n\t\n\n\t<script type=\"text/javascript\" src=\"https://www.google.com/jsapi\"></script>\n\t\n\t\n\t<link
+        rel=\"stylesheet\" href=\"/etc.clientlibs/census/clientlibs/census-fonts.css\"
+        type=\"text/css\"/>\n\n\t<link rel=\"stylesheet\" href=\"/etc.clientlibs/census/clientlibs/orionicons.css\"
+        type=\"text/css\"/>\n\n\t\n\t\n\t\n\t\n\t\t\n\t\t\t\n</head>\n\n\n\n\n\n\n<body
+        id=\"innerPage\" class=\"   \">\n<script type=\"text/javascript\" src=\"/etc.clientlibs/clientlibs/granite/jquery.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/etc.clientlibs/clientlibs/granite/utils.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/etc.clientlibs/clientlibs/granite/jquery/granite.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/libs/clientlibs/granite/lodash/modern.js\"></script>\n\n\n\n\t<a
+        name=\"skipfooter\" class=\"skip\"></a>\n\n\t<div class=\"uscb-main-container\">\n
+        \   \t\n\t\t\t<div class=\"censusheader universalheader\">\n\n<header id=\"data-uscb-main-header\"
+        class=\"uscb-header uscb-print-hide\">\n\t<a id=\"uscb-nav-skip-header\" class=\"uscb-nav-skip
+        uscb-button-medium uscb-secondary-button uscb-position-absolute\" href=\"#content\"
+        tabindex=\"1\">Skip Header</a>\n\n    <div class=\"uscb-header-content\">\n
+        \       <div class=\"uscb-header-top uscb-layout-row-gt-md uscb-layout-column-md
+        uscb-layout-align-start-center\" onmouseover='CensusUniversalHeader.closeDropdowns(\"data-uscb-header-dropdown-links-\",
+        \"data-uscb-header-nav-item-\", \"data-uscb-header-nav-item-link-\", 7)'>\n
+        \           <div class=\"uscb-menu-icon-container uscb-hide-gt-md\" onclick='CensusUniversalHeader.toggleMenu(\"data-uscb-header-dropdown-links-side-\",
+        \"data-uscb-header-nav-item-side-\", \"data-uscb-header-nav-item-link-\",
+        0, 7)'>\n                <div>\n                    <div class=\"uscb-menu-bar1\"></div>\n
+        \                   <div class=\"uscb-menu-bar2\"></div>\n                    <div
+        class=\"uscb-menu-bar3\"></div>\n                </div>\n                <p
+        id=\"data-uscb-header-close\" class=\"uscb-header-close uscb-sub-heading-2
+        uscb-color-white uscb-bold\" style=\"display: none;\">CLOSE</p>\n            </div>\n\n
+        \           <div class=\"uscb-header-logo uscb-flex-row-gt-md-25 uscb-layout-align-gt-md-start-center
+        uscb-flex-col-md-60 uscb-layout-align-md-center-center\">\n                <a
+        href=\"https://www.census.gov/en.html\" onclick=\"linkClick(this, 'Universal
+        Header Component');\" tabindex=\"0\" onfocus=\"CensusSearchTypeahead.onSearchFocusBlur(false);\">\n
+        \               \t<img class=\"uscb-nav-image\" src=\"/etc.clientlibs/census/clientlibs/census-pattern-library/resources/images/USCENSUS_IDENTITY_SOLO_White_2in_TM.svg\"
+        alt=\"United States Census Bureau\"/>\n               \t</a>\n            </div>\n\n
+        \           \n            \n\n            \n            \n\t            <hr
+        class=\"uscb-header-footer-hr uscb-hide-gt-md\"/>\n\t            <hr class=\"uscb-header-vert-hr
+        uscb-hide-md\"/>\n\t            <div class=\"uscb-header-search uscb-layout-row
+        uscb-flex-row-gt-md-75 uscb-flex-col-md-40 uscb-layout-align-center-center\">\n\t
+        \           \t\n\n\t                \n\t                \t\n\t\t\t\t\t\t\n\t<div
+        class=\"uscb-header-backdrop\" style=\"display: none;\" onclick=\"CensusSearchTypeahead.onSearchFocusBlur(false)\"></div>\n\n\t<i
+        class=\"uscb-header-search-icon o-search-1\" aria-hidden=\"true\"></i>\n\n\t<form
+        id=\"data-uscb-header-search-form\" class=\"uscb-header-search-input-container
+        uscb-layout-row uscb-layout-align-center-center\" accept-charset=\"utf-8\"
+        action=\"https://www.census.gov/search-results.html?searchType=web&cssp=SERP&q=\"
+        method=\"GET\">\n\t    <input type=\"text\" id=\"data-uscb-header-input\"
+        name=\"q\" class=\"uscb-header-input\" placeholder=\"Search\" tabindex=\"0\"
+        aria-label=\"Search\" onfocus=\"CensusSearchTypeahead.onSearchFocusBlur(true)\"
+        autocomplete=\"off\"/>\n\n\t\t<input type=\"hidden\" name=\"page\" value=\"1\"/>\n\t\t<input
+        type=\"hidden\" name=\"stateGeo\" value=\"none\"/>\n\t\t<input type=\"hidden\"
+        name=\"searchtype\" value=\"web\"/>\n\t\t<input type=\"hidden\" name=\"cssp\"
+        value=\"SERP\"/>\n\t\t<input type=\"hidden\" name=\"_charset_\" value=\"UTF-8\"/>\n\t\t\n\n\t
+        \   <button type=\"button\" class=\"data-uscb-header-search-input-button uscb-header-search-input-button-close
+        uscb-transparent-button o-close-1\" style=\"display: none;\" tabindex=\"0\"
+        aria-label=\"Clear\" onclick=\"CensusSearchTypeahead.onSearchCloseClick()\">\n\t
+        \   </button>\n\t    <button type=\"button\" class=\"data-uscb-header-search-input-button
+        uscb-header-search-input-button-search uscb-primary-button\" style=\"display:
+        none;\" tabindex=\"0\" onclick=\"CensusSearchTypeahead.onSearchButtonClick()\">\n\t
+        \   \tSearch\n\t    </button>\n\t</form>\n\n\t<div id=\"data-uscb-header-search-typeahead\"
+        class=\"uscb-header-search-typeahead\" style=\"display: none;\" data-apiurl=\"https://www.census.gov/search-results/_http_//search-soa.asd.census.gov/soa-infra/services/searchServices/CensusSearchFlow/TypeAheadHTTPService\">\n
+        \       \n\t</div>\n\n\t<script type=\"text/javascript\">\n    \t<!--/* Native
+        onReady */-->\n\t\tdocument.addEventListener(\"DOMContentLoaded\", function(event)
+        {\n\t\t\tCensusSearchTypeahead.initSearchTypeahead(\"https://www.census.gov/suggest?operationName=httpsearch&query=\",
+        \"https://www.census.gov/search-results.html?searchType=web&cssp=SERP&q=\");\n\t\t});\n\t</script>\n\n\t\t\t\t\t\n\t
+        \           </div>\n            \n\n            \n            \n        </div>\n\n
+        \       \n\t        <hr class=\"uscb-header-footer-hr uscb-hide-md\"/>\n\n
+        \      \t\t\n            <div class=\"uscb-layout-row\">\n            \t<div
+        class=\"uscb-header-nav-item-spacer-L\" onmouseover='CensusUniversalHeader.onActivateMenu(false,
+        \"data-uscb-header-dropdown-links-\", \"data-uscb-header-nav-item-\", \"data-uscb-header-nav-item-link-\",
+        0, 7)'></div>\n\n\t\t\t\t<div class=\"uscb-header-menu uscb-layout-row uscb-w-100
+        uscb-hide-md\">\n\t\t\t\t\t\n\t\t\t\t\t\t<div id=\"data-uscb-header-nav-item-0\"
+        class=\"uscb-header-nav-item uscb-height-100 uscb-padding-LR-8\" style=\"display:
+        flex; flex-basis: 14.285714285714286%; max-width: 183px\" onmouseover='CensusUniversalHeader.onActivateMenu(true,
+        \"data-uscb-header-dropdown-links-\", \"data-uscb-header-nav-item-\", \"data-uscb-header-nav-item-link-\",
+        0, 7)'>\n\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t<a id=\"data-uscb-header-nav-item-link-0\"
+        class=\"uscb-hw-100 uscb-text-align-center\" tabindex=\"0\" onfocus='CensusUniversalHeader.onActivateMenu(true,
+        \"data-uscb-header-dropdown-links-\", \"data-uscb-header-nav-item-\", \"data-uscb-header-nav-item-link-\",
+        0, 7)' onkeydown='CensusUniversalHeader.onKeyParent(event, \"data-uscb-header-dropdown-links-\",
+        0)'>\n\t\t\t\t\t\t\t\t<div class=\"data-uscb-top-link uscb-layout-row uscb-layout-align-center-center
+        uscb-hw-100\">\n\t\t\t\t\t\t\t\t\tBrowse by Topic\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\n\t\t\t\t\t\t<div
+        id=\"data-uscb-header-nav-item-1\" class=\"uscb-header-nav-item uscb-height-100
+        uscb-padding-LR-8\" style=\"display: flex; flex-basis: 14.285714285714286%;
+        max-width: 183px\" onmouseover='CensusUniversalHeader.onActivateMenu(true,
+        \"data-uscb-header-dropdown-links-\", \"data-uscb-header-nav-item-\", \"data-uscb-header-nav-item-link-\",
+        1, 7)'>\n\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t<a id=\"data-uscb-header-nav-item-link-1\"
+        class=\"uscb-hw-100 uscb-text-align-center\" tabindex=\"0\" onfocus='CensusUniversalHeader.onActivateMenu(true,
+        \"data-uscb-header-dropdown-links-\", \"data-uscb-header-nav-item-\", \"data-uscb-header-nav-item-link-\",
+        1, 7)' onkeydown='CensusUniversalHeader.onKeyParent(event, \"data-uscb-header-dropdown-links-\",
+        1)'>\n\t\t\t\t\t\t\t\t<div class=\"data-uscb-top-link uscb-layout-row uscb-layout-align-center-center
+        uscb-hw-100\">\n\t\t\t\t\t\t\t\t\tExplore Data\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\n\t\t\t\t\t\t<div
+        id=\"data-uscb-header-nav-item-2\" class=\"uscb-header-nav-item uscb-height-100
+        uscb-padding-LR-8\" style=\"display: flex; flex-basis: 14.285714285714286%;
+        max-width: 183px\" onmouseover='CensusUniversalHeader.onActivateMenu(true,
+        \"data-uscb-header-dropdown-links-\", \"data-uscb-header-nav-item-\", \"data-uscb-header-nav-item-link-\",
+        2, 7)'>\n\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t<a id=\"data-uscb-header-nav-item-link-2\"
+        class=\"uscb-hw-100 uscb-text-align-center\" tabindex=\"0\" onfocus='CensusUniversalHeader.onActivateMenu(true,
+        \"data-uscb-header-dropdown-links-\", \"data-uscb-header-nav-item-\", \"data-uscb-header-nav-item-link-\",
+        2, 7)' onkeydown='CensusUniversalHeader.onKeyParent(event, \"data-uscb-header-dropdown-links-\",
+        2)'>\n\t\t\t\t\t\t\t\t<div class=\"data-uscb-top-link uscb-layout-row uscb-layout-align-center-center
+        uscb-hw-100\">\n\t\t\t\t\t\t\t\t\tLibrary\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\n\t\t\t\t\t\t<div
+        id=\"data-uscb-header-nav-item-3\" class=\"uscb-header-nav-item uscb-height-100
+        uscb-padding-LR-8\" style=\"display: flex; flex-basis: 14.285714285714286%;
+        max-width: 183px\" onmouseover='CensusUniversalHeader.onActivateMenu(true,
+        \"data-uscb-header-dropdown-links-\", \"data-uscb-header-nav-item-\", \"data-uscb-header-nav-item-link-\",
+        3, 7)'>\n\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t<a id=\"data-uscb-header-nav-item-link-3\"
+        class=\"uscb-hw-100 uscb-text-align-center\" tabindex=\"0\" onfocus='CensusUniversalHeader.onActivateMenu(true,
+        \"data-uscb-header-dropdown-links-\", \"data-uscb-header-nav-item-\", \"data-uscb-header-nav-item-link-\",
+        3, 7)' onkeydown='CensusUniversalHeader.onKeyParent(event, \"data-uscb-header-dropdown-links-\",
+        3)'>\n\t\t\t\t\t\t\t\t<div class=\"data-uscb-top-link uscb-layout-row uscb-layout-align-center-center
+        uscb-hw-100\">\n\t\t\t\t\t\t\t\t\tSurveys/ Programs\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\n\t\t\t\t\t\t<div
+        id=\"data-uscb-header-nav-item-4\" class=\"uscb-header-nav-item uscb-height-100
+        uscb-padding-LR-8\" style=\"display: flex; flex-basis: 14.285714285714286%;
+        max-width: 183px\" onmouseover='CensusUniversalHeader.onActivateMenu(true,
+        \"data-uscb-header-dropdown-links-\", \"data-uscb-header-nav-item-\", \"data-uscb-header-nav-item-link-\",
+        4, 7)'>\n\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t<a id=\"data-uscb-header-nav-item-link-4\"
+        class=\"uscb-hw-100 uscb-text-align-center\" tabindex=\"0\" onfocus='CensusUniversalHeader.onActivateMenu(true,
+        \"data-uscb-header-dropdown-links-\", \"data-uscb-header-nav-item-\", \"data-uscb-header-nav-item-link-\",
+        4, 7)' onkeydown='CensusUniversalHeader.onKeyParent(event, \"data-uscb-header-dropdown-links-\",
+        4)'>\n\t\t\t\t\t\t\t\t<div class=\"data-uscb-top-link uscb-layout-row uscb-layout-align-center-center
+        uscb-hw-100\">\n\t\t\t\t\t\t\t\t\tInformation for\u2026\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\n\t\t\t\t\t\t<div
+        id=\"data-uscb-header-nav-item-5\" class=\"uscb-header-nav-item uscb-height-100
+        uscb-padding-LR-8\" style=\"display: flex; flex-basis: 14.285714285714286%;
+        max-width: 183px\" onmouseover='CensusUniversalHeader.onActivateMenu(true,
+        \"data-uscb-header-dropdown-links-\", \"data-uscb-header-nav-item-\", \"data-uscb-header-nav-item-link-\",
+        5, 7)'>\n\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t<a id=\"data-uscb-header-nav-item-link-5\"
+        class=\"uscb-hw-100 uscb-text-align-center\" tabindex=\"0\" onfocus='CensusUniversalHeader.onActivateMenu(true,
+        \"data-uscb-header-dropdown-links-\", \"data-uscb-header-nav-item-\", \"data-uscb-header-nav-item-link-\",
+        5, 7)' onkeydown='CensusUniversalHeader.onKeyParent(event, \"data-uscb-header-dropdown-links-\",
+        5)'>\n\t\t\t\t\t\t\t\t<div class=\"data-uscb-top-link uscb-layout-row uscb-layout-align-center-center
+        uscb-hw-100\">\n\t\t\t\t\t\t\t\t\tFind a Code\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\n\t\t\t\t\t\t<div
+        id=\"data-uscb-header-nav-item-6\" class=\"uscb-header-nav-item uscb-height-100
+        uscb-padding-LR-8\" style=\"display: flex; flex-basis: 14.285714285714286%;
+        max-width: 183px\" onmouseover='CensusUniversalHeader.onActivateMenu(true,
+        \"data-uscb-header-dropdown-links-\", \"data-uscb-header-nav-item-\", \"data-uscb-header-nav-item-link-\",
+        6, 7)'>\n\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t<a id=\"data-uscb-header-nav-item-link-6\"
+        class=\"uscb-hw-100 uscb-text-align-center\" tabindex=\"0\" onfocus='CensusUniversalHeader.onActivateMenu(true,
+        \"data-uscb-header-dropdown-links-\", \"data-uscb-header-nav-item-\", \"data-uscb-header-nav-item-link-\",
+        6, 7)' onkeydown='CensusUniversalHeader.onKeyParent(event, \"data-uscb-header-dropdown-links-\",
+        6)'>\n\t\t\t\t\t\t\t\t<div class=\"data-uscb-top-link uscb-layout-row uscb-layout-align-center-center
+        uscb-hw-100\">\n\t\t\t\t\t\t\t\t\tAbout Us\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\n\n\t\t\t\t\t<div
+        class=\"uscb-flex\" onmouseover='CensusUniversalHeader.onActivateMenu(false,
+        \"data-uscb-header-dropdown-links-\", \"data-uscb-header-nav-item-\", \"data-uscb-header-nav-item-link-\",
+        0, 7)'></div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"uscb-header-nav-item-spacer-R\"
+        onmouseover='CensusUniversalHeader.onActivateMenu(false, \"data-uscb-header-dropdown-links-\",
+        \"data-uscb-header-nav-item-\", \"data-uscb-header-nav-item-link-\", 0, 7)'></div>\n
+        \           </div>\n       \t\t\n\n       \t\t\n\n\t\t\t\t\n\n\t\t\t\t\t\n\n\t\t\t\t\t<div
+        id=\"data-uscb-header-dropdown-links-0\" class=\"uscb-header-dropdown-links
+        uscb-layout-row uscb-padding-TB-10 uscb-padding-LR-15 uscb-padding-LR-40 uscb-hide-md\"
+        style=\"\n\t\t\t\t\t\t\tdisplay: none;\n                            max-width:
+        ;\n\t\t\t\t\t\t\twidth: ;\" onmouseleave='CensusUniversalHeader.onActivateMenu(false,
+        \"data-uscb-header-dropdown-links-\", \"data-uscb-header-nav-item-\", \"data-uscb-header-nav-item-link-\",
+        0, 7)'>\n\n\t\t\t\t\t\t\n\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<div class=\"uscb-layout-column
+        uscb-flex-row uscb-padding-LR-0\" style=\"flex-basis: 25%;\">\n\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t\t\n\t
+        \           \t\t\t\t\t<a href=\"https://www.census.gov/topics/population/age-and-sex.html\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 0);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" onkeydown=\"CensusUniversalHeader.onKeyChildFirst(event,
+        'data-uscb-header-nav-item-link-0')\" tabindex=\"0\">\n\t            \t\t\t\t\t\tAge
+        and Sex\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/businessandeconomy\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 0);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tBusiness and
+        Economy\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/topics/education.html\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 0);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tEducation\n\t
+        \           \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a href=\"https://www.census.gov/topics/preparedness.html\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 0);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tEmergency
+        Management\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/topics/employment.html\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 0);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tEmployment\n\t
+        \           \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<div
+        class=\"uscb-layout-column uscb-flex-row uscb-padding-LR-0\" style=\"flex-basis:
+        25%;\">\n\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/topics/families.html\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 0);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tFamilies and
+        Living Arrangements\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/topics/population/migration.html\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 0);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tGeographic
+        Mobility / Migration\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/geography\" onclick=\"linkClick(this, 'Universal
+        Header Component'); navigationLinkClick(this, 'Universal Header', 'Top', 0);\"
+        class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tGeography\n\t
+        \           \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a href=\"https://www.census.gov/topics/health.html\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 0);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tHealth\n\t
+        \           \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a href=\"https://www.census.gov/topics/population/hispanic-origin.html\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 0);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tHispanic
+        Origin\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<div
+        class=\"uscb-layout-column uscb-flex-row uscb-padding-LR-0\" style=\"flex-basis:
+        25%;\">\n\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/topics/housing.html\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 0);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tHousing\n\t
+        \           \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a href=\"https://www.census.gov/topics/income-poverty.html\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 0);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tIncome
+        and Poverty\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/topics/international-trade.html\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 0);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tInternational
+        Trade\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/topics/population.html\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 0);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tPopulation\n\t
+        \           \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a href=\"https://www.census.gov/topics/population/population-estimates.html\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 0);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tPopulation
+        Estimates\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<div
+        class=\"uscb-layout-column uscb-flex-row uscb-padding-LR-0\" style=\"flex-basis:
+        25%;\">\n\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/govs\" onclick=\"linkClick(this, 'Universal
+        Header Component'); navigationLinkClick(this, 'Universal Header', 'Top', 0);\"
+        class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tPublic Sector\n\t
+        \           \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a href=\"https://www.census.gov/topics/population/race.html\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 0);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tRace\n\t
+        \           \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a href=\"https://www.census.gov/topics/research.html\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 0);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tResearch\n\t
+        \           \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a href=\"https://www.census.gov/topics/public-sector/voting.html\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 0);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tVoting
+        and Registration\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/about/index.html\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 0);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" onkeydown=\"CensusUniversalHeader.onKeyChildLast(event,
+        'data-uscb-header-nav-item-link-0')\" tabindex=\"0\">\n\t            \t\t\t\t\t\tA
+        - Z\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\n\n\t\t\t\t\t</div>\n\n\t\t\t\t\n\n\t\t\t\t\t\n\n\t\t\t\t\t<div
+        id=\"data-uscb-header-dropdown-links-1\" class=\"uscb-header-dropdown-links
+        uscb-layout-row uscb-padding-TB-10 uscb-padding-LR-15 uscb-padding-LR-40 uscb-hide-md\"
+        style=\"\n\t\t\t\t\t\t\tdisplay: none;\n                            max-width:
+        ;\n\t\t\t\t\t\t\twidth: ;\" onmouseleave='CensusUniversalHeader.onActivateMenu(false,
+        \"data-uscb-header-dropdown-links-\", \"data-uscb-header-nav-item-\", \"data-uscb-header-nav-item-link-\",
+        1, 7)'>\n\n\t\t\t\t\t\t\n\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<div class=\"uscb-layout-column
+        uscb-flex-row uscb-padding-LR-0\" style=\"flex-basis: 25%;\">\n\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t\t\n\t
+        \           \t\t\t\t\t<a href=\"https://www.census.gov/data\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 1);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" onkeydown=\"CensusUniversalHeader.onKeyChildFirst(event,
+        'data-uscb-header-nav-item-link-1')\" tabindex=\"0\">\n\t            \t\t\t\t\t\tExplore
+        Data Main\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/academy\" onclick=\"linkClick(this, 'Universal
+        Header Component'); navigationLinkClick(this, 'Universal Header', 'Top', 1);\"
+        class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tCensus Academy\n\t
+        \           \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a href=\"https://www.census.gov/about/what/admin-data.html\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 1);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tCombining
+        Data\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/data/data-tools.html\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 1);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tData Tools
+        and Apps\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/developers/\" onclick=\"linkClick(this, 'Universal
+        Header Component'); navigationLinkClick(this, 'Universal Header', 'Top', 1);\"
+        class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tDevelopers\n\t
+        \           \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<div
+        class=\"uscb-layout-column uscb-flex-row uscb-padding-LR-0\" style=\"flex-basis:
+        25%;\">\n\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/data/experimental-data-products.html\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 1);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tExperimental
+        Data Products\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/data/related-sites.html\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 1);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tRelated Sites\n\t
+        \           \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a href=\"https://www.census.gov/data/software.html\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 1);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tSoftware\n\t
+        \           \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a href=\"https://www.census.gov/data/tables.html\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 1);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tTables\n\t
+        \           \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a href=\"https://www.census.gov/data/training-workshops.html\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 1);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tTraining
+        and Workshops\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<div
+        class=\"uscb-layout-column uscb-flex-row uscb-padding-LR-0\" style=\"flex-basis:
+        25%;\">\n\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/library/visualizations.html\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 1);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" onkeydown=\"CensusUniversalHeader.onKeyChildLast(event,
+        'data-uscb-header-nav-item-link-1')\" tabindex=\"0\">\n\t            \t\t\t\t\t\tVisualizations\n\t
+        \           \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\n\n\t\t\t\t\t</div>\n\n\t\t\t\t\n\n\t\t\t\t\t\n\n\t\t\t\t\t<div
+        id=\"data-uscb-header-dropdown-links-2\" class=\"uscb-header-dropdown-links
+        uscb-layout-row uscb-padding-TB-10 uscb-padding-LR-15 uscb-padding-LR-40 uscb-hide-md\"
+        style=\"\n\t\t\t\t\t\t\tdisplay: none;\n                            max-width:
+        ;\n\t\t\t\t\t\t\twidth: ;\" onmouseleave='CensusUniversalHeader.onActivateMenu(false,
+        \"data-uscb-header-dropdown-links-\", \"data-uscb-header-nav-item-\", \"data-uscb-header-nav-item-link-\",
+        2, 7)'>\n\n\t\t\t\t\t\t\n\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<div class=\"uscb-layout-column
+        uscb-flex-row uscb-padding-LR-0\" style=\"flex-basis: 25%;\">\n\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t\t\n\t
+        \           \t\t\t\t\t<a href=\"https://www.census.gov/library.html\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 2);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" onkeydown=\"CensusUniversalHeader.onKeyChildFirst(event,
+        'data-uscb-header-nav-item-link-2')\" tabindex=\"0\">\n\t            \t\t\t\t\t\tLibrary
+        Main\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/AmericaCounts\" onclick=\"linkClick(this, 'Universal
+        Header Component'); navigationLinkClick(this, 'Universal Header', 'Top', 2);\"
+        class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tAmerica Counts:
+        Stories\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/library/audio.html\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 2);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tAudio\n\t
+        \           \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a href=\"https://www.census.gov/library/fact-sheets.html\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 2);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tFact
+        Sheets\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/library/visualizations.html\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 2);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tInfographics
+        and Visualizations\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<div
+        class=\"uscb-layout-column uscb-flex-row uscb-padding-LR-0\" style=\"flex-basis:
+        25%;\">\n\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/library/photos.html\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 2);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tPhotos\n\t
+        \           \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a href=\"https://www.census.gov/library/publications.html\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 2);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tPublications\n\t
+        \           \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a href=\"https://www.census.gov/library/video.html\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 2);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tVideos\n\t
+        \           \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a href=\"https://www.census.gov/library/working-papers.html\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 2);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" onkeydown=\"CensusUniversalHeader.onKeyChildLast(event,
+        'data-uscb-header-nav-item-link-2')\" tabindex=\"0\">\n\t            \t\t\t\t\t\tWorking
+        Papers\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\n\n\t\t\t\t\t</div>\n\n\t\t\t\t\n\n\t\t\t\t\t\n\n\t\t\t\t\t<div
+        id=\"data-uscb-header-dropdown-links-3\" class=\"uscb-header-dropdown-links
+        uscb-layout-row uscb-padding-TB-10 uscb-padding-LR-15 uscb-padding-LR-40 uscb-hide-md\"
+        style=\"\n\t\t\t\t\t\t\tdisplay: none;\n                            max-width:
+        ;\n\t\t\t\t\t\t\twidth: ;\" onmouseleave='CensusUniversalHeader.onActivateMenu(false,
+        \"data-uscb-header-dropdown-links-\", \"data-uscb-header-nav-item-\", \"data-uscb-header-nav-item-link-\",
+        3, 7)'>\n\n\t\t\t\t\t\t\n\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<div class=\"uscb-layout-column
+        uscb-flex-row uscb-padding-LR-0\" style=\"flex-basis: 25%;\">\n\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t\t\n\t
+        \           \t\t\t\t\t<a href=\"https://www.census.gov/programs-surveys/are-you-in-a-survey.html\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 3);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" onkeydown=\"CensusUniversalHeader.onKeyChildFirst(event,
+        'data-uscb-header-nav-item-link-3')\" tabindex=\"0\">\n\t            \t\t\t\t\t\tHelp
+        for Survey Participants\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t
+        \           \t\t\t\t\t<a href=\"https://www.census.gov/programs-surveys/decennial-census/2020census-redirect.html\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 3);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\t2020
+        Census\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/2020census\" onclick=\"linkClick(this, 'Universal
+        Header Component'); navigationLinkClick(this, 'Universal Header', 'Top', 3);\"
+        class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\t2020 Census
+        Operational Information\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t
+        \           \t\t\t\t\t<a href=\"https://www.census.gov/programs-surveys/acs\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 3);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tAmerican
+        Community Survey (ACS)\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t
+        \           \t\t\t\t\t<a href=\"https://www.census.gov/programs-surveys/ahs.html\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 3);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tAmerican
+        Housing Survey (AHS)\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<div
+        class=\"uscb-layout-column uscb-flex-row uscb-padding-LR-0\" style=\"flex-basis:
+        25%;\">\n\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/programs-surveys/abs.html\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 3);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tAnnual Business
+        Survey (ABS)\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/programs-surveys/asm.html\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 3);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tAnnual Survey
+        of Manufactures (ASM)\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t
+        \           \t\t\t\t\t<a href=\"https://www.census.gov/programs-surveys/cog.html\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 3);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tCensus
+        of Governments\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/programs-surveys/cbp.html\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 3);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tCounty Business
+        Patterns (CBP)\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/programs-surveys/cps.html\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 3);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tCurrent Population
+        Survey (CPS)\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<div
+        class=\"uscb-layout-column uscb-flex-row uscb-padding-LR-0\" style=\"flex-basis:
+        25%;\">\n\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/EconomicCensus\" onclick=\"linkClick(this, 'Universal
+        Header Component'); navigationLinkClick(this, 'Universal Header', 'Top', 3);\"
+        class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tEconomic Census\n\t
+        \           \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a href=\"https://www.census.gov/internationalprograms\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 3);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tInternational
+        Programs\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/programs-surveys/metro-micro.html\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 3);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tMetro and
+        Micro Areas\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/popest\" onclick=\"linkClick(this, 'Universal
+        Header Component'); navigationLinkClick(this, 'Universal Header', 'Top', 3);\"
+        class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tPopulation
+        Estimates\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/programs-surveys/popproj.html\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 3);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tPopulation
+        Projections\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<div
+        class=\"uscb-layout-column uscb-flex-row uscb-padding-LR-0\" style=\"flex-basis:
+        25%;\">\n\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/programs-surveys/saipe.html\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 3);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tSmall Area
+        Income and Poverty\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/programs-surveys/susb.html\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 3);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tStatistics
+        of U.S. Businesses\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/programs-surveys/sbo.html\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 3);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tSurvey of
+        Business Owners\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/sipp/\" onclick=\"linkClick(this, 'Universal
+        Header Component'); navigationLinkClick(this, 'Universal Header', 'Top', 3);\"
+        class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tSurvey of
+        Income and Program Participation (SIPP)\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t
+        \           \t\t\t\t\t<a href=\"https://www.census.gov/programs-surveys/surveys-programs.html\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 3);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" onkeydown=\"CensusUniversalHeader.onKeyChildLast(event,
+        'data-uscb-header-nav-item-link-3')\" tabindex=\"0\">\n\t            \t\t\t\t\t\tAll
+        surveys and programs\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\n\n\t\t\t\t\t</div>\n\n\t\t\t\t\n\n\t\t\t\t\t\n\n\t\t\t\t\t<div
+        id=\"data-uscb-header-dropdown-links-4\" class=\"uscb-header-dropdown-links
+        uscb-layout-row uscb-padding-TB-10 uscb-padding-LR-15  uscb-hide-md\" style=\"\n\t\t\t\t\t\t\tdisplay:
+        none;\n                            max-width: 183px;\n\t\t\t\t\t\t\twidth:
+        14.285714285714286%;\" onmouseleave='CensusUniversalHeader.onActivateMenu(false,
+        \"data-uscb-header-dropdown-links-\", \"data-uscb-header-nav-item-\", \"data-uscb-header-nav-item-link-\",
+        4, 7)'>\n\n\t\t\t\t\t\t<style>\n                        \t@media screen and
+        (min-width: 1281px) {\n                            \t#data-uscb-header-dropdown-links-4
+        {\n                                \tleft: 732px;\n                                }\n
+        \                           }\n                            @media screen and
+        (max-width: 1281px) {\n                            \t#data-uscb-header-dropdown-links-4
+        {\n                                \tleft: 57.142857142857146%;\n                                }\n
+        \                           }\n                        </style>\n\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<div
+        class=\"uscb-layout-column uscb-flex-row uscb-padding-LR-0\" style=\"flex-basis:
+        100%;\">\n\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/newsroom.html\" onclick=\"linkClick(this, 'Universal
+        Header Component'); navigationLinkClick(this, 'Universal Header', 'Top', 4);\"
+        class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" onkeydown=\"CensusUniversalHeader.onKeyChildFirst(event,
+        'data-uscb-header-nav-item-link-4')\" tabindex=\"0\">\n\t            \t\t\t\t\t\tMedia
+        (Newsroom)\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/programs-surveys/are-you-in-a-survey.html\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 4);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tSurvey
+        Participants/ Respondents\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t
+        \           \t\t\t\t\t<a href=\"https://www.census.gov/partners\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 4);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tPartners\n\t
+        \           \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a href=\"https://www.census.gov/programs-surveys/sis.html\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 4);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" onkeydown=\"CensusUniversalHeader.onKeyChildLast(event,
+        'data-uscb-header-nav-item-link-4')\" tabindex=\"0\">\n\t            \t\t\t\t\t\tEducators
+        and Students\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\n\n\t\t\t\t\t</div>\n\n\t\t\t\t\n\n\t\t\t\t\t\n\n\t\t\t\t\t<div
+        id=\"data-uscb-header-dropdown-links-5\" class=\"uscb-header-dropdown-links
+        uscb-layout-row uscb-padding-TB-10 uscb-padding-LR-15  uscb-hide-md\" style=\"\n\t\t\t\t\t\t\tdisplay:
+        none;\n                            max-width: 183px;\n\t\t\t\t\t\t\twidth:
+        14.285714285714286%;\" onmouseleave='CensusUniversalHeader.onActivateMenu(false,
+        \"data-uscb-header-dropdown-links-\", \"data-uscb-header-nav-item-\", \"data-uscb-header-nav-item-link-\",
+        5, 7)'>\n\n\t\t\t\t\t\t<style>\n                        \t@media screen and
+        (min-width: 1281px) {\n                            \t#data-uscb-header-dropdown-links-5
+        {\n                                \tleft: 915px;\n                                }\n
+        \                           }\n                            @media screen and
+        (max-width: 1281px) {\n                            \t#data-uscb-header-dropdown-links-5
+        {\n                                \tleft: 71.42857142857143%;\n                                }\n
+        \                           }\n                        </style>\n\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<div
+        class=\"uscb-layout-column uscb-flex-row uscb-padding-LR-0\" style=\"flex-basis:
+        100%;\">\n\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/NAICS\" onclick=\"linkClick(this, 'Universal
+        Header Component'); navigationLinkClick(this, 'Universal Header', 'Top', 5);\"
+        class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" onkeydown=\"CensusUniversalHeader.onKeyChildFirst(event,
+        'data-uscb-header-nav-item-link-5')\" tabindex=\"0\">\n\t            \t\t\t\t\t\tNAICS
+        Lookup\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/library/reference/code-lists/schedule/b.html\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 5);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tSchedule
+        B Search\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/data/developers/data-sets/Geocoding-services.html\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 5);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" onkeydown=\"CensusUniversalHeader.onKeyChildLast(event,
+        'data-uscb-header-nav-item-link-5')\" tabindex=\"0\">\n\t            \t\t\t\t\t\tGeocoding
+        Service\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\n\n\t\t\t\t\t</div>\n\n\t\t\t\t\n\n\t\t\t\t\t\n\n\t\t\t\t\t<div
+        id=\"data-uscb-header-dropdown-links-6\" class=\"uscb-header-dropdown-links
+        uscb-layout-row uscb-padding-TB-10 uscb-padding-LR-15 uscb-padding-LR-40 uscb-hide-md\"
+        style=\"\n\t\t\t\t\t\t\tdisplay: none;\n                            max-width:
+        ;\n\t\t\t\t\t\t\twidth: ;\" onmouseleave='CensusUniversalHeader.onActivateMenu(false,
+        \"data-uscb-header-dropdown-links-\", \"data-uscb-header-nav-item-\", \"data-uscb-header-nav-item-link-\",
+        6, 7)'>\n\n\t\t\t\t\t\t\n\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<div class=\"uscb-layout-column
+        uscb-flex-row uscb-padding-LR-0\" style=\"flex-basis: 25%;\">\n\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t\t\n\t
+        \           \t\t\t\t\t<a href=\"https://www.census.gov/about-us\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 6);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" onkeydown=\"CensusUniversalHeader.onKeyChildFirst(event,
+        'data-uscb-header-nav-item-link-6')\" tabindex=\"0\">\n\t            \t\t\t\t\t\tAbout
+        the Bureau\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/about/who.html\" onclick=\"linkClick(this, 'Universal
+        Header Component'); navigationLinkClick(this, 'Universal Header', 'Top', 6);\"
+        class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tWho We Are\n\t
+        \           \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a href=\"https://www.census.gov/about/what.html\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 6);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tWhat
+        We Do\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/about/business-opportunities.html\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 6);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tBusiness Opportunities\n\t
+        \           \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a href=\"https://www.census.gov/careers\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 6);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tCensus
+        Careers\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<div
+        class=\"uscb-layout-column uscb-flex-row uscb-padding-LR-0\" style=\"flex-basis:
+        25%;\">\n\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/fieldjobs\" onclick=\"linkClick(this, 'Universal
+        Header Component'); navigationLinkClick(this, 'Universal Header', 'Top', 6);\"
+        class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tField Jobs
+        by State\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/about/what/admin-data.html\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 6);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tCombining
+        Data\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/about/history.html\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 6);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tOur History\n\t
+        \           \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a href=\"https://www.census.gov/about/policies.html\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 6);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tPolicies
+        and Notices\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/privacy\" onclick=\"linkClick(this, 'Universal
+        Header Component'); navigationLinkClick(this, 'Universal Header', 'Top', 6);\"
+        class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tPrivacy Program\n\t
+        \           \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<div
+        class=\"uscb-layout-column uscb-flex-row uscb-padding-LR-0\" style=\"flex-basis:
+        25%;\">\n\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/regions\" onclick=\"linkClick(this, 'Universal
+        Header Component'); navigationLinkClick(this, 'Universal Header', 'Top', 6);\"
+        class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tRegional Offices\_\n\t
+        \           \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a href=\"https://www.census.gov/about/contact-us/staff-finder.html\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 6);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tStaff
+        Directory\n\t            \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a
+        href=\"https://www.census.gov/about/contact-us.html\" onclick=\"linkClick(this,
+        'Universal Header Component'); navigationLinkClick(this, 'Universal Header',
+        'Top', 6);\" class=\"data-uscb-header-dropdown-link-item uscb-header-dropdown-link-item
+        uscb-padding-TB-10\" tabindex=\"0\">\n\t            \t\t\t\t\t\tContact Us\n\t
+        \           \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\t            \t\t\t\t\t<a href=\"https://www.census.gov/about/faqs.html\"
+        onclick=\"linkClick(this, 'Universal Header Component'); navigationLinkClick(this,
+        'Universal Header', 'Top', 6);\" class=\"data-uscb-header-dropdown-link-item
+        uscb-header-dropdown-link-item uscb-padding-TB-10\" onkeydown=\"CensusUniversalHeader.onKeyChildLast(event,
+        'data-uscb-header-nav-item-link-6')\" tabindex=\"0\">\n\t            \t\t\t\t\t\tFAQs\n\t
+        \           \t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t\n\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\n\n\t\t\t\t\t</div>\n\n\t\t\t\t\n
+        \      \t\t\n        \n\n        \n        <div id=\"data-uscb-header-menu\"
+        class=\"uscb-header-menu uscb-layout-row uscb-hide-gt-md uscb-hide-md\">\n\n
+        \      \t\t\n            <div class=\"uscb-header-menu-top-level uscb-flex-row-33
+        uscb-layout-column\">\n\n            \t\n\n\t\t\t\t\t<div id=\"data-uscb-header-nav-item-side-0\"
+        class=\"uscb-header-nav-item uscb-layout-column uscb-layout-align-center-center\"
+        style=\"display: flex; flex-basis: 14.285714285714286%;\">\n\n\t\t\t\t\t\t\n\t\t
+        \               <a class=\"uscb-hw-100\" tabindex=\"0\" onfocus='CensusUniversalHeader.onActivateMenu(\"toggle\",
+        \"data-uscb-header-dropdown-links-side-\", \"data-uscb-header-nav-item-side-\",
+        \"data-uscb-header-nav-item-link-\", 0, 7)' onkeydown='CensusUniversalHeader.onKeyParent(event,
+        \"data-uscb-header-dropdown-links-side-\", 0)'>\n\t\t                    <div
+        class=\"uscb-layout-row uscb-layout-align-start-center uscb-hw-100 uscb-padding-LR-10\">Browse
+        by Topic</div>\n\t\t                </a>\n\t\t                \n\t\t                \n\n\t\t
+        \           </div>\n\t\t\t\t\n\n\t\t\t\t\t<div id=\"data-uscb-header-nav-item-side-1\"
+        class=\"uscb-header-nav-item uscb-layout-column uscb-layout-align-center-center\"
+        style=\"display: flex; flex-basis: 14.285714285714286%;\">\n\n\t\t\t\t\t\t\n\t\t
+        \               <a class=\"uscb-hw-100\" tabindex=\"0\" onfocus='CensusUniversalHeader.onActivateMenu(\"toggle\",
+        \"data-uscb-header-dropdown-links-side-\", \"data-uscb-header-nav-item-side-\",
+        \"data-uscb-header-nav-item-link-\", 1, 7)' onkeydown='CensusUniversalHeader.onKeyParent(event,
+        \"data-uscb-header-dropdown-links-side-\", 1)'>\n\t\t                    <div
+        class=\"uscb-layout-row uscb-layout-align-start-center uscb-hw-100 uscb-padding-LR-10\">Explore
+        Data</div>\n\t\t                </a>\n\t\t                \n\t\t                \n\n\t\t
+        \           </div>\n\t\t\t\t\n\n\t\t\t\t\t<div id=\"data-uscb-header-nav-item-side-2\"
+        class=\"uscb-header-nav-item uscb-layout-column uscb-layout-align-center-center\"
+        style=\"display: flex; flex-basis: 14.285714285714286%;\">\n\n\t\t\t\t\t\t\n\t\t
+        \               <a class=\"uscb-hw-100\" tabindex=\"0\" onfocus='CensusUniversalHeader.onActivateMenu(\"toggle\",
+        \"data-uscb-header-dropdown-links-side-\", \"data-uscb-header-nav-item-side-\",
+        \"data-uscb-header-nav-item-link-\", 2, 7)' onkeydown='CensusUniversalHeader.onKeyParent(event,
+        \"data-uscb-header-dropdown-links-side-\", 2)'>\n\t\t                    <div
+        class=\"uscb-layout-row uscb-layout-align-start-center uscb-hw-100 uscb-padding-LR-10\">Library</div>\n\t\t
+        \               </a>\n\t\t                \n\t\t                \n\n\t\t            </div>\n\t\t\t\t\n\n\t\t\t\t\t<div
+        id=\"data-uscb-header-nav-item-side-3\" class=\"uscb-header-nav-item uscb-layout-column
+        uscb-layout-align-center-center\" style=\"display: flex; flex-basis: 14.285714285714286%;\">\n\n\t\t\t\t\t\t\n\t\t
+        \               <a class=\"uscb-hw-100\" tabindex=\"0\" onfocus='CensusUniversalHeader.onActivateMenu(\"toggle\",
+        \"data-uscb-header-dropdown-links-side-\", \"data-uscb-header-nav-item-side-\",
+        \"data-uscb-header-nav-item-link-\", 3, 7)' onkeydown='CensusUniversalHeader.onKeyParent(event,
+        \"data-uscb-header-dropdown-links-side-\", 3)'>\n\t\t                    <div
+        class=\"uscb-layout-row uscb-layout-align-start-center uscb-hw-100 uscb-padding-LR-10\">Surveys/
+        Programs</div>\n\t\t                </a>\n\t\t                \n\t\t                \n\n\t\t
+        \           </div>\n\t\t\t\t\n\n\t\t\t\t\t<div id=\"data-uscb-header-nav-item-side-4\"
+        class=\"uscb-header-nav-item uscb-layout-column uscb-layout-align-center-center\"
+        style=\"display: flex; flex-basis: 14.285714285714286%;\">\n\n\t\t\t\t\t\t\n\t\t
+        \               <a class=\"uscb-hw-100\" tabindex=\"0\" onfocus='CensusUniversalHeader.onActivateMenu(\"toggle\",
+        \"data-uscb-header-dropdown-links-side-\", \"data-uscb-header-nav-item-side-\",
+        \"data-uscb-header-nav-item-link-\", 4, 7)' onkeydown='CensusUniversalHeader.onKeyParent(event,
+        \"data-uscb-header-dropdown-links-side-\", 4)'>\n\t\t                    <div
+        class=\"uscb-layout-row uscb-layout-align-start-center uscb-hw-100 uscb-padding-LR-10\">Information
+        for\u2026</div>\n\t\t                </a>\n\t\t                \n\t\t                \n\n\t\t
+        \           </div>\n\t\t\t\t\n\n\t\t\t\t\t<div id=\"data-uscb-header-nav-item-side-5\"
+        class=\"uscb-header-nav-item uscb-layout-column uscb-layout-align-center-center\"
+        style=\"display: flex; flex-basis: 14.285714285714286%;\">\n\n\t\t\t\t\t\t\n\t\t
+        \               <a class=\"uscb-hw-100\" tabindex=\"0\" onfocus='CensusUniversalHeader.onActivateMenu(\"toggle\",
+        \"data-uscb-header-dropdown-links-side-\", \"data-uscb-header-nav-item-side-\",
+        \"data-uscb-header-nav-item-link-\", 5, 7)' onkeydown='CensusUniversalHeader.onKeyParent(event,
+        \"data-uscb-header-dropdown-links-side-\", 5)'>\n\t\t                    <div
+        class=\"uscb-layout-row uscb-layout-align-start-center uscb-hw-100 uscb-padding-LR-10\">Find
+        a Code</div>\n\t\t                </a>\n\t\t                \n\t\t                \n\n\t\t
+        \           </div>\n\t\t\t\t\n\n\t\t\t\t\t<div id=\"data-uscb-header-nav-item-side-6\"
+        class=\"uscb-header-nav-item uscb-layout-column uscb-layout-align-center-center\"
+        style=\"display: flex; flex-basis: 14.285714285714286%;\">\n\n\t\t\t\t\t\t\n\t\t
+        \               <a class=\"uscb-hw-100\" tabindex=\"0\" onfocus='CensusUniversalHeader.onActivateMenu(\"toggle\",
+        \"data-uscb-header-dropdown-links-side-\", \"data-uscb-header-nav-item-side-\",
+        \"data-uscb-header-nav-item-link-\", 6, 7)' onkeydown='CensusUniversalHeader.onKeyParent(event,
+        \"data-uscb-header-dropdown-links-side-\", 6)'>\n\t\t                    <div
+        class=\"uscb-layout-row uscb-layout-align-start-center uscb-hw-100 uscb-padding-LR-10\">About
+        Us</div>\n\t\t                </a>\n\t\t                \n\t\t                \n\n\t\t
+        \           </div>\n\t\t\t\t\n\n\t\t\t\t\n\t\t\t\t\t<div id=\"data-uscb-header-nav-b-item-side-0\"
+        class=\"uscb-header-nav-b-item uscb-layout-column uscb-layout-align-center-center
+        \ uscb-margin-T-15 uscb-margin-B-5\" style=\"max-height: 40px; display: flex;
+        flex-basis: 14.285714285714286%;\">\n\t\t\t\t\t\t<a href=\"https://www.commerce.gov/\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-hw-100\">\n\t\t\t\t\t\t\t<div
+        class=\"uscb-layout-row uscb-layout-align-start-center uscb-hw-100 uscb-padding-LR-10\">Department
+        of Commerce</div>\n\t\t\t\t\t\t</a>\n\t\t\t\t\t</div>\n\t\t\t\t\n\n            </div>\n
+        \      \t\t\n\n       \t\t\n            <div class=\"uscb-header-menu-sub-level
+        uscb-flex-row-67 uscb-layout-column\">\n\n\t            \n\n\t\t\t\t\t<div
+        id=\"data-uscb-header-dropdown-links-side-0\" class=\"uscb-header-dropdown-links
+        uscb-layout-column\" style=\"height: 40px; display: none;\">\n\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/topics/population/age-and-sex.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tAge and Sex\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/businessandeconomy\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tBusiness and Economy\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/topics/education.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tEducation\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/topics/preparedness.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tEmergency Management\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/topics/employment.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tEmployment\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/topics/families.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tFamilies and Living Arrangements\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/topics/population/migration.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tGeographic Mobility / Migration\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/geography\" onclick=\"linkClick(this,
+        'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tGeography\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/topics/health.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tHealth\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n           \t\t\t\t\t<a
+        href=\"https://www.census.gov/topics/population/hispanic-origin.html\" onclick=\"linkClick(this,
+        'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tHispanic Origin\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/topics/housing.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tHousing\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/topics/income-poverty.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tIncome and Poverty\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/topics/international-trade.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tInternational Trade\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/topics/population.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tPopulation\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/topics/population/population-estimates.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tPopulation Estimates\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/govs\" onclick=\"linkClick(this,
+        'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tPublic Sector\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/topics/population/race.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tRace\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n           \t\t\t\t\t<a
+        href=\"https://www.census.gov/topics/research.html\" onclick=\"linkClick(this,
+        'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tResearch\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/topics/public-sector/voting.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tVoting and Registration\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/about/index.html\" onclick=\"linkClick(this,
+        'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tA - Z\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n\n\t\t\t\t\t</div>\n\n\t\t\t\t\n\n\t\t\t\t\t<div
+        id=\"data-uscb-header-dropdown-links-side-1\" class=\"uscb-header-dropdown-links
+        uscb-layout-column\" style=\"height: 40px; display: none;\">\n\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/data\" onclick=\"linkClick(this,
+        'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tExplore Data Main\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/academy\" onclick=\"linkClick(this,
+        'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tCensus Academy\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/about/what/admin-data.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tCombining Data\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/data/data-tools.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tData Tools and Apps\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/developers/\" onclick=\"linkClick(this,
+        'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tDevelopers\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/data/experimental-data-products.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tExperimental Data Products\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/data/related-sites.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tRelated Sites\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/data/software.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tSoftware\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/data/tables.html\" onclick=\"linkClick(this,
+        'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tTables\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n           \t\t\t\t\t<a
+        href=\"https://www.census.gov/data/training-workshops.html\" onclick=\"linkClick(this,
+        'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tTraining and Workshops\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/library/visualizations.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tVisualizations\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n\n\t\t\t\t\t</div>\n\n\t\t\t\t\n\n\t\t\t\t\t<div
+        id=\"data-uscb-header-dropdown-links-side-2\" class=\"uscb-header-dropdown-links
+        uscb-layout-column\" style=\"height: 40px; display: none;\">\n\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/library.html\" onclick=\"linkClick(this,
+        'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tLibrary Main\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/AmericaCounts\" onclick=\"linkClick(this,
+        'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tAmerica Counts: Stories\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/library/audio.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tAudio\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n           \t\t\t\t\t<a
+        href=\"https://www.census.gov/library/fact-sheets.html\" onclick=\"linkClick(this,
+        'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tFact Sheets\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/library/visualizations.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tInfographics and Visualizations\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/library/photos.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tPhotos\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n           \t\t\t\t\t<a
+        href=\"https://www.census.gov/library/publications.html\" onclick=\"linkClick(this,
+        'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tPublications\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/library/video.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tVideos\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n           \t\t\t\t\t<a
+        href=\"https://www.census.gov/library/working-papers.html\" onclick=\"linkClick(this,
+        'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tWorking Papers\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n\n\t\t\t\t\t</div>\n\n\t\t\t\t\n\n\t\t\t\t\t<div
+        id=\"data-uscb-header-dropdown-links-side-3\" class=\"uscb-header-dropdown-links
+        uscb-layout-column\" style=\"height: 40px; display: none;\">\n\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/programs-surveys/are-you-in-a-survey.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tHelp for Survey Participants\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/programs-surveys/decennial-census/2020census-redirect.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\t2020 Census\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/2020census\" onclick=\"linkClick(this,
+        'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\t2020 Census Operational Information\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/programs-surveys/acs\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tAmerican Community Survey (ACS)\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/programs-surveys/ahs.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tAmerican Housing Survey (AHS)\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/programs-surveys/abs.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tAnnual Business Survey (ABS)\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/programs-surveys/asm.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tAnnual Survey of Manufactures (ASM)\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/programs-surveys/cog.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tCensus of Governments\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/programs-surveys/cbp.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tCounty Business Patterns (CBP)\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/programs-surveys/cps.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tCurrent Population Survey (CPS)\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/EconomicCensus\" onclick=\"linkClick(this,
+        'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tEconomic Census\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/internationalprograms\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tInternational Programs\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/programs-surveys/metro-micro.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tMetro and Micro Areas\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/popest\" onclick=\"linkClick(this,
+        'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tPopulation Estimates\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/programs-surveys/popproj.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tPopulation Projections\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/programs-surveys/saipe.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tSmall Area Income and Poverty\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/programs-surveys/susb.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tStatistics of U.S. Businesses\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/programs-surveys/sbo.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tSurvey of Business Owners\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/sipp/\" onclick=\"linkClick(this,
+        'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tSurvey of Income and Program Participation (SIPP)\n
+        \          \t\t\t\t\t</a>\n\t\t\t\t\t\t\n           \t\t\t\t\t<a href=\"https://www.census.gov/programs-surveys/surveys-programs.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tAll surveys and programs\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n\n\t\t\t\t\t</div>\n\n\t\t\t\t\n\n\t\t\t\t\t<div
+        id=\"data-uscb-header-dropdown-links-side-4\" class=\"uscb-header-dropdown-links
+        uscb-layout-column\" style=\"height: 40px; display: none;\">\n\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/newsroom.html\" onclick=\"linkClick(this,
+        'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tMedia (Newsroom)\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/programs-surveys/are-you-in-a-survey.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tSurvey Participants/ Respondents\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/partners\" onclick=\"linkClick(this,
+        'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tPartners\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/programs-surveys/sis.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tEducators and Students\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n\n\t\t\t\t\t</div>\n\n\t\t\t\t\n\n\t\t\t\t\t<div
+        id=\"data-uscb-header-dropdown-links-side-5\" class=\"uscb-header-dropdown-links
+        uscb-layout-column\" style=\"height: 40px; display: none;\">\n\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/NAICS\" onclick=\"linkClick(this,
+        'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tNAICS Lookup\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/library/reference/code-lists/schedule/b.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tSchedule B Search\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/data/developers/data-sets/Geocoding-services.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tGeocoding Service\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n\n\t\t\t\t\t</div>\n\n\t\t\t\t\n\n\t\t\t\t\t<div
+        id=\"data-uscb-header-dropdown-links-side-6\" class=\"uscb-header-dropdown-links
+        uscb-layout-column\" style=\"height: 40px; display: none;\">\n\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/about-us\" onclick=\"linkClick(this,
+        'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tAbout the Bureau\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/about/who.html\" onclick=\"linkClick(this,
+        'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tWho We Are\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/about/what.html\" onclick=\"linkClick(this,
+        'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tWhat We Do\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/about/business-opportunities.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tBusiness Opportunities\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/careers\" onclick=\"linkClick(this,
+        'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tCensus Careers\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/fieldjobs\" onclick=\"linkClick(this,
+        'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tField Jobs by State\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/about/what/admin-data.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tCombining Data\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/about/history.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tOur History\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/about/policies.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tPolicies and Notices\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/privacy\" onclick=\"linkClick(this,
+        'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tPrivacy Program\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/regions\" onclick=\"linkClick(this,
+        'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tRegional Offices\_\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/about/contact-us/staff-finder.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tStaff Directory\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/about/contact-us.html\"
+        onclick=\"linkClick(this, 'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tContact Us\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n
+        \          \t\t\t\t\t<a href=\"https://www.census.gov/about/faqs.html\" onclick=\"linkClick(this,
+        'Universal Header Component');\" class=\"uscb-header-dropdown-link-item\">\n
+        \          \t\t\t\t\t\tFAQs\n           \t\t\t\t\t</a>\n\t\t\t\t\t\t\n\n\t\t\t\t\t</div>\n\n\t\t\t\t\n\n
+        \           </div>\n       \t\t\n\n        </div>\n        \n    </div>\n</header>\n\n<script
+        type=\"text/javascript\">\n\tdocument.addEventListener(\"DOMContentLoaded\",
+        function(event) {\n\t\tCensusUniversalHeader.initHeader();\n\n\t\tdocument.addEventListener(\"scroll\",
+        function(event) {\n\t\t\tCensusUniversalHeader.closeDropdowns(\"data-uscb-header-dropdown-links-\",
+        \"data-uscb-header-nav-item-\", \"data-uscb-header-nav-item-link-\", 7);\n\t\t});\n\t});\n</script>\n</div>\n\n\t\t\n\t</div>\n\t<div
+        class=\"container-fluid\">\n\t\t<div class=\"topBg\"></div>\n\n\t\t<div class=\"wrapper
+        wrapperMarginTop\">\n\n\t\t\t\n\n\n\n\n\n\n\t\n\t<div id=\"sectionTitleRow\"
+        class=\"belowHeader row no-gutter uscb-margin-B-lg-0\">\n\t\t<!-- <div class=\"col-xs-12
+        uscb-margin-T-5\"  data-sly-use.stitle=\"com.census.common.ui.page.PageBase\">\r\n\t<span
+        data-sly-unwrap data-sly-resource=\"breadcrumb\"></span>\r\n</div> -->\r\n\r\n\r\n\r\n
+        \ <!-- Adding -1px top margin to hide empty banner so a white line doesn't
+        show. \r\n\tNeed to keep min-height at 1px because IE doesn't fully support
+        flexbox and requires a nonzero min-height to function. -->\r\n<div id=\"infoBannerSection\"
+        class=\"col-xs-12 uscb-padding-LR-0\" style=\"margin-top: -1px !important;\">\r\n\t\r\n\r\n<div
+        style=\"background-image: linear-gradient(-132deg, #009964 5%, #009964 100%);
+        min-height: 50px; max-height: 300px;;\" class=\"data-uscb-banner-alert-container
+        uscb-full-width uscb-overflow-hidden uscb-layout-align-center-center uscb-position-relative
+        info-banner-section_omfKDPfoHfW7yPcjhDkclP1jB\">\r\n\t\r\n\t    <div id=\"https://www.census.gov/newsroom/blogs/director/2020/10/the_end_of_2020_cens.html\"
+        tabindex=\"0\" role=\"link\" class=\"uscb-banner-alert-content uscb-layout-row
+        uscb-banner-pointer-div info-banner-clickable-div uscb-w-100 uscb-layout-align-center-center
+        uscb-padding-LR-30\">\r\n\t    \t\r\n\t        <p class=\"uscb-title-2 uscb-line-height-24
+        uscb-title-1 uscb-banner-alert-mobile uscb-color-white uscb-text-align-center
+        uscb-margin-TB-0 uscb-padding-TB-10 uscb-w-100 data-uscb-banner-hover-target\">\r\n\t
+        \       \tThe 2020 Census, Next Steps and a Heartfelt Thanks. Read More.        \t\r\n\t
+        \       </p>\t        \r\n\t        \t\r\n        </div>\r\n        <button
+        id=\"omfKDPfoHfW7yPcjhDkclP1jB\" aria-label=\"Close Banner Alert\" class=\"uscb-banner-alert-content
+        uscb-button uscb-icon-button uscb-banner-alert-dismiss data-uscb-banner-dismiss-btn\">\r\n\t
+        \       <span id=\"omfKDPfoHfW7yPcjhDkclP1jB\" class=\"o-close-1 data-uscb-banner-dismiss-btn
+        uscb-color-white\" style=\"font-size: 2.5em\"></span>\r\n\t    </button>        \t
+        \r\n\t</div>\r\n\t\r\n\r\n\r\n\t\r\n\t\r\n\r\n\r\n<script type=\"text/javascript\">\t\r\n\tfunction
+        getBanners() {\t\t\r\n\t\tvar urlVal = \"\\/content\\/census\\/en\\/geography\\/gss\\u002Dinitiative.infobanners.html\";\r\n\t\t$.ajax({\r\n\t\t\turl:
+        urlVal,\t\t\r\n\t\t\tdataType: \"html\",\t\r\n\t\t\tsuccess: function( result
+        ) {\r\n\t\t\t\t$('infoBannerSection').html(result);\r\n\t\t\t},\r\n\t\t\terror:
+        function( err ){\r\n \t\t\t\t\tconsole.log(err);\r\n\t\t\t}\r\n\t\t});\t\t\r\n\r\n\t\treturn
+        false;\r\n\t}\r\n\t\r\n\t$(document).ready(function(){\r\n        getBanners();\r\n\r\n\t\t
+        \ // Manually add click event IFF no previous click event exists. Removes
+        issue of duplicate events.\r\n\t\tvar clickableBanners = $('.info-banner-clickable-div');\r\n
+        \       clickableBanners.each( function( idx, banner ) {\r\n        \tvar
+        bannerEvents = $._data( clickableBanners[ idx ], 'events' );\r\n            if
+        ( !bannerEvents || !bannerEvents.click ) {\r\n        \t\t$( banner ).click(function(e)
+        {\t\t\t\r\n                    var href = $(this).attr('id');\r\n                    bannerAlertLinkClick(e.target,
+        href);\r\n                    if( typeof(href) !== 'undefined' && !$(e.target).hasClass('data-uscb-exit-btn')
+        && !$(e.target).hasClass('data-uscb-banner-dismiss-btn') ){\r\n                          //
+        Open in a new tab\r\n                        window.open(href, '_blank');\r\n
+        \                   }\r\n                    return false;\r\n                });\r\n
+        \           }\r\n            if ( !bannerEvents || !bannerEvents.keyDown )
+        {\r\n            \t$( banner ).on(\"keydown\", function(e) {\t\r\n            \t\tif
+        (e.keyCode === 13) {\r\n\t                    var href = $(this).attr('id');\r\n\t
+        \                   bannerAlertLinkClick(e.target, href);\r\n\t                    if(
+        typeof(href) !== 'undefined' && !$(e.target).hasClass('data-uscb-exit-btn')
+        && !$(e.target).hasClass('data-uscb-banner-dismiss-btn') ){\r\n\t                          //
+        Open in a new tab\r\n\t                        window.open(href, '_blank');\r\n\t
+        \                   }\r\n\t                    return false;\r\n            \t\t}\r\n
+        \               });\r\n            }\r\n        });\r\n\r\n\t\t$('.uscb-banner-pointer-div').hover(\r\n\t\t\tfunction(e)
+        {\r\n\t\t\t\t$hoverTargets = $(this).find(\".data-uscb-banner-hover-target\");\r\n\t\t\t\t$hoverTargets.addClass(\"uscb-text-decoration-underline\");\r\n\t\t\t\t$hoverTargets.removeClass(\"uscb-text-decoration-none\");\r\n\t\t\t},\r\n\t\t\tfunction(e)
+        {\r\n\t\t\t\t$hoverTargets = $(this).find(\".data-uscb-banner-hover-target\");\r\n\t\t\t\t$hoverTargets.removeClass(\"uscb-text-decoration-underline\");\r\n\t\t\t\t$hoverTargets.addClass(\"uscb-text-decoration-none\");\r\n\t\t\t}\r\n\t\t);\r\n\r\n\t\t$('.data-uscb-banner-dismiss-btn').click(function(e){\r\n\t\t\tif
+        ( $(e.target).hasClass('data-uscb-banner-dismiss-btn') ) {\r\n\t\t\t\tvar
+        dismissedBannerClass = $(this).attr('id');\r\n\t\t\t\tvar randStr = $(this).attr('id');\r\n\t\t\t\tvar
+        existingCookieValue = getCookie('dismissedBannersClasses');\r\n\t\t        var
+        newValue = (typeof(existingCookieValue) != 'undefined' && existingCookieValue
+        != '') ? existingCookieValue + '|' + dismissedBannerClass : dismissedBannerClass;\r\n\t\t
+        \       bannerAlertCloseButtonClick();\r\n                setCookie('dismissedBannersClasses',
+        newValue,7);\r\n                $('.info-banner-section_' + randStr).remove();
+        \      \r\n\t\t\t}\r\n\t\t});\r\n\t\t\r\n\t\t$('.data-uscb-banner-dismiss-btn').on(\"keydown\",
+        function(e){\r\n\t\t\tif (e.keyCode === 32 && $(e.target).hasClass('data-uscb-banner-dismiss-btn'))
+        {\r\n\t\t\t\te.preventDefault();\r\n\t\t\t\tvar dismissedBannerClass = $(this).attr('id');\r\n\t\t\t\tvar
+        randStr = $(this).attr('id');\r\n\t\t\t\tvar existingCookieValue = getCookie('dismissedBannersClasses');\r\n\t\t
+        \       var newValue = (typeof(existingCookieValue) != 'undefined' && existingCookieValue
+        != '') ? existingCookieValue + '|' + dismissedBannerClass : dismissedBannerClass;\r\n\t\t
+        \       bannerAlertCloseButtonClick();\r\n                setCookie('dismissedBannersClasses',
+        newValue,7);\r\n                $('.info-banner-section_' + randStr).remove();\r\n\t\t\t}\r\n\t\t});\r\n\t});\r\n</script>
+        \r\n\r\n\r\n\r\n\r\n</div>\r\n\r\n<!-- <sly data-sly-resource=\"sectiontitle\"
+        ></sly> -->\r\n\r\n<!-- <div data-sly-test=\"false\" data-sly-unwrap>\r\n\t<div
+        id=\"mobileLeftNavButton\" class=\"col-xs-3 hidden-lg\">\r\n\t\t<div class=\"refineButtonContainer\">\r\n\t\t\t<button
+        onclick=\"toggleFacetSelection();\" class=\"btn btn-primary btnRefine uscb-bg-primary
+        uscb-border-0 hidden-xs hidden-sm\" data-toggle=\"collapse\" data-target=\"#leftColumn\">Filter</button>\t\t\t\t\r\n\t\t\t<button
+        class=\"btn btn-primary btnRefine uscb-bg-primary uscb-border-0 visible-xs
+        visible-sm hidden-md hidden-lg\" onclick=\"openMobileFacetSelection();\">Filter</button>\r\n\t\t</div>\r\n\t</div>\r\n</div>
+        -->\r\n\r\n<!-- <div class=\"hidden-xs hidden-sm hidden-md uscb-padding-R-0\">\r\n\t<div
+        id=\"desktopLanguageSelectorContainer\" class=\"pull-right uscb-margin-T--20\">\t\t\t\r\n\t\t<span
+        data-sly-unwrap data-sly-resource=\"languageselector\"></span>\r\n\t</div>\r\n</div>
+        -->\r\n\t\r\n<script type=\"text/javascript\">\r\n\r\n\t$(document).ready(function(){\t\t\r\n\t\t$(document).click(function(event)
+        {\t\t\t\r\n\t\t\tif( $(event.target).is('#mobileFacetSelection') ) {\r\n\t\t\t\tcloseMobileFacetSelection();\r\n\t\t\t}else{\r\n\t\t\t\t//span('clicked
+        inside...');\r\n\t\t\t}\t\t         \r\n\t\t});\r\n\t});//end document.ready
+        function\r\n\r\n\tfunction toggleMobileLeftNavigation() {\t\t\r\n\t\tif( $('.leftNavigation').hasClass('no-show')
+        ) {\t\t\t\r\n\t\t\t$('.leftNavigation').removeClass('no-show');\r\n\t\t\t$('.belowHeader:not(#sectionTitleRow,
+        #listPageContent)').hide();\r\n\t\t\t$('#infoBannerSection').hide();\r\n\t\t}else{\t\t\t\r\n\t\t\t$('.leftNavigation').addClass('no-show');\t\t\t\r\n\t\t\t$('.belowHeader:not(#sectionTitleRow,
+        #listPageContent)').show();\r\n\t\t\t$('#infoBannerSection').show();\r\n\t\t}\t\t\r\n\t\t$('#sectionTitleRow
+        .leftNavButton').toggleClass('open');\r\n\t\t$('#mobileTitleRow').toggleClass('menuHeader');\r\n\t\t$('#sectionTitleRow').toggleClass('menuHeader');\r\n\t\tvar
+        sectionTitleRowHeight = $('#sectionTitleRow').height();\r\n\t\tvar leftNavPaddingOffset
+        = 150;\r\n\t\tif (sectionTitleRowHeight)\r\n\t\t\tleftNavPaddingOffset = sectionTitleRowHeight
+        + 65;\r\n\r\n\t\t$('#mobileLeftNavigation .menuContent').css('padding-top',
+        sectionTitleRowHeight + 65 + 'px');\r\n\t}\t\r\n\t\r\n  \tfunction toggleFacetSelection()
+        {\t\t\r\n  \t\tif( !$('body').hasClass('menu-slider') ){        \t\r\n        \t$('body').addClass('menu-slider');\r\n
+        \       \t$('body').addClass('in');\r\n        }else{        \t\r\n        \t$('body').removeClass('menu-slider');\r\n
+        \       \t$('body').removeClass('in');\r\n        }\r\n  \t}\r\n  \t\r\n  \tfunction
+        openMobileFacetSelection() {\r\n  \t\t$('#mobileFacetSelection').css('width',
+        '100%');  \t\t\r\n  \t}\r\n  \t\r\n  \tfunction closeMobileFacetSelection()
+        {  \t\t\r\n  \t\t$('#mobileFacetSelection').css('width', '0%');\r\n  \t}\r\n
+        \ \t\r\n</script>\t\n\n\t\t  \n\t\t<div class=\"hidden-xs hidden-sm hidden-md
+        col-lg-2\"></div> \n\n\t\t\n\t\t\t  \n\t\t\n\t\t\t<div class=\"col-lg-9 hidden-xs
+        hidden-sm hidden-md uscb-layout-row\">\n\t\t\t\t\n\t\t\t\t<div class=\"uscb-margin-T-5\">\n\t\t\t\t\t<div
+        class=\"breadcrumb\"><div id=\"breadContainer\" class=\"belowHeader hidden-xs
+        visible-lg uscb-print-hide\">\t\r\n\t<ul class=\"uscb-layout-row uscb-top-pagination
+        uscb-layout-align-start-center\">\r\n\t\t\r\n            <li>\r\n                \r\n
+        \                   <a tabindex=\"0\" href=\"/en.html\" class=\"uscb-top-pagination-links\"
+        onclick=\"linkClick(this, 'Breadcrumb Component');\">\r\n                            Census.gov\r\n
+        \                   </a>\r\n                    <span>></span>\r\n                \t\t\t\r\n
+        \               \r\n            </li>\r\n\t\t\r\n            <li>\r\n                \r\n
+        \                   <a tabindex=\"0\" href=\"/geography.html\" class=\"uscb-top-pagination-links\"
+        onclick=\"linkClick(this, 'Breadcrumb Component');\">\r\n                            Geography\r\n
+        \                   </a>\r\n                    <span>></span>\r\n                \t\t\t\r\n
+        \               \r\n            </li>\r\n\t\t\r\n            <li>\r\n                \t\t\t\r\n
+        \               <span class=\"data-uscb-breadcrumb-last-element uscb-top-pagination-links\">GSS
+        Initiative</span>\r\n            </li>\r\n\t\t\r\n\t</ul>\r\n</div></div>\n\n\t\t\t\t</div>\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div
+        class=\"uscb-padding-LR-0 uscb-margin-L-auto pull-right\">\n\t\t\t\t\t<div
+        class=\"languageselector list parbase\"><div>\r\n\t\r\n\r\n\t\r\n\t\t\r\n\t\t\r\n\t\t\r\n</div>\r\n</div>\n\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\n\t</div>\n\t\n\t<div
+        id=\"listPageContent\" class=\"belowHeader row no-gutter\">\n\t\t\n\t\t\t\n\n\n\n\n\n\n\n\n\n<div
+        id=\"leftColumn\" class=\"col-lg-2 uscb-margin-T-gt-lg-25 uscb-margin-T-lg-0
+        listPageLocalNav\">\n\t<div class=\"hidden-lg uscb-margin-T--5 uscb-layout-row
+        uscb-layout-align-space-between\">\n\t\t<div class=\"titlecore title\">\n<div
+        class=\"cmp-title\" id=\"titlecore-ddbbe2de54\">\n    <h1 class=\"cmp-title__text\">\n
+        \   GSS Initiative</h1>\n</div>\n\n    \n\n</div>\n\n\t\t\n\t\t\t<div id=\"mobileLanguageSelectorContainer\"></div>\n\t\t\n\t</div>\n\n\t\n\t\t<div
+        class=\"grid_navInnerLandingHolder\">\n\t\t\t\n\n\n\n\n<div class=\"grid_navInnerLandingLinks\">\n\n\n<a
+        id=\"uscb-nav-skip-local\" class=\"uscb-nav-skip uscb-button-medium uscb-secondary-button
+        uscb-position-absolute\" href=\"#content\">Skip Navigation</a>\n\t\n\n\n\n\t<div>\n
+        \   \n  <div class=\"uscb-color-primary uscb-medium uscb-text-transform-uppercase
+        uscb-margin-B-5 visible-lg uscb-print-hide\">\n      <a href=\"/geography.html\"
+        onclick=\"linkClick(this, 'Left Nav Component'); leftNavLinkClick(this);\"
+        class=\"uscb-color-primary uscb-medium uscb-underline-hover\">\n\t      Geography\n\t
+        \ </a>\t  \t\t\n  </div>\n\n  \n\n  \n\t  \n\t  \n\t  \n\t  \n  \n\t  \n\t
+        \ \n\t  \n\t  \n  \n\t  \n\t  \n\t  \n\t  \n  \n\t  \n\t  \n\t  \n\t  \n  \n\t
+        \ \n\t  \n\t  \n\t  \n  \n\t  \n\t  \n\t  \n\t  \n  \n\t  \n\t  \n\t  \n\t
+        \ \n  \n\t  \n\t  \n\t  \n\t  \n  \n\t  \n\t  \n\t  \n\t  \n  \n\n  <ul class=\"uscb-filter-list
+        uscb-margin-L--10 uscb-print-hide visible-lg uscb-print-hide\">\n\t  \n\t
+        \ <li class=\"uscb-filter-parent\">\n\t\t  \n\t\t  <span>\n\t\t\t  <a href=\"/geography/about.html\"
+        tabindex=\"0\" onclick=\"linkClick(this, 'Left Nav Component'); leftNavLinkClick(this);\"
+        class=\"uscb-color-primary\" style=\"font-size: 1rem;\">\n\t\t\t\t  <span>About
+        this Section</span>\n\t\t\t  </a>\n\t\t  </span>\n\t  </li>\n  \n\t  \n\t
+        \ <li class=\"uscb-filter-parent\">\n\t\t  \n\t\t  <span>\n\t\t\t  <a href=\"/geography/education.html\"
+        tabindex=\"0\" onclick=\"linkClick(this, 'Left Nav Component'); leftNavLinkClick(this);\"
+        class=\"uscb-color-primary\" style=\"font-size: 1rem;\">\n\t\t\t\t  <span>Education</span>\n\t\t\t
+        \ </a>\n\t\t  </span>\n\t  </li>\n  \n\t  <li class=\"uscb-color-primary uscb-filter-parent\">\n\t\t
+        \ \n\t  </li>\n\t  <li class=\"uscb-filter-parent\">\n\t\t  <a class=\"uscb-selected-filter\"
+        style=\"font-size: 1rem;\">\n\t\t\t  <span>GSS Initiative</span>\n\t\t  </a>\n\t\t
+        \ \n\t  </li>\n  \n\t  \n\t  <li class=\"uscb-filter-parent\">\n\t\t  \n\t\t
+        \ <span>\n\t\t\t  <a href=\"/geography/interactive-maps.html\" tabindex=\"0\"
+        onclick=\"linkClick(this, 'Left Nav Component'); leftNavLinkClick(this);\"
+        class=\"uscb-color-primary\" style=\"font-size: 1rem;\">\n\t\t\t\t  <span>Interactive
+        Maps</span>\n\t\t\t  </a>\n\t\t  </span>\n\t  </li>\n  \n\t  \n\t  <li class=\"uscb-filter-parent\">\n\t\t
+        \ \n\t\t  <span>\n\t\t\t  <a href=\"/geography/maps.html\" tabindex=\"0\"
+        onclick=\"linkClick(this, 'Left Nav Component'); leftNavLinkClick(this);\"
+        class=\"uscb-color-primary\" style=\"font-size: 1rem;\">\n\t\t\t\t  <span>Maps
+        &amp; Data</span>\n\t\t\t  </a>\n\t\t  </span>\n\t  </li>\n  \n\t  \n\t  <li
+        class=\"uscb-filter-parent\">\n\t\t  \n\t\t  <span>\n\t\t\t  <a href=\"/geography/metro.html\"
+        tabindex=\"0\" onclick=\"linkClick(this, 'Left Nav Component'); leftNavLinkClick(this);\"
+        class=\"uscb-color-primary\" style=\"font-size: 1rem;\">\n\t\t\t\t  <span>Metropolitan
+        and Micropolitan</span>\n\t\t\t  </a>\n\t\t  </span>\n\t  </li>\n  \n\t  \n\t
+        \ <li class=\"uscb-filter-parent\">\n\t\t  \n\t\t  <span>\n\t\t\t  <a href=\"/geography/partnerships.html\"
+        tabindex=\"0\" onclick=\"linkClick(this, 'Left Nav Component'); leftNavLinkClick(this);\"
+        class=\"uscb-color-primary\" style=\"font-size: 1rem;\">\n\t\t\t\t  <span>Partnerships</span>\n\t\t\t
+        \ </a>\n\t\t  </span>\n\t  </li>\n  \n\t  \n\t  <li class=\"uscb-filter-parent\">\n\t\t
+        \ \n\t\t  <span>\n\t\t\t  <a href=\"/geography/reference.html\" tabindex=\"0\"
+        onclick=\"linkClick(this, 'Left Nav Component'); leftNavLinkClick(this);\"
+        class=\"uscb-color-primary\" style=\"font-size: 1rem;\">\n\t\t\t\t  <span>Reference</span>\n\t\t\t
+        \ </a>\n\t\t  </span>\n\t  </li>\n  \n\t  \n\t  <li class=\"uscb-filter-parent\">\n\t\t
+        \ \n\t\t  <span>\n\t\t\t  <a href=\"/geography/research.html\" tabindex=\"0\"
+        onclick=\"linkClick(this, 'Left Nav Component'); leftNavLinkClick(this);\"
+        class=\"uscb-color-primary\" style=\"font-size: 1rem;\">\n\t\t\t\t  <span>Research</span>\n\t\t\t
+        \ </a>\n\t\t  </span>\n\t  </li>\n  </ul>\n\n  <div class=\"visible-lg uscb-print-hide\">\n\t
+        \ <div class=\"uscb-layout-row uscb-margin-T-10\">\n\t\t  <i class=\"o-angle-left-1
+        uscb-color-accent uscb-font-2x uscb-margin-R-10 uscb-position-relative\" style=\"top:
+        -8px\"></i>\n\t\t  <a href=\"/geography.html\" onclick=\"linkClick(this, 'Left
+        Nav Component'); leftNavLinkClick(this);\" class=\"uscb-color-primary uscb-medium
+        uscb-underline-hover\">\n\t\t\t  <span>Back to Geography</span>\n\t\t  </a>\n\t
+        \ </div>\n  </div>\n\n  \n  \n  <div class=\"hidden-lg uscb-margin-B-8 uscb-print-hide\">\n\t
+        \ <div class=\"ui-widget uscb-input-wrapper\" id=\"data-uscb-input-wrapper-mobile-nav\">\n\t\t
+        \ <div class=\"uscb-dropdown-container uscb-layout-row\">\n\t\t\t  <input
+        class=\"tags uscb-flex-row-gt-sm-90 uscb-flex-row-sm-8\" placeholder=\"Sections\"
+        style=\"height: 34px;\"/>\n\t\t\t  <div class=\"uscb-form-dropdown-button-chevron
+        uscb-icon-button\">\n\t\t\t\t  <i class=\"o-angle-down-1 uscb-font-2x uscb-color-accent\"
+        alt=\"\"></i>\n\t\t\t  </div>\n\t\t  </div>\n\n\t\t  \n\n\t\t  \n\t\t\t  \n\t\t\t
+        \ \n\t\t\t  \n\t\t\t  \n\t\t  \n\t\t\t  \n\t\t\t  \n\t\t\t  \n\t\t\t  \n\t\t
+        \ \n\t\t\t  \n\t\t\t  \n\t\t\t  \n\t\t\t  \n\t\t  \n\t\t\t  \n\t\t\t  \n\t\t\t
+        \ \n\t\t\t  \n\t\t  \n\t\t\t  \n\t\t\t  \n\t\t\t  \n\t\t\t  \n\t\t  \n\t\t\t
+        \ \n\t\t\t  \n\t\t\t  \n\t\t\t  \n\t\t  \n\t\t\t  \n\t\t\t  \n\t\t\t  \n\t\t\t
+        \ \n\t\t  \n\t\t\t  \n\t\t\t  \n\t\t\t  \n\t\t\t  \n\t\t  \n\t\t\t  \n\t\t\t
+        \ \n\t\t\t  \n\t\t\t  \n\t\t  \n\n\t\t  <ul class=\"uscb-filter-list uscb-w-100\"
+        style=\"float: left; display: none;\">\n\t\t\t  <div class=\"uscb-color-primary
+        uscb-medium uscb-text-transform-uppercase uscb-margin-B-5 uscb-hide uscb-print-hide
+        uscb-filter-parent uscb-padding-0 uscb-border-0\">\n\t\t\t\t  <a href=\"/geography.html\"
+        onclick=\"linkClick(this, 'Left Nav Component'); leftNavLinkClick(this);\"
+        class=\"uscb-color-primary uscb-medium uscb-underline-hover\">\n\t\t\t\t\t
+        \ Geography\n\t\t\t\t  </a>\n\t\t\t  </div>\n\t\t\t  \n\n\t\t\t\t  \n\t\t\t\t
+        \ <li class=\"uscb-filter-parent uscb-border-0 uscb-padding-0\">\n\t\t\t\t\t
+        \ \n\t\t\t\t\t  <span>\n\t\t\t\t\t\t  <a href=\"/geography/about.html\" tabindex=\"0\"
+        onclick=\"linkClick(this, 'Left Nav Component'); leftNavLinkClick(this);\"
+        class=\"uscb-color-primary\" style=\"font-size: 1rem;\">\n\t\t\t\t\t\t\t  <span>About
+        this Section</span>\n\t\t\t\t\t\t  </a>\n\t\t\t\t\t  </span>\n\t\t\t\t  </li>\n\t\t\t
+        \ \n\n\t\t\t\t  \n\t\t\t\t  <li class=\"uscb-filter-parent uscb-border-0 uscb-padding-0\">\n\t\t\t\t\t
+        \ \n\t\t\t\t\t  <span>\n\t\t\t\t\t\t  <a href=\"/geography/education.html\"
+        tabindex=\"0\" onclick=\"linkClick(this, 'Left Nav Component'); leftNavLinkClick(this);\"
+        class=\"uscb-color-primary\" style=\"font-size: 1rem;\">\n\t\t\t\t\t\t\t  <span>Education</span>\n\t\t\t\t\t\t
+        \ </a>\n\t\t\t\t\t  </span>\n\t\t\t\t  </li>\n\t\t\t  \n\n\t\t\t\t  \n\t\t\t\t\t
+        \ \n\t\t\t\t  \n\t\t\t\t  <li class=\"uscb-filter-parent uscb-border-0 uscb-padding-0\">\n\t\t\t\t\t
+        \ <a class=\"uscb-selected-filter\" style=\"font-size: 1rem;\">\n\t\t\t\t\t\t
+        \ <span>GSS Initiative</span>\n\t\t\t\t\t  </a>\n\t\t\t\t\t  \n\t\t\t\t  </li>\n\t\t\t
+        \ \n\n\t\t\t\t  \n\t\t\t\t  <li class=\"uscb-filter-parent uscb-border-0 uscb-padding-0\">\n\t\t\t\t\t
+        \ \n\t\t\t\t\t  <span>\n\t\t\t\t\t\t  <a href=\"/geography/interactive-maps.html\"
+        tabindex=\"0\" onclick=\"linkClick(this, 'Left Nav Component'); leftNavLinkClick(this);\"
+        class=\"uscb-color-primary\" style=\"font-size: 1rem;\">\n\t\t\t\t\t\t\t  <span>Interactive
+        Maps</span>\n\t\t\t\t\t\t  </a>\n\t\t\t\t\t  </span>\n\t\t\t\t  </li>\n\t\t\t
+        \ \n\n\t\t\t\t  \n\t\t\t\t  <li class=\"uscb-filter-parent uscb-border-0 uscb-padding-0\">\n\t\t\t\t\t
+        \ \n\t\t\t\t\t  <span>\n\t\t\t\t\t\t  <a href=\"/geography/maps.html\" tabindex=\"0\"
+        onclick=\"linkClick(this, 'Left Nav Component'); leftNavLinkClick(this);\"
+        class=\"uscb-color-primary\" style=\"font-size: 1rem;\">\n\t\t\t\t\t\t\t  <span>Maps
+        &amp; Data</span>\n\t\t\t\t\t\t  </a>\n\t\t\t\t\t  </span>\n\t\t\t\t  </li>\n\t\t\t
+        \ \n\n\t\t\t\t  \n\t\t\t\t  <li class=\"uscb-filter-parent uscb-border-0 uscb-padding-0\">\n\t\t\t\t\t
+        \ \n\t\t\t\t\t  <span>\n\t\t\t\t\t\t  <a href=\"/geography/metro.html\" tabindex=\"0\"
+        onclick=\"linkClick(this, 'Left Nav Component'); leftNavLinkClick(this);\"
+        class=\"uscb-color-primary\" style=\"font-size: 1rem;\">\n\t\t\t\t\t\t\t  <span>Metropolitan
+        and Micropolitan</span>\n\t\t\t\t\t\t  </a>\n\t\t\t\t\t  </span>\n\t\t\t\t
+        \ </li>\n\t\t\t  \n\n\t\t\t\t  \n\t\t\t\t  <li class=\"uscb-filter-parent
+        uscb-border-0 uscb-padding-0\">\n\t\t\t\t\t  \n\t\t\t\t\t  <span>\n\t\t\t\t\t\t
+        \ <a href=\"/geography/partnerships.html\" tabindex=\"0\" onclick=\"linkClick(this,
+        'Left Nav Component'); leftNavLinkClick(this);\" class=\"uscb-color-primary\"
+        style=\"font-size: 1rem;\">\n\t\t\t\t\t\t\t  <span>Partnerships</span>\n\t\t\t\t\t\t
+        \ </a>\n\t\t\t\t\t  </span>\n\t\t\t\t  </li>\n\t\t\t  \n\n\t\t\t\t  \n\t\t\t\t
+        \ <li class=\"uscb-filter-parent uscb-border-0 uscb-padding-0\">\n\t\t\t\t\t
+        \ \n\t\t\t\t\t  <span>\n\t\t\t\t\t\t  <a href=\"/geography/reference.html\"
+        tabindex=\"0\" onclick=\"linkClick(this, 'Left Nav Component'); leftNavLinkClick(this);\"
+        class=\"uscb-color-primary\" style=\"font-size: 1rem;\">\n\t\t\t\t\t\t\t  <span>Reference</span>\n\t\t\t\t\t\t
+        \ </a>\n\t\t\t\t\t  </span>\n\t\t\t\t  </li>\n\t\t\t  \n\n\t\t\t\t  \n\t\t\t\t
+        \ <li class=\"uscb-filter-parent uscb-border-0 uscb-padding-0\">\n\t\t\t\t\t
+        \ \n\t\t\t\t\t  <span>\n\t\t\t\t\t\t  <a href=\"/geography/research.html\"
+        tabindex=\"0\" onclick=\"linkClick(this, 'Left Nav Component'); leftNavLinkClick(this);\"
+        class=\"uscb-color-primary\" style=\"font-size: 1rem;\">\n\t\t\t\t\t\t\t  <span>Research</span>\n\t\t\t\t\t\t
+        \ </a>\n\t\t\t\t\t  </span>\n\t\t\t\t  </li>\n\t\t\t  \n\t\t\t  <div class=\"uscb-layout-row
+        uscb-margin-T-10 uscb-margin-L-15 uscb-underline-hover\" style=\"height: 27px;\">\n\t\t\t\t
+        \ <i class=\"o-angle-left-1 uscb-color-accent uscb-font-2x uscb-margin-R-10
+        uscb-position-relative\" style=\"top: -9px\"></i>\n\t\t\t\t  <a href=\"/geography.html\"
+        onclick=\"linkClick(this, 'Left Nav Component'); leftNavLinkClick(this);\"
+        class=\"uscb-color-primary uscb-h-100\">\n\t\t\t\t\t  <span class=\"uscb-bold\">Back
+        to Geography</span>\n\t\t\t\t  </a>\n\t\t\t  </div>\n\t\t  </ul>\n\t  </div>\n\n\t
+        \ <div id=\"data-uscb-download-btn-wrapper-\" class=\"uscb-layout-row uscb-layout-align-flex-end\"></div>\n\n\t
+        \ <noscript>\n\t\t  \n\t\t\t  <ul class=\"left geoList uscb-filter-list\">\n\t\t\t\t
+        \ <li class=\"uscb-filter-parent\">\n\t\t\t\t\t  <a tabindex=\"0\" onclick=\"linkClick(this,
+        'Left Nav Component'); leftNavLinkClick(this);\">About this Section</a>\n\t\t\t\t
+        \ </li>\n\t\t\t  </ul>\n\t\t  \n\t\t\t  <ul class=\"left geoList uscb-filter-list\">\n\t\t\t\t
+        \ <li class=\"uscb-filter-parent\">\n\t\t\t\t\t  <a tabindex=\"0\" onclick=\"linkClick(this,
+        'Left Nav Component'); leftNavLinkClick(this);\">Education</a>\n\t\t\t\t  </li>\n\t\t\t
+        \ </ul>\n\t\t  \n\t\t\t  <ul class=\"left geoList uscb-filter-list\">\n\t\t\t\t
+        \ <li class=\"uscb-filter-parent\">\n\t\t\t\t\t  <a tabindex=\"0\" onclick=\"linkClick(this,
+        'Left Nav Component'); leftNavLinkClick(this);\">GSS Initiative</a>\n\t\t\t\t
+        \ </li>\n\t\t\t  </ul>\n\t\t  \n\t\t\t  <ul class=\"left geoList uscb-filter-list\">\n\t\t\t\t
+        \ <li class=\"uscb-filter-parent\">\n\t\t\t\t\t  <a tabindex=\"0\" onclick=\"linkClick(this,
+        'Left Nav Component'); leftNavLinkClick(this);\">Interactive Maps</a>\n\t\t\t\t
+        \ </li>\n\t\t\t  </ul>\n\t\t  \n\t\t\t  <ul class=\"left geoList uscb-filter-list\">\n\t\t\t\t
+        \ <li class=\"uscb-filter-parent\">\n\t\t\t\t\t  <a tabindex=\"0\" onclick=\"linkClick(this,
+        'Left Nav Component'); leftNavLinkClick(this);\">Maps &amp; Data</a>\n\t\t\t\t
+        \ </li>\n\t\t\t  </ul>\n\t\t  \n\t\t\t  <ul class=\"left geoList uscb-filter-list\">\n\t\t\t\t
+        \ <li class=\"uscb-filter-parent\">\n\t\t\t\t\t  <a tabindex=\"0\" onclick=\"linkClick(this,
+        'Left Nav Component'); leftNavLinkClick(this);\">Metropolitan and Micropolitan</a>\n\t\t\t\t
+        \ </li>\n\t\t\t  </ul>\n\t\t  \n\t\t\t  <ul class=\"left geoList uscb-filter-list\">\n\t\t\t\t
+        \ <li class=\"uscb-filter-parent\">\n\t\t\t\t\t  <a tabindex=\"0\" onclick=\"linkClick(this,
+        'Left Nav Component'); leftNavLinkClick(this);\">Partnerships</a>\n\t\t\t\t
+        \ </li>\n\t\t\t  </ul>\n\t\t  \n\t\t\t  <ul class=\"left geoList uscb-filter-list\">\n\t\t\t\t
+        \ <li class=\"uscb-filter-parent\">\n\t\t\t\t\t  <a tabindex=\"0\" onclick=\"linkClick(this,
+        'Left Nav Component'); leftNavLinkClick(this);\">Reference</a>\n\t\t\t\t  </li>\n\t\t\t
+        \ </ul>\n\t\t  \n\t\t\t  <ul class=\"left geoList uscb-filter-list\">\n\t\t\t\t
+        \ <li class=\"uscb-filter-parent\">\n\t\t\t\t\t  <a tabindex=\"0\" onclick=\"linkClick(this,
+        'Left Nav Component'); leftNavLinkClick(this);\">Research</a>\n\t\t\t\t  </li>\n\t\t\t
+        \ </ul>\n\t\t  \n\t  </noscript>\n  </div>\n</div>\n\n\n\n\n\n</div>\n\n<a
+        name=\"skipsideNav\" class=\"skip\"></a>\n                \n\t\t</div>\n\t\n</div>\n\n<div
+        id=\"listContent\" class=\"belowHeader col-lg-8 listPageListContent\">\t\t\n\t\n\n\n\n\n\n\n<div
+        class=\"pageTitle\">\n\t<div class=\"hidden-xs hidden-sm hidden-md uscb-layout-row
+        uscb-layout-align-space-between uscb-layout-align-vert-center\">\n\t\t<div
+        class=\"uscb-margin-T--5\">\n\t\t\t\n\t\t\t\t<div class=\"titlecore title\">\n<div
+        class=\"cmp-title\" id=\"titlecore-ddbbe2de54\">\n    <h1 class=\"cmp-title__text\">\n
+        \   GSS Initiative</h1>\n</div>\n\n    \n\n</div>\n\n\t\t\t\n\t\t</div>\n\n\t\t<div
+        class=\"hidden-lg col-lg-4 uscb-padding-LR-0 pull-right\">\n\t\t\t<div class=\"languageselector
+        list parbase\"><div>\r\n\t\r\n\r\n\t\r\n\t\t\r\n\t\t\r\n\t\t\r\n</div>\r\n</div>\n\n\t\t</div>\n\t</div>\n</div>\n\n\n\n<input
+        type='hidden' id='current_page'/> <input type='hidden' id='show_per_page'/>\n
+        <div id=\"listAbstract\">\n \t<div class=\"listabstract richtext text parbase\">\r\n\t\r\n\t\r\n\t\r\n\t<p>The
+        Geographic Support System Initiative will integrate improved address coverage,
+        spatial feature updates, and enhanced quality assessment and measurement.</p>\n\r\n\t\r\n\t\t\r\n\t\r\n\r\n\r\n<script>\r\n\t$(document).ready(
+        function() {\r\n\t\t  // Only run once \r\n\t\tif ( $( '#covid-schema' ).length
+        === 0 ) {\r\n\t\t\tvar $schemas = $( '.uscb-schema-covid' );\r\n\t\t\t$schemas.each(
+        function( idx, schema ) {\r\n\t\t\t\tvar $schemaElement = $( document.createElement(
+        'script' ) );\r\n\t\t\t\t$schemaElement.attr( 'id', 'covid-schema' );\r\n\t\t\t\t$schemaElement.attr(
+        'type', 'application/ld+json' );\r\n\t\t\t\t$schemaElement.text( schema.innerText
+        );\r\n\r\n\t\t\t\t$( 'head' ).append( $schemaElement );\r\n\t\t\t\tschema.innerText
+        = '';\r\n\t\t\t});\r\n\t\t}\r\n\t});\r\n</script>\r\n</div>\n\n </div>\n \n
+        <div id=\"listItems\"> \t\n \t<div class=\"pagelist list parbase\"><div class=\"listContent
+        \" id=\"List_1631221644\" name=\"pagelist\">\n\t\n\t\n  \t\n\n    \n\n\t\n\n\t\n\t
+        \   \n\n\t\t\n\n\t\t\n\t\t\n\t\t\n\t\t\t\n\t\t\n\t\t\n\t\t\n\t\t\t\n\t\t\t\n\t\t\n\t\t\t\t\n\t\t\n\t\t<div
+        id=\"listArticlesContainer_pagelist\" class=\"data-uscb-list-articles-container
+        \">\n\t\t\t<div id=\"uscbTempDiv_pagelist\"></div>\n\t\t\t\n\t\t\t\n\t\t\t\t\n\n\t\t\t\t\n\n\t\t\t\t\n\n\t\t\t\t\n\n\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<hr
+        class=\"uscb-light-teal-hr uscb-margin-T-0\"/>\n\t\t\t\t\t\t\t<div>\n\t\n\t\t<a
+        href=\"http://www.census.gov/geo/www/gss/gdlns/addgdln.html\" onclick=\"linkClick(this,
+        'Census List Component');\" class=\"uscb-list-item \" title=\"Data Content
+        Guidelines\" tabindex=\"0\">\n\t\n\t\n\t<div class=\"uscb-list-item-container
+        \">\n\t\t\n\t\t\t\t\n\t<div>\n\t\t<p class=\"uscb-sub-heading-2 uscb-color-secondary-1
+        uscb-uppercase uscb-margin-TB-02\">\n\t\t\t\n\t\t\t\n\t\t\t\n      \t</p>
+        \ \n   </div>\n\n\t\t\n\t\t<p class=\"uscb-margin-TB-02 uscb-title-3\">\n\t\t\tData
+        Content Guidelines\n\t\t</p>\n\t\t\n\t\t<p class=\"uscb-sub-heading-2 uscb-color-secondary-1
+        uscb-line-height-20-18 uscb-margin-TB-02 \">\n\t\t\tThese documents outline
+        the data elements and metadata that are optimal components in address and
+        feature datasets.\n\t\t</p>\n\t\t\n\t\t<hr class=\"uscb-light-teal-hr\"/>\n\t\t\n\t\t\n\t</div>\n\t\n\t\t</a>\n\t\n\t\n</div>\n\t\t\t\t\t\t\n\n\t\t\t\t\t\t\n\n\t\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t<div>\n\t\n\t\t<a
+        href=\"http://www.census.gov/geo/www/gss/wg.html\" onclick=\"linkClick(this,
+        'Census List Component');\" class=\"uscb-list-item \" title=\"Working Groups\"
+        tabindex=\"0\">\n\t\n\t\n\t<div class=\"uscb-list-item-container \">\n\t\t\n\t\t\t\t\n\t<div>\n\t\t<p
+        class=\"uscb-sub-heading-2 uscb-color-secondary-1 uscb-uppercase uscb-margin-TB-02\">\n\t\t\t\n\t\t\t\n\t\t\t\n
+        \     \t</p>  \n   </div>\n\n\t\t\n\t\t<p class=\"uscb-margin-TB-02 uscb-title-3\">\n\t\t\tWorking
+        Groups\n\t\t</p>\n\t\t\n\t\t<p class=\"uscb-sub-heading-2 uscb-color-secondary-1
+        uscb-line-height-20-18 uscb-margin-TB-02 \">\n\t\t\tTen working groups have
+        been formed for the GSS Initiative to begin the planning and research efforts.\n\t\t</p>\n\t\t\n\t\t<hr
+        class=\"uscb-light-teal-hr\"/>\n\t\t\n\t\t\n\t</div>\n\t\n\t\t</a>\n\t\n\t\n</div>\n\t\t\t\t\t\t\n\n\t\t\t\t\t\t\n\n\t\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t<div>\n\t\n\t\t<a
+        href=\"http://www.census.gov/geo/www/gss/reports.html\" onclick=\"linkClick(this,
+        'Census List Component');\" class=\"uscb-list-item \" title=\"Expert Reports\"
+        tabindex=\"0\">\n\t\n\t\n\t<div class=\"uscb-list-item-container \">\n\t\t\n\t\t\t\t\n\t<div>\n\t\t<p
+        class=\"uscb-sub-heading-2 uscb-color-secondary-1 uscb-uppercase uscb-margin-TB-02\">\n\t\t\t\n\t\t\t\n\t\t\t\n
+        \     \t</p>  \n   </div>\n\n\t\t\n\t\t<p class=\"uscb-margin-TB-02 uscb-title-3\">\n\t\t\tExpert
+        Reports\n\t\t</p>\n\t\t\n\t\t<p class=\"uscb-sub-heading-2 uscb-color-secondary-1
+        uscb-line-height-20-18 uscb-margin-TB-02 \">\n\t\t\tReports from experts on
+        subjects such as measuring data quality, use of handheld computers to collect
+        spatial data, and address and spatial data exchange.\n\t\t</p>\n\t\t\n\t\t<hr
+        class=\"uscb-light-teal-hr\"/>\n\t\t\n\t\t\n\t</div>\n\t\n\t\t</a>\n\t\n\t\n</div>\n\t\t\t\t\t\t\n\n\t\t\t\t\t\t\n\n\t\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t<div>\n\t\n\t\t<a
+        href=\"http://www.census.gov/geo/www/gss/partnerships.html\" onclick=\"linkClick(this,
+        'Census List Component');\" class=\"uscb-list-item \" title=\"Partnership
+        and Outreach\" tabindex=\"0\">\n\t\n\t\n\t<div class=\"uscb-list-item-container
+        \">\n\t\t\n\t\t\t\t\n\t<div>\n\t\t<p class=\"uscb-sub-heading-2 uscb-color-secondary-1
+        uscb-uppercase uscb-margin-TB-02\">\n\t\t\t\n\t\t\t\n\t\t\t\n      \t</p>
+        \ \n   </div>\n\n\t\t\n\t\t<p class=\"uscb-margin-TB-02 uscb-title-3\">\n\t\t\tPartnership
+        and Outreach\n\t\t</p>\n\t\t\n\t\t<p class=\"uscb-sub-heading-2 uscb-color-secondary-1
+        uscb-line-height-20-18 uscb-margin-TB-02 \">\n\t\t\tPrograms with federal,
+        state, local and tribal partners to continuously receive address and spatial
+        updates throughout the decade.\n\t\t</p>\n\t\t\n\t\t<hr class=\"uscb-light-teal-hr\"/>\n\t\t\n\t\t\n\t</div>\n\t\n\t\t</a>\n\t\n\t\n</div>\n\t\t\t\t\t\t\n\n\t\t\t\t\t\t\n\n\t\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t<div>\n\t\n\t\t<a
+        href=\"http://www.census.gov/geo/www/gss/com_res.html\" onclick=\"linkClick(this,
+        'Census List Component');\" class=\"uscb-list-item \" title=\"Commercial Resources\"
+        tabindex=\"0\">\n\t\n\t\n\t<div class=\"uscb-list-item-container \">\n\t\t\n\t\t\t\t\n\t<div>\n\t\t<p
+        class=\"uscb-sub-heading-2 uscb-color-secondary-1 uscb-uppercase uscb-margin-TB-02\">\n\t\t\t\n\t\t\t\n\t\t\t\n
+        \     \t</p>  \n   </div>\n\n\t\t\n\t\t<p class=\"uscb-margin-TB-02 uscb-title-3\">\n\t\t\tCommercial
+        Resources\n\t\t</p>\n\t\t\n\t\t<p class=\"uscb-sub-heading-2 uscb-color-secondary-1
+        uscb-line-height-20-18 uscb-margin-TB-02 \">\n\t\t\tResearching the availability
+        of commercial address lists and the possibility of using those sources to
+        update MAF/TIGER.\n\t\t</p>\n\t\t\n\t\t<hr class=\"uscb-light-teal-hr\"/>\n\t\t\n\t\t\n\t</div>\n\t\n\t\t</a>\n\t\n\t\n</div>\n\t\t\t\t\t\t\n\n\t\t\t\t\t\t\n\n\t\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t<div>\n\t\n\t\t<a
+        href=\"http://www.census.gov/geo/www/gss/tech.html\" onclick=\"linkClick(this,
+        'Census List Component');\" class=\"uscb-list-item \" title=\"Technology\"
+        tabindex=\"0\">\n\t\n\t\n\t<div class=\"uscb-list-item-container \">\n\t\t\n\t\t\t\t\n\t<div>\n\t\t<p
+        class=\"uscb-sub-heading-2 uscb-color-secondary-1 uscb-uppercase uscb-margin-TB-02\">\n\t\t\t\n\t\t\t\n\t\t\t\n
+        \     \t</p>  \n   </div>\n\n\t\t\n\t\t<p class=\"uscb-margin-TB-02 uscb-title-3\">\n\t\t\tTechnology\n\t\t</p>\n\t\t\n\t\t<p
+        class=\"uscb-sub-heading-2 uscb-color-secondary-1 uscb-line-height-20-18 uscb-margin-TB-02
+        \">\n\t\t\tThe GSS Initiative will use enabling technologies to improve coverage
+        and quality, such as change detection, to assist in partnership development.\n\t\t</p>\n\t\t\n\t\t<hr
+        class=\"uscb-light-teal-hr\"/>\n\t\t\n\t\t\n\t</div>\n\t\n\t\t</a>\n\t\n\t\n</div>\n\t\t\t\t\t\t\n\n\t\t\t\t\t\t\n\n\t\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\n\n\t\t\t\t\n\t\t\t\n\t\t</div>\n\n\t\t\n\n\t\t\n\t\t
+        \   \n\t\t\t\t\n\n\t\t<!-- /* View All Link section */ -->\n\t\t\n\t\t\n</div>\n</div>\n\n
+        </div>\n \n<div id='pagination'>\n\t<div id='page_navigation'></div>\n</div>\n</div>\n\t\n\n\t\t<div
+        id=\"listApp\" class=\"belowHeader col-xs-12 col-lg-2\"> \n\t\t\t<div class=\"adsidebar
+        appsidebar\"><div>\t\t\r\n\t \r\n\t\t\n\t\t\t\n\t\n\t\n\r\n\t\r\n\t\r\n\t\r\n\t\r\n\t\r\n</div></div>\n\n\t\t</div>\n\n\t\t
+        \t\n\t</div>\n\n\t\n\n\t\t\t\n\t\t\t\t<div class=\"col-lg-12\">\n\t\t\t\t
+        \   \r\n\t\r\n\r\n\n\t\t\t\t</div>\n\t\t\t\n\n\t\t\t\n\n\t\t\t<div id=\"pdfAndExternalLinkDiv\"
+        class=\"hidden-xs hidden-sm hidden-md visible-lg\">\n\t\t\t\t\n\t\t\t</div>\n\n\t\t</div>
+        <!-- wrapper -->\n\t</div> <!-- container-fluid -->\n\n\t<div class=\"uscb-main-container\">\n
+        \   \t\n      \n\t\t\t<div class=\"censusfooter universalfooter\">\n\t\r\n\t<div
+        id=\"ratingtooljquery\"></div>\r\n\t<script id=\"ratingtooljs\" type=\"text/javascript\"
+        src=\"//www.census.gov/ratingtool/js/ratingtool.js\"></script>\r\n\r\n\t<link
+        rel=\"stylesheet\" type=\"text/css\" href=\"//www.census.gov/ratingtool/css/ratingtool.css\"/>\r\n\r\n\t<div
+        role=\"dialog\" aria-labelledby=\"WasThisPageHelpfulText\" id=\"thumbs_div\"
+        class=\"ratingtool_div uscb-print-hide\">\r\n\t\t<div role=\"button\" tabindex=\"0\"
+        id=\"CloseThumbs\" aria-label=\"Close feedback tool\">X</div>\r\n\t\t<div
+        class=\"WasThisPageHelpful_div\">\r\n\t\t\t<span id=\"WasThisPageHelpfulText\"
+        class=\"WasThisPageHelpfulText\" align=\"top\">&nbsp;&nbsp;Is this page helpful?</span>\r\n\t\t\t<br/>\r\n\t\t\t<center>\r\n\t\t\t\t<img
+        class=\"thumbs-valign\" id=\"thumbsup\" src=\"//www.census.gov/ratingtool/images/thumbsup.png\"
+        alt=\"\"/>\r\n\t  \t\t\t<span role=\"button\" class=\"YesNoText\" id=\"yes\"
+        tabindex=\"0\">Yes</span>&nbsp;&nbsp;&nbsp;\r\n\t  \t\t\t<img class=\"thumbs-valign\"
+        id=\"thumbsdown\" src=\"//www.census.gov/ratingtool/images/thumbsdown.png\"
+        alt=\"\"/>\r\n\t  \t\t\t<span role=\"button\" class=\"YesNoText\" id=\"no\"
+        tabindex=\"0\">No</span>\r\n\t  \t\t</center>\r\n\t\t</div>\r\n\t</div>\r\n\r\n\t<div
+        role=\"dialog\" aria-labelledby=\"popupRatingHeadingi18n\" id=\"popupRating\">\r\n\t\t<div
+        role=\"button\" aria-label=\"Close feedback tool\" id=\"closeX\" tabindex=\"0\">X</div>\r\n\t\t<div
+        id=\"popupRatingHeadingContainer\">\r\n\t\t\t<span class=\"popupRatingHeading
+        uscb-hide\"></span>\r\n\t\t\t<label for=\"RatingTool_textarea\" id=\"popupRatingHeadingi18n\"
+        class=\"popupRatingHeadingi18n\">Comments or suggestions?</label>\r\n\t\t</div>\r\n\t\t<div
+        id=\"popupRatingContainer\">\r\n\t\t\t<form id=\"rtform\" method=\"post\"
+        name=\"rtform\">\r\n\t\t\t\t<textarea id=\"RatingTool_textarea\" name=\"message\"
+        placeholder=\"Tell us more.\" maxlength=\"255\" tabindex=\"0\"></textarea>\r\n\t\t\t\t<input
+        id=\"RatingToolSubmit\" type=\"submit\" value=\"SUBMIT\" tabindex=\"0\"/>\r\n\t\t\t</form>\r\n\t\t\t<span
+        role=\"button\" class=\"NoThanks\" tabindex=\"0\">No, thanks</span>\r\n\t\t\t<div
+        id=\"CharCounter\">\r\n\t\t\t\t<span id=\"rchars\">255</span> characters remaining\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t</div>\r\n\r\n\t<div
+        role=\"dialog\" id=\"thnx_div\" aria-labelledby=\"thankyouText\" class=\"thankyou_div\">\r\n\t\t<div
+        role=\"button\" id=\"closeXX\" tabindex=\"0\" aria-label=\"Close feedback
+        tool\">X</div>\r\n\t\t<div class=\"thankyouforfeedback_div\">\r\n\t\t\t<span
+        id=\"thankyouText\" class=\"thankyouText\">Thank you for your feedback.</span>\r\n\t\t\t<br/>\r\n\t\t\t<span
+        role=\"button\" class=\"YesNoText\" id=\"linkcomments\" tabindex=\"0\">Comments
+        or suggestions?</span>\r\n\t\t</div>\r\n\t</div>\r\n\r\n\n\n\t<a id=\"uscb-nav-skip-footer\"
+        class=\"uscb-nav-skip uscb-nav-skip-footer uscb-button-medium uscb-secondary-button
+        uscb-position-relative\" href=\"#uscb-nav-skip-header\">Back to Header</a>\n\n\t<footer
+        class=\"uscb-footer uscb-print-hide\">\n\t\t<div class=\"uscb-footer-content
+        uscb-layout-column\">\n\t        <div class=\"uscb-footer-content-top uscb-flex-col-gt-md-80
+        uscb-flex-col-md-95 uscb-layout-column uscb-margin-B-md-20\">\n\t            <div
+        class=\"uscb-flex-col-gt-md-75 uscb-layout-row-gt-md uscb-layout-column-md
+        uscb-margin-T-gt-md-40 uscb-margin-T-md-30\">\n\n\t                \n\t<div
+        class=\"uscb-flex-row-gt-md-50 uscb-layout-align-gt-md-start-start uscb-layout-align-md-start-start
+        uscb-layout-column uscb-padding-L-gt-md-0 uscb-margin-B-md-30 uscb-print-hide\"
+        style=\"padding-right: 0px;\">\n\t    <p class=\"uscb-footer-text-title\"
+        contenteditable=\"false\">Sign Up for Email Updates</p>\n\t    <p class=\"uscb-footer-text
+        uscb-margin-T-0 uscb-margin-B-30\" contenteditable=\"false\">To sign up for
+        updates please enter your contact information below.</p>\n\t    <form class=\"uscb-footer-subscribe
+        uscb-layout-row-gt-md uscb-layout-column-md\" action=\"https://public.govdelivery.com/accounts/USCENSUS/subscribers/qualify\"
+        id=\"GD-snippet-form\" accept-charset=\"UTF-8\" method=\"post\">\n\n\t        <input
+        name=\"utf8\" type=\"hidden\" value=\"&#x2713;\"/>\n\t        <input type=\"hidden\"
+        name=\"authenticity_token\" value=\"WYkERiwcsm2ugfWSCfiSQ0OmAlB/zVOCOSgu7FQDJa+Cbnzn5e83Uu0iBbn4c/ZxEDU3NGLA/ImfovWnn9OlYg==\"/>\n\t
+        \       <input type=\"hidden\" name=\"subscription_type\" id=\"subscription_type\"
+        value=\"email\"/>\n\n\t        <label for=\"email\" class=\"ui-helper-hidden-accessible\">Enter
+        your email address</label>\n\t        <input required type=\"email\" name=\"email\"
+        id=\"email\" placeholder=\"Enter your email address\" aria-label=\"Enter your
+        email address\" contenteditable=\"true\" style=\"width: 100% !important;\"/>\n\n\t
+        \       <button class=\"uscb-primary-button\" name=\"commit\" onclick=\"buttonClick(this,
+        'Email Subscription Button', 'Body/Footer');\" contenteditable=\"false\" style=\"min-width:
+        105px;\" value=\"Subscribe\">\n\t        \tSubscribe\n\t        </button>\n\t
+        \   </form>\n\t</div>\n\t\n\n\n\n\t                <div class=\"uscb-flex-row-gt-md-50
+        uscb-layout-row-gt-md uscb-layout-column-md uscb-layout-align-gt-md-end-start
+        uscb-layout-align-md-start-start uscb-padding-LR-0\">\n\t                    <div
+        class=\"uscb-footer-side-links uscb-layout-column uscb-layout-align-gt-md-center-start
+        uscb-layout-align-gt-md-center-start\">\n\t                        <p class=\"uscb-footer-text-title\">Stay
+        Current</p>\n\t                        <div class=\"uscb-layout-column uscb-layout-align-gt-md-center-start
+        uscb-layout-align-md-start-start\">\n\n\t            \t\t\t\t\n\n\t\t                            <a
+        href=\"https://www.census.gov/newsroom.html\" onclick=\"linkClick(this, 'Universal
+        Footer Component');\">\n\t\t                                <p class=\"uscb-footer-text
+        uscb-margin-TB-5\">Newsroom</p>\n\t\t                            </a>\n\n\t
+        \           \t\t\t\t\n\n\t\t                            <a href=\"https://www.census.gov/AmericaCounts\"
+        onclick=\"linkClick(this, 'Universal Footer Component');\">\n\t\t                                <p
+        class=\"uscb-footer-text uscb-margin-TB-5\">America Counts</p>\n\t\t                            </a>\n\n\t
+        \           \t\t\t\t\n\n\t\t                            <a href=\"https://www.census.gov/newsroom/blogs.html\"
+        onclick=\"linkClick(this, 'Universal Footer Component');\">\n\t\t                                <p
+        class=\"uscb-footer-text uscb-margin-TB-5\">Blogs</p>\n\t\t                            </a>\n\n\t
+        \           \t\t\t\t\n\n\t\t                            <a href=\"https://www.census.gov/newsroom/stories.html\"
+        onclick=\"linkClick(this, 'Universal Footer Component');\">\n\t\t                                <p
+        class=\"uscb-footer-text uscb-margin-TB-5\">Stats for Stories</p>\n\t\t                            </a>\n\n\t
+        \           \t\t\t\t\n\n\t                        </div>\n\t                    </div>\n\n\t
+        \                   <div class=\"uscb-footer-side-links uscb-layout-column
+        uscb-layout-align-gt-md-end-center uscb-layout-align-md-start-start uscb-hw-100
+        uscb-margin-T-md-20\">\n\t    \t\t\t\t\t<p class=\"uscb-footer-text-title\">Stay
+        Connected</p>\n\t                    \t\r\n\t\t<div class=\"uscb-footer-social-icon-links
+        uscb-layout-align-space-between uscb-hw-100 uscb-layout-column\">\r\n\r\n\t
+        \   \t\r\n\t\t\t\r\n\t\t\t\r\n\t\t\t    \r\n\t\t\t    \t<div class=\"uscb-layout-row
+        uscb-layout-align-gt-md-end-center uscb-hw-100 uscb-margin-TB-md-15\">\r\n\t\t\t\t
+        \       <a href=\"https://www.facebook.com/uscensusbureau\" target=\"_blank\"
+        onclick=\"linkClick(this, 'Social Links Footer');\" class=\"uscb-layout-row
+        uscb-share-icon uscb-layout-align-center-center uscb-hw-100\" title=\"Facebook\">\r\n\t\t\t\t
+        \           <i class=\"uscb-footer-social-icon o-facebook-1\"></i>\r\n\t\t\t
+        \           </a>\r\n\t\t\t    \t\r\n\t\t\t\t        <a href=\"https://twitter.com/uscensusbureau\"
+        target=\"_blank\" onclick=\"linkClick(this, 'Social Links Footer');\" class=\"uscb-layout-row
+        uscb-share-icon uscb-layout-align-center-center uscb-hw-100\" title=\"Twitter\">\r\n\t\t\t\t
+        \           <i class=\"uscb-footer-social-icon o-twitter-1\"></i>\r\n\t\t\t
+        \           </a>\r\n\t\t\t    \t\r\n\t\t\t\t        <a href=\"https://www.linkedin.com/company/us-census-bureau\"
+        target=\"_blank\" onclick=\"linkClick(this, 'Social Links Footer');\" class=\"uscb-layout-row
+        uscb-share-icon uscb-layout-align-center-center uscb-hw-100\" title=\"Linkedln\">\r\n\t\t\t\t
+        \           <i class=\"uscb-footer-social-icon o-linkedin-1\"></i>\r\n\t\t\t
+        \           </a>\r\n\t\t\t    \t</div>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t\t<!--
+        to space two icons, add class 'uscb-margin-L-30' to first icon, add 'uscb-margin-R-30'
+        to last icon -->\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<div class=\"uscb-layout-row
+        uscb-layout-align-gt-md-end-center uscb-hw-100 uscb-margin-TB-md-15\">\r\n\t\t\t\t\t
+        \      \t<a href=\"https://www.youtube.com/user/uscensusbureau\" target=\"_blank\"
+        onclick=\"linkClick(this, 'Social Links Footer');\" class=\"uscb-layout-row
+        uscb-share-icon uscb-layout-align-center-center uscb-hw-100 uscb-color-primary
+        uscb-margin-L-30\" title=\"YouTube\">\r\n\t\t\t\t\t            <i class=\"uscb-footer-social-icon
+        o-youtube-1\"></i>\r\n\t\t\t\t\t        </a>\r\n\t\t\t\t\t        <a href=\"https://www.instagram.com/uscensusbureau/\"
+        target=\"_blank\" onclick=\"linkClick(this, 'Social Links Footer');\" class=\"uscb-layout-row
+        uscb-share-icon uscb-layout-align-center-center uscb-hw-100 uscb-color-primary
+        uscb-margin-R-30\" title=\"Instagram\">\r\n\t\t\t\t\t            <i class=\"uscb-footer-social-icon
+        o-instagram-1\"></i>\r\n\t\t\t\t\t        </a>\r\n\t\t\t\t\t    </div>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\r\n\r\n\t\t</div>\r\n\r\n\n\t
+        \                   </div>\n\t                </div>\n\t            </div>\n\t
+        \           <div class=\"uscb-flex-col-gt-md-25 uscb-layout-row-gt-md uscb-layout-column-md
+        uscb-layout-align-gt-md-center-center uscb-layout-align-md-start-start uscb-padding-TB-gt-sm-12
+        uscb-wrap\">\n\n\t            \t\n\n\t\t                <div class=\"uscb-layout-row-gt-md
+        uscb-layout-column-md uscb-layout-align-start-center\">\n\t\t                \t\n\t\t
+        \                   <a href=\"https://www.census.gov/careers\" onclick=\"linkClick(this,
+        'Universal Footer Component');\" class=\"uscb-footer-link uscb-layout-row
+        uscb-align-center-center uscb-margin-TB-gt-md-0 uscb-margin-TB-md-5\">\n\t
+        \                           Census Jobs\n\t\t                    </a>\n\t\t
+        \               </div>\n\n\t            \t\n\n\t\t                <div class=\"uscb-layout-row-gt-md
+        uscb-layout-column-md uscb-layout-align-start-center\">\n\t\t                \t<span
+        class=\"uscb-footer-link-seperator uscb-hide-md uscb-padding-LR-5\">|</span>\n\t\t
+        \                   <a href=\"https://www.census.gov/quality/\" onclick=\"linkClick(this,
+        'Universal Footer Component');\" class=\"uscb-footer-link uscb-layout-row
+        uscb-align-center-center uscb-margin-TB-gt-md-0 uscb-margin-TB-md-5\">\n\t
+        \                           Information Quality\n\t\t                    </a>\n\t\t
+        \               </div>\n\n\t            \t\n\n\t\t                <div class=\"uscb-layout-row-gt-md
+        uscb-layout-column-md uscb-layout-align-start-center\">\n\t\t                \t<span
+        class=\"uscb-footer-link-seperator uscb-hide-md uscb-padding-LR-5\">|</span>\n\t\t
+        \                   <a href=\"https://www.census.gov/datalinkage\" onclick=\"linkClick(this,
+        'Universal Footer Component');\" class=\"uscb-footer-link uscb-layout-row
+        uscb-align-center-center uscb-margin-TB-gt-md-0 uscb-margin-TB-md-5\">\n\t
+        \                           Data Linkage Infrastructure\n\t\t                    </a>\n\t\t
+        \               </div>\n\n\t            \t\n\n\t\t                <div class=\"uscb-layout-row-gt-md
+        uscb-layout-column-md uscb-layout-align-start-center\">\n\t\t                \t<span
+        class=\"uscb-footer-link-seperator uscb-hide-md uscb-padding-LR-5\">|</span>\n\t\t
+        \                   <a href=\"https://www.census.gov/privacy\" onclick=\"linkClick(this,
+        'Universal Footer Component');\" class=\"uscb-footer-link uscb-layout-row
+        uscb-align-center-center uscb-margin-TB-gt-md-0 uscb-margin-TB-md-5\">\n\t
+        \                           Data Protection and Privacy Policy\n\t\t                    </a>\n\t\t
+        \               </div>\n\n\t            \t\n\n\t\t                <div class=\"uscb-layout-row-gt-md
+        uscb-layout-column-md uscb-layout-align-start-center\">\n\t\t                \t<span
+        class=\"uscb-footer-link-seperator uscb-hide-md uscb-padding-LR-5\">|</span>\n\t\t
+        \                   <a href=\"https://www.census.gov/section508\" onclick=\"linkClick(this,
+        'Universal Footer Component');\" class=\"uscb-footer-link uscb-layout-row
+        uscb-align-center-center uscb-margin-TB-gt-md-0 uscb-margin-TB-md-5\">\n\t
+        \                           Accessibility\n\t\t                    </a>\n\t\t
+        \               </div>\n\n\t            \t\n\n\t\t                <div class=\"uscb-layout-row-gt-md
+        uscb-layout-column-md uscb-layout-align-start-center\">\n\t\t                \t<span
+        class=\"uscb-footer-link-seperator uscb-hide-md uscb-padding-LR-5\">|</span>\n\t\t
+        \                   <a href=\"https://www.census.gov/foia\" onclick=\"linkClick(this,
+        'Universal Footer Component');\" class=\"uscb-footer-link uscb-layout-row
+        uscb-align-center-center uscb-margin-TB-gt-md-0 uscb-margin-TB-md-5\">\n\t
+        \                           FOIA\n\t\t                    </a>\n\t\t                </div>\n\n\t
+        \           \t\n\n\t\t                <div class=\"uscb-layout-row-gt-md uscb-layout-column-md
+        uscb-layout-align-start-center\">\n\t\t                \t<span class=\"uscb-footer-link-seperator
+        uscb-hide-md uscb-padding-LR-5\">|</span>\n\t\t                    <a href=\"https://www.commerce.gov/\"
+        onclick=\"linkClick(this, 'Universal Footer Component');\" class=\"uscb-footer-link
+        uscb-layout-row uscb-align-center-center uscb-margin-TB-gt-md-0 uscb-margin-TB-md-5\">\n\t
+        \                           U.S. Department of Commerce\n\t\t                    </a>\n\t\t
+        \               </div>\n\n\t            \t\n\n\t\t                <div class=\"uscb-layout-row-gt-md
+        uscb-layout-column-md uscb-layout-align-start-center\">\n\t\t                \t<span
+        class=\"uscb-footer-link-seperator uscb-hide-md uscb-padding-LR-5\">|</span>\n\t\t
+        \                   <a href=\"https://www.usa.gov/\" onclick=\"linkClick(this,
+        'Universal Footer Component');\" class=\"uscb-footer-link uscb-layout-row
+        uscb-align-center-center uscb-margin-TB-gt-md-0 uscb-margin-TB-md-5\">\n\t
+        \                           USA.gov\n\t\t                    </a>\n\t\t                </div>\n\n\t
+        \           \t\n\t            </div>\n\t        </div>\n\t        <div class=\"uscb-header-footer-container\">\n\t
+        \           <hr class=\"uscb-header-footer-hr\"/>\n\t        </div>\n\t        <div
+        class=\"uscb-footer-content-bottom uscb-flex-col-gt-md-20 uscb-flex-col-md-5
+        uscb-layout-row uscb-layout-align-center-center\">\n\t            <p class=\"uscb-footer-tag-line
+        uscb-text-align-center uscb-margin-TB-10\">Measuring America&#39;s People,
+        Places, and Economy</p>\n\t        </div>\n\t    </div>\n\t</footer>\n\n</div>\n\n\t\t\n\t</div>\n\n\t\n\t<script
+        type=\"text/javascript\" src=\"/etc.clientlibs/census/clientlibs/jquery.js\"></script>\n\n\t\n\t<script
+        type=\"text/javascript\" src=\"/etc.clientlibs/census/components/common/shared/sharethis/clientlibs/component.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/etc.clientlibs/census/components/common/core/teaser.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/etc.clientlibs/census/components/common/core/accordion/clientlibs.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/etc.clientlibs/census/components/common/body/responsiveiframe/clientlibs/component.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/etc.clientlibs/census/components/common/body/languageselector/clientlibs/component.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/etc.clientlibs/census/components/common/body/fixedgridlayout/clientlibs.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/etc.clientlibs/census/components/common/body/expandablelist/clientlibs/component.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/etc.clientlibs/census/components/common/body/censuscontentfragmentlist/clientlibs/component.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/etc.clientlibs/census/components/common/body/carousel/clientlib/component.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/etc.clientlibs/census/clientlibs/common-site.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/etc.clientlibs/census/clientlibs/census-js.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/etc.clientlibs/census/clientlibs/analytics.js\"></script>\n\n\t<script
+        type=\"text/javascript\" src=\"/etc.clientlibs/census/clientlibs/bootstrap.js\"></script>\n\n\t<script
+        type=\"text/javascript\" src=\"/etc.clientlibs/census/clientlibs/modernizr.js\"></script>\n\n\t<script
+        type=\"text/javascript\" src=\"/etc.clientlibs/census/clientlibs/universalheader.js\"></script>\n\n\t<script
+        type=\"text/javascript\" src=\"/apps/core/wcm/components/commons/site/clientlibs/container.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/etc.clientlibs/census-core/clientlibs.js\"></script>\n\n\t\n\n\t<script
+        type=\"text/javascript\">\n\t\tvar referrer=document.referrer;\n\t\tif(referrer.indexOf('search-results.html')>0){\n\t\t\t
+        $(\"body\").append(\"<span record=\\\"\\'searches\\', { \\'searchpage\\':\\'SERP\\'}\\\"></span>\");\n\t\t}\n\t</script>\n\n\t<div
+        id=\"popuptext\" style=\"display:none;\">\n\t\t\n\t\t<p>By selecting this
+        link you will leave <a href=\"/\">www.census.gov</a>. Please check the Privacy
+        Policy of the site you are visiting.</p>\r\n\n\t</div>\n\t\n\t\n\n    \n\n\n
+        \       <script type=\"text/javascript\">_satellite.pageBottom();</script>\n\n\n\t<div
+        class=\"cloudservices servicecomponents\"><script type=\"text/javascript\">_satellite.pageBottom();</script>\n</div>\n\n\n</body>\n\n</html>\n"
+    headers:
+      Cache-Control:
+      - max-age=1800
+      Connection:
+      - keep-alive
+      Content-Security-Policy:
+      - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
+        web.archive.org analytics.archive.org pragma.archivelab.org'
+      Content-Type:
+      - text/html;charset=utf-8
+      Date:
+      - Fri, 06 Nov 2020 01:22:16 GMT
+      Link:
+      - <https://www.census.gov/geography/gss-initiative.html>; rel="original", <http://web.archive.org/web/timemap/link/https://www.census.gov/geography/gss-initiative.html>;
+        rel="timemap"; type="application/link-format", <http://web.archive.org/web/https://www.census.gov/geography/gss-initiative.html>;
+        rel="timegate", <http://web.archive.org/web/20150924052631/http://www.census.gov:80/geography/gss-initiative.html>;
+        rel="first memento"; datetime="Thu, 24 Sep 2015 05:26:31 GMT", <http://web.archive.org/web/20201101215426/https://www.census.gov/geography/gss-initiative.html>;
+        rel="prev memento"; datetime="Sun, 01 Nov 2020 21:54:26 GMT", <http://web.archive.org/web/20201102232816/https://www.census.gov/geography/gss-initiative.html>;
+        rel="memento"; datetime="Mon, 02 Nov 2020 23:28:16 GMT", <http://web.archive.org/web/20201104000002/https://www.census.gov/geography/gss-initiative.html>;
+        rel="next memento"; datetime="Wed, 04 Nov 2020 00:00:02 GMT", <http://web.archive.org/web/20201105002042/https://www.census.gov/geography/gss-initiative.html>;
+        rel="last memento"; datetime="Thu, 05 Nov 2020 00:20:42 GMT"
+      Location:
+      - //web.archive.org/web/20201102232816id_/https://www.census.gov/geo/gssi/
+      Memento-Datetime:
+      - Mon, 02 Nov 2020 23:28:16 GMT
+      Server:
+      - nginx/1.15.8
+      Server-Timing:
+      - exclusion.robots.policy;dur=0.357304, captures_list;dur=475.724077, LoadShardBlock;dur=399.061461,
+        PetaboxLoader3.resolve;dur=202.657074, RedisCDXSource;dur=7.251844, load_resource;dur=171.530415,
+        esindex;dur=0.020641, CDXLines.iter;dur=23.755768, PetaboxLoader3.datanode;dur=292.540556,
+        exclusion.robots;dur=0.375563
+      Transfer-Encoding:
+      - chunked
+      X-App-Server:
+      - wwwb-app13
+      X-Archive-Orig-Access-Control-Allow-Origin:
+      - '*'
+      X-Archive-Orig-Cache-Control:
+      - no-store
+      X-Archive-Orig-Connection:
+      - close
+      X-Archive-Orig-Content-Security-Policy:
+      - frame-ancestors census.gov http://*.census.gov https://*.census.gov 2020census.gov
+        http://*.2020census.gov https://*.2020census.gov;
+      X-Archive-Orig-Date:
+      - Mon, 02 Nov 2020 23:28:17 GMT
+      X-Archive-Orig-Set-Cookie:
+      - HttpOnly;Secure
+      - K755t7m=!tcQ1NM5CoMN8ko7eTcCxJcrXFZu01TUAVpAajTfeXI/XhuwwueHm04IiTcG6SSv/U1fI/W1zOJ5WVg==;
+        path=/; Httponly; Secure
+      - TS01a30f36=011ba694f2725ee0d6ba61b0a0fd39c77421a726d617338b7f7b42b58722759397ea94b189a9e12b2cbe19c483814ac7f7a1c23e5b;
+        Path=/; Domain=.www.census.gov; Secure; HTTPOnly
+      X-Archive-Orig-Strict-Transport-Security:
+      - max-age=31536000
+      X-Archive-Orig-X-Content-Type-Options:
+      - nosniff
+      X-Archive-Orig-X-Frame-Options:
+      - sameorigin
+      X-Archive-Orig-X-XSS-Protection:
+      - 1; mode=block
+      X-Archive-Screenname:
+      - '0'
+      X-Archive-Src:
+      - census.gov-20190524-222341/IA-FOC-census.gov-20201102232719-00000.warc.gz
+      X-Cache-Key:
+      - httpweb.archive.org/web/20201102232816id_/https://www.census.gov/geography/gss-initiative.htmlUS
+      X-Page-Cache:
+      - HIT
+      X-location:
+      - All
+      X-ts:
+      - '301'
+    status:
+      code: 301
+      message: Moved Permanently
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.3.0a2.post0.dev0+gc2ca979 (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: http://web.archive.org/web/20201102232816id_/https://www.census.gov/geo/gssi/
+  response:
+    body:
+      string: ''
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Fri, 06 Nov 2020 01:22:16 GMT
+      Location:
+      - http://web.archive.org/web/20201102233026id_/https://www.census.gov/geo/gssi/
+      Server:
+      - nginx/1.15.8
+      Server-Timing:
+      - exclusion.robots.policy;dur=0.464858, esindex;dur=0.015333, PetaboxLoader3.datanode;dur=168.248351,
+        RedisCDXSource;dur=1.950120, captures_list;dur=313.667497, exclusion.robots;dur=0.480734,
+        LoadShardBlock;dur=249.550460, CDXLines.iter;dur=23.793388
+      X-App-Server:
+      - wwwb-app58
+      X-Archive-Redirect-Reason:
+      - found capture at 20201102233026
+      X-Archive-Screenname:
+      - '0'
+      X-Cache-Key:
+      - httpweb.archive.org/web/20201102232816id_/https://www.census.gov/geo/gssi/US
+      X-Page-Cache:
+      - HIT
+      X-location:
+      - All
+      X-ts:
+      - '302'
+    status:
+      code: 302
+      message: FOUND
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.3.0a2.post0.dev0+gc2ca979 (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: http://web.archive.org/web/20201102233026id_/https://www.census.gov/geo/gssi/
+  response:
+    body:
+      string: !!binary |
+        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
+        yfIiHYi/a0EpL6Ly/zU1qgr0RwAA
+    headers:
+      Cache-Control:
+      - max-age=1800
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
+        web.archive.org analytics.archive.org pragma.archivelab.org'
+      Content-Type:
+      - text/html
+      Date:
+      - Fri, 06 Nov 2020 01:22:16 GMT
+      Link:
+      - <https://www.census.gov/geo/gssi/>; rel="original", <http://web.archive.org/web/timemap/link/https://www.census.gov/geo/gssi/>;
+        rel="timemap"; type="application/link-format", <http://web.archive.org/web/https://www.census.gov/geo/gssi/>;
+        rel="timegate", <http://web.archive.org/web/20140903165709/https://www.census.gov/geo/gssi/>;
+        rel="first memento"; datetime="Wed, 03 Sep 2014 16:57:09 GMT", <http://web.archive.org/web/20201101215632/https://www.census.gov/geo/gssi/>;
+        rel="prev memento"; datetime="Sun, 01 Nov 2020 21:56:32 GMT", <http://web.archive.org/web/20201102233026/https://www.census.gov/geo/gssi/>;
+        rel="memento"; datetime="Mon, 02 Nov 2020 23:30:26 GMT", <http://web.archive.org/web/20201104000219/https://www.census.gov/geo/gssi/>;
+        rel="next memento"; datetime="Wed, 04 Nov 2020 00:02:19 GMT", <http://web.archive.org/web/20201105002246/https://www.census.gov/geo/gssi/>;
+        rel="last memento"; datetime="Thu, 05 Nov 2020 00:22:46 GMT"
+      Memento-Datetime:
+      - Mon, 02 Nov 2020 23:30:26 GMT
+      Server:
+      - nginx/1.15.8
+      Server-Timing:
+      - esindex;dur=0.021063, PetaboxLoader3.datanode;dur=76.890864, CDXLines.iter;dur=24.913305,
+        load_resource;dur=310.154223, LoadShardBlock;dur=82.244884, exclusion.robots;dur=0.912306,
+        RedisCDXSource;dur=1.924134, exclusion.robots.policy;dur=0.535145, captures_list;dur=350.200105,
+        PetaboxLoader3.resolve;dur=239.020357
+      Transfer-Encoding:
+      - chunked
+      X-App-Server:
+      - wwwb-app12
+      X-Archive-Orig-Accept-Ranges:
+      - bytes
+      X-Archive-Orig-Access-Control-Allow-Origin:
+      - '*'
+      X-Archive-Orig-Cache-Control:
+      - public, max-age=31536000
+      X-Archive-Orig-Connection:
+      - close
+      X-Archive-Orig-Content-Length:
+      - '18420'
+      X-Archive-Orig-Content-Security-Policy:
+      - 'default-src ''self'' ''unsafe-inline'' ''unsafe-eval'' mailto: blob: census.gov
+        *.census.gov http://www.census.gov 2020census.gov *.2020census.gov cep.gov
+        house.gov *.house.gov senate.gov *.senate.gov www.google-analytics.com www.google.com
+        www.youtube.com assets.adobedtm.com t.sharethis.com ws.sharethis.com count-server.sharethis.com
+        l.sharethis.com s.ytimg.com loadus.exelator.com censusbureau.d1.sc.omtrdc.net
+        twitter.com connect.facebook.net www.gstatic.com fonts.gstatic.com c.sharethis.mgr.consensu.org
+        www.addthis.com s7.addthis.com v1.addthis.com api-public.addthis.com m.addthis.com
+        z.moatads.com www.facebook.com graph.facebook.com maps.googleapis.com ajax.googleapis.com
+        fonts.googleapis.com jquery-ui.googlecode.com static.jquery.com code.jquery.com
+        at.alicdn.com data: server.arcgisonline.com code.highcharts.com www.adobe.com
+        fpdownload.adobe.com http://www.adobe.com www.googletagmanager.com ds-aksb-a.akamaihd.net
+        dap.digitalgov.gov *.amsadobe.com www.cia.gov assets.pinterest.com platform.twitter.com
+        v1.addthisedge.com log.pinterest.com syndication.twitter.com;'
+      X-Archive-Orig-Date:
+      - Mon, 02 Nov 2020 23:30:26 GMT
+      X-Archive-Orig-Set-Cookie:
+      - K755t7m=!xhj+duanYzBV8djeTcCxJcrXFZu01TZJcQ9EdfT6rjmQJWjdxQCku4fujTqc9W51F1HCRy1wkK6uxBw=;
+        path=/; Httponly; Secure
+      - TS01a30f36=011ba694f2725ee0d6ba61b0a0fd39c77421a726d617338b7f7b42b58722759397ea94b189a9e12b2cbe19c483814ac7f7a1c23e5b;
+        Path=/; Domain=.www.census.gov; Secure; HTTPOnly
+      X-Archive-Orig-Strict-Transport-Security:
+      - max-age=31536000
+      X-Archive-Orig-X-Content-Type-Options:
+      - nosniff
+      X-Archive-Orig-X-XSS-Protection:
+      - 1; mode=block
+      X-Archive-Screenname:
+      - '0'
+      X-Archive-Src:
+      - census.gov-20190524-222341/IA-FOC-census.gov-20201102232719-00000.warc.gz
+      X-Page-Cache:
+      - HIT
+      X-ts:
+      - '404'
+    status:
+      code: 404
+      message: Not Found
+version: 1
