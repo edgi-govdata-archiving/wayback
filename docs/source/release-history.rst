@@ -2,6 +2,12 @@
 Release History
 ===============
 
+v0.3.0 Alpha 3 (2020-11-05)
+---------------------------
+
+Fixes a bug in the new :class:`wayback.Memento` type where header parsing would fail for mementos with schemeless ``Location`` headers. (`#61 <https://github.com/edgi-govdata-archiving/wayback/pull/61>`_)
+
+
 v0.3.0 Alpha 2 (2020-11-04)
 ---------------------------
 
