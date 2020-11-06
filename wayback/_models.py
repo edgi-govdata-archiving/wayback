@@ -1,5 +1,5 @@
 from collections import namedtuple
-from urllib.parse import urlparse
+from urllib.parse import urljoin
 from ._utils import memento_url_data
 
 
@@ -286,13 +286,10 @@ class Memento:
         # version, and the normal location header point to the next *Wayback*
         # URL, so we need to parse it to get the historical redirect URL.
         if 'Location' not in headers and 'Location' in raw_headers:
-            raw_location = raw_headers['Location']
             # Some Wayback redirects provide a complete URL with a scheme and
-            # host in the `Location` header, but others provide only a path.
-            if raw_location.startswith('/'):
-                base_data = urlparse(url)
-                raw_location = f'{base_data.scheme}://{base_data.netloc}{raw_location}'
-
+            # host in the `Location` header, not all do. Use `url` as a base
+            # URL if the value in the header is missing a scheme, host, etc.
+            raw_location = urljoin(url, raw_headers['Location'])
             headers['Location'], _, _ = memento_url_data(raw_location)
 
         return headers
