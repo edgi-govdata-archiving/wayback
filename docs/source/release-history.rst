@@ -5,13 +5,13 @@ Release History
 v0.3.0 Alpha 3 (2020-11-05)
 ---------------------------
 
-Fixes a bug in the new :class:`wayback.Memento` type where header parsing would fail for mementos with schemeless ``Location`` headers. (`#61 <https://github.com/edgi-govdata-archiving/wayback/pull/61>`_)
+Fixes a bug in the new :class:`wayback.Memento` type where header parsing would fail for mementos with schemeless ``Location`` headers. (:issue:`61`)
 
 
 v0.3.0 Alpha 2 (2020-11-04)
 ---------------------------
 
-Fixes a bug in the new :class:`wayback.Memento` type where header parsing would fail for mementos with path-based ``Location`` headers. (`#60 <https://github.com/edgi-govdata-archiving/wayback/pull/60>`_)
+Fixes a bug in the new :class:`wayback.Memento` type where header parsing would fail for mementos with path-based ``Location`` headers. (:issue:`60`)
 
 
 v0.3.0 Alpha 1 (2020-10-20)
@@ -160,7 +160,7 @@ Finally, :func:`wayback.memento_url_data` now returns 3 values instead of 2. The
 v0.2.5 (2020-10-19)
 -------------------
 
-This release fixes a bug where the ``target_window`` parameter for :meth:`wayback.WaybackClient.get_memento` did not work correctly if the memento you were redirected to was off by more than a day from the requested time. See `#53 <https://github.com/edgi-govdata-archiving/wayback/pull/53>`_ for more.
+This release fixes a bug where the ``target_window`` parameter for :meth:`wayback.WaybackClient.get_memento` did not work correctly if the memento you were redirected to was off by more than a day from the requested time. See :issue:`53` for more.
 
 
 v0.2.4 (2020-09-07)
