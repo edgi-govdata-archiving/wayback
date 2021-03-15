@@ -226,7 +226,7 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
     # just the error type. See `should_retry_error()`.
     handleable_errors = (ConnectionError,) + retryable_errors
 
-    def __init__(self, retries=6, backoff=2, timeout=None, user_agent=None):
+    def __init__(self, retries=6, backoff=2, timeout=60, user_agent=None):
         super().__init__()
         self.retries = retries
         self.backoff = backoff
@@ -253,9 +253,6 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
     # NOTE: worth considering whether we should push this logic to a custom
     # requests.adapters.HTTPAdapter
     def send(self, *args, **kwargs):
-        if self.timeout is not None and 'timeout' not in kwargs:
-            kwargs['timeout'] = self.timeout
-
         total_time = 0
         maximum = self.retries
         retries = 0
@@ -283,6 +280,12 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
                 time.sleep(seconds)
 
             retries += 1
+
+    def request(self, method, url, **kwargs):
+        """Check if a timeout was provided and if not set the session's default timeout."""
+        if 'timeout' not in kwargs:
+            kwargs['timeout'] = self.timeout
+        return super().request(method, url, **kwargs)
 
     def should_retry(self, response):
         # A memento may actually be a capture of an error, so don't retry it :P
