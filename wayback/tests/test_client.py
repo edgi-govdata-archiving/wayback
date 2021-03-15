@@ -7,7 +7,10 @@ from .._client import (CdxRecord,
                        Mode,
                        WaybackSession,
                        WaybackClient)
-from ..exceptions import MementoPlaybackError, RateLimitError, BlockedSiteError
+from ..exceptions import (BlockedSiteError,
+                          MementoPlaybackError,
+                          NoMementoError,
+                          RateLimitError)
 
 
 # This stashes HTTP responses in JSON files (one per test) so that an actual
@@ -419,6 +422,14 @@ def test_get_memento_raises_blocked_error():
     with WaybackClient() as client:
         with pytest.raises(BlockedSiteError):
             client.get_memento('https://nationalpost.com/health/', '20170929002712')
+
+
+@ia_vcr.use_cassette()
+def test_get_memento_raises_no_memento_error():
+    with WaybackClient() as client:
+        with pytest.raises(NoMementoError):
+            client.get_memento('https://this-is-not-real-url.whatever/',
+                               '20170929002712')
 
 
 @ia_vcr.use_cassette()

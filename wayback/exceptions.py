@@ -40,6 +40,18 @@ class MementoPlaybackError(WaybackException):
     """
 
 
+class NoMementoError(MementoPlaybackError):
+    """
+    Raised when there was no memento available for a given URL. This might mean
+    the given URL has no mementos at all or that none that are available for
+    playback.
+
+    This also means you should *not* try to request a memento of the same URL
+    in a different timeframe. If there may be other mementos of the URL
+    available, you'll get a different error.
+    """
+
+
 class WaybackRetryError(WaybackException):
     """
     Raised when a request to the Wayback Machine has been retried and failed

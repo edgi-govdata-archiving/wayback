@@ -38,6 +38,7 @@ from .exceptions import (WaybackException,
                          BlockedByRobotsError,
                          BlockedSiteError,
                          MementoPlaybackError,
+                         NoMementoError,
                          WaybackRetryError,
                          RateLimitError)
 
@@ -786,7 +787,15 @@ class WaybackClient(_utils.DepthCountedContext):
                             raise MementoPlaybackError(f'Memento at {url} could not be played: {message}')
                         elif response.ok:
                             raise MementoPlaybackError(f'Memento at {url} could not be played')
+                        elif response.status_code == 404:
+                            raise NoMementoError(f'The URL {url} has no mementos and was never archived')
                         else:
+                            # TODO: raise WaybackError to hide requests error class
+                            # e.g. raise WaybackError(f'{response.status_code} error while loading memento at {url}')
+                            # Ideally would be a MementoPlaybackError, but users
+                            # need to be able to distinguish this (potentially
+                            # intermittent) error from other more permanent
+                            # playback errors.
                             response.raise_for_status()
 
                 if response.next:
