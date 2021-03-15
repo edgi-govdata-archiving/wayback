@@ -797,7 +797,8 @@ class WaybackClient(_utils.DepthCountedContext):
                         elif response.status_code == 404:
                             raise NoMementoError(f'The URL {url} has no mementos and was never archived')
                         else:
-                            raise MementoPlaybackError(f'{response.status_code} error while loading memento at {url}')
+                            raise MementoPlaybackError(f'{response.status_code} error while loading '
+                                                       f'memento at {url}')
 
                 if response.next:
                     previous_was_memento = is_memento
