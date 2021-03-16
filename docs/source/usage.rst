@@ -142,6 +142,8 @@ Exception Classes
 
 .. autoclass:: wayback.exceptions.MementoPlaybackError
 
+.. autoclass:: wayback.exceptions.NoMementoError
+
 .. autoclass:: wayback.exceptions.RateLimitError
 
 .. autoclass:: wayback.exceptions.WaybackRetryError

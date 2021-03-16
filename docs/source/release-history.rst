@@ -2,7 +2,7 @@
 Release History
 ===============
 
-v0.3.0 Beta 1 (Date?)
+v0.3.0 Beta 1 (2021-03-15)
 ---------------------
 
 :meth:`wayback.WaybackClient.get_memento` now raises :class:`wayback.exceptions.NoMementoError` when the requeted URL has never been archived. It also now raises :class:`wayback.exceptions.MementoPlaybackError` in all other cases where an error was returned by the Wayback Machine (so you should never see a ``requests.exceptions.HTTPError``). However, you may still see other *network-level* errors (e.g. ``ConnectionError``).
