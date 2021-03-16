@@ -38,6 +38,7 @@ from .exceptions import (WaybackException,
                          BlockedByRobotsError,
                          BlockedSiteError,
                          MementoPlaybackError,
+                         NoMementoError,
                          WaybackRetryError,
                          RateLimitError)
 
@@ -785,9 +786,19 @@ class WaybackClient(_utils.DepthCountedContext):
                         elif message:
                             raise MementoPlaybackError(f'Memento at {url} could not be played: {message}')
                         elif response.ok:
+                            # TODO: Raise more specific errors for the possible
+                            # cases here. We *should* only arrive here when
+                            # there's a redirect and:
+                            # - `exact` is true.
+                            # - `exact_redirects` is true and the redirect was
+                            #   not exact.
+                            # - The target URL is outside `target_window`.
                             raise MementoPlaybackError(f'Memento at {url} could not be played')
+                        elif response.status_code == 404:
+                            raise NoMementoError(f'The URL {url} has no mementos and was never archived')
                         else:
-                            response.raise_for_status()
+                            raise MementoPlaybackError(f'{response.status_code} error while loading '
+                                                       f'memento at {url}')
 
                 if response.next:
                     previous_was_memento = is_memento
