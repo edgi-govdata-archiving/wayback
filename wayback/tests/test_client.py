@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 import vcr
 import requests
-import mock
+from unittest import mock
 from .._utils import SessionClosedError
 from .._client import (CdxRecord,
                        Mode,
@@ -558,3 +558,4 @@ class TestWaybackSession:
         # Overwriting the default
         res = session.request('GET', 'http://test.com', timeout=1)
         assert res.text == '1'
+
