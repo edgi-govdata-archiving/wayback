@@ -477,7 +477,7 @@ def test_get_memento_follow_redirects_does_not_follow_historical_redirects():
 
 
 def return_timeout(self, *args, **kwargs) -> requests.Response:
-    """Overwirte the requests.Session.send to return a response with the provied timeout value as content"""
+    """Overwrite requests.Session.send to return a response with the provided timeout value as content."""
     res = requests.Response()
     res.status_code = 200
     res._content = str(kwargs.get('timeout', None)).encode()
@@ -558,4 +558,3 @@ class TestWaybackSession:
         # Overwriting the default
         res = session.request('GET', 'http://test.com', timeout=1)
         assert res.text == '1'
-
