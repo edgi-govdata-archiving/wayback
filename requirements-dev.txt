@@ -1,6 +1,5 @@
 # These are required for developing the package (running the tests, building
 # the documentation) but not necessarily required for _using_ it.
-mock
 wheel
 check-wheel-contents ~=0.1.0
 codecov
