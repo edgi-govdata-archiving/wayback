@@ -2,18 +2,169 @@
 Release History
 ===============
 
-In Development
---------------
+v0.3.0 (2021-03-19)
+-------------------
 
-Fix a major bug where a session’s ``timeout`` would not actually be applied to most requests. HUGE thanks to `@LionSzl <https://github.com/LionSzl>`_ for discovering this issue and addressing it. (`#68 <https://github.com/edgi-govdata-archiving/wayback/pull/68>`_)
+This release marks a *major* update we’re really excited about: :meth:`wayback.WaybackClient.get_memento` no longer returns a ``Response`` object from the `Requests package <https://requests.readthedocs.io/>`_ that takes a lot of extra work to interpret correctly. Instead, it returns a new :class:`wayback.Memento` object. It’s really similar to the ``Response`` we used to return, but doesn’t mix up current and historical data — it represents the historical, archived HTTP response that is stored in the Wayback Machine. This is a big change to the API, so we’ve bumped the version number to ``0.3.x``.
 
-Adds a default ``timeout`` of 60 seconds to all sessions. Sometimes a Memento request or a search simply hangs and the Wayback Machine servers never close the connection, so it's pretty important to provide timeouts on *all* Wayback requests. (Note this is a timeout on how long it takes to connect or the amount of time between reads, not on how long the whole request takes.) (`#68 <https://github.com/edgi-govdata-archiving/wayback/pull/68>`_)
+
+Notable Changes
+^^^^^^^^^^^^^^^
+
+- **Breaking change:** :meth:`wayback.WaybackClient.get_memento` takes new parameters and has a new return type. More details below.
+
+- **Breaking change:** :func:`wayback.memento_url_data` now returns 3 values instead of 2. The last value is a string representing the playback mode (see below description of the new ``mode`` parameter on :meth:`wayback.WaybackClient.get_memento` for more about playback modes).
+
+- Requests to the Wayback Machine now have a default timeout of 60 seconds. This was important because we’ve seen many recent issues where the Wayback Machine servers don’t always close connections.
+
+  If needed, you can disable this by explicitly setting ``timeout=None`` when creating a :class:`wayback.WaybackSession`. Please note this is *not* a timeout on how long a whole request takes, but on the time between bytes received.
+
+- :meth:`wayback.WaybackClient.get_memento` now raises :class:`wayback.exceptions.NoMementoError` when the requested URL has never been archived by the WaybackMachine. It no longer raises ``requests.exceptions.HTTPError`` under any circumstances.
+
+You may notice that removing APIs from the `Requests package <https://requests.readthedocs.io/>`_ is a theme here. Under the hood, *Wayback* still uses *Requests* for HTTP requests, but we expect to change that in order to ensure this package is thread-safe. We will bump the version to v0.4.x when doing so.
+
+
+get_memento() Parameters
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+The parameters in :meth:`wayback.WaybackClient.get_memento` have been re-organized. The method signature is now:
+
+.. code-block:: python
+
+   def get_memento(self,
+                   url,                        # Accepts new types of values.
+                   datetime=None,              # New parameter.
+                   mode=Mode.original,         # New parameter.
+                   *,                          # Everything below is keyword-only.
+                   exact=True,
+                   exact_redirects=None,
+                   target_window=24 * 60 * 60,
+                   follow_redirects=True)      # New parameter.
+
+- All parameters except ``url`` (the first parameter) from v0.2.x must now be specified with keywords, and cannot be specified positionally.
+
+  If you previously used keywords, your code will be fine and no changes are necessary:
+
+  .. code-block:: python
+
+     # This still works great!
+     client.get_memento('http://web.archive.org/web/20180816111911id_/http://www.noaa.gov/',
+                        exact=False,
+                        exact_redirects=False,
+                        target_window=3600)
+
+  However, positional parameters like the following will now cause problems, and you should switch to the above keyword form:
+
+  .. code-block:: python
+
+     # This will now cause you some trouble :(
+     client.get_memento('http://web.archive.org/web/20180816111911id_/http://www.noaa.gov/',
+                        False,
+                        False,
+                        3600)
+
+- The ``url`` parameter can now be a normal, non-Wayback URL or a :class:`wayback.CdxRecord`, and new ``datetime`` and ``mode`` parameters have been added.
+
+  Previously, if you wanted to get a memento of what ``http://www.noaa.gov/`` looked like on August 1, 2018, you would have had to construct a complex string to pass to ``get_memento()``:
+
+  .. code-block:: python
+
+     client.get_memento('http://web.archive.org/web/20180801000000id_/http://www.noaa.gov/')
+
+  Now you can pass the URL and time you want as separate parameters:
+
+  .. code-block:: python
+
+     client.get_memento('http://www.noaa.gov/', datetime.datetime(2018, 8, 1))
+
+  If the ``datetime`` parameter does not specify a timezone, it will be treated as UTC (*not* local time).
+
+  You can also pass a :class:`wayback.CdxRecord` that you received from :meth:`wayback.WaybackClient.search` instead of a URL and time:
+
+  .. code-block:: python
+
+     for record in client.search('http://www.noaa.gov/'):
+         client.get_memento(record)
+
+  Finally, you can now specify the *playback mode* of a memento using the ``mode`` parameter:
+
+  .. code-block:: python
+
+     client.get_memento('http://www.noaa.gov/',
+                        datetime=datetime.datetime(2018, 8, 1),
+                        mode=wayback.Mode.view)
+
+  The default mode is :attr:`wayback.Mode.original`, which returns the exact HTTP response body as was originally archived. Other modes reformat the response body so it’s more friendly for browsing by changing the URLs of links, images, etc. and by adding informational content to the page about the memento you are viewing. They are the modes typically used when you view the Wayback Machine in a web browser.
+
+  Don’t worry, though — complete Wayback URLs are still supported. This code still works fine:
+
+  .. code-block:: python
+
+     client.get_memento('http://web.archive.org/web/20180801000000id_/http://www.noaa.gov/')
+
+- A new ``follow_redirects`` parameter specifies whether to follow *historical* redirects (i.e. redirects that happened when the requested memento was captured). It defaults to ``True``, which matches the old behavior of this method.
+
+
+get_memento() Returns a Memento Object
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``get_memento()`` no longer returns a response object from the `Requests package <https://requests.readthedocs.io/>`_. Instead it returns a specialized :class:`wayback.Memento` object, which is similar, but provides more useful information about the Memento than just the HTTP response from Wayback. For example, ``memento.url`` is the original URL the memento is a capture of (e.g. ``http://www.noaa.gov/``) rather than the Wayback URL (e.g. ``http://web.archive.org/web/20180816111911id_/http://www.noaa.gov/``). You can still get the full Wayback URL from ``memento.memento_url``.
+
+You can check out the full API documentation for :class:`wayback.Memento`, but here’s a quick guide to what’s available:
+
+.. code-block:: python
+
+   memento = client.get_memento('http://www.noaa.gov/home',
+                                datetime(2018, 8, 16, 11, 19, 11),
+                                exact=False)
+
+   # These values were previously not available except by parsing
+   # `memento.url`. The old `memento.url` is now `memento.memento_url`.
+   memento.url == 'http://www.noaa.gov/'
+   memento.timestamp == datetime(2018, 8, 29, 8, 8, 49, tzinfo=timezone.utc)
+   memento.mode == 'id_'
+
+   # Used to be `memento.url`:
+   memento.memento_url == 'http://web.archive.org/web/20180816111911id_/http://www.noaa.gov/'
+
+   # Used to be a list of `Response` objects, now a *tuple* of Mementos. It
+   # lists only the redirects that are actual Mementos and not part of
+   # Wayback's internal machinery:
+   memento.history == (Memento<url='http://noaa.gov/home'>,)
+
+   # Used to be a list of `Response` objects, now a *tuple* of URL strings:
+   memento.debug_history == ('http://web.archive.org/web/20180816111911id_/http://noaa.gov/home',
+                             'http://web.archive.org/web/20180829092926id_/http://noaa.gov/home',
+                             'http://web.archive.org/web/20180829092926id_/http://noaa.gov/')
+
+   # Headers now only lists headers from the original archived response, not
+   # additional headers from the Wayback Machine itself. (If there's
+   # important information you needed in the headers, file an issue and let
+   # us know! We'd like to surface that kind of information as attributes on
+   # the Memento now.
+   memento.headers = {'header_name': 'header_value',
+                      'another_header': 'another_value',
+                      'and': 'so on'}
+
+   # Same as before:
+   memento.status_code
+   memento.ok
+   memento.is_redirect
+   memento.encoding
+   memento.content
+   memento.text
+
+
+v0.2.6 (2021-03-18)
+-------------------
+
+Fix a major bug where a session’s ``timeout`` would not actually be applied to most requests. HUGE thanks to @LionSzl for discovering this issue and addressing it. (`#68 <https://github.com/edgi-govdata-archiving/wayback/pull/68>`_)
 
 
 v0.3.0 Beta 1 (2021-03-15)
 --------------------------
 
-:meth:`wayback.WaybackClient.get_memento` now raises :class:`wayback.exceptions.NoMementoError` when the requeted URL has never been archived. It also now raises :class:`wayback.exceptions.MementoPlaybackError` in all other cases where an error was returned by the Wayback Machine (so you should never see a ``requests.exceptions.HTTPError``). However, you may still see other *network-level* errors (e.g. ``ConnectionError``).
+:meth:`wayback.WaybackClient.get_memento` now raises :class:`wayback.exceptions.NoMementoError` when the requested URL has never been archived. It also now raises :class:`wayback.exceptions.MementoPlaybackError` in all other cases where an error was returned by the Wayback Machine (so you should never see a ``requests.exceptions.HTTPError``). However, you may still see other *network-level* errors (e.g. ``ConnectionError``).
 
 
 v0.3.0 Alpha 3 (2020-11-05)
