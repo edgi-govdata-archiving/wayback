@@ -66,6 +66,7 @@ Thanks to the following people for their contributions and help on this package!
 - `Dan Allan <https://github.com/danielballan>`_ (Code, Tests, Documentation, Reviews)
 - `Rob Brackett <https://github.com/Mr0grog>`_ (Code, Tests, Documentation, Reviews)
 - `Ed Summers <https://github.com/edsu>`_ (Code, Tests)
+- `Lion Szlagowski <https://github.com/LionSzl>`_ (Code, Tests)
 
 
 License & Copyright
