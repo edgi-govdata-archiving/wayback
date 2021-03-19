@@ -2,6 +2,14 @@
 Release History
 ===============
 
+In Development
+--------------
+
+Fix a major bug where a session’s ``timeout`` would not actually be applied to most requests. HUGE thanks to @LionSzl for discovering this issue and addressing it. (`#68 <https://github.com/edgi-govdata-archiving/wayback/pull/68>`_)
+
+Adds a default ``timeout`` of 60 seconds to all sessions. Sometimes a Memento request or a search simply hangs and the Wayback Machine servers never close the connection, so it's pretty important to provide timeouts on *all* Wayback requests. (Note this is a timeout on how long it takes to connect or the amount of time between reads, not on how long the whole request takes.) (`#68 <https://github.com/edgi-govdata-archiving/wayback/pull/68>`_)
+
+
 v0.3.0 Beta 1 (2021-03-15)
 --------------------------
 
