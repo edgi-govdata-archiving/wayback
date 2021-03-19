@@ -2,8 +2,8 @@
 Release History
 ===============
 
-v0.2.6 (In Development)
------------------------
+v0.2.6 (2021-03-18)
+-------------------
 
 Fix a major bug where a session’s ``timeout`` would not actually be applied to most requests. HUGE thanks to @LionSzl for discovering this issue and addressing it. (`#68 <https://github.com/edgi-govdata-archiving/wayback/pull/68>`_)
 
