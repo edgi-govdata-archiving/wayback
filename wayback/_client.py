@@ -328,9 +328,6 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
     # NOTE: worth considering whether we should push this logic to a custom
     # requests.adapters.HTTPAdapter
     def send(self, *args, **kwargs):
-        if self.timeout is not None and 'timeout' not in kwargs:
-            kwargs['timeout'] = self.timeout
-
         total_time = 0
         maximum = self.retries
         retries = 0
@@ -358,6 +355,23 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
                 time.sleep(seconds)
 
             retries += 1
+
+    # Customize `request` in order to set a default timeout from the session.
+    # We can't do this in `send` because `request` always passes a `timeout`
+    # keyword to `send`. Inside `send`, we can't tell the difference between a
+    # user explicitly requesting no timeout and not setting one at all.
+    def request(self, method, url, **kwargs):
+        """
+        Perform an HTTP request using this session. For arguments and return
+        values, see:
+        https://requests.readthedocs.io/en/latest/api/#requests.Session.request
+
+        If the ``timeout`` keyword argument is not set, it will default to the
+        session's ``timeout`` attribute.
+        """
+        if 'timeout' not in kwargs:
+            kwargs['timeout'] = self.timeout
+        return super().request(method, url, **kwargs)
 
     def should_retry(self, response):
         # A memento may actually be a capture of an error, so don't retry it :P
