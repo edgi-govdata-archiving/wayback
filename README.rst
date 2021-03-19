@@ -55,7 +55,7 @@ Read the `full documentation <https://wayback.readthedocs.io/>`_ for a more in-d
 Code of Conduct
 ---------------
 
-This repository falls under EDGI’s `Code of Conduct <https://github.com/edgi-govdata-archiving/overview/blob/main/CONDUCT.md>`_. Pleas take a moment to review it before commenting on or creating issues and pull requests.
+This repository falls under EDGI’s `Code of Conduct <https://github.com/edgi-govdata-archiving/overview/blob/main/CONDUCT.md>`_. Please take a moment to review it before commenting on or creating issues and pull requests.
 
 
 Contributors
@@ -71,6 +71,6 @@ Thanks to the following people for their contributions and help on this package!
 License & Copyright
 -------------------
 
-Copyright (C) 2019-2020 Environmental Data and Governance Initiative (EDGI)
+Copyright (C) 2019-2021 Environmental Data and Governance Initiative (EDGI)
 
 This program is free software: you can redistribute it and/or modify it under the terms of the 3-Clause BSD License. See the `LICENSE <https://github.com/edgi-govdata-archiving/wayback/blob/master/LICENSE>`_ file for details.
