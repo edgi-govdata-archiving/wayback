@@ -209,8 +209,8 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
         So if this was `4`, retries would happen after the following delays:
         0 seconds, 4 seconds, 8 seconds, 16 seconds, ...
     timeout : int or float or tuple of (int or float, int or float), optional
-        A timeout to use for all requests. If not set, there will be no
-        no explicit timeout. See the Requests docs for more:
+        A timeout to use for all requests. (Default: ``60``)
+        See the Requests docs for more:
         http://docs.python-requests.org/en/master/user/advanced/#timeouts
     user_agent : str, optional
         A custom user-agent string to use in all requests. Defaults to:
