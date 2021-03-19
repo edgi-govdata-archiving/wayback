@@ -281,8 +281,19 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
 
             retries += 1
 
+    # Customize `request` in order to set a default timeout from the session.
+    # We can't do this in `send` because `request` always passes a `timeout`
+    # keyword to `send`. Inside `send`, we can't tell the difference between a
+    # user explicitly requesting no timeout and not setting one at all.
     def request(self, method, url, **kwargs):
-        """Check if a timeout was provided and if not set the session's default timeout."""
+        """
+        Perform an HTTP request using this session. For arguments and return
+        values, see:
+        https://requests.readthedocs.io/en/latest/api/#requests.Session.request
+
+        If the ``timeout`` keyword argument is not set, it will default to the
+        session's ``timeout`` attribute.
+        """
         if 'timeout' not in kwargs:
             kwargs['timeout'] = self.timeout
         return super().request(method, url, **kwargs)

@@ -477,7 +477,15 @@ def test_get_memento_follow_redirects_does_not_follow_historical_redirects():
 
 
 def return_timeout(self, *args, **kwargs) -> requests.Response:
-    """Overwrite requests.Session.send to return a response with the provided timeout value as content."""
+    """
+    Patch requests.Session.send with this in order to return a response with
+    the provided timeout value as the response body.
+
+    Usage:
+    >>> @mock.patch('requests.Session.send', side_effect=return_timeout)
+    >>> def test_timeout(self, mock_class):
+    >>>    assert requests.get('http://test.com', timeout=5).text == '5'
+    """
     res = requests.Response()
     res.status_code = 200
     res._content = str(kwargs.get('timeout', None)).encode()
