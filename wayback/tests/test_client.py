@@ -2,6 +2,8 @@ from datetime import date, datetime, timezone, timedelta
 from pathlib import Path
 import pytest
 import vcr
+import requests
+from unittest import mock
 from .._utils import SessionClosedError
 from .._client import (CdxRecord,
                        Mode,
@@ -485,6 +487,22 @@ def test_get_memento_follow_redirects_does_not_follow_historical_redirects():
         assert len(memento.debug_history) == 1
 
 
+def return_timeout(self, *args, **kwargs) -> requests.Response:
+    """
+    Patch requests.Session.send with this in order to return a response with
+    the provided timeout value as the response body.
+
+    Usage:
+    >>> @mock.patch('requests.Session.send', side_effect=return_timeout)
+    >>> def test_timeout(self, mock_class):
+    >>>    assert requests.get('http://test.com', timeout=5).text == '5'
+    """
+    res = requests.Response()
+    res.status_code = 200
+    res._content = str(kwargs.get('timeout', None)).encode()
+    return res
+
+
 class TestWaybackSession:
     def test_request_retries(self, requests_mock):
         requests_mock.get('http://test.com', [{'text': 'bad1', 'status_code': 503},
@@ -525,3 +543,37 @@ class TestWaybackSession:
             session.request('GET', 'http://test.com')
 
         assert excinfo.value.retry_after == 10
+
+    @mock.patch('requests.Session.send', side_effect=return_timeout)
+    def test_timeout_applied_session(self, mock_class):
+        # Is the timeout applied through the WaybackSession
+        session = WaybackSession(timeout=1)
+        res = session.request('GET', 'http://test.com')
+        assert res.text == '1'
+        # Overwriting the default in the requests method
+        res = session.request('GET', 'http://test.com', timeout=None)
+        assert res.text == 'None'
+        res = session.request('GET', 'http://test.com', timeout=2)
+        assert res.text == '2'
+
+    @mock.patch('requests.Session.send', side_effect=return_timeout)
+    def test_timeout_applied_request(self, mock_class):
+        # Using the default value
+        session = WaybackSession()
+        res = session.request('GET', 'http://test.com')
+        assert res.text == '60'
+        # Overwriting the default
+        res = session.request('GET', 'http://test.com', timeout=None)
+        assert res.text == 'None'
+        res = session.request('GET', 'http://test.com', timeout=2)
+        assert res.text == '2'
+
+    @mock.patch('requests.Session.send', side_effect=return_timeout)
+    def test_timeout_empty(self, mock_class):
+        # Disabling default timeout
+        session = WaybackSession(timeout=None)
+        res = session.request('GET', 'http://test.com')
+        assert res.text == 'None'
+        # Overwriting the default
+        res = session.request('GET', 'http://test.com', timeout=1)
+        assert res.text == '1'
