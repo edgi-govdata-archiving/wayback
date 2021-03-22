@@ -65,7 +65,7 @@ class TestRateLimited:
         assert 0 <= time.time() - start_time <= 0.01
 
     def test_simultaneous_ratelimits(self):
-        """Check that multiple ratelimits do not interfere with another."""
+        """Check that multiple rate limits do not interfere with another."""
         start_time = time.time()
         # The first loop should take 1 second, as it waits on the sim1 lock,
         # the second loop 0.66 seconds, since it waits twice on sim2.
