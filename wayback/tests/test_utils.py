@@ -1,6 +1,7 @@
 from datetime import datetime, timezone
 import pytest
-from .._utils import memento_url_data
+import time
+from .._utils import memento_url_data, rate_limited
 
 
 class TestMementoUrlData:
@@ -38,3 +39,39 @@ class TestMementoUrlData:
     def test_raises_for_non_string_input(self):
         with pytest.raises(TypeError):
             memento_url_data(None)
+
+
+class TestRateLimited:
+
+    def test_call_per_seconds(self):
+        """Test that the rate limit is accurately applied.
+        It also checks that two rate limits applied sequentially do not interfere with another."""
+        start_time = time.time()
+        for i in range(4):
+            with rate_limited(calls_per_second=3, group='cps1'):
+                pass
+        assert 1.0 <= time.time() - start_time <= 1.01
+
+        start_time = time.time()
+        for i in range(3):
+            with rate_limited(calls_per_second=1, group='cps2'):
+                pass
+        assert 2.0 <= time.time() - start_time <= 2.01
+
+        start_time = time.time()
+        for i in range(3):
+            with rate_limited(calls_per_second=0, group='cps3'):
+                pass
+        assert 0 <= time.time() - start_time <= 0.01
+
+    def test_simultaneous_ratelimits(self):
+        """Check that multiple ratelimits do not interfere with another."""
+        start_time = time.time()
+        # The first loop should take 1 second, as it waits on the sim1 lock,
+        # the second loop 0.66 seconds, since it waits twice on sim2.
+        for i in range(2):
+            with rate_limited(calls_per_second=1, group='sim1'):
+                for j in range(3):
+                    with rate_limited(calls_per_second=3, group='sim2'):
+                        pass
+        assert 1.66 <= time.time() - start_time <= 1.67
