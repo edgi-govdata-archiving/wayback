@@ -539,7 +539,7 @@ class WaybackClient(_utils.DepthCountedContext):
                     status_code = None
                 else:
                     status_code = int(data.status_code)
-                length = None if data.length == "-" else int(data.length)
+                length = None if data.length == '-' else int(data.length)
                 capture_time = _utils.parse_timestamp(data.timestamp)
             except Exception as err:
                 if 'RobotAccessControlException' in text:
