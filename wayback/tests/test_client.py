@@ -190,6 +190,30 @@ def test_search_removes_malformed_entries(requests_mock):
         assert 2 == len(list(records))
 
 
+def test_search_handles_no_length_cdx_records(requests_mock):
+    """
+    The CDX index can contain a "-" in lieu of an actual length, which can't be
+    parsed into an int. We should handle this.
+
+    Because these are rare and hard to get all in a single CDX query that isn't
+    *huge*, we use a made-up mock for this one instead of a VCR recording.
+    """
+    with open(Path(__file__).parent / 'test_files' / 'zero_length_cdx.txt') as f:
+        bad_cdx_data = f.read()
+
+    with WaybackClient() as client:
+        requests_mock.get('http://web.archive.org/cdx/search/cdx'
+                          '?url=www.cnn.com%2F%2A'
+                          '&matchType=domain&filter=statuscode%3A200'
+                          '&showResumeKey=true&resolveRevisits=true',
+                          [{'status_code': 200, 'text': bad_cdx_data}])
+        records = client.search('www.cnn.com/*',
+                                matchType="domain",
+                                filter_field="statuscode:200")
+
+        assert 5 == len(list(records))
+
+
 @ia_vcr.use_cassette()
 def test_get_memento():
     with WaybackClient() as client:
