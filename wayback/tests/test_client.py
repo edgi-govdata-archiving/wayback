@@ -211,7 +211,11 @@ def test_search_handles_no_length_cdx_records(requests_mock):
                                 matchType="domain",
                                 filter_field="statuscode:200")
 
-        assert 5 == len(list(records))
+        record_list = list(records)
+        assert 5 == len(record_list)
+        for record in record_list[:4]:
+            assert isinstance(record.length, int)
+        assert record_list[-1].length is None
 
 
 @ia_vcr.use_cassette()
