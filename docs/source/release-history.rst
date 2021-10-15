@@ -5,7 +5,7 @@ Release History
 v0.3.1 (2021-10-14)
 -------------------
 
-Some Wayback CDX records have no ``length`` information, and previously caused :meth:`wayback.WaybackClient.search` to raise an exception. These records will have their ``length`` property set to ``None`` instead of a number. (See :issue:`83`)
+Some Wayback CDX records have no ``length`` information, and previously caused :meth:`wayback.WaybackClient.search` to raise an exception. These records will have their ``length`` property set to ``None`` instead of a number. (:issue:`83`)
 
 
 v0.3.0 (2021-03-19)
@@ -164,7 +164,7 @@ You can check out the full API documentation for :class:`wayback.Memento`, but h
 v0.2.6 (2021-03-18)
 -------------------
 
-Fix a major bug where a session’s ``timeout`` would not actually be applied to most requests. HUGE thanks to @LionSzl for discovering this issue and addressing it. (`#68 <https://github.com/edgi-govdata-archiving/wayback/pull/68>`_)
+Fix a major bug where a session’s ``timeout`` would not actually be applied to most requests. HUGE thanks to @LionSzl for discovering this issue and addressing it. (:issue:`68`)
 
 
 v0.3.0 Beta 1 (2021-03-15)
@@ -176,13 +176,13 @@ v0.3.0 Beta 1 (2021-03-15)
 v0.3.0 Alpha 3 (2020-11-05)
 ---------------------------
 
-Fixes a bug in the new :class:`wayback.Memento` type where header parsing would fail for mementos with schemeless ``Location`` headers. (`#61 <https://github.com/edgi-govdata-archiving/wayback/pull/61>`_)
+Fixes a bug in the new :class:`wayback.Memento` type where header parsing would fail for mementos with schemeless ``Location`` headers. (:issue:`61`)
 
 
 v0.3.0 Alpha 2 (2020-11-04)
 ---------------------------
 
-Fixes a bug in the new :class:`wayback.Memento` type where header parsing would fail for mementos with path-based ``Location`` headers. (`#60 <https://github.com/edgi-govdata-archiving/wayback/pull/60>`_)
+Fixes a bug in the new :class:`wayback.Memento` type where header parsing would fail for mementos with path-based ``Location`` headers. (:issue:`60`)
 
 
 v0.3.0 Alpha 1 (2020-10-20)
@@ -331,7 +331,7 @@ Finally, :func:`wayback.memento_url_data` now returns 3 values instead of 2. The
 v0.2.5 (2020-10-19)
 -------------------
 
-This release fixes a bug where the ``target_window`` parameter for :meth:`wayback.WaybackClient.get_memento` did not work correctly if the memento you were redirected to was off by more than a day from the requested time. See `#53 <https://github.com/edgi-govdata-archiving/wayback/pull/53>`_ for more.
+This release fixes a bug where the ``target_window`` parameter for :meth:`wayback.WaybackClient.get_memento` did not work correctly if the memento you were redirected to was off by more than a day from the requested time. See :issue:`53` for more.
 
 
 v0.2.4 (2020-09-07)
