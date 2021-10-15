@@ -34,6 +34,7 @@
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
+    'sphinx.ext.extlinks',
     'sphinx.ext.githubpages',
     'sphinx.ext.intersphinx',
     'sphinx.ext.mathjax',
@@ -86,6 +87,11 @@ language = None
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
 exclude_patterns = []
+
+# Set up link shortcuts
+extlinks = {
+    'issue': ('https://github.com/edgi-govdata-archiving/wayback/issues/%s', '#'),
+}
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
