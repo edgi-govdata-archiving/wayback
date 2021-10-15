@@ -2,6 +2,12 @@
 Release History
 ===============
 
+v0.3.1 (2021-10-14)
+-------------------
+
+Some Wayback CDX records have no ``length`` information, and previously caused :meth:`wayback.WaybackClient.search` to raise an exception. These records will have their ``length`` property set to ``None`` instead of a number. (See :issue:`83`)
+
+
 v0.3.0 (2021-03-19)
 -------------------
 
