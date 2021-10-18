@@ -1,0 +1,5 @@
+com,usatoday)/2000/century/tech/003d.htm 20011120210446 http://www.usatoday.com:80/2000/century/tech/003d.htm text/html 200 EJTUZEVOPPFGLXXQK2KV4DPFRSOULYVN 3823
+com,usatoday)/2000/century/tech/004.htm 20000125210430 http://www.usatoday.com:80/2000/century/tech/004.htm text/html 200 EBWZW6DNCJK2PU2DYX2JX2SWD6NQMUXK 6822
+com,usatoday)/2000/century/tech/004.htm 20000311052312 http://www.usatoday.com:80/2000/century/tech/004.htm text/html 200 BTVE5SD57GD4HZHWISTWPLXRH7XONXW6 6214
+com,usatoday)/2000/century/tech/004.htm 20000613174049 http://www.usatoday.com:80/2000/century/tech/004.htm text/html 200 RT4WYWDBYOFDEIJ2ZI2HD5UMT7UH7LRC 6566
+com,usatoday)/2000/century/tech/004.htm 20000800241623 http://www.usatoday.com:80/2000/century/tech/004.htm text/html 200 PAJWSPCRQMVBTYWV4NPJPNDQHKWJC3OO 6177
