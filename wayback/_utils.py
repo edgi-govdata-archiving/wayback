@@ -47,8 +47,14 @@ def parse_timestamp(time_string):
     """
     Given a Wayback-style timestamp string, return an equivalent ``datetime``.
     """
+    # Fix bad timestamps
+    timestamp_chars = list(time_string)
+    # If the timestamp has a day of "00"
+    if timestamp_chars[6:8] == ['0', '0']:
+        del timestamp_chars[6:8]
+        timestamp_chars.extend(['0', '0'])
     return (datetime
-            .strptime(time_string, URL_DATE_FORMAT)
+            .strptime(''.join(timestamp_chars), URL_DATE_FORMAT)
             .replace(tzinfo=timezone.utc))
 
 

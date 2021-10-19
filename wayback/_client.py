@@ -540,15 +540,7 @@ class WaybackClient(_utils.DepthCountedContext):
                 else:
                     status_code = int(data.status_code)
                 length = None if data.length == '-' else int(data.length)
-                # Fix bad timestamps
-                timestamp_chars = list(data.timestamp)
-                # If the timestamp has a day of "00"
-                if timestamp_chars[6:8] == ['0', '0']:
-                    timestamp_chars[7] = '1'
-                # If the timestamp has an hour of "24"
-                if timestamp_chars[8:10] == ['2', '4']:
-                    timestamp_chars[9] = '3'
-                capture_time = _utils.parse_timestamp("".join(timestamp_chars))
+                capture_time = _utils.parse_timestamp(data.timestamp)
             except Exception as err:
                 if 'RobotAccessControlException' in text:
                     raise BlockedByRobotsError(query["url"])

@@ -241,8 +241,7 @@ def test_search_handles_bad_timestamp_cdx_records(requests_mock):
 
         record_list = list(records)
         assert 5 == len(record_list)
-        assert record_list[-1].timestamp.day == 1
-        assert record_list[-1].timestamp.hour == 23
+        assert record_list[-1].timestamp.day == 24
 
 
 @ia_vcr.use_cassette()
