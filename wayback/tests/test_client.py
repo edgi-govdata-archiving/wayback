@@ -218,6 +218,32 @@ def test_search_handles_no_length_cdx_records(requests_mock):
         assert record_list[-1].length is None
 
 
+def test_search_handles_bad_timestamp_cdx_records(requests_mock):
+    """
+    The CDX index can contain a timestamp with an invalid day "00", which can't be
+    parsed into an timestamp. We should handle this.
+
+    Because these are rare and hard to get all in a single CDX query that isn't
+    *huge*, we use a made-up mock for this one instead of a VCR recording.
+    """
+    with open(Path(__file__).parent / 'test_files' / 'bad_timestamp_cdx.txt') as f:
+        bad_cdx_data = f.read()
+
+    with WaybackClient() as client:
+        requests_mock.get('http://web.archive.org/cdx/search/cdx'
+                          '?url=www.usatoday.com%2F%2A'
+                          '&matchType=domain&filter=statuscode%3A200'
+                          '&showResumeKey=true&resolveRevisits=true',
+                          [{'status_code': 200, 'text': bad_cdx_data}])
+        records = client.search('www.usatoday.com/*',
+                                matchType="domain",
+                                filter_field="statuscode:200")
+
+        record_list = list(records)
+        assert 5 == len(record_list)
+        assert record_list[-1].timestamp.day == 24
+
+
 @ia_vcr.use_cassette()
 def test_get_memento():
     with WaybackClient() as client:
