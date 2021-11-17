@@ -2,6 +2,12 @@
 Release History
 ===============
 
+v0.3.2 (2021-11-16)
+-------------------
+
+Some Wayback CDX records have invalid timestamps with ``"00"`` for the day-of-month portion. :meth:`wayback.WaybackClient.search` previously raised an exception when parsing CDX records with this issue, but now handles them safely. Thanks to @8W9aG for discovering this issue and addressing it. (:issue:`85`)
+
+
 v0.3.1 (2021-10-14)
 -------------------
 
