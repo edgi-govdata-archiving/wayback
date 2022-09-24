@@ -241,7 +241,12 @@ def test_search_handles_bad_timestamp_cdx_records(requests_mock):
 
         record_list = list(records)
         assert 5 == len(record_list)
-        assert record_list[-1].timestamp.day == 24
+
+        # 00 month in 20000012170449 gets rewritten to 20001217044900
+        assert record_list[3].timestamp.month == 12
+
+        # 00 day in 20000800241623 gets rewritten to 20000824162300
+        assert record_list[4].timestamp.day == 24
 
 
 @ia_vcr.use_cassette()

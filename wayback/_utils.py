@@ -1,6 +1,7 @@
 from collections import defaultdict
 from contextlib import contextmanager
 from datetime import date, datetime, timezone
+import logging
 import re
 import requests
 import requests.adapters
@@ -51,7 +52,12 @@ def parse_timestamp(time_string):
     timestamp_chars = list(time_string)
     # If the timestamp has a day of "00"
     if timestamp_chars[6:8] == ['0', '0']:
+        logging.warning("found invalid timestamp with day 00: %s", time_string)
         del timestamp_chars[6:8]
+        timestamp_chars.extend(['0', '0'])
+    elif timestamp_chars[4:6] == ['0', '0']:
+        logging.warning("found invalid timestamp with month 00: %s", time_string)
+        del timestamp_chars[4:6]
         timestamp_chars.extend(['0', '0'])
     return (datetime
             .strptime(''.join(timestamp_chars), URL_DATE_FORMAT)
