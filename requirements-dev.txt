@@ -7,11 +7,14 @@ coverage
 flake8
 requests-mock
 pytest
-sphinx ~=3.1.1
+
+# remove pin after https://github.com/readthedocs/sphinx_rtd_theme/issues/1343 closes
+sphinx!=5.2.0.post0
+
 vcrpy
 twine
 # These are dependencies of various sphinx extensions for documentation.
 ipython
-numpydoc ~=1.0.0
-sphinx-copybutton ~=0.2.12
-sphinx_rtd_theme ~=0.5.0
+numpydoc
+sphinx-copybutton
+sphinx_rtd_theme

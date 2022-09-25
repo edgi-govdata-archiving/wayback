@@ -7,12 +7,6 @@ commands:
       python-version:
         type: string
     steps:
-      - restore_cache:
-          keys:
-            - cache_v5-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
-            - cache_v5-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-
-            - cache_v5-wayback-<< parameters.python-version >>-{{ arch }}-
-
       - run:
           name: Install Dependencies
           command: |
@@ -22,11 +16,6 @@ commands:
             pip install --upgrade pip
             pip install .
             pip install -r requirements-dev.txt  # extra requirements for tests, docs
-
-      - save_cache:
-          key: cache_v5-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
-          paths:
-            - ~/venv
 
 jobs:
   test:
@@ -95,11 +84,11 @@ jobs:
   docs:
     working_directory: ~/wayback
     docker:
-      - image: cimg/python:3.8
+      - image: cimg/python:3.10
     steps:
       - checkout
       - setup_pip:
-          python-version: "3.8"
+          python-version: "3.10"
       - run:
           name: Build docs
           command: |
