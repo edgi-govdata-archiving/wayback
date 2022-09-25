@@ -10,6 +10,7 @@ import time
 import urllib.parse
 from .exceptions import SessionClosedError
 
+logger = logging.getLogger(__name__)
 
 URL_DATE_FORMAT = '%Y%m%d%H%M%S'
 MEMENTO_URL_PATTERN = re.compile(
@@ -52,11 +53,11 @@ def parse_timestamp(time_string):
     timestamp_chars = list(time_string)
     # If the timestamp has a day of "00"
     if timestamp_chars[6:8] == ['0', '0']:
-        logging.warning("found invalid timestamp with day 00: %s", time_string)
+        logger.warning("found invalid timestamp with day 00: %s", time_string)
         del timestamp_chars[6:8]
         timestamp_chars.extend(['0', '0'])
     elif timestamp_chars[4:6] == ['0', '0']:
-        logging.warning("found invalid timestamp with month 00: %s", time_string)
+        logger.warning("found invalid timestamp with month 00: %s", time_string)
         del timestamp_chars[4:6]
         timestamp_chars.extend(['0', '0'])
     return (datetime
