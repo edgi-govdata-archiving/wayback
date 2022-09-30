@@ -49,17 +49,39 @@ def parse_timestamp(time_string):
     """
     Given a Wayback-style timestamp string, return an equivalent ``datetime``.
     """
-    # Fix bad timestamps
+    # Before parsing, try to fix invalid timestamps.
+    # We've seen a handful of timestamps where a "00" was inserted before either
+    # either the month or day portion of the timestamp, e.g:
+    #
+    #   20000008241731
+    #       ^^ Month is "00"
+    #
+    # The Wayback team has looked into several of these, and the "00" was always
+    # *inserted* erroneously, pushing the month or day and the following
+    # components of the timestamp out by two characters. Then the seconds get
+    # truncated (there's only room for 14 characters in the timestamp in the
+    # CDX index). For example:
+    #
+    #   In raw data:   2000000824173151 (16 characters)
+    #   In CDX index:  20000008241731   (Truncated to 14 characters)
+    #   Correct value: 20000824173151   (Aug. 24, 2000 at 17:31:51 UTC)
+    #
+    # The best we can do for these cases is pull out the erroneous "00" and
+    # substitute "00" for the seconds that got truncated. This isn't exact, but
+    # we can't see the raw data and this is as close as we can get.
+    #
+    # The issue seems to be limited to some crawls in the year 2000.
     timestamp_chars = list(time_string)
-    # If the timestamp has a day of "00"
-    if timestamp_chars[6:8] == ['0', '0']:
-        logger.warning("found invalid timestamp with day 00: %s", time_string)
-        del timestamp_chars[6:8]
-        timestamp_chars.extend(['0', '0'])
-    elif timestamp_chars[4:6] == ['0', '0']:
+    if timestamp_chars[4:6] == ['0', '0']:
         logger.warning("found invalid timestamp with month 00: %s", time_string)
         del timestamp_chars[4:6]
         timestamp_chars.extend(['0', '0'])
+    elif timestamp_chars[6:8] == ['0', '0']:
+        logger.warning("found invalid timestamp with day 00: %s", time_string)
+        del timestamp_chars[6:8]
+        timestamp_chars.extend(['0', '0'])
+
+    # Parse the cleaned-up result.
     return (datetime
             .strptime(''.join(timestamp_chars), URL_DATE_FORMAT)
             .replace(tzinfo=timezone.utc))
