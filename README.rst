@@ -73,6 +73,6 @@ Thanks to the following people for their contributions and help on this package!
 License & Copyright
 -------------------
 
-Copyright (C) 2019-2021 Environmental Data and Governance Initiative (EDGI)
+Copyright (C) 2019-2022 Environmental Data and Governance Initiative (EDGI)
 
 This program is free software: you can redistribute it and/or modify it under the terms of the 3-Clause BSD License. See the `LICENSE <https://github.com/edgi-govdata-archiving/wayback/blob/master/LICENSE>`_ file for details.
