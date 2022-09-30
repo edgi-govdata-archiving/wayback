@@ -7,7 +7,7 @@ coverage
 flake8 ~=5.0.4
 requests-mock
 pytest
-sphinx ~=5.2.2
+sphinx ~=4.5.0
 vcrpy
 twine
 # These are dependencies of various sphinx extensions for documentation.
