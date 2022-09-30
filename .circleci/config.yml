@@ -6,9 +6,14 @@ commands:
     parameters:
       python-version:
         type: string
+      install-docs:
+        description: Install docs dependencies
+        type: boolean
+        default: false
     steps:
       - restore_cache:
           keys:
+            - cache_v5-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}-{{ checksum "requirements-docs.txt" }}
             - cache_v5-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
             - cache_v5-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-
             - cache_v5-wayback-<< parameters.python-version >>-{{ arch }}-
@@ -21,10 +26,20 @@ commands:
             # Ensure pip is up-to-date
             pip install --upgrade pip
             pip install .
-            pip install -r requirements-dev.txt  # extra requirements for tests, docs
+            pip install -r requirements-dev.txt  # extra requirements for tests
+      
+      # Docs dependencies are only compatible on Python 3.10+, so only install
+      # them on demand.
+      - when:
+          condition: << parameters.install-docs >>
+          steps:
+            - run:
+                command: |
+                  . ~/venv/bin/activate
+                  pip install -r requirements-docs.txt
 
       - save_cache:
-          key: cache_v5-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
+          key: cache_v5-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}-{{ checksum "requirements-docs.txt" }}
           paths:
             - ~/venv
 
@@ -95,11 +110,12 @@ jobs:
   docs:
     working_directory: ~/wayback
     docker:
-      - image: cimg/python:3.8
+      - image: cimg/python:3.10
     steps:
       - checkout
       - setup_pip:
-          python-version: "3.8"
+          python-version: "3.10"
+          install-docs: true
       - run:
           name: Build docs
           command: |
