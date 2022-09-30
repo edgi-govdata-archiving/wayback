@@ -1,0 +1,8 @@
+/*
+    Sometimes we have long links where the whole URL is in the text. Mark these
+    as OK to break in the middle of words so we don’t wind up with ultra-wide
+    elements that don’t fit in the page.
+*/
+a.reference {
+    word-break: break-word;
+}

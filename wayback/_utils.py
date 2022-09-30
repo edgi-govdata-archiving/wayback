@@ -147,9 +147,9 @@ def rate_limited(calls_per_second=2, group='default'):
 
     Parameters
     ----------
-    calls_per_second : float or int, optional
+    calls_per_second : float or int, default: 2
         Maximum number of calls into this context allowed per second
-    group : string, optional
+    group : string, default: 'default'
         Unique name to scope rate limiting. If two contexts have different
         `group` values, their timings will be tracked separately.
     """
