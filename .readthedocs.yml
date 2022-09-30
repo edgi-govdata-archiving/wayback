@@ -24,4 +24,6 @@ build:
 
 python:
   install:
-    - requirements: "docs/requirements.txt"
+    - method: pip
+      path: "."
+    - requirements: "requirements-docs.txt"
