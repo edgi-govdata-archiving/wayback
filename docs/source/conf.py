@@ -48,6 +48,8 @@ extensions = [
 # Generate the API documentation when building
 autosummary_generate = True
 numpydoc_show_class_members = False
+numpydoc_xref_param_type = True
+numpydoc_xref_ignore = {'type', 'optional', 'default'}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -81,7 +83,7 @@ release = wayback.__version__
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = 'en'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -90,7 +92,7 @@ exclude_patterns = []
 
 # Set up link shortcuts
 extlinks = {
-    'issue': ('https://github.com/edgi-govdata-archiving/wayback/issues/%s', '#'),
+    'issue': ('https://github.com/edgi-govdata-archiving/wayback/issues/%s', 'Issue #%s'),
 }
 
 # The name of the Pygments (syntax highlighting) style to use.
@@ -122,7 +124,7 @@ html_static_path = ['_static']
 
 # These paths are either relative to html_static_path
 # or fully qualified paths (eg. https://...)
-html_css_files = []
+html_css_files = ['styles.css']
 
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.

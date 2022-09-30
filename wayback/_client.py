@@ -197,9 +197,9 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
 
     Parameters
     ----------
-    retries : int, optional
+    retries : int, default: 6
         The maximum number of retries for requests.
-    backoff : int or float, optional
+    backoff : int or float, default: 2
         Number of seconds from which to calculate how long to back off and wait
         when retrying requests. The first retry is always immediate, but
         subsequent retries increase by powers of 2:
@@ -208,8 +208,8 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
 
         So if this was `4`, retries would happen after the following delays:
         0 seconds, 4 seconds, 8 seconds, 16 seconds, ...
-    timeout : int or float or tuple of (int or float, int or float), optional
-        A timeout to use for all requests. (Default: ``60``)
+    timeout : int or float or tuple of (int or float, int or float), default: 60
+        A timeout to use for all requests.
         See the Requests docs for more:
         http://docs.python-requests.org/en/master/user/advanced/#timeouts
     user_agent : str, optional
@@ -606,7 +606,7 @@ class WaybackClient(_utils.DepthCountedContext):
             The time at which to retrieve a memento of ``url``. If ``url`` is
             a :class:`wayback.CdxRecord` or full memento URL, this parameter
             can be omitted.
-        mode : wayback.Mode or str, optional
+        mode : wayback.Mode or str, default: wayback.Mode.original
             The playback mode of the memento. This determines whether the
             content of the returned memento is exactly as originally captured
             (the default) or modified in some way. See :class:`wayback.Mode`
@@ -615,29 +615,26 @@ class WaybackClient(_utils.DepthCountedContext):
             For more details, see:
             http://archive-access.sourceforge.net/projects/wayback/administrator_manual.html#Archival_URL_Replay_Mode
 
-            Default: :py:attr:`wayback.Mode.original`
-
-        exact : boolean, optional
+        exact : boolean, default: True
             If false and the requested memento either doesn't exist or can't be
             played back, this returns the closest-in-time memento to the
             requested one, so long as it is within ``target_window``. If there
             was no memento in the target window or if ``exact=True``, then this
             will raise :class:`wayback.exceptions.MementoPlaybackError`.
-            Default: True
         exact_redirects : boolean, optional
             If false and the requested memento is a redirect whose *target*
             doesn't exist or can't be played back, this returns the
             closest-in-time memento to the intended target, so long as it is
             within ``target_window``. If unset, this will be the same as
             ``exact``.
-        target_window : int, optional
+        target_window : int, default: 86400
             If the memento is of a redirect, allow up to this many seconds
             between the capture of the redirect and the capture of the
             redirect's target URL. This window also applies to the first
             memento if ``exact=False`` and the originally
             requested memento was not available.
             Defaults to 86,400 (24 hours).
-        follow_redirects : boolean, optional
+        follow_redirects : boolean, default: True
             If true (the default), ``get_memento`` will follow historical
             redirects to return the content that a web browser would have
             ultimately displayed at the requested URL and time, rather than the
@@ -646,7 +643,6 @@ class WaybackClient(_utils.DepthCountedContext):
             ``http://example.com/b``, then this method returns the memento for
             ``/a`` when ``follow_redirects=False`` and the memento for ``/b``
             when ``follow_redirects=True``.
-            Default: True
 
         Returns
         -------
