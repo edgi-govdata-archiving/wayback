@@ -5,7 +5,7 @@ Release History
 In Development
 --------------
 
-TBD
+Fixes a timestamp issue that is extremely similar to the one from v0.3.2: some Wayback CDX records have invalid timestamps with ``"00"`` for the month portion. :meth:`wayback.WaybackClient.search` previously raised an exception when parsing CDX records with this issue, but now handles them safely. Thanks to @edsu for discovering this issue and addressing it. (:issue:`88`)
 
 
 v0.3.2 (2021-11-16)
