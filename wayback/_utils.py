@@ -71,19 +71,16 @@ def parse_timestamp(time_string):
     # see the raw data so this is as close as we can get.
     #
     # The issue seems to be limited to some crawls in the year 2000.
-    timestamp_chars = list(time_string)
-    if timestamp_chars[4:6] == ['0', '0']:
+    if time_string[5] == '0' and time_string[4] == '0':
         logger.warning("found invalid timestamp with month 00: %s", time_string)
-        del timestamp_chars[4:6]
-        timestamp_chars.extend(['0', '0'])
-    elif timestamp_chars[6:8] == ['0', '0']:
+        time_string = f'{time_string[0:4]}{time_string[6:]}00'
+    elif time_string[7] == '0' and time_string[6] == '0':
         logger.warning("found invalid timestamp with day 00: %s", time_string)
-        del timestamp_chars[6:8]
-        timestamp_chars.extend(['0', '0'])
+        time_string = f'{time_string[0:6]}{time_string[8:]}00'
 
     # Parse the cleaned-up result.
     return (datetime
-            .strptime(''.join(timestamp_chars), URL_DATE_FORMAT)
+            .strptime(time_string, URL_DATE_FORMAT)
             .replace(tzinfo=timezone.utc))
 
 
