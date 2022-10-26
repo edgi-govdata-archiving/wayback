@@ -556,7 +556,7 @@ class WaybackClient(_utils.DepthCountedContext):
 
                 # The resume key is delineated by a blank line.
                 if text == '':
-                    next_query = { **query, 'resumeKey': next(lines).decode() }
+                    next_query = {**query, 'resumeKey': next(lines).decode()}
                     break
                 elif text == previous_result:
                     # This result line is a repeat. Skip it.
