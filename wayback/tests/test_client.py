@@ -195,7 +195,7 @@ def test_search_handles_no_length_cdx_records(requests_mock):
                           '&showResumeKey=true&resolveRevisits=true',
                           [{'status_code': 200, 'text': bad_cdx_data}])
         records = client.search('www.cnn.com/*',
-                                matchType="domain",
+                                match_type="domain",
                                 filter_field="statuscode:200")
 
         record_list = list(records)
@@ -223,7 +223,7 @@ def test_search_handles_bad_timestamp_cdx_records(requests_mock):
                           '&showResumeKey=true&resolveRevisits=true',
                           [{'status_code': 200, 'text': bad_cdx_data}])
         records = client.search('www.usatoday.com/*',
-                                matchType="domain",
+                                match_type="domain",
                                 filter_field="statuscode:200")
 
         record_list = list(records)

@@ -360,9 +360,9 @@ class WaybackClient(_utils.DepthCountedContext):
         "Close the client's session."
         self.session.close()
 
-    def search(self, url, *, matchType=None, limit=1000, offset=None,
-               fastLatest=None, from_date=None, to_date=None,
-               filter_field=None, collapse=None, resolveRevisits=True,
+    def search(self, url, *, match_type=None, limit=1000, offset=None,
+               fast_latest=None, from_date=None, to_date=None,
+               filter_field=None, collapse=None, resolve_revisits=True,
                skip_malformed_results=True):
         """
         Search archive.org's CDX API for all captures of a given URL. This
@@ -390,18 +390,18 @@ class WaybackClient(_utils.DepthCountedContext):
         url : str
             The URL to search for captures of.
 
-            Special patterns in ``url`` imply a value for the ``matchType``
+            Special patterns in ``url`` imply a value for the ``match_type``
             parameter and match multiple URLs:
 
             * If the URL starts with `*.` (e.g. ``*.epa.gov``) OR
-              ``matchType='domain'``, the search will include all URLs at the
+              ``match_type='domain'``, the search will include all URLs at the
               given domain and its subdomains.
             * If the URL ends with `/*` (e.g. ``https://epa.gov/*``) OR
-              ``matchType='prefix'``, the search will include all URLs that
+              ``match_type='prefix'``, the search will include all URLs that
               start with the text up to the ``*``.
             * Otherwise, this returns matches just for the requeted URL.
 
-        matchType : str, optional
+        match_type : str, optional
             Determines how to interpret the ``url`` parameter. It must be one of
             the following:
 
@@ -446,11 +446,11 @@ class WaybackClient(_utils.DepthCountedContext):
 
         offset : int, optional
             Skip the first N results.
-        fastLatest : bool, optional
+        fast_latest : bool, optional
             Get faster results when using a negative value for ``limit``. It may
             return a variable number of results that doesn't match the value
             of ``limit``. For example,
-            ``search('http://epa.gov', limit=-10, fastLatest=True)`` may return
+            ``search('http://epa.gov', limit=-10, fast_latest=True)`` may return
             any number of results between 1 and 10.
         from_date : datetime or date, optional
             Only include captures after this date. Equivalent to the
@@ -466,7 +466,7 @@ class WaybackClient(_utils.DepthCountedContext):
         collapse : str, optional
             Collapse consecutive results that match on a given field. (format:
             `fieldname` or `fieldname:N` -- N is the number of chars to match.)
-        resolveRevists : bool, default: True
+        resolve_revisits : bool, default: True
             Attempt to resolve ``warc/revisit`` records to their actual content
             type and response code. Not supported on all CDX servers.
         skip_malformed_results : bool, default: True
@@ -508,12 +508,12 @@ class WaybackClient(_utils.DepthCountedContext):
         # TODO: support args that can be set multiple times: filter, collapse
         # Should take input as a sequence and convert to repeat query args
         # TODO: Check types
-        query_args = {'url': url, 'matchType': matchType, 'limit': limit,
+        query_args = {'url': url, 'matchType': match_type, 'limit': limit,
                       'offset': offset, 'from': from_date,
                       'to': to_date, 'filter': filter_field,
-                      'fastLatest': fastLatest, 'collapse': collapse,
+                      'fastLatest': fast_latest, 'collapse': collapse,
                       'showResumeKey': True,
-                      'resolveRevisits': resolveRevisits}
+                      'resolveRevisits': resolve_revisits}
 
         query = {}
         for key, value in query_args.items():
