@@ -360,7 +360,7 @@ class WaybackClient(_utils.DepthCountedContext):
         "Close the client's session."
         self.session.close()
 
-    def search(self, url, *, matchType=None, limit=None, offset=None,
+    def search(self, url, *, matchType=None, limit=10_000, offset=None,
                fastLatest=None, gzip=None, from_date=None, to_date=None,
                filter_field=None, collapse=None, showResumeKey=True,
                resumeKey=None, page=None, pageSize=None, resolveRevisits=True,
@@ -393,7 +393,7 @@ class WaybackClient(_utils.DepthCountedContext):
         matchType : str, optional
             Must be one of 'exact', 'prefix', 'host', or 'domain'. The default
             value is calculated based on the format of `url`.
-        limit : int, optional
+        limit : int, default: 10_000
             Maximum number of results per page (this iterator will continue to
             move through all pages unless `showResumeKey=False`, though).
         offset : int, optional
