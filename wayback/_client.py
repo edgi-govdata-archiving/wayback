@@ -369,35 +369,13 @@ class WaybackClient(_utils.DepthCountedContext):
         returns an iterator of :class:`CdxRecord` objects. The `StopIteration`
         value is the total count of found captures.
 
-        Results include captures with similar, but not exactly matching URLs
-        (even when ``matchType`` is set to ``'exact'``). Search results are
-        matched by a SURT-formatted, canonicalized URL that:
+        Results include captures with similar, but not exactly matching URLs.
+        They are matched by a SURT-formatted, canonicalized URL that:
 
         * Does not differentiate between HTTP and HTTPS,
         * Is not case-sensitive, and
         * Treats ``www.`` and ``www*.`` subdomains the same as no subdomain at
           all.
-
-        Keep in mind that the ``limit`` parameter does not set a maximum number
-        of results — it sets how many results are listed per request (this
-        function will keep making requests until it has all the results).
-
-        The specifics of how ``limit`` works are also complicated; take special
-        care when adjusting it! The search server will only scan so much data
-        on each query, and if it finds fewer than ``limit`` results before
-        hitting those limits, it will behave as if there are no more results,
-        even though there may be.
-
-        * Usually, you don't need to worry about this. The default value should
-          work well in typical cases.
-        * For frequently captured URLs, you may want to set a higher value
-          (e.g. 10,000) for more efficient querying.
-        * For infrequently captured URLs, you may want to set a lower value
-          (e.g. 100 or even 10) to ensure that your query does not hit the
-          maximum number of index blocks before returning.
-        * For extremely infrequently captured URLs, you may simply want to call
-          ``search()`` multiple times with different, close together
-          ``from_date`` and ``to_date`` values.
 
         This will automatically page through all results for a given search. If
         you want fewer results, you can stop iterating early:
@@ -407,23 +385,17 @@ class WaybackClient(_utils.DepthCountedContext):
           from itertools import islice
           first10 = list(islice(client.search(...), 10))
 
-        Note that several CDX API parameters are not relevant or handled
-        automatically by this function. This does not support: `output`, `fl`,
-        `showDupeCount`, `showSkipCount`, `lastSkipTimestamp`, `showNumPages`,
-        `showPagedIndex`. It also does not support `page` and `pageSize` for
-        pagination because they work differently from the `resumeKey` method
-        this uses, and results do not include recent captures when using them.
-
         Parameters
         ----------
         url : str
-            The URL to query for captures of. URLs can include ``'*'`` in
-            special positions to imply a value for the `matchType` parameter to
-            match multiple URLs:
+            The URL to search for captures of.
+
+            Special patterns in ``url`` imply a value for the ``matchType``
+            parameter and match multiple URLs:
 
             * If the URL starts with `*.` (e.g. ``*.epa.gov``) OR
-              ``matchType='domain'`` searches all URLs at the given domain and
-              its subdomains.
+              ``matchType='domain'``, the search will include all URLs at the
+              given domain and its subdomains.
             * If the URL ends with `/*` (e.g. ``https://epa.gov/*``) OR
               ``matchType='prefix'``, the search will include all URLs that
               start with the text up to the ``*``.
@@ -431,7 +403,7 @@ class WaybackClient(_utils.DepthCountedContext):
 
         matchType : str, optional
             Determines how to interpret the ``url`` parameter. It must be one of
-            'exact', 'prefix', 'host', or 'domain'.
+            the following:
 
             * ``exact`` (default) returns results matching the requested URL
               (see notes about SURT above; this is not an exact string match of
@@ -442,15 +414,44 @@ class WaybackClient(_utils.DepthCountedContext):
             * ``domain`` returns results from all URLs at the domain or any
               subdomain of the requested URL.
 
-            The default value is calculated based on the format of `url`.
+            The default value is calculated based on the format of ``url``.
+
         limit : int, default: 1000
             Maximum number of results per request to the API (not the maximum
             number of results this function yields).
+
+            Negative values return the most recent N results.
+
+            Positive values are complicated! The search server will only scan so
+            much data on each query, and if it finds fewer than ``limit``
+            results before hitting its own internal limits, it will behave as if
+            if there are no more results, even though there may be.
+
+            Unfortunately, ideal values for ``limit`` aren't very predicatable
+            because the search server combines data from different sources, and
+            they do not all behave the same. Their parameters may also be
+            changed over time.
+
+            In general…
+
+            * The default value should work well in typical cases.
+            * For frequently captured URLs, you may want to set a higher value
+              (e.g. 12,000) for more efficient querying.
+            * For infrequently captured URLs, you may want to set a lower value
+              (e.g. 100 or even 10) to ensure that your query does not hit
+              internal limits before returning.
+            * For extremely infrequently captured URLs, you may simply want to
+              call ``search()`` multiple times with different, close together
+              ``from_date`` and ``to_date`` values.
+
         offset : int, optional
             Skip the first N results.
         fastLatest : bool, optional
-            Get faster results when using a negative value for `limit`. It may
-            return a variable number of results.
+            Get faster results when using a negative value for ``limit``. It may
+            return a variable number of results that doesn't match the value
+            of ``limit``. For example,
+            ``search('http://epa.gov', limit=-10, fastLatest=True)`` may return
+            any number of results between 1 and 10.
         from_date : datetime or date, optional
             Only include captures after this date. Equivalent to the
             `from` argument in the CDX API. If it does not have a time zone, it
@@ -460,36 +461,48 @@ class WaybackClient(_utils.DepthCountedContext):
             argument in the CDX API. If it does not have a time zone, it is
             assumed to be in UTC.
         filter_field : str, optional
-            A filter for any field in the results. Equivalent to the `filter`
-            argument in the CDX API. (format: `[!]field:regex`)
+            A filter for any field in the results. Equivalent to the ``filter``
+            argument in the CDX API. (format: ``[!]field:regex``)
         collapse : str, optional
             Collapse consecutive results that match on a given field. (format:
             `fieldname` or `fieldname:N` -- N is the number of chars to match.)
-        resolveRevists : bool, optional
-            Attempt to resolve `warc/revisit` records to their actual content
-            type and response code. Not supported on all CDX servers. Defaults
-            to True.
-        skip_malformed_results : bool, optional
+        resolveRevists : bool, default: True
+            Attempt to resolve ``warc/revisit`` records to their actual content
+            type and response code. Not supported on all CDX servers.
+        skip_malformed_results : bool, default: True
             If true, don't yield records that look like they have no actual
             memento associated with them. Some crawlers will erroneously
-            attempt to capture bad URLs like `http://mailto:someone@domain.com`
-            or `http://data:image/jpeg;base64,AF34...` and so on. This is a
+            attempt to capture bad URLs like
+            ``http://mailto:someone@domain.com`` or
+            ``http://data:image/jpeg;base64,AF34...`` and so on. This is a
             filter performed client side and is not a CDX API argument.
-            (Default: True)
 
         Raises
         ------
         UnexpectedResponseFormat
             If the CDX response was not parseable.
 
-        References
-        ----------
-        * https://github.com/internetarchive/wayback/tree/master/wayback-cdx-server
-
         Yields
         ------
         version: CdxRecord
             A :class:`CdxRecord` encapsulating one capture or revisit
+
+        References
+        ----------
+        * HTTP API Docs: https://github.com/internetarchive/wayback/tree/master/wayback-cdx-server
+        * SURT formatting: http://crawler.archive.org/articles/user_manual/glossary.html#surt
+        * SURT implementation: https://github.com/internetarchive/surt
+
+        Notes
+        -----
+        Several CDX API parameters are not relevant or handled automatically
+        by this function. This does not support: `output`, `fl`,
+        `showDupeCount`, `showSkipCount`, `lastSkipTimestamp`, `showNumPages`,
+        `showPagedIndex`.
+
+        It also does not support `page` and `pageSize` for
+        pagination because they work differently from the `resumeKey` method
+        this uses, and results do not include recent captures when using them.
         """
 
         # TODO: support args that can be set multiple times: filter, collapse
