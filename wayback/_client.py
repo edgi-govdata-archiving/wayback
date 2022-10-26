@@ -516,9 +516,9 @@ class WaybackClient(_utils.DepthCountedContext):
         count = 0
         previous_result = None
         while next_query:
+            sent_query, next_query = next_query, None
             response = self.session.request('GET', CDX_SEARCH_URL,
-                                            params=next_query)
-            next_query = None
+                                            params=sent_query)
             try:
                 # Read/cache the response and close straightaway. If we need to
                 # raise for status, we want to pre-emptively close the response
@@ -564,7 +564,7 @@ class WaybackClient(_utils.DepthCountedContext):
                     if 'RobotAccessControlException' in text:
                         raise BlockedByRobotsError(query["url"])
                     raise UnexpectedResponseFormat(
-                        f'Could not parse CDX output: "{text}" (query: {final_query})') from err
+                        f'Could not parse CDX output: "{text}" (query: {sent_query})') from err
 
                 clean_url = REDUNDANT_HTTPS_PORT.sub(
                     r'\1\2', REDUNDANT_HTTP_PORT.sub(
