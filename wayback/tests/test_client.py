@@ -150,19 +150,6 @@ def test_search_raises_for_blocked_urls():
             next(versions)
 
 
-@pytest.mark.parametrize('parameter', ('output', 'fl', 'showDupeCount',
-                                       'showSkipCount', 'lastSkipTimestamp',
-                                       'showNumPages', 'showPagedIndex'))
-def test_search_raises_for_unsupported_parameters(parameter):
-    with pytest.raises(ValueError) as excinfo:
-        with WaybackClient() as client:
-            versions = client.search(**{'url': 'https://energystar.gov/',
-                                        parameter: 'arbitrary_value'})
-            next(versions)
-
-    assert parameter in str(excinfo.value)
-
-
 def test_search_removes_malformed_entries(requests_mock):
     """
     The CDX index contains many lines for things that can't actually be
