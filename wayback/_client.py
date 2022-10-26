@@ -361,10 +361,9 @@ class WaybackClient(_utils.DepthCountedContext):
         self.session.close()
 
     def search(self, url, *, matchType=None, limit=10_000, offset=None,
-               fastLatest=None, gzip=None, from_date=None, to_date=None,
-               filter_field=None, collapse=None, showResumeKey=True,
-               resumeKey=None, page=None, pageSize=None, resolveRevisits=True,
-               skip_malformed_results=True, previous_result=None, **kwargs):
+               fastLatest=None, from_date=None, to_date=None,
+               filter_field=None, collapse=None, resolveRevisits=True,
+               skip_malformed_results=True):
         """
         Search archive.org's CDX API for all captures of a given URL.
 
@@ -401,8 +400,6 @@ class WaybackClient(_utils.DepthCountedContext):
         fastLatest : bool, optional
             Get faster results when using a negative value for `limit`. It may
             return a variable number of results.
-        gzip : bool, optional
-            Whether output should be gzipped.
         from_date : datetime or date, optional
             Only include captures after this date. Equivalent to the
             `from` argument in the CDX API. If it does not have a time zone, it
@@ -417,21 +414,6 @@ class WaybackClient(_utils.DepthCountedContext):
         collapse : str, optional
             Collapse consecutive results that match on a given field. (format:
             `fieldname` or `fieldname:N` -- N is the number of chars to match.)
-        showResumeKey : bool, optional
-            If False, don't continue to iterate through all pages of results.
-            The default value is True
-        resumeKey : str, optional
-            Start returning results from a specified resumption point/offset.
-            The value for this is supplied by the previous page of results when
-            `showResumeKey` is True.
-        page : int, optional
-            If using paging start from this page number (note: paging, as
-            opposed to the using `resumeKey` is somewhat complicated because
-            of the interplay with indexes and index sizes).
-        pageSize : int, optional
-            The number of index blocks to examine for each page of results.
-            Index blocks generally cover about 3,000 items, so setting
-            `pageSize=1` might return anywhere from 0 to 3,000 results per page.
         resolveRevists : bool, optional
             Attempt to resolve `warc/revisit` records to their actual content
             type and response code. Not supported on all CDX servers. Defaults
@@ -443,12 +425,6 @@ class WaybackClient(_utils.DepthCountedContext):
             or `http://data:image/jpeg;base64,AF34...` and so on. This is a
             filter performed client side and is not a CDX API argument.
             (Default: True)
-        previous_result : str, optional
-            *For internal use.* The CDX API sometimes returns repeated results.
-            This is used to track the previous result so we can filter out the
-            repeats.
-        **kwargs
-            Any additional CDX API options.
 
         Raises
         ------
@@ -467,113 +443,105 @@ class WaybackClient(_utils.DepthCountedContext):
 
         # TODO: support args that can be set multiple times: filter, collapse
         # Should take input as a sequence and convert to repeat query args
-        # TODO: support args that add new fields to the results or change the
-        # result format
-        query = {'url': url, 'matchType': matchType, 'limit': limit,
-                 'offset': offset, 'gzip': gzip, 'from': from_date,
-                 'to': to_date, 'filter': filter_field,
-                 'fastLatest': fastLatest, 'collapse': collapse,
-                 'showResumeKey': showResumeKey, 'resumeKey': resumeKey,
-                 'resolveRevisits': resolveRevisits, 'page': page,
-                 'pageSize': page}
-        query.update(kwargs)
+        # TODO: Check types
+        query_args = {'url': url, 'matchType': matchType, 'limit': limit,
+                      'offset': offset, 'from': from_date,
+                      'to': to_date, 'filter': filter_field,
+                      'fastLatest': fastLatest, 'collapse': collapse,
+                      'showResumeKey': True,
+                      'resolveRevisits': resolveRevisits}
 
-        unsupported = {'output', 'fl', 'showDupeCount', 'showSkipCount',
-                       'lastSkipTimestamp', 'showNumPages', 'showPagedIndex'}
-
-        final_query = {}
-        for key, value in query.items():
-            if key in unsupported:
-                raise ValueError(f'The {key} argument is not supported')
-
+        query = {}
+        for key, value in query_args.items():
             if value is not None:
                 if isinstance(value, str):
-                    final_query[key] = value
+                    query[key] = value
                 elif isinstance(value, date):
-                    final_query[key] = _utils.format_timestamp(value)
+                    query[key] = _utils.format_timestamp(value)
                 else:
-                    final_query[key] = str(value).lower()
+                    query[key] = str(value).lower()
 
-        response = self.session.request('GET', CDX_SEARCH_URL,
-                                        params=final_query)
-        try:
-            # Read/cache the response and close straightaway. If we need to
-            # raise for status, we want to pre-emptively close the response
-            # so a user handling the error doesn't need to worry about it. If
-            # we don't raise here, we still want to close the connection so it
-            # doesn't leak when we move onto the next of results or when this
-            # iterator ends.
-            read_and_close(response)
-            response.raise_for_status()
-        except requests.exceptions.HTTPError as error:
-            if 'AdministrativeAccessControlException' in response.text:
-                raise BlockedSiteError(query['url'])
-            elif 'RobotAccessControlException' in response.text:
-                raise BlockedByRobotsError(query['url'])
-            else:
-                raise WaybackException(str(error))
-
-        lines = iter(response.content.splitlines())
+        next_query = query
         count = 0
-
-        for line in lines:
-            text = line.decode()
-
-            # The resume key is delineated by a blank line.
-            if text == '':
-                next_args = query.copy()
-                next_args['resumeKey'] = next(lines).decode()
-                count += yield from self.search(previous_result=previous_result,
-                                                **next_args)
-                break
-            elif text == previous_result:
-                # This result line is a repeat. Skip it.
-                continue
-            else:
-                previous_result = text
-
+        previous_result = None
+        while next_query:
+            response = self.session.request('GET', CDX_SEARCH_URL,
+                                            params=next_query)
+            next_query = None
             try:
-                data = CdxRecord(*text.split(' '), '', '')
-                if data.status_code == '-':
-                    # the status code given for a revisit record
-                    status_code = None
+                # Read/cache the response and close straightaway. If we need to
+                # raise for status, we want to pre-emptively close the response
+                # so a user handling the error doesn't need to worry about it. If
+                # we don't raise here, we still want to close the connection so it
+                # doesn't leak when we move onto the next of results or when this
+                # iterator ends.
+                read_and_close(response)
+                response.raise_for_status()
+            except requests.exceptions.HTTPError as error:
+                if 'AdministrativeAccessControlException' in response.text:
+                    raise BlockedSiteError(query['url'])
+                elif 'RobotAccessControlException' in response.text:
+                    raise BlockedByRobotsError(query['url'])
                 else:
-                    status_code = int(data.status_code)
-                length = None if data.length == '-' else int(data.length)
-                capture_time = _utils.parse_timestamp(data.timestamp)
-            except Exception as err:
-                if 'RobotAccessControlException' in text:
-                    raise BlockedByRobotsError(query["url"])
-                raise UnexpectedResponseFormat(
-                    f'Could not parse CDX output: "{text}" (query: {final_query})') from err
+                    raise WaybackException(str(error))
 
-            clean_url = REDUNDANT_HTTPS_PORT.sub(
-                r'\1\2', REDUNDANT_HTTP_PORT.sub(
-                    r'\1\2', data.url))
-            if skip_malformed_results and is_malformed_url(clean_url):
-                continue
-            if clean_url != data.url:
-                data = data._replace(url=clean_url)
+            lines = iter(response.content.splitlines())
 
-            # TODO: repeat captures have a status code of `-` and a mime type
-            # of `warc/revisit`. These can only be resolved by requesting the
-            # content and following redirects. Maybe nice to do so
-            # automatically here.
-            data = data._replace(
-                status_code=status_code,
-                length=length,
-                timestamp=capture_time,
-                raw_url=ARCHIVE_URL_TEMPLATE.format(
-                    url=data.url,
-                    timestamp=data.timestamp,
-                    mode=Mode.original.value),
-                view_url=ARCHIVE_URL_TEMPLATE.format(
-                    url=data.url,
-                    timestamp=data.timestamp,
-                    mode=Mode.view.value)
-            )
-            count += 1
-            yield data
+            for line in lines:
+                text = line.decode()
+
+                # The resume key is delineated by a blank line.
+                if text == '':
+                    next_query = { **query, 'resumeKey': next(lines).decode() }
+                    break
+                elif text == previous_result:
+                    # This result line is a repeat. Skip it.
+                    continue
+                else:
+                    previous_result = text
+
+                try:
+                    data = CdxRecord(*text.split(' '), '', '')
+                    if data.status_code == '-':
+                        # the status code given for a revisit record
+                        status_code = None
+                    else:
+                        status_code = int(data.status_code)
+                    length = None if data.length == '-' else int(data.length)
+                    capture_time = _utils.parse_timestamp(data.timestamp)
+                except Exception as err:
+                    if 'RobotAccessControlException' in text:
+                        raise BlockedByRobotsError(query["url"])
+                    raise UnexpectedResponseFormat(
+                        f'Could not parse CDX output: "{text}" (query: {final_query})') from err
+
+                clean_url = REDUNDANT_HTTPS_PORT.sub(
+                    r'\1\2', REDUNDANT_HTTP_PORT.sub(
+                        r'\1\2', data.url))
+                if skip_malformed_results and is_malformed_url(clean_url):
+                    continue
+                if clean_url != data.url:
+                    data = data._replace(url=clean_url)
+
+                # TODO: repeat captures have a status code of `-` and a mime type
+                # of `warc/revisit`. These can only be resolved by requesting the
+                # content and following redirects. Maybe nice to do so
+                # automatically here.
+                data = data._replace(
+                    status_code=status_code,
+                    length=length,
+                    timestamp=capture_time,
+                    raw_url=ARCHIVE_URL_TEMPLATE.format(
+                        url=data.url,
+                        timestamp=data.timestamp,
+                        mode=Mode.original.value),
+                    view_url=ARCHIVE_URL_TEMPLATE.format(
+                        url=data.url,
+                        timestamp=data.timestamp,
+                        mode=Mode.view.value)
+                )
+                count += 1
+                yield data
 
         return count
 
