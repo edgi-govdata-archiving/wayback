@@ -360,41 +360,92 @@ class WaybackClient(_utils.DepthCountedContext):
         "Close the client's session."
         self.session.close()
 
-    def search(self, url, *, matchType=None, limit=10_000, offset=None,
+    def search(self, url, *, matchType=None, limit=1000, offset=None,
                fastLatest=None, from_date=None, to_date=None,
                filter_field=None, collapse=None, resolveRevisits=True,
                skip_malformed_results=True):
         """
-        Search archive.org's CDX API for all captures of a given URL.
+        Search archive.org's CDX API for all captures of a given URL. This
+        returns an iterator of :class:`CdxRecord` objects. The `StopIteration`
+        value is the total count of found captures.
 
-        This will automatically page through all results for a given search.
+        Results include captures with similar, but not exactly matching URLs
+        (even when ``matchType`` is set to ``'exact'``). Search results are
+        matched by a SURT-formatted, canonicalized URL that:
 
-        Returns an iterator of CdxRecord objects. The StopIteration value is
-        the total count of found captures.
-
-        Note that even URLs without wildcards may return results with different
-        URLs. Search results are matched by url_key, which is a SURT-formatted,
-        canonicalized URL:
-
-        * Does not differentiate between HTTP and HTTPS
-        * Is not case-sensitive
+        * Does not differentiate between HTTP and HTTPS,
+        * Is not case-sensitive, and
         * Treats ``www.`` and ``www*.`` subdomains the same as no subdomain at
-          all
+          all.
 
-        Note not all CDX API parameters are supported. In particular, this does
-        not support: `output`, `fl`, `showDupeCount`, `showSkipCount`,
-        `lastSkipTimestamp`, `showNumPages`, `showPagedIndex`.
+        Keep in mind that the ``limit`` parameter does not set a maximum number
+        of results — it sets how many results are listed per request (this
+        function will keep making requests until it has all the results).
+
+        The specifics of how ``limit`` works are also complicated; take special
+        care when adjusting it! The search server will only scan so much data
+        on each query, and if it finds fewer than ``limit`` results before
+        hitting those limits, it will behave as if there are no more results,
+        even though there may be.
+
+        * Usually, you don't need to worry about this. The default value should
+          work well in typical cases.
+        * For frequently captured URLs, you may want to set a higher value
+          (e.g. 10,000) for more efficient querying.
+        * For infrequently captured URLs, you may want to set a lower value
+          (e.g. 100 or even 10) to ensure that your query does not hit the
+          maximum number of index blocks before returning.
+        * For extremely infrequently captured URLs, you may simply want to call
+          ``search()`` multiple times with different, close together
+          ``from_date`` and ``to_date`` values.
+
+        This will automatically page through all results for a given search. If
+        you want fewer results, you can stop iterating early:
+
+        .. code-block:: python
+
+          from itertools import islice
+          first10 = list(islice(client.search(...), 10))
+
+        Note that several CDX API parameters are not relevant or handled
+        automatically by this function. This does not support: `output`, `fl`,
+        `showDupeCount`, `showSkipCount`, `lastSkipTimestamp`, `showNumPages`,
+        `showPagedIndex`. It also does not support `page` and `pageSize` for
+        pagination because they work differently from the `resumeKey` method
+        this uses, and results do not include recent captures when using them.
 
         Parameters
         ----------
         url : str
-            The URL to query for captures of.
+            The URL to query for captures of. URLs can include ``'*'`` in
+            special positions to imply a value for the `matchType` parameter to
+            match multiple URLs:
+
+            * If the URL starts with `*.` (e.g. ``*.epa.gov``) OR
+              ``matchType='domain'`` searches all URLs at the given domain and
+              its subdomains.
+            * If the URL ends with `/*` (e.g. ``https://epa.gov/*``) OR
+              ``matchType='prefix'``, the search will include all URLs that
+              start with the text up to the ``*``.
+            * Otherwise, this returns matches just for the requeted URL.
+
         matchType : str, optional
-            Must be one of 'exact', 'prefix', 'host', or 'domain'. The default
-            value is calculated based on the format of `url`.
-        limit : int, default: 10_000
-            Maximum number of results per page (this iterator will continue to
-            move through all pages unless `showResumeKey=False`, though).
+            Determines how to interpret the ``url`` parameter. It must be one of
+            'exact', 'prefix', 'host', or 'domain'.
+
+            * ``exact`` (default) returns results matching the requested URL
+              (see notes about SURT above; this is not an exact string match of
+              the URL you pass in).
+            * ``prefix`` returns results that start with the requested URL.
+            * ``host`` returns results from all URLs at the host in the
+              requested URL.
+            * ``domain`` returns results from all URLs at the domain or any
+              subdomain of the requested URL.
+
+            The default value is calculated based on the format of `url`.
+        limit : int, default: 1000
+            Maximum number of results per request to the API (not the maximum
+            number of results this function yields).
         offset : int, optional
             Skip the first N results.
         fastLatest : bool, optional
