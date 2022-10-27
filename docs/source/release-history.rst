@@ -5,7 +5,21 @@ Release History
 In Development
 --------------
 
-TBD
+**Breaking Change:** This release includes a significant overhaul of parameters for :meth:`wayback.WaybackClient.search`.
+
+- The ``limit`` parameter now has a default value. There are very few cases where you should not set a ``limit`` (not doing so will typically break pagination), and there is now a default value to help prevent mistakes. We’ve also added documentation to explain how and when to adjust this value, since it is pretty complex. (:issue:`65`)
+
+- Removed parameters that did nothing, could break search, or that were for internal use only: ``gzip``, ``showResumeKey``, ``resumeKey``, ``page``, ``pageSize``, ``previous_result``.
+
+- Removed support for extra, arbitrary keyword parameters that could be added to each request to the search API.
+
+- All parameters now use snake_case. (Previously, parameters that were passed unchanged to the HTTP API used camelCase, while others used snake_case.)
+
+  - ``matchType`` → ``match_type``
+  - ``fastLatest`` → ``fast_latest``
+  - ``resolveRevisits`` → ``resolve_revisits``
+
+- Expanded the method documentation to explain things in more depth and link to more external references.
 
 
 v0.3.3 (2022-09-30)
