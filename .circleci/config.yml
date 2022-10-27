@@ -27,7 +27,7 @@ commands:
             pip install --upgrade pip
             pip install .
             pip install -r requirements-dev.txt  # extra requirements for tests
-      
+
       # Docs dependencies are only compatible on Python 3.10+, so only install
       # them on demand.
       - when:
@@ -71,11 +71,11 @@ jobs:
   lint:
     working_directory: ~/wayback
     docker:
-      - image: cimg/python:3.8
+      - image: cimg/python:3.11
     steps:
       - checkout
       - setup_pip:
-          python-version: "3.8"
+          python-version: "3.11"
       - run:
           name: Code linting
           command: |
@@ -85,11 +85,11 @@ jobs:
   build:
     working_directory: ~/wayback
     docker:
-      - image: cimg/python:3.8
+      - image: cimg/python:3.11
     steps:
       - checkout
       - setup_pip:
-          python-version: "3.8"
+          python-version: "3.11"
       - run:
           name: Build Distribution
           command: |
@@ -110,11 +110,11 @@ jobs:
   docs:
     working_directory: ~/wayback
     docker:
-      - image: cimg/python:3.10
+      - image: cimg/python:3.11
     steps:
       - checkout
       - setup_pip:
-          python-version: "3.10"
+          python-version: "3.11"
           install-docs: true
       - run:
           name: Build docs
@@ -128,7 +128,7 @@ workflows:
       - test:
           matrix:
             parameters:
-              python-version: ["3.6", "3.7", "3.8", "3.9", "3.10"]
+              python-version: ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11"]
       - lint
       - build
       - docs
