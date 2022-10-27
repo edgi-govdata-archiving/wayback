@@ -13,10 +13,10 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - cache_v5-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}-{{ checksum "requirements-docs.txt" }}
-            - cache_v5-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
-            - cache_v5-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-
-            - cache_v5-wayback-<< parameters.python-version >>-{{ arch }}-
+            - cache_v6-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}-{{ checksum "requirements-docs.txt" }}
+            - cache_v6-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
+            - cache_v6-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-
+            - cache_v6-wayback-<< parameters.python-version >>-{{ arch }}-
 
       - run:
           name: Install Dependencies
@@ -26,8 +26,8 @@ commands:
             # Ensure pip is up-to-date
             pip install --upgrade pip
             pip install .
-            pip install -r requirements-dev.txt  # extra requirements for tests
-      
+            pip install -r requirements-dev.txt  # Extra requirements for tests.
+
       # Docs dependencies are only compatible on Python 3.10+, so only install
       # them on demand.
       - when:
@@ -39,7 +39,7 @@ commands:
                   pip install -r requirements-docs.txt
 
       - save_cache:
-          key: cache_v5-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}-{{ checksum "requirements-docs.txt" }}
+          key: cache_v6-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}-{{ checksum "requirements-docs.txt" }}
           paths:
             - ~/venv
 
@@ -71,11 +71,11 @@ jobs:
   lint:
     working_directory: ~/wayback
     docker:
-      - image: cimg/python:3.8
+      - image: cimg/python:3.11
     steps:
       - checkout
       - setup_pip:
-          python-version: "3.8"
+          python-version: "3.11"
       - run:
           name: Code linting
           command: |
@@ -85,11 +85,11 @@ jobs:
   build:
     working_directory: ~/wayback
     docker:
-      - image: cimg/python:3.8
+      - image: cimg/python:3.11
     steps:
       - checkout
       - setup_pip:
-          python-version: "3.8"
+          python-version: "3.11"
       - run:
           name: Build Distribution
           command: |
@@ -110,11 +110,11 @@ jobs:
   docs:
     working_directory: ~/wayback
     docker:
-      - image: cimg/python:3.10
+      - image: cimg/python:3.11
     steps:
       - checkout
       - setup_pip:
-          python-version: "3.10"
+          python-version: "3.11"
           install-docs: true
       - run:
           name: Build docs
@@ -128,7 +128,7 @@ workflows:
       - test:
           matrix:
             parameters:
-              python-version: ["3.6", "3.7", "3.8", "3.9", "3.10"]
+              python-version: ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11"]
       - lint
       - build
       - docs
