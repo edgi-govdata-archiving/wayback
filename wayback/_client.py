@@ -360,49 +360,98 @@ class WaybackClient(_utils.DepthCountedContext):
         "Close the client's session."
         self.session.close()
 
-    def search(self, url, *, matchType=None, limit=None, offset=None,
-               fastLatest=None, gzip=None, from_date=None, to_date=None,
-               filter_field=None, collapse=None, showResumeKey=True,
-               resumeKey=None, page=None, pageSize=None, resolveRevisits=True,
-               skip_malformed_results=True, previous_result=None, **kwargs):
+    def search(self, url, *, match_type=None, limit=1000, offset=None,
+               fast_latest=None, from_date=None, to_date=None,
+               filter_field=None, collapse=None, resolve_revisits=True,
+               skip_malformed_results=True):
         """
-        Search archive.org's CDX API for all captures of a given URL.
+        Search archive.org's CDX API for all captures of a given URL. This
+        returns an iterator of :class:`CdxRecord` objects. The `StopIteration`
+        value is the total count of found captures.
 
-        This will automatically page through all results for a given search.
+        Results include captures with similar, but not exactly matching URLs.
+        They are matched by a SURT-formatted, canonicalized URL that:
 
-        Returns an iterator of CdxRecord objects. The StopIteration value is
-        the total count of found captures.
-
-        Note that even URLs without wildcards may return results with different
-        URLs. Search results are matched by url_key, which is a SURT-formatted,
-        canonicalized URL:
-
-        * Does not differentiate between HTTP and HTTPS
-        * Is not case-sensitive
+        * Does not differentiate between HTTP and HTTPS,
+        * Is not case-sensitive, and
         * Treats ``www.`` and ``www*.`` subdomains the same as no subdomain at
-          all
+          all.
 
-        Note not all CDX API parameters are supported. In particular, this does
-        not support: `output`, `fl`, `showDupeCount`, `showSkipCount`,
-        `lastSkipTimestamp`, `showNumPages`, `showPagedIndex`.
+        This will automatically page through all results for a given search. If
+        you want fewer results, you can stop iterating early:
+
+        .. code-block:: python
+
+          from itertools import islice
+          first10 = list(islice(client.search(...), 10))
 
         Parameters
         ----------
         url : str
-            The URL to query for captures of.
-        matchType : str, optional
-            Must be one of 'exact', 'prefix', 'host', or 'domain'. The default
-            value is calculated based on the format of `url`.
-        limit : int, optional
-            Maximum number of results per page (this iterator will continue to
-            move through all pages unless `showResumeKey=False`, though).
+            The URL to search for captures of.
+
+            Special patterns in ``url`` imply a value for the ``match_type``
+            parameter and match multiple URLs:
+
+            * If the URL starts with `*.` (e.g. ``*.epa.gov``) OR
+              ``match_type='domain'``, the search will include all URLs at the
+              given domain and its subdomains.
+            * If the URL ends with `/*` (e.g. ``https://epa.gov/*``) OR
+              ``match_type='prefix'``, the search will include all URLs that
+              start with the text up to the ``*``.
+            * Otherwise, this returns matches just for the requeted URL.
+
+        match_type : str, optional
+            Determines how to interpret the ``url`` parameter. It must be one of
+            the following:
+
+            * ``exact`` (default) returns results matching the requested URL
+              (see notes about SURT above; this is not an exact string match of
+              the URL you pass in).
+            * ``prefix`` returns results that start with the requested URL.
+            * ``host`` returns results from all URLs at the host in the
+              requested URL.
+            * ``domain`` returns results from all URLs at the domain or any
+              subdomain of the requested URL.
+
+            The default value is calculated based on the format of ``url``.
+
+        limit : int, default: 1000
+            Maximum number of results per request to the API (not the maximum
+            number of results this function yields).
+
+            Negative values return the most recent N results.
+
+            Positive values are complicated! The search server will only scan so
+            much data on each query, and if it finds fewer than ``limit``
+            results before hitting its own internal limits, it will behave as if
+            if there are no more results, even though there may be.
+
+            Unfortunately, ideal values for ``limit`` aren't very predicatable
+            because the search server combines data from different sources, and
+            they do not all behave the same. Their parameters may also be
+            changed over time.
+
+            In general…
+
+            * The default value should work well in typical cases.
+            * For frequently captured URLs, you may want to set a higher value
+              (e.g. 12,000) for more efficient querying.
+            * For infrequently captured URLs, you may want to set a lower value
+              (e.g. 100 or even 10) to ensure that your query does not hit
+              internal limits before returning.
+            * For extremely infrequently captured URLs, you may simply want to
+              call ``search()`` multiple times with different, close together
+              ``from_date`` and ``to_date`` values.
+
         offset : int, optional
             Skip the first N results.
-        fastLatest : bool, optional
-            Get faster results when using a negative value for `limit`. It may
-            return a variable number of results.
-        gzip : bool, optional
-            Whether output should be gzipped.
+        fast_latest : bool, optional
+            Get faster results when using a negative value for ``limit``. It may
+            return a variable number of results that doesn't match the value
+            of ``limit``. For example,
+            ``search('http://epa.gov', limit=-10, fast_latest=True)`` may return
+            any number of results between 1 and 10.
         from_date : datetime or date, optional
             Only include captures after this date. Equivalent to the
             `from` argument in the CDX API. If it does not have a time zone, it
@@ -412,168 +461,151 @@ class WaybackClient(_utils.DepthCountedContext):
             argument in the CDX API. If it does not have a time zone, it is
             assumed to be in UTC.
         filter_field : str, optional
-            A filter for any field in the results. Equivalent to the `filter`
-            argument in the CDX API. (format: `[!]field:regex`)
+            A filter for any field in the results. Equivalent to the ``filter``
+            argument in the CDX API. (format: ``[!]field:regex``)
         collapse : str, optional
             Collapse consecutive results that match on a given field. (format:
             `fieldname` or `fieldname:N` -- N is the number of chars to match.)
-        showResumeKey : bool, optional
-            If False, don't continue to iterate through all pages of results.
-            The default value is True
-        resumeKey : str, optional
-            Start returning results from a specified resumption point/offset.
-            The value for this is supplied by the previous page of results when
-            `showResumeKey` is True.
-        page : int, optional
-            If using paging start from this page number (note: paging, as
-            opposed to the using `resumeKey` is somewhat complicated because
-            of the interplay with indexes and index sizes).
-        pageSize : int, optional
-            The number of index blocks to examine for each page of results.
-            Index blocks generally cover about 3,000 items, so setting
-            `pageSize=1` might return anywhere from 0 to 3,000 results per page.
-        resolveRevists : bool, optional
-            Attempt to resolve `warc/revisit` records to their actual content
-            type and response code. Not supported on all CDX servers. Defaults
-            to True.
-        skip_malformed_results : bool, optional
+        resolve_revisits : bool, default: True
+            Attempt to resolve ``warc/revisit`` records to their actual content
+            type and response code. Not supported on all CDX servers.
+        skip_malformed_results : bool, default: True
             If true, don't yield records that look like they have no actual
             memento associated with them. Some crawlers will erroneously
-            attempt to capture bad URLs like `http://mailto:someone@domain.com`
-            or `http://data:image/jpeg;base64,AF34...` and so on. This is a
+            attempt to capture bad URLs like
+            ``http://mailto:someone@domain.com`` or
+            ``http://data:image/jpeg;base64,AF34...`` and so on. This is a
             filter performed client side and is not a CDX API argument.
-            (Default: True)
-        previous_result : str, optional
-            *For internal use.* The CDX API sometimes returns repeated results.
-            This is used to track the previous result so we can filter out the
-            repeats.
-        **kwargs
-            Any additional CDX API options.
 
         Raises
         ------
         UnexpectedResponseFormat
             If the CDX response was not parseable.
 
-        References
-        ----------
-        * https://github.com/internetarchive/wayback/tree/master/wayback-cdx-server
-
         Yields
         ------
         version: CdxRecord
             A :class:`CdxRecord` encapsulating one capture or revisit
+
+        References
+        ----------
+        * HTTP API Docs: https://github.com/internetarchive/wayback/tree/master/wayback-cdx-server
+        * SURT formatting: http://crawler.archive.org/articles/user_manual/glossary.html#surt
+        * SURT implementation: https://github.com/internetarchive/surt
+
+        Notes
+        -----
+        Several CDX API parameters are not relevant or handled automatically
+        by this function. This does not support: `output`, `fl`,
+        `showDupeCount`, `showSkipCount`, `lastSkipTimestamp`, `showNumPages`,
+        `showPagedIndex`.
+
+        It also does not support `page` and `pageSize` for
+        pagination because they work differently from the `resumeKey` method
+        this uses, and results do not include recent captures when using them.
         """
 
         # TODO: support args that can be set multiple times: filter, collapse
         # Should take input as a sequence and convert to repeat query args
-        # TODO: support args that add new fields to the results or change the
-        # result format
-        query = {'url': url, 'matchType': matchType, 'limit': limit,
-                 'offset': offset, 'gzip': gzip, 'from': from_date,
-                 'to': to_date, 'filter': filter_field,
-                 'fastLatest': fastLatest, 'collapse': collapse,
-                 'showResumeKey': showResumeKey, 'resumeKey': resumeKey,
-                 'resolveRevisits': resolveRevisits, 'page': page,
-                 'pageSize': page}
-        query.update(kwargs)
+        # TODO: Check types
+        query_args = {'url': url, 'matchType': match_type, 'limit': limit,
+                      'offset': offset, 'from': from_date,
+                      'to': to_date, 'filter': filter_field,
+                      'fastLatest': fast_latest, 'collapse': collapse,
+                      'showResumeKey': True,
+                      'resolveRevisits': resolve_revisits}
 
-        unsupported = {'output', 'fl', 'showDupeCount', 'showSkipCount',
-                       'lastSkipTimestamp', 'showNumPages', 'showPagedIndex'}
-
-        final_query = {}
-        for key, value in query.items():
-            if key in unsupported:
-                raise ValueError(f'The {key} argument is not supported')
-
+        query = {}
+        for key, value in query_args.items():
             if value is not None:
                 if isinstance(value, str):
-                    final_query[key] = value
+                    query[key] = value
                 elif isinstance(value, date):
-                    final_query[key] = _utils.format_timestamp(value)
+                    query[key] = _utils.format_timestamp(value)
                 else:
-                    final_query[key] = str(value).lower()
+                    query[key] = str(value).lower()
 
-        response = self.session.request('GET', CDX_SEARCH_URL,
-                                        params=final_query)
-        try:
-            # Read/cache the response and close straightaway. If we need to
-            # raise for status, we want to pre-emptively close the response
-            # so a user handling the error doesn't need to worry about it. If
-            # we don't raise here, we still want to close the connection so it
-            # doesn't leak when we move onto the next of results or when this
-            # iterator ends.
-            read_and_close(response)
-            response.raise_for_status()
-        except requests.exceptions.HTTPError as error:
-            if 'AdministrativeAccessControlException' in response.text:
-                raise BlockedSiteError(query['url'])
-            elif 'RobotAccessControlException' in response.text:
-                raise BlockedByRobotsError(query['url'])
-            else:
-                raise WaybackException(str(error))
-
-        lines = iter(response.content.splitlines())
+        next_query = query
         count = 0
-
-        for line in lines:
-            text = line.decode()
-
-            # The resume key is delineated by a blank line.
-            if text == '':
-                next_args = query.copy()
-                next_args['resumeKey'] = next(lines).decode()
-                count += yield from self.search(previous_result=previous_result,
-                                                **next_args)
-                break
-            elif text == previous_result:
-                # This result line is a repeat. Skip it.
-                continue
-            else:
-                previous_result = text
-
+        previous_result = None
+        while next_query:
+            sent_query, next_query = next_query, None
+            response = self.session.request('GET', CDX_SEARCH_URL,
+                                            params=sent_query)
             try:
-                data = CdxRecord(*text.split(' '), '', '')
-                if data.status_code == '-':
-                    # the status code given for a revisit record
-                    status_code = None
+                # Read/cache the response and close straightaway. If we need to
+                # raise for status, we want to pre-emptively close the response
+                # so a user handling the error doesn't need to worry about it. If
+                # we don't raise here, we still want to close the connection so it
+                # doesn't leak when we move onto the next of results or when this
+                # iterator ends.
+                read_and_close(response)
+                response.raise_for_status()
+            except requests.exceptions.HTTPError as error:
+                if 'AdministrativeAccessControlException' in response.text:
+                    raise BlockedSiteError(query['url'])
+                elif 'RobotAccessControlException' in response.text:
+                    raise BlockedByRobotsError(query['url'])
                 else:
-                    status_code = int(data.status_code)
-                length = None if data.length == '-' else int(data.length)
-                capture_time = _utils.parse_timestamp(data.timestamp)
-            except Exception as err:
-                if 'RobotAccessControlException' in text:
-                    raise BlockedByRobotsError(query["url"])
-                raise UnexpectedResponseFormat(
-                    f'Could not parse CDX output: "{text}" (query: {final_query})') from err
+                    raise WaybackException(str(error))
 
-            clean_url = REDUNDANT_HTTPS_PORT.sub(
-                r'\1\2', REDUNDANT_HTTP_PORT.sub(
-                    r'\1\2', data.url))
-            if skip_malformed_results and is_malformed_url(clean_url):
-                continue
-            if clean_url != data.url:
-                data = data._replace(url=clean_url)
+            lines = iter(response.content.splitlines())
 
-            # TODO: repeat captures have a status code of `-` and a mime type
-            # of `warc/revisit`. These can only be resolved by requesting the
-            # content and following redirects. Maybe nice to do so
-            # automatically here.
-            data = data._replace(
-                status_code=status_code,
-                length=length,
-                timestamp=capture_time,
-                raw_url=ARCHIVE_URL_TEMPLATE.format(
-                    url=data.url,
-                    timestamp=data.timestamp,
-                    mode=Mode.original.value),
-                view_url=ARCHIVE_URL_TEMPLATE.format(
-                    url=data.url,
-                    timestamp=data.timestamp,
-                    mode=Mode.view.value)
-            )
-            count += 1
-            yield data
+            for line in lines:
+                text = line.decode()
+
+                # The resume key is delineated by a blank line.
+                if text == '':
+                    next_query = {**query, 'resumeKey': next(lines).decode()}
+                    break
+                elif text == previous_result:
+                    # This result line is a repeat. Skip it.
+                    continue
+                else:
+                    previous_result = text
+
+                try:
+                    data = CdxRecord(*text.split(' '), '', '')
+                    if data.status_code == '-':
+                        # the status code given for a revisit record
+                        status_code = None
+                    else:
+                        status_code = int(data.status_code)
+                    length = None if data.length == '-' else int(data.length)
+                    capture_time = _utils.parse_timestamp(data.timestamp)
+                except Exception as err:
+                    if 'RobotAccessControlException' in text:
+                        raise BlockedByRobotsError(query["url"])
+                    raise UnexpectedResponseFormat(
+                        f'Could not parse CDX output: "{text}" (query: {sent_query})') from err
+
+                clean_url = REDUNDANT_HTTPS_PORT.sub(
+                    r'\1\2', REDUNDANT_HTTP_PORT.sub(
+                        r'\1\2', data.url))
+                if skip_malformed_results and is_malformed_url(clean_url):
+                    continue
+                if clean_url != data.url:
+                    data = data._replace(url=clean_url)
+
+                # TODO: repeat captures have a status code of `-` and a mime type
+                # of `warc/revisit`. These can only be resolved by requesting the
+                # content and following redirects. Maybe nice to do so
+                # automatically here.
+                data = data._replace(
+                    status_code=status_code,
+                    length=length,
+                    timestamp=capture_time,
+                    raw_url=ARCHIVE_URL_TEMPLATE.format(
+                        url=data.url,
+                        timestamp=data.timestamp,
+                        mode=Mode.original.value),
+                    view_url=ARCHIVE_URL_TEMPLATE.format(
+                        url=data.url,
+                        timestamp=data.timestamp,
+                        mode=Mode.view.value)
+                )
+                count += 1
+                yield data
 
         return count
 

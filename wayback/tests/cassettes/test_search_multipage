@@ -5,7 +5,7 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
+      - wayback/0.3.3.post6.dev0+ga3e1512 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
     uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true
   response:
@@ -21,25 +21,35 @@ interactions:
     headers:
       Connection:
       - keep-alive
-      Content-Encoding:
-      - gzip
       Content-Type:
       - text/plain;charset=UTF-8
       Date:
-      - Mon, 18 Nov 2019 17:11:11 GMT
+      - Wed, 26 Oct 2022 22:57:02 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
-      - nginx/1.15.8
+      - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-App-Server:
-      - wwwb-app4
-      X-Cache-Key:
-      - httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=trueUS
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
       X-Page-Cache:
       - BYPASS
+      X-RL:
+      - '0'
       X-location:
       - cdx
-      X-ts:
+      content-encoding:
+      - gzip
+      x-app-server:
+      - wwwb-app14
+      x-tr:
+      - '243'
+      x-ts:
       - '200'
     status:
       code: 200
@@ -50,9 +60,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
+      - wayback/0.3.3.post6.dev0+ga3e1512 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B2001041400593%253A&resolveRevisits=true
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B2001041400593%253A
   response:
     body:
       string: !!binary |
@@ -66,25 +76,35 @@ interactions:
     headers:
       Connection:
       - keep-alive
-      Content-Encoding:
-      - gzip
       Content-Type:
       - text/plain;charset=UTF-8
       Date:
-      - Mon, 18 Nov 2019 17:11:11 GMT
+      - Wed, 26 Oct 2022 22:57:02 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
-      - nginx/1.15.8
+      - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-App-Server:
-      - wwwb-app4
-      X-Cache-Key:
-      - httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B2001041400593%253A&resolveRevisits=trueUS
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
       X-Page-Cache:
       - BYPASS
+      X-RL:
+      - '0'
       X-location:
       - cdx
-      X-ts:
+      content-encoding:
+      - gzip
+      x-app-server:
+      - wwwb-app15
+      x-tr:
+      - '155'
+      x-ts:
       - '200'
     status:
       code: 200
@@ -95,9 +115,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
+      - wayback/0.3.3.post6.dev0+ga3e1512 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010503212619&resolveRevisits=true
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B20010503212619
   response:
     body:
       string: !!binary |
@@ -110,25 +130,35 @@ interactions:
     headers:
       Connection:
       - keep-alive
-      Content-Encoding:
-      - gzip
       Content-Type:
       - text/plain;charset=UTF-8
       Date:
-      - Mon, 18 Nov 2019 17:11:12 GMT
+      - Wed, 26 Oct 2022 22:57:03 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
-      - nginx/1.15.8
+      - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-App-Server:
-      - wwwb-app0
-      X-Cache-Key:
-      - httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010503212619&resolveRevisits=trueUS
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
       X-Page-Cache:
       - BYPASS
+      X-RL:
+      - '0'
       X-location:
       - cdx
-      X-ts:
+      content-encoding:
+      - gzip
+      x-app-server:
+      - wwwb-app52
+      x-tr:
+      - '215'
+      x-ts:
       - '200'
     status:
       code: 200
@@ -139,9 +169,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
+      - wayback/0.3.3.post6.dev0+ga3e1512 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010504092326&resolveRevisits=true
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B20010504092326
   response:
     body:
       string: !!binary |
@@ -155,25 +185,35 @@ interactions:
     headers:
       Connection:
       - keep-alive
-      Content-Encoding:
-      - gzip
       Content-Type:
       - text/plain;charset=UTF-8
       Date:
-      - Mon, 18 Nov 2019 17:11:12 GMT
+      - Wed, 26 Oct 2022 22:57:03 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
-      - nginx/1.15.8
+      - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-App-Server:
-      - wwwb-app6
-      X-Cache-Key:
-      - httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010504092326&resolveRevisits=trueUS
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
       X-Page-Cache:
       - BYPASS
+      X-RL:
+      - '0'
       X-location:
       - cdx
-      X-ts:
+      content-encoding:
+      - gzip
+      x-app-server:
+      - wwwb-app14
+      x-tr:
+      - '412'
+      x-ts:
       - '200'
     status:
       code: 200
@@ -184,9 +224,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
+      - wayback/0.3.3.post6.dev0+ga3e1512 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010505085533&resolveRevisits=true
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B20010505085533
   response:
     body:
       string: !!binary |
@@ -199,25 +239,35 @@ interactions:
     headers:
       Connection:
       - keep-alive
-      Content-Encoding:
-      - gzip
       Content-Type:
       - text/plain;charset=UTF-8
       Date:
-      - Mon, 18 Nov 2019 17:11:12 GMT
+      - Wed, 26 Oct 2022 22:57:03 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
-      - nginx/1.15.8
+      - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-App-Server:
-      - wwwb-app52
-      X-Cache-Key:
-      - httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010505085533&resolveRevisits=trueUS
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
       X-Page-Cache:
       - BYPASS
+      X-RL:
+      - '0'
       X-location:
       - cdx
-      X-ts:
+      content-encoding:
+      - gzip
+      x-app-server:
+      - wwwb-app52
+      x-tr:
+      - '206'
+      x-ts:
       - '200'
     status:
       code: 200
@@ -228,9 +278,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
+      - wayback/0.3.3.post6.dev0+ga3e1512 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010505091254&resolveRevisits=true
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B20010505091254
   response:
     body:
       string: !!binary |
@@ -244,25 +294,35 @@ interactions:
     headers:
       Connection:
       - keep-alive
-      Content-Encoding:
-      - gzip
       Content-Type:
       - text/plain;charset=UTF-8
       Date:
-      - Mon, 18 Nov 2019 17:11:13 GMT
+      - Wed, 26 Oct 2022 22:57:04 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
-      - nginx/1.15.8
+      - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-App-Server:
-      - wwwb-app6
-      X-Cache-Key:
-      - httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010505091254&resolveRevisits=trueUS
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
       X-Page-Cache:
       - BYPASS
+      X-RL:
+      - '0'
       X-location:
       - cdx
-      X-ts:
+      content-encoding:
+      - gzip
+      x-app-server:
+      - wwwb-app15
+      x-tr:
+      - '85'
+      x-ts:
       - '200'
     status:
       code: 200
@@ -273,9 +333,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
+      - wayback/0.3.3.post6.dev0+ga3e1512 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010506001449&resolveRevisits=true
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B20010506001449
   response:
     body:
       string: !!binary |
@@ -289,25 +349,35 @@ interactions:
     headers:
       Connection:
       - keep-alive
-      Content-Encoding:
-      - gzip
       Content-Type:
       - text/plain;charset=UTF-8
       Date:
-      - Mon, 18 Nov 2019 17:11:13 GMT
+      - Wed, 26 Oct 2022 22:57:04 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
-      - nginx/1.15.8
+      - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-App-Server:
-      - wwwb-app6
-      X-Cache-Key:
-      - httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010506001449&resolveRevisits=trueUS
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
       X-Page-Cache:
       - BYPASS
+      X-RL:
+      - '0'
       X-location:
       - cdx
-      X-ts:
+      content-encoding:
+      - gzip
+      x-app-server:
+      - wwwb-app52
+      x-tr:
+      - '193'
+      x-ts:
       - '200'
     status:
       code: 200
@@ -318,9 +388,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
+      - wayback/0.3.3.post6.dev0+ga3e1512 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010506010648&resolveRevisits=true
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B20010506010648
   response:
     body:
       string: !!binary |
@@ -332,25 +402,35 @@ interactions:
     headers:
       Connection:
       - keep-alive
-      Content-Encoding:
-      - gzip
       Content-Type:
       - text/plain;charset=UTF-8
       Date:
-      - Mon, 18 Nov 2019 17:11:14 GMT
+      - Wed, 26 Oct 2022 22:57:05 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
-      - nginx/1.15.8
+      - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-App-Server:
-      - wwwb-app14
-      X-Cache-Key:
-      - httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010506010648&resolveRevisits=trueUS
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
       X-Page-Cache:
       - BYPASS
+      X-RL:
+      - '0'
       X-location:
       - cdx
-      X-ts:
+      content-encoding:
+      - gzip
+      x-app-server:
+      - wwwb-app15
+      x-tr:
+      - '185'
+      x-ts:
       - '200'
     status:
       code: 200
@@ -361,9 +441,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
+      - wayback/0.3.3.post6.dev0+ga3e1512 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B2001050614125%253A&resolveRevisits=true
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B2001050614125%253A
   response:
     body:
       string: !!binary |
@@ -376,25 +456,35 @@ interactions:
     headers:
       Connection:
       - keep-alive
-      Content-Encoding:
-      - gzip
       Content-Type:
       - text/plain;charset=UTF-8
       Date:
-      - Mon, 18 Nov 2019 17:11:14 GMT
+      - Wed, 26 Oct 2022 22:57:05 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
-      - nginx/1.15.8
+      - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-App-Server:
-      - wwwb-app0
-      X-Cache-Key:
-      - httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B2001050614125%253A&resolveRevisits=trueUS
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
       X-Page-Cache:
       - BYPASS
+      X-RL:
+      - '0'
       X-location:
       - cdx
-      X-ts:
+      content-encoding:
+      - gzip
+      x-app-server:
+      - wwwb-app52
+      x-tr:
+      - '227'
+      x-ts:
       - '200'
     status:
       code: 200
@@ -405,9 +495,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
+      - wayback/0.3.3.post6.dev0+ga3e1512 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010507021559&resolveRevisits=true
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B20010507021559
   response:
     body:
       string: !!binary |
@@ -421,25 +511,35 @@ interactions:
     headers:
       Connection:
       - keep-alive
-      Content-Encoding:
-      - gzip
       Content-Type:
       - text/plain;charset=UTF-8
       Date:
-      - Mon, 18 Nov 2019 17:11:15 GMT
+      - Wed, 26 Oct 2022 22:57:05 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
-      - nginx/1.15.8
+      - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-App-Server:
-      - wwwb-app1
-      X-Cache-Key:
-      - httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010507021559&resolveRevisits=trueUS
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
       X-Page-Cache:
       - BYPASS
+      X-RL:
+      - '0'
       X-location:
       - cdx
-      X-ts:
+      content-encoding:
+      - gzip
+      x-app-server:
+      - wwwb-app53
+      x-tr:
+      - '91'
+      x-ts:
       - '200'
     status:
       code: 200
@@ -450,9 +550,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
+      - wayback/0.3.3.post6.dev0+ga3e1512 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010507180423&resolveRevisits=true
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B20010507180423
   response:
     body:
       string: !!binary |
@@ -466,25 +566,35 @@ interactions:
     headers:
       Connection:
       - keep-alive
-      Content-Encoding:
-      - gzip
       Content-Type:
       - text/plain;charset=UTF-8
       Date:
-      - Mon, 18 Nov 2019 17:11:15 GMT
+      - Wed, 26 Oct 2022 22:57:06 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
-      - nginx/1.15.8
+      - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-App-Server:
-      - wwwb-app14
-      X-Cache-Key:
-      - httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010507180423&resolveRevisits=trueUS
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
       X-Page-Cache:
       - BYPASS
+      X-RL:
+      - '0'
       X-location:
       - cdx
-      X-ts:
+      content-encoding:
+      - gzip
+      x-app-server:
+      - wwwb-app14
+      x-tr:
+      - '196'
+      x-ts:
       - '200'
     status:
       code: 200
@@ -495,9 +605,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
+      - wayback/0.3.3.post6.dev0+ga3e1512 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B2001050807025%253A&resolveRevisits=true
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B2001050807025%253A
   response:
     body:
       string: !!binary |
@@ -510,25 +620,35 @@ interactions:
     headers:
       Connection:
       - keep-alive
-      Content-Encoding:
-      - gzip
       Content-Type:
       - text/plain;charset=UTF-8
       Date:
-      - Mon, 18 Nov 2019 17:11:16 GMT
+      - Wed, 26 Oct 2022 22:57:06 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
-      - nginx/1.15.8
+      - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-App-Server:
-      - wwwb-app0
-      X-Cache-Key:
-      - httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B2001050807025%253A&resolveRevisits=trueUS
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
       X-Page-Cache:
       - BYPASS
+      X-RL:
+      - '0'
       X-location:
       - cdx
-      X-ts:
+      content-encoding:
+      - gzip
+      x-app-server:
+      - wwwb-app14
+      x-tr:
+      - '191'
+      x-ts:
       - '200'
     status:
       code: 200
@@ -539,9 +659,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
+      - wayback/0.3.3.post6.dev0+ga3e1512 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010508143112&resolveRevisits=true
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B20010508143112
   response:
     body:
       string: !!binary |
@@ -555,25 +675,35 @@ interactions:
     headers:
       Connection:
       - keep-alive
-      Content-Encoding:
-      - gzip
       Content-Type:
       - text/plain;charset=UTF-8
       Date:
-      - Mon, 18 Nov 2019 17:11:16 GMT
+      - Wed, 26 Oct 2022 22:57:06 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
-      - nginx/1.15.8
+      - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-App-Server:
-      - wwwb-app0
-      X-Cache-Key:
-      - httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010508143112&resolveRevisits=trueUS
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
       X-Page-Cache:
       - BYPASS
+      X-RL:
+      - '0'
       X-location:
       - cdx
-      X-ts:
+      content-encoding:
+      - gzip
+      x-app-server:
+      - wwwb-app53
+      x-tr:
+      - '88'
+      x-ts:
       - '200'
     status:
       code: 200
@@ -584,9 +714,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
+      - wayback/0.3.3.post6.dev0+ga3e1512 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B2001050910252%253A&resolveRevisits=true
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B2001050910252%253A
   response:
     body:
       string: !!binary |
@@ -600,25 +730,35 @@ interactions:
     headers:
       Connection:
       - keep-alive
-      Content-Encoding:
-      - gzip
       Content-Type:
       - text/plain;charset=UTF-8
       Date:
-      - Mon, 18 Nov 2019 17:11:16 GMT
+      - Wed, 26 Oct 2022 22:57:06 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
-      - nginx/1.15.8
+      - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-App-Server:
-      - wwwb-app53
-      X-Cache-Key:
-      - httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B2001050910252%253A&resolveRevisits=trueUS
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
       X-Page-Cache:
       - BYPASS
+      X-RL:
+      - '0'
       X-location:
       - cdx
-      X-ts:
+      content-encoding:
+      - gzip
+      x-app-server:
+      - wwwb-app14
+      x-tr:
+      - '193'
+      x-ts:
       - '200'
     status:
       code: 200
@@ -629,9 +769,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
+      - wayback/0.3.3.post6.dev0+ga3e1512 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010509235545&resolveRevisits=true
+    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B20010509235545
   response:
     body:
       string: !!binary |
@@ -639,25 +779,35 @@ interactions:
     headers:
       Connection:
       - keep-alive
-      Content-Encoding:
-      - gzip
       Content-Type:
       - text/plain;charset=UTF-8
       Date:
-      - Mon, 18 Nov 2019 17:11:17 GMT
+      - Wed, 26 Oct 2022 22:57:07 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
-      - nginx/1.15.8
+      - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-App-Server:
-      - wwwb-app53
-      X-Cache-Key:
-      - httpweb.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resumeKey=com%252Ccnn%2529%252F%2B20010509235545&resolveRevisits=trueUS
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
       X-Page-Cache:
       - BYPASS
+      X-RL:
+      - '0'
       X-location:
       - cdx
-      X-ts:
+      content-encoding:
+      - gzip
+      x-app-server:
+      - wwwb-app14
+      x-tr:
+      - '244'
+      x-ts:
       - '200'
     status:
       code: 200
