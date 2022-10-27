@@ -13,10 +13,10 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - cache_v5-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}-{{ checksum "requirements-docs.txt" }}
-            - cache_v5-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
-            - cache_v5-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-
-            - cache_v5-wayback-<< parameters.python-version >>-{{ arch }}-
+            - cache_v6-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}-{{ checksum "requirements-docs.txt" }}
+            - cache_v6-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
+            - cache_v6-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-
+            - cache_v6-wayback-<< parameters.python-version >>-{{ arch }}-
 
       - run:
           name: Install Dependencies
@@ -39,7 +39,7 @@ commands:
                   pip install -r requirements-docs.txt
 
       - save_cache:
-          key: cache_v5-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}-{{ checksum "requirements-docs.txt" }}
+          key: cache_v6-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}-{{ checksum "requirements-docs.txt" }}
           paths:
             - ~/venv
 
