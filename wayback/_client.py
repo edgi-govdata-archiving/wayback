@@ -678,11 +678,9 @@ class WaybackClient(_utils.DepthCountedContext):
 
         Returns
         -------
-        dict : requests.Response
-            An HTTP response with the content of the memento, including a
-            history of any redirects involved. (For a complete history of all
-            HTTP requests needed to obtain the memento [rather than historic
-            redirects], check ``debug_history`` instead of ``history``.)
+        Memento
+            A :class:`Memento` object with information about the archived HTTP
+            response.
         """
         if exact_redirects is None:
             exact_redirects = exact
