@@ -7,7 +7,7 @@ interactions:
       User-Agent:
       - wayback/0.3.3.post6.dev0+ga3e1512 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=nasa.gov&limit=1000&from=19961231235847&showResumeKey=true&resolveRevisits=true
+    uri: https://web.archive.org/cdx/search/cdx?url=nasa.gov&limit=1000&from=19961231235847&showResumeKey=true&resolveRevisits=true
   response:
     body:
       string: !!binary |
@@ -243,7 +243,7 @@ interactions:
       User-Agent:
       - wayback/0.3.3.post6.dev0+ga3e1512 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=nasa.gov&limit=1000&from=19970101045847&showResumeKey=true&resolveRevisits=true
+    uri: https://web.archive.org/cdx/search/cdx?url=nasa.gov&limit=1000&from=19970101045847&showResumeKey=true&resolveRevisits=true
   response:
     body:
       string: !!binary |

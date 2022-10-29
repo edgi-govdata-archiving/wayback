@@ -7,7 +7,7 @@ interactions:
       User-Agent:
       - wayback/0.3.0a1.post0.dev0+gee40997 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/20201027215555id_/https://www.whitehouse.gov/administration/eop/ostp/about/student/faqs
+    uri: https://web.archive.org/web/20201027215555id_/https://www.whitehouse.gov/administration/eop/ostp/about/student/faqs
   response:
     body:
       string: ''
@@ -25,13 +25,13 @@ interactions:
       - Tue, 03 Nov 2020 03:08:42 GMT
       Link:
       - <https://www.whitehouse.gov/administration/eop/ostp/about/student/faqs>; rel="original",
-        <http://web.archive.org/web/timemap/link/https://www.whitehouse.gov/administration/eop/ostp/about/student/faqs>;
-        rel="timemap"; type="application/link-format", <http://web.archive.org/web/https://www.whitehouse.gov/administration/eop/ostp/about/student/faqs>;
-        rel="timegate", <http://web.archive.org/web/20140808023002/http://www.whitehouse.gov/administration/eop/ostp/about/student/faqs>;
-        rel="first memento"; datetime="Fri, 08 Aug 2014 02:30:02 GMT", <http://web.archive.org/web/20201026212550/https://www.whitehouse.gov/administration/eop/ostp/about/student/faqs>;
-        rel="prev memento"; datetime="Mon, 26 Oct 2020 21:25:50 GMT", <http://web.archive.org/web/20201027215555/https://www.whitehouse.gov/administration/eop/ostp/about/student/faqs>;
-        rel="memento"; datetime="Tue, 27 Oct 2020 21:55:55 GMT", <http://web.archive.org/web/20201028224313/https://www.whitehouse.gov/administration/eop/ostp/about/student/faqs>;
-        rel="next memento"; datetime="Wed, 28 Oct 2020 22:43:13 GMT", <http://web.archive.org/web/20201102004524/https://www.whitehouse.gov/administration/eop/ostp/about/student/faqs>;
+        <https://web.archive.org/web/timemap/link/https://www.whitehouse.gov/administration/eop/ostp/about/student/faqs>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/https://www.whitehouse.gov/administration/eop/ostp/about/student/faqs>;
+        rel="timegate", <https://web.archive.org/web/20140808023002/http://www.whitehouse.gov/administration/eop/ostp/about/student/faqs>;
+        rel="first memento"; datetime="Fri, 08 Aug 2014 02:30:02 GMT", <https://web.archive.org/web/20201026212550/https://www.whitehouse.gov/administration/eop/ostp/about/student/faqs>;
+        rel="prev memento"; datetime="Mon, 26 Oct 2020 21:25:50 GMT", <https://web.archive.org/web/20201027215555/https://www.whitehouse.gov/administration/eop/ostp/about/student/faqs>;
+        rel="memento"; datetime="Tue, 27 Oct 2020 21:55:55 GMT", <https://web.archive.org/web/20201028224313/https://www.whitehouse.gov/administration/eop/ostp/about/student/faqs>;
+        rel="next memento"; datetime="Wed, 28 Oct 2020 22:43:13 GMT", <https://web.archive.org/web/20201102004524/https://www.whitehouse.gov/administration/eop/ostp/about/student/faqs>;
         rel="last memento"; datetime="Mon, 02 Nov 2020 00:45:24 GMT"
       Location:
       - /web/20201027215555id_/https://www.whitehouse.gov/ostp/about/student/faqs
@@ -91,7 +91,7 @@ interactions:
       User-Agent:
       - wayback/0.3.0a1.post0.dev0+gee40997 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/20201027215555id_/https://www.whitehouse.gov/ostp/about/student/faqs
+    uri: https://web.archive.org/web/20201027215555id_/https://www.whitehouse.gov/ostp/about/student/faqs
   response:
     body:
       string: ''
@@ -105,7 +105,7 @@ interactions:
       Date:
       - Tue, 03 Nov 2020 03:08:42 GMT
       Location:
-      - http://web.archive.org/web/20201027220743id_/https://www.whitehouse.gov/ostp/about/student/faqs
+      - https://web.archive.org/web/20201027220743id_/https://www.whitehouse.gov/ostp/about/student/faqs
       Server:
       - nginx/1.15.8
       Server-Timing:
@@ -137,7 +137,7 @@ interactions:
       User-Agent:
       - wayback/0.3.0a1.post0.dev0+gee40997 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/20201027220743id_/https://www.whitehouse.gov/ostp/about/student/faqs
+    uri: https://web.archive.org/web/20201027220743id_/https://www.whitehouse.gov/ostp/about/student/faqs
   response:
     body:
       string: !!binary |
@@ -420,13 +420,13 @@ interactions:
       Date:
       - Tue, 03 Nov 2020 03:08:42 GMT
       Link:
-      - <https://www.whitehouse.gov/ostp/about/student/faqs>; rel="original", <http://web.archive.org/web/timemap/link/https://www.whitehouse.gov/ostp/about/student/faqs>;
-        rel="timemap"; type="application/link-format", <http://web.archive.org/web/https://www.whitehouse.gov/ostp/about/student/faqs>;
-        rel="timegate", <http://web.archive.org/web/20171222125647/https://www.whitehouse.gov/ostp/about/student/faqs>;
-        rel="first memento"; datetime="Fri, 22 Dec 2017 12:56:47 GMT", <http://web.archive.org/web/20201026213635/https://www.whitehouse.gov/ostp/about/student/faqs>;
-        rel="prev memento"; datetime="Mon, 26 Oct 2020 21:36:35 GMT", <http://web.archive.org/web/20201027220743/https://www.whitehouse.gov/ostp/about/student/faqs>;
-        rel="memento"; datetime="Tue, 27 Oct 2020 22:07:43 GMT", <http://web.archive.org/web/20201028225518/https://www.whitehouse.gov/ostp/about/student/faqs>;
-        rel="next memento"; datetime="Wed, 28 Oct 2020 22:55:18 GMT", <http://web.archive.org/web/20201031000029/https://www.whitehouse.gov/ostp/about/student/faqs>;
+      - <https://www.whitehouse.gov/ostp/about/student/faqs>; rel="original", <https://web.archive.org/web/timemap/link/https://www.whitehouse.gov/ostp/about/student/faqs>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/https://www.whitehouse.gov/ostp/about/student/faqs>;
+        rel="timegate", <https://web.archive.org/web/20171222125647/https://www.whitehouse.gov/ostp/about/student/faqs>;
+        rel="first memento"; datetime="Fri, 22 Dec 2017 12:56:47 GMT", <https://web.archive.org/web/20201026213635/https://www.whitehouse.gov/ostp/about/student/faqs>;
+        rel="prev memento"; datetime="Mon, 26 Oct 2020 21:36:35 GMT", <https://web.archive.org/web/20201027220743/https://www.whitehouse.gov/ostp/about/student/faqs>;
+        rel="memento"; datetime="Tue, 27 Oct 2020 22:07:43 GMT", <https://web.archive.org/web/20201028225518/https://www.whitehouse.gov/ostp/about/student/faqs>;
+        rel="next memento"; datetime="Wed, 28 Oct 2020 22:55:18 GMT", <https://web.archive.org/web/20201031000029/https://www.whitehouse.gov/ostp/about/student/faqs>;
         rel="last memento"; datetime="Sat, 31 Oct 2020 00:00:29 GMT"
       Memento-Datetime:
       - Tue, 27 Oct 2020 22:07:43 GMT

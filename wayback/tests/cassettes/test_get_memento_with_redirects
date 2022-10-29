@@ -7,7 +7,7 @@ interactions:
       User-Agent:
       - wayback/0.2.4.post9.dev0+g0fed660 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/20180808094144id_/https://www.epa.gov/ghgreporting/san5779-factsheet
+    uri: https://web.archive.org/web/20180808094144id_/https://www.epa.gov/ghgreporting/san5779-factsheet
   response:
     body:
       string: ''
@@ -24,16 +24,16 @@ interactions:
       Date:
       - Tue, 29 Sep 2020 23:18:15 GMT
       Link:
-      - <https://www.epa.gov/ghgreporting/san5779-factsheet>; rel="original", <http://web.archive.org/web/timemap/link/https://www.epa.gov/ghgreporting/san5779-factsheet>;
-        rel="timemap"; type="application/link-format", <http://web.archive.org/web/https://www.epa.gov/ghgreporting/san5779-factsheet>;
-        rel="timegate", <http://web.archive.org/web/20150921195814/http://www2.epa.gov/ghgreporting/san5779-factsheet>;
-        rel="first memento"; datetime="Mon, 21 Sep 2015 19:58:14 GMT", <http://web.archive.org/web/20180807093520/https://www.epa.gov/ghgreporting/san5779-factsheet>;
-        rel="prev memento"; datetime="Tue, 07 Aug 2018 09:35:20 GMT", <http://web.archive.org/web/20180808094144/https://www.epa.gov/ghgreporting/san5779-factsheet>;
-        rel="memento"; datetime="Wed, 08 Aug 2018 09:41:44 GMT", <http://web.archive.org/web/20180809102441/https://www.epa.gov/ghgreporting/san5779-factsheet>;
-        rel="next memento"; datetime="Thu, 09 Aug 2018 10:24:41 GMT", <http://web.archive.org/web/20200927103712/https://www.epa.gov/ghgreporting/san5779-factsheet>;
+      - <https://www.epa.gov/ghgreporting/san5779-factsheet>; rel="original", <https://web.archive.org/web/timemap/link/https://www.epa.gov/ghgreporting/san5779-factsheet>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/https://www.epa.gov/ghgreporting/san5779-factsheet>;
+        rel="timegate", <https://web.archive.org/web/20150921195814/http://www2.epa.gov/ghgreporting/san5779-factsheet>;
+        rel="first memento"; datetime="Mon, 21 Sep 2015 19:58:14 GMT", <https://web.archive.org/web/20180807093520/https://www.epa.gov/ghgreporting/san5779-factsheet>;
+        rel="prev memento"; datetime="Tue, 07 Aug 2018 09:35:20 GMT", <https://web.archive.org/web/20180808094144/https://www.epa.gov/ghgreporting/san5779-factsheet>;
+        rel="memento"; datetime="Wed, 08 Aug 2018 09:41:44 GMT", <https://web.archive.org/web/20180809102441/https://www.epa.gov/ghgreporting/san5779-factsheet>;
+        rel="next memento"; datetime="Thu, 09 Aug 2018 10:24:41 GMT", <https://web.archive.org/web/20200927103712/https://www.epa.gov/ghgreporting/san5779-factsheet>;
         rel="last memento"; datetime="Sun, 27 Sep 2020 10:37:12 GMT"
       Location:
-      - http://web.archive.org/web/20180808094144id_/https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming
+      - https://web.archive.org/web/20180808094144id_/https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming
       Memento-Datetime:
       - Wed, 08 Aug 2018 09:41:44 GMT
       Server:
@@ -90,7 +90,7 @@ interactions:
       User-Agent:
       - wayback/0.2.4.post9.dev0+g0fed660 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/20180808094144id_/https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming
+    uri: https://web.archive.org/web/20180808094144id_/https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming
   response:
     body:
       string: ''
@@ -104,7 +104,7 @@ interactions:
       Date:
       - Tue, 29 Sep 2020 23:18:17 GMT
       Location:
-      - http://web.archive.org/web/20180808104500id_/https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming
+      - https://web.archive.org/web/20180808104500id_/https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming
       Server:
       - nginx/1.15.8
       Server-Timing:
@@ -137,7 +137,7 @@ interactions:
       User-Agent:
       - wayback/0.2.4.post9.dev0+g0fed660 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/20180808104500id_/https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming
+    uri: https://web.archive.org/web/20180808104500id_/https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming
   response:
     body:
       string: !!binary |
@@ -391,13 +391,13 @@ interactions:
       - Tue, 29 Sep 2020 23:18:18 GMT
       Link:
       - <https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming>;
-        rel="original", <http://web.archive.org/web/timemap/link/https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming>;
-        rel="timemap"; type="application/link-format", <http://web.archive.org/web/https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming>;
-        rel="timegate", <http://web.archive.org/web/20150922221816/http://www2.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming>;
-        rel="first memento"; datetime="Tue, 22 Sep 2015 22:18:16 GMT", <http://web.archive.org/web/20180807105844/https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming>;
-        rel="prev memento"; datetime="Tue, 07 Aug 2018 10:58:44 GMT", <http://web.archive.org/web/20180808104500/https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming>;
-        rel="memento"; datetime="Wed, 08 Aug 2018 10:45:00 GMT", <http://web.archive.org/web/20180809112339/https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming>;
-        rel="next memento"; datetime="Thu, 09 Aug 2018 11:23:39 GMT", <http://web.archive.org/web/20200926182800/https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming>;
+        rel="original", <https://web.archive.org/web/timemap/link/https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming>;
+        rel="timegate", <https://web.archive.org/web/20150922221816/http://www2.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming>;
+        rel="first memento"; datetime="Tue, 22 Sep 2015 22:18:16 GMT", <https://web.archive.org/web/20180807105844/https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming>;
+        rel="prev memento"; datetime="Tue, 07 Aug 2018 10:58:44 GMT", <https://web.archive.org/web/20180808104500/https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming>;
+        rel="memento"; datetime="Wed, 08 Aug 2018 10:45:00 GMT", <https://web.archive.org/web/20180809112339/https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming>;
+        rel="next memento"; datetime="Thu, 09 Aug 2018 11:23:39 GMT", <https://web.archive.org/web/20200926182800/https://www.epa.gov/ghgreporting/proposed-rule-fact-sheet-greenhouse-gas-reporting-program-addition-global-warming>;
         rel="last memento"; datetime="Sat, 26 Sep 2020 18:28:00 GMT"
       Memento-Datetime:
       - Wed, 08 Aug 2018 10:45:00 GMT

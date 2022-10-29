@@ -7,7 +7,7 @@ interactions:
       User-Agent:
       - wayback/0.2.4.post2.dev0+g0c2a63c (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/20171101000000id_/https://www.fws.gov/birds/
+    uri: https://web.archive.org/web/20171101000000id_/https://www.fws.gov/birds/
   response:
     body:
       string: ''
@@ -21,7 +21,7 @@ interactions:
       Date:
       - Mon, 19 Oct 2020 08:07:14 GMT
       Location:
-      - http://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/
+      - https://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/
       Server:
       - nginx/1.15.8
       Server-Timing:

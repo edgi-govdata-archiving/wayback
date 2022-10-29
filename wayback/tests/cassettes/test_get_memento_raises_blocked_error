@@ -7,7 +7,7 @@ interactions:
       User-Agent:
       - wayback/0.2.3.post9.dev0+g188aa1f (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/20170929002712id_/https://nationalpost.com/health/
+    uri: https://web.archive.org/web/20170929002712id_/https://nationalpost.com/health/
   response:
     body:
       string: !!binary |

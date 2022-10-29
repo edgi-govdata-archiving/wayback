@@ -7,7 +7,7 @@ interactions:
       User-Agent:
       - wayback/0.2.3.post12.dev0+g6d3e887 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=https%3A%2F%2Fnationalpost.com%2Fhealth&limit=1000&from=20191001000000&to=20191002000000&showResumeKey=true&resolveRevisits=true
+    uri: https://web.archive.org/cdx/search/cdx?url=https%3A%2F%2Fnationalpost.com%2Fhealth&limit=1000&from=20191001000000&to=20191002000000&showResumeKey=true&resolveRevisits=true
   response:
     body:
       string: !!binary |

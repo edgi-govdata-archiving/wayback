@@ -7,7 +7,7 @@ interactions:
       User-Agent:
       - wayback/0.2.4.post15.dev0+g11b25c8 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/20200925075402id_/https://link.springer.com/article/10.1007/s00382-012-1331-2
+    uri: https://web.archive.org/web/20200925075402id_/https://link.springer.com/article/10.1007/s00382-012-1331-2
   response:
     body:
       string: ''
@@ -23,16 +23,16 @@ interactions:
       - Thu, 01 Oct 2020 01:30:30 GMT
       Link:
       - <https://link.springer.com/article/10.1007/s00382-012-1331-2>; rel="original",
-        <http://web.archive.org/web/timemap/link/https://link.springer.com/article/10.1007/s00382-012-1331-2>;
-        rel="timemap"; type="application/link-format", <http://web.archive.org/web/https://link.springer.com/article/10.1007/s00382-012-1331-2>;
-        rel="timegate", <http://web.archive.org/web/20160410042521/http://link.springer.com:80/article/10.1007/s00382-012-1331-2>;
-        rel="first memento"; datetime="Sun, 10 Apr 2016 04:25:21 GMT", <http://web.archive.org/web/20200925075359/http://link.springer.com/article/10.1007/s00382-012-1331-2>;
-        rel="prev memento"; datetime="Fri, 25 Sep 2020 07:53:59 GMT", <http://web.archive.org/web/20200925075402/https://link.springer.com/article/10.1007/s00382-012-1331-2>;
-        rel="memento"; datetime="Fri, 25 Sep 2020 07:54:02 GMT", <http://web.archive.org/web/20200925075440/https://link.springer.com/article/10.1007/s00382-012-1331-2>;
-        rel="next memento"; datetime="Fri, 25 Sep 2020 07:54:40 GMT", <http://web.archive.org/web/20200927084438/https://link.springer.com/article/10.1007/s00382-012-1331-2>;
+        <https://web.archive.org/web/timemap/link/https://link.springer.com/article/10.1007/s00382-012-1331-2>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/https://link.springer.com/article/10.1007/s00382-012-1331-2>;
+        rel="timegate", <https://web.archive.org/web/20160410042521/http://link.springer.com:80/article/10.1007/s00382-012-1331-2>;
+        rel="first memento"; datetime="Sun, 10 Apr 2016 04:25:21 GMT", <https://web.archive.org/web/20200925075359/http://link.springer.com/article/10.1007/s00382-012-1331-2>;
+        rel="prev memento"; datetime="Fri, 25 Sep 2020 07:53:59 GMT", <https://web.archive.org/web/20200925075402/https://link.springer.com/article/10.1007/s00382-012-1331-2>;
+        rel="memento"; datetime="Fri, 25 Sep 2020 07:54:02 GMT", <https://web.archive.org/web/20200925075440/https://link.springer.com/article/10.1007/s00382-012-1331-2>;
+        rel="next memento"; datetime="Fri, 25 Sep 2020 07:54:40 GMT", <https://web.archive.org/web/20200927084438/https://link.springer.com/article/10.1007/s00382-012-1331-2>;
         rel="last memento"; datetime="Sun, 27 Sep 2020 08:44:38 GMT"
       Location:
-      - http://web.archive.org/web/20200925075402id_/https://idp.springer.com/authorize?response_type=cookie&client_id=springerlink&redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2
+      - https://web.archive.org/web/20200925075402id_/https://idp.springer.com/authorize?response_type=cookie&client_id=springerlink&redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2
       Memento-Datetime:
       - Fri, 25 Sep 2020 07:54:02 GMT
       Server:
@@ -120,7 +120,7 @@ interactions:
       User-Agent:
       - wayback/0.2.4.post15.dev0+g11b25c8 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/20200925075402id_/https://idp.springer.com/authorize?response_type=cookie&client_id=springerlink&redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2
+    uri: https://web.archive.org/web/20200925075402id_/https://idp.springer.com/authorize?response_type=cookie&client_id=springerlink&redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2
   response:
     body:
       string: ''
@@ -134,7 +134,7 @@ interactions:
       Date:
       - Thu, 01 Oct 2020 01:30:30 GMT
       Location:
-      - http://web.archive.org/web/20200925075411id_/https://idp.springer.com/authorize?response_type=cookie&client_id=springerlink&redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2
+      - https://web.archive.org/web/20200925075411id_/https://idp.springer.com/authorize?response_type=cookie&client_id=springerlink&redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2
       Server:
       - nginx/1.15.8
       Server-Timing:
@@ -166,7 +166,7 @@ interactions:
       User-Agent:
       - wayback/0.2.4.post15.dev0+g11b25c8 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/20200925075411id_/https://idp.springer.com/authorize?response_type=cookie&client_id=springerlink&redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2
+    uri: https://web.archive.org/web/20200925075411id_/https://idp.springer.com/authorize?response_type=cookie&client_id=springerlink&redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2
   response:
     body:
       string: ''
@@ -182,16 +182,16 @@ interactions:
       - Thu, 01 Oct 2020 01:30:31 GMT
       Link:
       - <https://idp.springer.com/authorize?response_type=cookie&amp;client_id=springerlink&amp;redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2>;
-        rel="original", <http://web.archive.org/web/timemap/link/https://idp.springer.com/authorize?response_type=cookie&amp;client_id=springerlink&amp;redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2>;
-        rel="timemap"; type="application/link-format", <http://web.archive.org/web/https://idp.springer.com/authorize?response_type=cookie&amp;client_id=springerlink&amp;redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2>;
-        rel="timegate", <http://web.archive.org/web/20200611102358/https://idp.springer.com/authorize?response_type=cookie&amp;client_id=springerlink&amp;redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2>;
-        rel="first memento"; datetime="Thu, 11 Jun 2020 10:23:58 GMT", <http://web.archive.org/web/20200924070527/https://idp.springer.com/authorize?response_type=cookie&amp;client_id=springerlink&amp;redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2>;
-        rel="prev memento"; datetime="Thu, 24 Sep 2020 07:05:27 GMT", <http://web.archive.org/web/20200925075411/https://idp.springer.com/authorize?response_type=cookie&amp;client_id=springerlink&amp;redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2>;
-        rel="memento"; datetime="Fri, 25 Sep 2020 07:54:11 GMT", <http://web.archive.org/web/20200926080807/https://idp.springer.com/authorize?response_type=cookie&amp;client_id=springerlink&amp;redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2>;
-        rel="next memento"; datetime="Sat, 26 Sep 2020 08:08:07 GMT", <http://web.archive.org/web/20200927084407/https://idp.springer.com/authorize?response_type=cookie&amp;client_id=springerlink&amp;redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2>;
+        rel="original", <https://web.archive.org/web/timemap/link/https://idp.springer.com/authorize?response_type=cookie&amp;client_id=springerlink&amp;redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/https://idp.springer.com/authorize?response_type=cookie&amp;client_id=springerlink&amp;redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2>;
+        rel="timegate", <https://web.archive.org/web/20200611102358/https://idp.springer.com/authorize?response_type=cookie&amp;client_id=springerlink&amp;redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2>;
+        rel="first memento"; datetime="Thu, 11 Jun 2020 10:23:58 GMT", <https://web.archive.org/web/20200924070527/https://idp.springer.com/authorize?response_type=cookie&amp;client_id=springerlink&amp;redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2>;
+        rel="prev memento"; datetime="Thu, 24 Sep 2020 07:05:27 GMT", <https://web.archive.org/web/20200925075411/https://idp.springer.com/authorize?response_type=cookie&amp;client_id=springerlink&amp;redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2>;
+        rel="memento"; datetime="Fri, 25 Sep 2020 07:54:11 GMT", <https://web.archive.org/web/20200926080807/https://idp.springer.com/authorize?response_type=cookie&amp;client_id=springerlink&amp;redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2>;
+        rel="next memento"; datetime="Sat, 26 Sep 2020 08:08:07 GMT", <https://web.archive.org/web/20200927084407/https://idp.springer.com/authorize?response_type=cookie&amp;client_id=springerlink&amp;redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2>;
         rel="last memento"; datetime="Sun, 27 Sep 2020 08:44:07 GMT"
       Location:
-      - http://web.archive.org/web/20200925075411id_/https://link.springer.com/article/10.1007/s00382-012-1331-2
+      - https://web.archive.org/web/20200925075411id_/https://link.springer.com/article/10.1007/s00382-012-1331-2
       Memento-Datetime:
       - Fri, 25 Sep 2020 07:54:11 GMT
       Server:
@@ -282,7 +282,7 @@ interactions:
       User-Agent:
       - wayback/0.2.4.post15.dev0+g11b25c8 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/20200925075411id_/https://link.springer.com/article/10.1007/s00382-012-1331-2
+    uri: https://web.archive.org/web/20200925075411id_/https://link.springer.com/article/10.1007/s00382-012-1331-2
   response:
     body:
       string: ''
@@ -296,7 +296,7 @@ interactions:
       Date:
       - Thu, 01 Oct 2020 01:30:32 GMT
       Location:
-      - http://web.archive.org/web/20200925075402id_/https://link.springer.com/article/10.1007/s00382-012-1331-2
+      - https://web.archive.org/web/20200925075402id_/https://link.springer.com/article/10.1007/s00382-012-1331-2
       Server:
       - nginx/1.15.8
       Server-Timing:
