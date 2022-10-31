@@ -28,7 +28,7 @@ This release includes a significant overhaul of parameters for :meth:`wayback.Wa
 Maintenance
 ^^^^^^^^^^^
 
-All API requests to archive.org now use HTTPS instead of HTTP. Thanks to @sundhaug92 for calling this out.
+All API requests to archive.org now use HTTPS instead of HTTP. Thanks to @sundhaug92 for calling this out. (:issue:`81`)
 
 
 v0.3.3 (2022-09-30)
