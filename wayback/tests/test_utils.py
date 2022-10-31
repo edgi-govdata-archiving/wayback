@@ -50,19 +50,19 @@ class TestRateLimited:
         for i in range(4):
             with rate_limited(calls_per_second=3, group='cps1'):
                 pass
-        assert 1.0 <= time.time() - start_time <= 1.01
+        assert 1.0 <= time.time() - start_time <= 1.1
 
         start_time = time.time()
         for i in range(3):
             with rate_limited(calls_per_second=1, group='cps2'):
                 pass
-        assert 2.0 <= time.time() - start_time <= 2.01
+        assert 2.0 <= time.time() - start_time <= 2.1
 
         start_time = time.time()
         for i in range(3):
             with rate_limited(calls_per_second=0, group='cps3'):
                 pass
-        assert 0 <= time.time() - start_time <= 0.01
+        assert 0 <= time.time() - start_time <= 0.1
 
     def test_simultaneous_ratelimits(self):
         """Check that multiple rate limits do not interfere with another."""
@@ -74,4 +74,4 @@ class TestRateLimited:
                 for j in range(3):
                     with rate_limited(calls_per_second=3, group='sim2'):
                         pass
-        assert 1.66 <= time.time() - start_time <= 1.67
+        assert 1.66 <= time.time() - start_time <= 1.7

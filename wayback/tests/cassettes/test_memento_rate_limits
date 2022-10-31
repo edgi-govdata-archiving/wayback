@@ -5,9 +5,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - wayback/0.3.0.post0.dev0+g024a80e (+https://github.com/edgi-govdata-archiving/wayback)
+      - wayback/0.3.3.post10.dev0+ga68c731 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=zew.de&showResumeKey=true&resolveRevisits=true
+    uri: https://web.archive.org/cdx/search/cdx?url=zew.de&limit=1000&showResumeKey=true&resolveRevisits=true
   response:
     body:
       string: !!binary |
@@ -303,54 +303,137 @@ interactions:
         V+h9b/N/RXPwx0nif/Xq16En/7b6H1z8i53XG+DcNagBiRoY7UCgGJ1QFCd/DGeiEbz+/LMhAvoy
         HeibP/9fV6+Jk2492UycZ+bUtpJl2ESkM01qFlAw1ZCzrAG+AcCiPGvadFT8fPx59Y964e0de7JA
         9BMrqb9E2mNv2dxstpvWse+bvtSCXYdiF4CzdPHfQ4F/y8287k3x41BhJn+SWigVvA8En4j+7azt
-        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
+        7bdnJ+6BvmxgXfXDr3O8/211UCNVaUly3un/19uVLElu8+j7PEVf/tNcMrkqj5REiqL2jRL1/g8y
+        hKrL7hLzd9JZqnFEOxyODoAJgSDWDzSbB/8rOC2HNUWo8qbMZLkhFNL3X9tbEPSN+y/rL9XrzutI
+        0fOAAYeC2zkv8h5xciIOYJfe4Y8pir22yF8zaQf15A5YqT9z9AOa4IZjkiNZ5sauS5upSxEv9zpt
+        5q1pxDY0dV9t4zHNwM9fFhrTvB16Nf4Y8VI9AsqAoobRiyGYf/sGHpTZsZYYff+eooA0v0E/6QUm
+        4Pwp6cfSr5gySYQJOMvkk3pMJYDMQyn10NUrm4xxYkGTnUdNCrURLoqj/4aFDABpCP9OFH2bwZ2d
+        RQ+QzOiv6ZcXgZuXfDovu3Sqyc00u9yp0W1MbD2WRu3AAIe/gB+53RgruS2rqet2bUpaNrimOaJz
+        V5XjguQ2VAwazk8tSp8M/nKM/5kBz2gtOsla3op+mLeitUO6r2Qo2oamXB0MzpcVGODb04Wx//5a
+        fUU1/nnqd+iARX/EndfdLNhneGMkxitrsK6p3i0u+mavfEhLR7IPeq3yft12B1MvmAYMkDfyGL0C
+        w35TMrBzxVtgeoXHHT5P7APRIybB+5o6Od+pw92jKMrsTI6q1Jadq/O2cGSoXZcu26jmlXKxiPmI
+        pGjA4EDPoTEu64anlRZjTnnX29nw0s1lSzNvtXZDCIfOyJNXeTCgh2LGvLDdSsrV7htrG2TKdcXV
+        3rhxdv2IGLULtE7fA6sADBBmKEY7oxgEXxj7dwuwZyIYaDGSarVtOWwjcoXZNlptltocqc65HjAq
+        2P0sIhj3BTzgmF9gnWnVNMjRhw/N3jVKFJtlPBsHMWK1+qgH4cDL+WQQE49/hwGO6a+NYnD+Br8Z
+        xOTsdN2OTKx2ddmCnZCtw9rpuuzbtWVs479Oe+3/oB7zhaOOf9ZRfqwAfAlI+/bxGQJE/qh82ibR
+        1pF1UsyOHc5n1Q+tXm0v+KDTxt8AdJrkPhgkgFBFY6wQQ/60jR7adu9qx7Z2z8xQDgvqqnzjfekZ
+        8CD+8f8H3oVzXPuGbIK7BVjM5I+B7rcpB98Ug8Z/ppH/+4ObDaTMR7Xgoh3aldEtn2lVNnbpNlPk
+        hf3F6Nkow85L4j3ZVw74a9L386kTQKegKOpTkpYuG2k089EOV5MtDMmKrkdlMZaaTd7NJDx4yz8Y
+        4Bg3/A1V99TBTY4ylVHHD+SDKOQoohJoFe/3mUhZu2GkW6PSDFHT4EGydcbFPnoGJ2RwaGA8wvH7
+        LcbW8JqLdlBjt9BxKVjtOB8UE71NrVws4Kf4o55dhgf0GVESVaCxG+VLVtbVSFpRWEG8zFi3GOEf
+        RGOk9/PJqej8m0GCHzFd2W984ccxnHCLcvLpPPuDu5wOU2omseImk9suNwF4J1jq4/hnWwOrFWDM
+        OiKD+fL44dX9pB7zeSOOz9A5kwNTGozcccwFRk1jdFZRZRHRA7JypmqeLe4qrMmW+yCIJPT0eSEh
+        AjASOOY1KfulSc2wur02s3cypU3zbHJbzoWaFfcKik+QvcDgqD3QqGkfNZbtluZqNuVENiSpyIQV
+        XS3sOOvUv6eQr0wCBhhwtmmMN6KHFLdeSzrh8jwvt1RNfCY6VU1rlh1lv+7edw1EdDCIGrf69zfg
+        oA6rFfjVT9Zvyvz2/XflrPfH2nsfpsS5CAwturPOOtoKtDXFwGSn00nTbto7gJXHp8WrHwwACinu
+        4ULS2bGuapX2hdOd3kze02YmtGloMS2eAeOBcLx36bUpSu/Twt+mghcETz1NW5FLVDGDx7TrcthY
+        DgzuoYgoLMyIiUNfG57wVh3U6e2i43MSMuBQGYvqIxNZvXNRkbGXTae9P1in2tW1ypjOqP8swIDd
+        njAgNx6VActIxmi+DY1sVmZ0artVyzTVA64zKipvFzB9okLQaBdXdyYcN94WEJearPLmbeZktkPF
+        Tbk1jskBdJQENxffjoXuUYkS1ewDz2acQ5RoswoNos/HTLVjK2va/oIui8DwHN7sLaptp9FTy3ek
+        O7wMWyV6zhtZiob3eDPDwEowneE1Phjco9yfKAbBLcMHHuMt5iNHMMDnLOT9GOKAHVAX3DLKz1/4
+        K/ULjn/+wvf7UaihMR/A4awfZLWbzFMuUK5d3u7UOZFTvMzr4R7S8y2DORQfAETVsmrA1myRJDtZ
+        m5p7t9sgg0YiGMLlytoDUjpgACNA/q/GMChpS9JCjMvSqLVVZeYdXGFT5KU2zCnUcAn7itEFx0eH
+        nY4Kdzdv4eZVsc5m7ZzNYtWmlRzbNu+sxQsFEaGQATuYfDcaxadM6pnyi0HVqUr7uZVd1tqmqTY1
+        4rlt8VSyJevmzH/d+wlg+CmDN1/4c70JSEMSgEU9wFshs1yXzIllg7pBVuW8bnSuB76psu5B7Jyf
+        GBw1SsKivmvZuXYYJ4PJlnoXet/pimhdDKrIOtN3FmzP6YkEBlDkZreYX1DIwR8UEoWDKKUe7dpv
+        SnFVrJn/vtbb/ztjwS+ADgB6i3I8rWlrXOa2I97j8b6mjx9XY1VdpqYatMgO5/+smdAkjjCL65zi
+        /bIT3WW6pou3PhktMbOMVEKOObZe9Sn+ukr5gwFUvKMY6Hzui7EpvYTWfqQtLk2Ws8Gs27BKO3nr
+        4EWRnBkcSCB3+qJqGeHcnr8uBrAa+hI6K5L6+dNi6De949u3z41DicCMC8HfpkwCiRz/vv0Ri77t
+        7p8NGYa57Bsl14uDABTTX0gcL1Q8NyssYXaq2EYAGM/Y2sxmHNutIabp4A4FVoAAhJsP3iKKTREy
+        RwF1iJ5frjqPpH4Wuw/efOB5jwqdDxiO2bvb47CtBted854sXbhBqNzGHZ6+R3A9YXEXpy/3Dr95
+        iQj0TnoDE2WANamyZq2mfhGqJEr19Yg3ZmRd9V1XD3B8dJY+PXCPk5fzEAdKBlltQaXIB4aybpqn
+        gVZzscxbbetKtPwXeDIBA0AjwPz2YvDqX8fmQJnCaGlUIU52HDVG5U1FUI7WqsdrjYvZuXwz2m6Q
+        1yHorDv0MO8oKrxSrlTrmnlLXplxHkdscFp2S5tjOXd73xzvd8iAQr3yDwfhXd+Dnd+9D9L3qOAW
+        t3SzFdp7SzUqKzuzepRDSkjHp5rLBfym+1nvYcEEQH1HOa1euKnEZdGk6bTvjJZ64s7/Z9fN3rX0
+        igM9CmcGMODl/4lR/dYUlSQu9/FtSoeS1lovKepHIVTlyqwGBg/2/8+AfGzvvSKwCrzLr9RfVHFt
+        gVrLBZ5dkTrOaeN2V/M2m5Ycs6w9Nj6ctROquAfK0A/k7GBVQnLzwVbU7a25MFO3DeW8Cdz1BS8q
+        1i1uLVVjpZMQ+fOEPmGQ4DgEgW7fWG/6RjVpl2Lb1ylv17QosoKpiTTg+aHb+QPwY2EFi+o0KPtu
+        tU0nzDq7fvJe97BLl8lplW2R17YDz+9+vgFHcxDFJMb+vMmAAzDxK2zluPza7ewZf6X+z7NwQmSt
+        YWntn960GKZauYKlabpXqWOUNfUv9ggOjx5QO4gC50BiWbtc6lbryi596T3u1G4VWSb/POq5Ol72
+        QIGOFUM8qrVaDHSmzmXdVtJBZm7uVtpaWkiteaG34+3lZwYwzJ6QG/q2t8kD3YSmDO/aR8F3rcTI
+        Xs7O1PNIGyWaxTnRL0WLRTrwZoKEfuApHx2mUCz6OQYc2tGj6pY10QM1JWn3crDGidxLXaXbnJVT
+        mg72cNzY2bwB/AT2j3uMiDjVopXYOOL2YsvZlsm01pZ20jaDFPALED5/XuiC5vQTqeDF9a2lrpB1
+        Muv3jMle995nK4dNF6gsNjOCiILg+XFE6J9dxC+arHu6ptlKfKSsRb1JMS+jbURXmZ7OKPUKSpPA
+        AXpAtZ58QuK+cIBIwWZLtDfUpGuWni2s9n4i22bhRiqtZ3BO8AMDwMCJS2BYR8p1RM1Wr103qHGe
+        KC/QrpHGDBtAb0aInbXoAZN93gZFNFpHWLh/pv6iQZRmOJ0la6dKOpaNMyJz5Ro96FkVcoIn5rTJ
+        BgA04RWDdrkY+fQL67OiIdk6UIydZaXGud7cTIs6PdIj6HwJoLLoH8mnexO+H70Ade/XPQWB+74H
+        AZPECOMkysU1E/cu3M5qhkdB+7rdmdd9plNjK+LYAqkdHEgfw6j7J8bOi9kaw8zUqHRhY1ulhttJ
+        zGtd4N5OmXXlfngQJx/6fj86A1jMGMAb8jmoo8+x0BeZKZkS1BLUNa5ya4GbscFFM6uR9kq0i/t1
+        bFU8MwCUmju9pHGFBsrzST1K+i3naUO6nDqVuWHb+TqtVK31PNTLPoB1o2f/BLCfjs3h1/gnyfn8
+        MBzEvfGMEb/S7Vyv/oHRuuBVr0ZWEle4scWNyAzn4OA+cMAAvskjqu8jgsHjnLI6Mr+wtj3GwX3J
+        ILmf5Q/DTbc/J2y+pT7nu/WV+j8fvu8Gs/pwvVJpPpaZN5uDIbvzV3lDRAjIiiX8ETB4wLa6qMRv
+        L6RVbYqrKeVju1jvv1Wjf4vZkI6mX4/GqlCBYPKDkJjJu9fySYLjf6H+be0PlBN555OwV7AyEWbt
+        q9ocFcVjn8ElWeuvGBgH9QTBZNkVSolP2ci/qcdc2aXvsr4hlbBDb3Fd65rLsTZlsWYb9h70L0+M
+        /5fjR0XVUQySgAFsLcW3iHU8MfRP2eCDPsxsRgVdrxn4W4XPDCDrg1EUQJlq6dzgrdIsnZ2nT5XV
+        TjQ1qmZTj8rAL2CBfgYM3ozq6NdFP3+R/kP476o9f35oHNVjGSOVr2uTnzJ4VyonRwEdFVyEHq+W
+        FL3lRf1NPeYdae3uxLazdhRNQXONpgLpho+a2qYwS/4LtkKECsnQ31HcNy1O8uT4KDZGNDwbm2Lr
+        Rin1OnS5GOtqGTnT7S5aA9Mqzy4sSmCRA7nECUzCb/tBPcYJRHtD+4H22mz93JRt51BmhUpJ4STF
+        HLIA5FTb+miwSRCKQWCNsPfnC/uV+oscw7oufblQzQeRNxxnHEnc7FWbr+24VTtIH58/7wcDHBWi
+        xDAILtfHY06i1L8TTNYZ0UbRpsRMmi0rR5hsy3k2SARuFA3sMTiZsD7iBTDFa+HjUPh/Uv6WyTm/
+        45+kYx6RWnPk78/eFxuZJh+Pc9RaM5TtvBhO2ArVlSeKczDAUdmvCAY0/K5nBu8K54lOHjiaUQ1Z
+        5VCVwp92rhXJNteVlKl5H1gnERnHAdrpE3Z2chDsjsEIXe9bHk6xjxouSViQs6of6G04idKasd6c
+        0O3kqkzWlPkggeRVvSy7rQeyFsuvo2fpOYNLuqxPC04D6hcc/6w4+CObiS/wnP4LaRITrMltEbKp
+        7DAWdin1KlVr87JJc92JZuM9nB2d35HfDOj3zdj5gf1K+YKjn5U+ZPC2nQwVEuBd7q92Kr+Wyj28
+        S39SfgEcs6amR11a8mJviN6zuhXKIFzzmixtWkHmODmb+JDBu1K5hVKhMA70anVRlGQQC/XlT+ov
+        8hIyLUZdjtXCl84pO2NWSc9OFaQbtPOuPKJBiIxvHObPo9raXzI4l67QARJJb7fv36RbeEf/pPyi
+        Xb5pmR5Ex0Y8996dVLYjOq3ciPK6H2GnDTrXrJ4xeFNnSHKOu4F0guMaJedVo1qtjV4dGQ0mRd1h
+        bGauMot4kUItGNPgQh2AsRxf0uQVuJEYUrmURj19ctwWvM3L2ubaiq1A65DuLpsqzMfRLgQqJUGc
+        Az2BxwqRGKcjdbPpmnpjA0NFk7lNVKPKW7nmA9MjTPR6SZwZgMdB+DPAoX+vmoFD+ZX6C3PWNVmt
+        akR7Vc+lt+tZYTvNxzqbTZ/usz8+ewS3ClH/55og+YRA+Qf1GO10w1L0Izc9XnqzdBnGK5aSkUbW
+        LKcYrPE5FwoMYBlxEmXulaupQku+l9nYEeSyvi2ydOkrvXK7l9Crg1jIALDmEY6J1NZBlGxUXtgu
+        Z9no5ta7q4unPYsxk7CnluLwKcQfff6X1HpI8IZ/of5iCDdPl0ETXfFBS2lXRTfFVa+p3rvUOpj1
+        OreKAPbn/QbIETG2M4ZBYPbJsZTgEdVsF/ULzhYUGDwAeCQmpCqGtBJDKdg4lKxqmoq5DvfDvnFT
+        9vkMDPBrBm+7ryFp9GHjYsxnLzPW8AFlvE9Ny8nmarvhFudzU1TKn53yIKQiAGuCH1G+fV/Bjrqh
+        QEqWpOrTTshc04X2upzydq2g2JacFfQACYaVqxd3sX9Q9vf2j0LPm2I/z92iY40ogOvG3Kq2lJRw
+        gwRxg9xwapwZBBN4XaWx2w49jv6kZwZQ4cdx37XMCmmnnNESmWqp17XMp5pMLJ+nTbgGQ4NF4KuR
+        OwZnMKoeQLuh6PRkB4Mda5qxaPaqQ6a3iyrbZT4U53F+uABTDftQ9/bt7xpYnN+Uv+2A81twnX6T
+        jsmaDaaY+Ko6rDKWFvPqFuNqzap90rDvZj46B86vCTngUZJXVZI4D58GavmbepSz8PL4KMw+kaMx
+        isWsMos4fqgyf1L//vHZ2ZUlXmRJZN+kLOVY6rZvtUG8GY3RLpedqnvWiaUa4fOS5Kya9HbM6+Hv
+        N+4Flv5AzbvFdaVVpGd20vNC55qsvGKtSY3aewDAqJl/Sb2SBJYe2sIJsPl+tH+28TAI5T9sVMdG
+        0ZHejO3C5xkvbd76l4RjW28VVk4OCjo28OOs+IBLlhAcpTk53WqxKVfuDbOMkdW5ehN5PWNFPTMA
+        WkBBLQbAw+iN0FeQcG/U7oB0QhPyfUMZHhp2qZJrsn44kPk9uRPo4/oRv/WTetQe0nFjrcvHFMPm
+        8o4KN+75SrUSai+cJkd17azuDODBEb2kxRmj8KM+DtFfETTjIGhmB7rOU3jhN2K24OzQ4k9ZDABw
+        xNkDtTk6bMkl4U4YLoMveftB6ujYFXqJ3MPrCq78VWd/BPqOMMj9mjg/8Mk8dTj7JRMtZ6AnoA5g
+        FnFopTstHe5lKoxsu3KtpbcFaFnq3PRKZFsKSZCgCQEYJAjTS65rkKJjcFWvSrE8URt6g2m3S7rB
+        nqgNUI8bF3stenqGIwQGANAWtwSl3tpu3dOqInJsjF7UVHKRFZmo8ppw2kOvOg1/wZnBm093Enjz
+        DNAC0QNfY21CpeTH/OsldyrwJz11SB5f098QOmQIZqxul8Q5z6xN8lGd+qEL9bhO7iF1DG/3Z+B9
+        uWQggebd7ajRpJzjlcpyHyTelKzavsulsXbsDF+zAUAH0CNQeYCX9Kb4GuGcj8+PrpUkavKym+rF
+        IGQmRXLE2tntjSrnAmd8q6irEUSAgdbzY/KAXST987flUI35a7LwB6iDtbkE9CrMOEF/g9fLS2Bh
+        z6itB/U7g6H17weXTw6OoJntGiMcCp3CJ70k4xE6lBwa6RGPWej7hok/JmlvUVjgb509uTFyzRDz
+        U+r3G/4sHF0dhBzU6csF6EdNZ+f9smVKu6rjW8Y1l6uxuSRpx1U5YED5DbpKOCxwB6zrH7KSj8sM
+        wTONf6D787VNFwSXHFBUCL2/0MmjnLCJ1Ag5FVhrxqpJ0TxrO+/uLVLWtioPVInz+wT04fF+oTfR
+        9J+c/3D5XrhN0fTP3iqHuTt0DR7mE4sA29X98xeTRBRkN8swkr6ZhoXNcy0Vp8VeIoXTPXUzZFWC
+        Fj9++H1JFCyJyLHdx9XOyv+Ahi3DIsWYZ0NWIm43op5gtv7FIAr2K4pBIKIPBlED0lEMzl84gcZZ
+        co/q4OztvmvnGkAV7qe5NPkiGyxKYv1nnwBkH5bDhQxgZXbUR45hQM4iAgaYYPrCukXTP9+x5NiZ
+        eLtfYj3xObN4vImUoGverVA25AOC/aeoHw20l5w9aP311KELMGokgGdbYfumqws0DlKYqTUuLYu+
+        V72P+PsRjFtQXktg+/Rfe3Oufrg+qF8DuBQ+ujCP/gBIwJ/5sAAKSNArh+TdD3uHN5dE5c+McoYo
+        rremGUsr10YTpprUmL3KsO52qB0F/hQwYD7wvKA8cn5RoPsGQ9/JzxgDAMoht0uQ7kJnx+sj4JDg
+        axy1UDLk9sD8kgIMDmp2CcCB+1D8CsnQYKzsk3pUV1VRT4ZTNuolZUTsE+FV7oyywzjJrna/7uwM
+        2PfBAHnRX5LeeiIc6P64X9Koi5+oPACM3a8pMwSzAMdGawCv/ZHICralwdmvef8CI3yHyOp+v8Y7
+        Dq8rR8fW2h9phUzu3q+h6JKk5bMLdaL+NuXgWb3D03e7yIg9OTfI/KJoM3xWYYPyjfyUNgLQzv0S
+        ExlmQBIEG06idq1FJOQCXUcHoOmrOPndrwoYOLfbs7XYV9xTdD/OfsnD94Q6OmzMNWWXJ9Svs+1B
+        012C8CH3H7LtUOSlj2vu6hPqBM5+kYMd3FWowV519mAmCFYd3fBFLROPwB9A9Dp9D8MmBP7A7aKg
+        LJQMO+R+TWNASJ0fOnONlxfqzOEPXJPFDUqkCSSa6OOa0OPJbTre1dslcg+GahL08a5e4ymFGvkA
+        nbnG4wiaSRIMKRR6CXoOCcYhvlJ/MQtbaLKpQm6sLowUOFsLvVFdSLGKNHXZMW50Fv0DtphifEmd
+        LpwR/Er9+8cPUCEOBjRuN3MUgyfyuQMGaExjewQDEiSxjtjpdlVrw/newk47fMf3b2+sClAPHge0
+        WXJR89rZ4/PUAXTymsxk0EH1gML6a1sZ+U1Dm/A4Znofl9iE8IV93D48m5+x9A+oUPuzX2OLw+tE
+        D8lc48mHkmHH2a/xKEOdZPcEJ/RyGN1P0o+ohnOndV5WvUWN2VSfClxkrJ3XgWeVpB2HBSuPIE54
+        3A7v4KIqRSiZ5FJP3pP/D8o8gf+gx3+Q+t8vTJL/+T/VIpWv0HcBAA==
     headers:
       Connection:
       - keep-alive
       Content-Type:
       - text/plain;charset=UTF-8
       Date:
-      - Mon, 22 Mar 2021 12:48:30 GMT
+      - Mon, 31 Oct 2022 20:44:45 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
       - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-Cache-Key:
-      - httpweb.archive.org/cdx/search/cdx?url=zew.de&showResumeKey=true&resolveRevisits=trueDE
       X-NA:
       - '0'
       X-NID:
@@ -364,9 +447,9 @@ interactions:
       content-encoding:
       - gzip
       x-app-server:
-      - wwwb-app53
+      - wwwb-app52
       x-tr:
-      - '114'
+      - '50'
       x-ts:
       - '200'
     status:
@@ -378,9 +461,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - wayback/0.3.0.post0.dev0+g024a80e (+https://github.com/edgi-govdata-archiving/wayback)
+      - wayback/0.3.3.post10.dev0+ga68c731 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/19970427191925id_/http://www.zew.de/
+    uri: https://web.archive.org/web/19970427191925id_/http://www.zew.de/
   response:
     body:
       string: !!binary |
@@ -397,8 +480,8 @@ interactions:
         X+/HnKs60XGO7ji0lWujtZJK8HWRc/5QAFfFK6RYa4P9506njn8TE/277CsNv54T3SopwxgDNmuZ
         fde7j+CJT2gt05ttokub76C3OBUehPBWQWC3F6P4Ptkl4ATOy1o7BbQvHPckQc3jjMWpU7bG9m72
         PK+Il1KyqXTncxnDzzKcc25ZIVHQTbrfyjWvxH8ltpDZnaLml2CMyjVO6wd66JAztcKLCJXR+H9F
-        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcULV9wbFiZ1lYQtvbmxNZWzCopT0umRvn+zvdchw5+Cw
-        i+tzJmUKXODNU1lQv8bAvXqJgxbveBxXxZ+D1h+4acC6JAgAAA==
+        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcUJhJCh/XODEzrKwhTc3tqYyNmFRSnpdsrdP9vc6ZLhz
+        cNjF9TmTMgUu8OapLKhfY+BevcRBi3c8jqviz0HrD7hpwLokCAAA
     headers:
       Connection:
       - keep-alive
@@ -407,13 +490,15 @@ interactions:
       Content-Type:
       - text/html
       Date:
-      - Mon, 22 Mar 2021 12:48:34 GMT
+      - Mon, 31 Oct 2022 20:44:46 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
       - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-Cache-Key:
-      - httpweb.archive.org/web/19970427191925id_/http://www.zew.de/DE
       X-NA:
       - '0'
       X-NID:
@@ -430,22 +515,22 @@ interactions:
       - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
         web.archive.org analytics.archive.org pragma.archivelab.org'
       link:
-      - <http://www.zew.de:80/>; rel="original", <http://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
-        rel="timemap"; type="application/link-format", <http://web.archive.org/web/http://www.zew.de:80/>;
-        rel="timegate", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
-        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <http://web.archive.org/web/20210320210013/https://zew.de/>;
-        rel="last memento"; datetime="Sat, 20 Mar 2021 21:00:13 GMT"
+      - <http://www.zew.de:80/>; rel="original", <https://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/http://www.zew.de:80/>;
+        rel="timegate", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
+        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <https://web.archive.org/web/20221031082507/http://www.zew.de/>;
+        rel="last memento"; datetime="Mon, 31 Oct 2022 08:25:07 GMT"
       memento-datetime:
       - Sun, 27 Apr 1997 19:19:25 GMT
       server-timing:
-      - RedisCDXSource;dur=0.697900, exclusion.robots.policy;dur=0.305332, captures_list;dur=2191.253961,
-        esindex;dur=0.013204, load_resource;dur=547.469172, CDXLines.iter;dur=22.645042,
-        exclusion.robots;dur=0.319252, LoadShardBlock;dur=2141.747364, PetaboxLoader3.resolve;dur=497.287892,
-        PetaboxLoader3.datanode;dur=2098.347280
+      - captures_list;dur=244.391337, exclusion.robots;dur=0.202287, exclusion.robots.policy;dur=0.194084,
+        cdx.remote;dur=0.065431, esindex;dur=0.008743, LoadShardBlock;dur=68.366650,
+        PetaboxLoader3.datanode;dur=62.815223, CDXLines.iter;dur=18.293273, load_resource;dur=54.638106,
+        PetaboxLoader3.resolve;dur=26.952557
       x-app-server:
-      - wwwb-app104
+      - wwwb-app219
       x-archive-orig-content-length:
       - '2084'
       x-archive-orig-date:
@@ -459,7 +544,7 @@ interactions:
       x-archive-src:
       - FS-074149-c/FS-074235.arc.gz
       x-tr:
-      - '2762'
+      - '314'
       x-ts:
       - '200'
     status:
@@ -471,9 +556,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - wayback/0.3.0.post0.dev0+g024a80e (+https://github.com/edgi-govdata-archiving/wayback)
+      - wayback/0.3.3.post10.dev0+ga68c731 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/19970427191925id_/http://www.zew.de/
+    uri: https://web.archive.org/web/19970427191925id_/http://www.zew.de/
   response:
     body:
       string: !!binary |
@@ -490,8 +575,8 @@ interactions:
         X+/HnKs60XGO7ji0lWujtZJK8HWRc/5QAFfFK6RYa4P9506njn8TE/277CsNv54T3SopwxgDNmuZ
         fde7j+CJT2gt05ttokub76C3OBUehPBWQWC3F6P4Ptkl4ATOy1o7BbQvHPckQc3jjMWpU7bG9m72
         PK+Il1KyqXTncxnDzzKcc25ZIVHQTbrfyjWvxH8ltpDZnaLml2CMyjVO6wd66JAztcKLCJXR+H9F
-        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcULV9wbFiZ1lYQtvbmxNZWzCopT0umRvn+zvdchw5+Cw
-        i+tzJmUKXODNU1lQv8bAvXqJgxbveBxXxZ+D1h+4acC6JAgAAA==
+        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcUJhJCh/XODEzrKwhTc3tqYyNmFRSnpdsrdP9vc6ZLhz
+        cNjF9TmTMgUu8OapLKhfY+BevcRBi3c8jqviz0HrD7hpwLokCAAA
     headers:
       Connection:
       - keep-alive
@@ -500,13 +585,15 @@ interactions:
       Content-Type:
       - text/html
       Date:
-      - Mon, 22 Mar 2021 12:48:34 GMT
+      - Mon, 31 Oct 2022 20:44:46 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
       - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-Cache-Key:
-      - httpweb.archive.org/web/19970427191925id_/http://www.zew.de/DE
       X-NA:
       - '0'
       X-NID:
@@ -523,22 +610,22 @@ interactions:
       - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
         web.archive.org analytics.archive.org pragma.archivelab.org'
       link:
-      - <http://www.zew.de:80/>; rel="original", <http://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
-        rel="timemap"; type="application/link-format", <http://web.archive.org/web/http://www.zew.de:80/>;
-        rel="timegate", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
-        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <http://web.archive.org/web/20210320210013/https://zew.de/>;
-        rel="last memento"; datetime="Sat, 20 Mar 2021 21:00:13 GMT"
+      - <http://www.zew.de:80/>; rel="original", <https://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/http://www.zew.de:80/>;
+        rel="timegate", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
+        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <https://web.archive.org/web/20221031082507/http://www.zew.de/>;
+        rel="last memento"; datetime="Mon, 31 Oct 2022 08:25:07 GMT"
       memento-datetime:
       - Sun, 27 Apr 1997 19:19:25 GMT
       server-timing:
-      - RedisCDXSource;dur=0.697900, exclusion.robots.policy;dur=0.305332, captures_list;dur=2191.253961,
-        esindex;dur=0.013204, load_resource;dur=547.469172, CDXLines.iter;dur=22.645042,
-        exclusion.robots;dur=0.319252, LoadShardBlock;dur=2141.747364, PetaboxLoader3.resolve;dur=497.287892,
-        PetaboxLoader3.datanode;dur=2098.347280
+      - captures_list;dur=244.391337, exclusion.robots;dur=0.202287, exclusion.robots.policy;dur=0.194084,
+        cdx.remote;dur=0.065431, esindex;dur=0.008743, LoadShardBlock;dur=68.366650,
+        PetaboxLoader3.datanode;dur=62.815223, CDXLines.iter;dur=18.293273, load_resource;dur=54.638106,
+        PetaboxLoader3.resolve;dur=26.952557
       x-app-server:
-      - wwwb-app104
+      - wwwb-app219
       x-archive-orig-content-length:
       - '2084'
       x-archive-orig-date:
@@ -552,7 +639,7 @@ interactions:
       x-archive-src:
       - FS-074149-c/FS-074235.arc.gz
       x-tr:
-      - '2762'
+      - '314'
       x-ts:
       - '200'
     status:
@@ -564,9 +651,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - wayback/0.3.0.post0.dev0+g024a80e (+https://github.com/edgi-govdata-archiving/wayback)
+      - wayback/0.3.3.post10.dev0+ga68c731 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/19970427191925id_/http://www.zew.de/
+    uri: https://web.archive.org/web/19970427191925id_/http://www.zew.de/
   response:
     body:
       string: !!binary |
@@ -583,8 +670,8 @@ interactions:
         X+/HnKs60XGO7ji0lWujtZJK8HWRc/5QAFfFK6RYa4P9506njn8TE/277CsNv54T3SopwxgDNmuZ
         fde7j+CJT2gt05ttokub76C3OBUehPBWQWC3F6P4Ptkl4ATOy1o7BbQvHPckQc3jjMWpU7bG9m72
         PK+Il1KyqXTncxnDzzKcc25ZIVHQTbrfyjWvxH8ltpDZnaLml2CMyjVO6wd66JAztcKLCJXR+H9F
-        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcULV9wbFiZ1lYQtvbmxNZWzCopT0umRvn+zvdchw5+Cw
-        i+tzJmUKXODNU1lQv8bAvXqJgxbveBxXxZ+D1h+4acC6JAgAAA==
+        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcUJhJCh/XODEzrKwhTc3tqYyNmFRSnpdsrdP9vc6ZLhz
+        cNjF9TmTMgUu8OapLKhfY+BevcRBi3c8jqviz0HrD7hpwLokCAAA
     headers:
       Connection:
       - keep-alive
@@ -593,13 +680,15 @@ interactions:
       Content-Type:
       - text/html
       Date:
-      - Mon, 22 Mar 2021 12:48:34 GMT
+      - Mon, 31 Oct 2022 20:44:46 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
       - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-Cache-Key:
-      - httpweb.archive.org/web/19970427191925id_/http://www.zew.de/DE
       X-NA:
       - '0'
       X-NID:
@@ -616,22 +705,22 @@ interactions:
       - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
         web.archive.org analytics.archive.org pragma.archivelab.org'
       link:
-      - <http://www.zew.de:80/>; rel="original", <http://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
-        rel="timemap"; type="application/link-format", <http://web.archive.org/web/http://www.zew.de:80/>;
-        rel="timegate", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
-        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <http://web.archive.org/web/20210320210013/https://zew.de/>;
-        rel="last memento"; datetime="Sat, 20 Mar 2021 21:00:13 GMT"
+      - <http://www.zew.de:80/>; rel="original", <https://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/http://www.zew.de:80/>;
+        rel="timegate", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
+        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <https://web.archive.org/web/20221031082507/http://www.zew.de/>;
+        rel="last memento"; datetime="Mon, 31 Oct 2022 08:25:07 GMT"
       memento-datetime:
       - Sun, 27 Apr 1997 19:19:25 GMT
       server-timing:
-      - RedisCDXSource;dur=0.697900, exclusion.robots.policy;dur=0.305332, captures_list;dur=2191.253961,
-        esindex;dur=0.013204, load_resource;dur=547.469172, CDXLines.iter;dur=22.645042,
-        exclusion.robots;dur=0.319252, LoadShardBlock;dur=2141.747364, PetaboxLoader3.resolve;dur=497.287892,
-        PetaboxLoader3.datanode;dur=2098.347280
+      - captures_list;dur=244.391337, exclusion.robots;dur=0.202287, exclusion.robots.policy;dur=0.194084,
+        cdx.remote;dur=0.065431, esindex;dur=0.008743, LoadShardBlock;dur=68.366650,
+        PetaboxLoader3.datanode;dur=62.815223, CDXLines.iter;dur=18.293273, load_resource;dur=54.638106,
+        PetaboxLoader3.resolve;dur=26.952557
       x-app-server:
-      - wwwb-app104
+      - wwwb-app219
       x-archive-orig-content-length:
       - '2084'
       x-archive-orig-date:
@@ -645,7 +734,7 @@ interactions:
       x-archive-src:
       - FS-074149-c/FS-074235.arc.gz
       x-tr:
-      - '2762'
+      - '314'
       x-ts:
       - '200'
     status:
@@ -657,9 +746,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - wayback/0.3.0.post0.dev0+g024a80e (+https://github.com/edgi-govdata-archiving/wayback)
+      - wayback/0.3.3.post10.dev0+ga68c731 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/19970427191925id_/http://www.zew.de/
+    uri: https://web.archive.org/web/19970427191925id_/http://www.zew.de/
   response:
     body:
       string: !!binary |
@@ -676,8 +765,8 @@ interactions:
         X+/HnKs60XGO7ji0lWujtZJK8HWRc/5QAFfFK6RYa4P9506njn8TE/277CsNv54T3SopwxgDNmuZ
         fde7j+CJT2gt05ttokub76C3OBUehPBWQWC3F6P4Ptkl4ATOy1o7BbQvHPckQc3jjMWpU7bG9m72
         PK+Il1KyqXTncxnDzzKcc25ZIVHQTbrfyjWvxH8ltpDZnaLml2CMyjVO6wd66JAztcKLCJXR+H9F
-        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcULV9wbFiZ1lYQtvbmxNZWzCopT0umRvn+zvdchw5+Cw
-        i+tzJmUKXODNU1lQv8bAvXqJgxbveBxXxZ+D1h+4acC6JAgAAA==
+        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcUJhJCh/XODEzrKwhTc3tqYyNmFRSnpdsrdP9vc6ZLhz
+        cNjF9TmTMgUu8OapLKhfY+BevcRBi3c8jqviz0HrD7hpwLokCAAA
     headers:
       Connection:
       - keep-alive
@@ -686,13 +775,15 @@ interactions:
       Content-Type:
       - text/html
       Date:
-      - Mon, 22 Mar 2021 12:48:34 GMT
+      - Mon, 31 Oct 2022 20:44:46 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
       - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-Cache-Key:
-      - httpweb.archive.org/web/19970427191925id_/http://www.zew.de/DE
       X-NA:
       - '0'
       X-NID:
@@ -709,22 +800,22 @@ interactions:
       - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
         web.archive.org analytics.archive.org pragma.archivelab.org'
       link:
-      - <http://www.zew.de:80/>; rel="original", <http://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
-        rel="timemap"; type="application/link-format", <http://web.archive.org/web/http://www.zew.de:80/>;
-        rel="timegate", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
-        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <http://web.archive.org/web/20210320210013/https://zew.de/>;
-        rel="last memento"; datetime="Sat, 20 Mar 2021 21:00:13 GMT"
+      - <http://www.zew.de:80/>; rel="original", <https://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/http://www.zew.de:80/>;
+        rel="timegate", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
+        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <https://web.archive.org/web/20221031082507/http://www.zew.de/>;
+        rel="last memento"; datetime="Mon, 31 Oct 2022 08:25:07 GMT"
       memento-datetime:
       - Sun, 27 Apr 1997 19:19:25 GMT
       server-timing:
-      - RedisCDXSource;dur=0.697900, exclusion.robots.policy;dur=0.305332, captures_list;dur=2191.253961,
-        esindex;dur=0.013204, load_resource;dur=547.469172, CDXLines.iter;dur=22.645042,
-        exclusion.robots;dur=0.319252, LoadShardBlock;dur=2141.747364, PetaboxLoader3.resolve;dur=497.287892,
-        PetaboxLoader3.datanode;dur=2098.347280
+      - captures_list;dur=244.391337, exclusion.robots;dur=0.202287, exclusion.robots.policy;dur=0.194084,
+        cdx.remote;dur=0.065431, esindex;dur=0.008743, LoadShardBlock;dur=68.366650,
+        PetaboxLoader3.datanode;dur=62.815223, CDXLines.iter;dur=18.293273, load_resource;dur=54.638106,
+        PetaboxLoader3.resolve;dur=26.952557
       x-app-server:
-      - wwwb-app104
+      - wwwb-app219
       x-archive-orig-content-length:
       - '2084'
       x-archive-orig-date:
@@ -738,7 +829,7 @@ interactions:
       x-archive-src:
       - FS-074149-c/FS-074235.arc.gz
       x-tr:
-      - '2762'
+      - '314'
       x-ts:
       - '200'
     status:
@@ -750,9 +841,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - wayback/0.3.0.post0.dev0+g024a80e (+https://github.com/edgi-govdata-archiving/wayback)
+      - wayback/0.3.3.post10.dev0+ga68c731 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/19970427191925id_/http://www.zew.de/
+    uri: https://web.archive.org/web/19970427191925id_/http://www.zew.de/
   response:
     body:
       string: !!binary |
@@ -769,8 +860,8 @@ interactions:
         X+/HnKs60XGO7ji0lWujtZJK8HWRc/5QAFfFK6RYa4P9506njn8TE/277CsNv54T3SopwxgDNmuZ
         fde7j+CJT2gt05ttokub76C3OBUehPBWQWC3F6P4Ptkl4ATOy1o7BbQvHPckQc3jjMWpU7bG9m72
         PK+Il1KyqXTncxnDzzKcc25ZIVHQTbrfyjWvxH8ltpDZnaLml2CMyjVO6wd66JAztcKLCJXR+H9F
-        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcULV9wbFiZ1lYQtvbmxNZWzCopT0umRvn+zvdchw5+Cw
-        i+tzJmUKXODNU1lQv8bAvXqJgxbveBxXxZ+D1h+4acC6JAgAAA==
+        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcUJhJCh/XODEzrKwhTc3tqYyNmFRSnpdsrdP9vc6ZLhz
+        cNjF9TmTMgUu8OapLKhfY+BevcRBi3c8jqviz0HrD7hpwLokCAAA
     headers:
       Connection:
       - keep-alive
@@ -779,13 +870,15 @@ interactions:
       Content-Type:
       - text/html
       Date:
-      - Mon, 22 Mar 2021 12:48:34 GMT
+      - Mon, 31 Oct 2022 20:44:46 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
       - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-Cache-Key:
-      - httpweb.archive.org/web/19970427191925id_/http://www.zew.de/DE
       X-NA:
       - '0'
       X-NID:
@@ -802,22 +895,22 @@ interactions:
       - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
         web.archive.org analytics.archive.org pragma.archivelab.org'
       link:
-      - <http://www.zew.de:80/>; rel="original", <http://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
-        rel="timemap"; type="application/link-format", <http://web.archive.org/web/http://www.zew.de:80/>;
-        rel="timegate", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
-        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <http://web.archive.org/web/20210320210013/https://zew.de/>;
-        rel="last memento"; datetime="Sat, 20 Mar 2021 21:00:13 GMT"
+      - <http://www.zew.de:80/>; rel="original", <https://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/http://www.zew.de:80/>;
+        rel="timegate", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
+        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <https://web.archive.org/web/20221031082507/http://www.zew.de/>;
+        rel="last memento"; datetime="Mon, 31 Oct 2022 08:25:07 GMT"
       memento-datetime:
       - Sun, 27 Apr 1997 19:19:25 GMT
       server-timing:
-      - RedisCDXSource;dur=0.697900, exclusion.robots.policy;dur=0.305332, captures_list;dur=2191.253961,
-        esindex;dur=0.013204, load_resource;dur=547.469172, CDXLines.iter;dur=22.645042,
-        exclusion.robots;dur=0.319252, LoadShardBlock;dur=2141.747364, PetaboxLoader3.resolve;dur=497.287892,
-        PetaboxLoader3.datanode;dur=2098.347280
+      - captures_list;dur=244.391337, exclusion.robots;dur=0.202287, exclusion.robots.policy;dur=0.194084,
+        cdx.remote;dur=0.065431, esindex;dur=0.008743, LoadShardBlock;dur=68.366650,
+        PetaboxLoader3.datanode;dur=62.815223, CDXLines.iter;dur=18.293273, load_resource;dur=54.638106,
+        PetaboxLoader3.resolve;dur=26.952557
       x-app-server:
-      - wwwb-app104
+      - wwwb-app219
       x-archive-orig-content-length:
       - '2084'
       x-archive-orig-date:
@@ -831,7 +924,7 @@ interactions:
       x-archive-src:
       - FS-074149-c/FS-074235.arc.gz
       x-tr:
-      - '2762'
+      - '314'
       x-ts:
       - '200'
     status:
@@ -843,9 +936,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - wayback/0.3.0.post0.dev0+g024a80e (+https://github.com/edgi-govdata-archiving/wayback)
+      - wayback/0.3.3.post10.dev0+ga68c731 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/19970427191925id_/http://www.zew.de/
+    uri: https://web.archive.org/web/19970427191925id_/http://www.zew.de/
   response:
     body:
       string: !!binary |
@@ -862,8 +955,8 @@ interactions:
         X+/HnKs60XGO7ji0lWujtZJK8HWRc/5QAFfFK6RYa4P9506njn8TE/277CsNv54T3SopwxgDNmuZ
         fde7j+CJT2gt05ttokub76C3OBUehPBWQWC3F6P4Ptkl4ATOy1o7BbQvHPckQc3jjMWpU7bG9m72
         PK+Il1KyqXTncxnDzzKcc25ZIVHQTbrfyjWvxH8ltpDZnaLml2CMyjVO6wd66JAztcKLCJXR+H9F
-        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcULV9wbFiZ1lYQtvbmxNZWzCopT0umRvn+zvdchw5+Cw
-        i+tzJmUKXODNU1lQv8bAvXqJgxbveBxXxZ+D1h+4acC6JAgAAA==
+        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcUJhJCh/XODEzrKwhTc3tqYyNmFRSnpdsrdP9vc6ZLhz
+        cNjF9TmTMgUu8OapLKhfY+BevcRBi3c8jqviz0HrD7hpwLokCAAA
     headers:
       Connection:
       - keep-alive
@@ -872,13 +965,15 @@ interactions:
       Content-Type:
       - text/html
       Date:
-      - Mon, 22 Mar 2021 12:48:35 GMT
+      - Mon, 31 Oct 2022 20:44:46 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
       - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-Cache-Key:
-      - httpweb.archive.org/web/19970427191925id_/http://www.zew.de/DE
       X-NA:
       - '0'
       X-NID:
@@ -895,22 +990,22 @@ interactions:
       - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
         web.archive.org analytics.archive.org pragma.archivelab.org'
       link:
-      - <http://www.zew.de:80/>; rel="original", <http://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
-        rel="timemap"; type="application/link-format", <http://web.archive.org/web/http://www.zew.de:80/>;
-        rel="timegate", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
-        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <http://web.archive.org/web/20210320210013/https://zew.de/>;
-        rel="last memento"; datetime="Sat, 20 Mar 2021 21:00:13 GMT"
+      - <http://www.zew.de:80/>; rel="original", <https://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/http://www.zew.de:80/>;
+        rel="timegate", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
+        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <https://web.archive.org/web/20221031082507/http://www.zew.de/>;
+        rel="last memento"; datetime="Mon, 31 Oct 2022 08:25:07 GMT"
       memento-datetime:
       - Sun, 27 Apr 1997 19:19:25 GMT
       server-timing:
-      - RedisCDXSource;dur=0.697900, exclusion.robots.policy;dur=0.305332, captures_list;dur=2191.253961,
-        esindex;dur=0.013204, load_resource;dur=547.469172, CDXLines.iter;dur=22.645042,
-        exclusion.robots;dur=0.319252, LoadShardBlock;dur=2141.747364, PetaboxLoader3.resolve;dur=497.287892,
-        PetaboxLoader3.datanode;dur=2098.347280
+      - captures_list;dur=244.391337, exclusion.robots;dur=0.202287, exclusion.robots.policy;dur=0.194084,
+        cdx.remote;dur=0.065431, esindex;dur=0.008743, LoadShardBlock;dur=68.366650,
+        PetaboxLoader3.datanode;dur=62.815223, CDXLines.iter;dur=18.293273, load_resource;dur=54.638106,
+        PetaboxLoader3.resolve;dur=26.952557
       x-app-server:
-      - wwwb-app104
+      - wwwb-app219
       x-archive-orig-content-length:
       - '2084'
       x-archive-orig-date:
@@ -924,7 +1019,7 @@ interactions:
       x-archive-src:
       - FS-074149-c/FS-074235.arc.gz
       x-tr:
-      - '2762'
+      - '314'
       x-ts:
       - '200'
     status:
@@ -936,9 +1031,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - wayback/0.3.0.post0.dev0+g024a80e (+https://github.com/edgi-govdata-archiving/wayback)
+      - wayback/0.3.3.post10.dev0+ga68c731 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/19970427191925id_/http://www.zew.de/
+    uri: https://web.archive.org/web/19970427191925id_/http://www.zew.de/
   response:
     body:
       string: !!binary |
@@ -955,8 +1050,8 @@ interactions:
         X+/HnKs60XGO7ji0lWujtZJK8HWRc/5QAFfFK6RYa4P9506njn8TE/277CsNv54T3SopwxgDNmuZ
         fde7j+CJT2gt05ttokub76C3OBUehPBWQWC3F6P4Ptkl4ATOy1o7BbQvHPckQc3jjMWpU7bG9m72
         PK+Il1KyqXTncxnDzzKcc25ZIVHQTbrfyjWvxH8ltpDZnaLml2CMyjVO6wd66JAztcKLCJXR+H9F
-        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcULV9wbFiZ1lYQtvbmxNZWzCopT0umRvn+zvdchw5+Cw
-        i+tzJmUKXODNU1lQv8bAvXqJgxbveBxXxZ+D1h+4acC6JAgAAA==
+        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcUJhJCh/XODEzrKwhTc3tqYyNmFRSnpdsrdP9vc6ZLhz
+        cNjF9TmTMgUu8OapLKhfY+BevcRBi3c8jqviz0HrD7hpwLokCAAA
     headers:
       Connection:
       - keep-alive
@@ -965,13 +1060,15 @@ interactions:
       Content-Type:
       - text/html
       Date:
-      - Mon, 22 Mar 2021 12:48:35 GMT
+      - Mon, 31 Oct 2022 20:44:46 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
       - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-Cache-Key:
-      - httpweb.archive.org/web/19970427191925id_/http://www.zew.de/DE
       X-NA:
       - '0'
       X-NID:
@@ -988,22 +1085,22 @@ interactions:
       - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
         web.archive.org analytics.archive.org pragma.archivelab.org'
       link:
-      - <http://www.zew.de:80/>; rel="original", <http://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
-        rel="timemap"; type="application/link-format", <http://web.archive.org/web/http://www.zew.de:80/>;
-        rel="timegate", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
-        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <http://web.archive.org/web/20210320210013/https://zew.de/>;
-        rel="last memento"; datetime="Sat, 20 Mar 2021 21:00:13 GMT"
+      - <http://www.zew.de:80/>; rel="original", <https://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/http://www.zew.de:80/>;
+        rel="timegate", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
+        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <https://web.archive.org/web/20221031082507/http://www.zew.de/>;
+        rel="last memento"; datetime="Mon, 31 Oct 2022 08:25:07 GMT"
       memento-datetime:
       - Sun, 27 Apr 1997 19:19:25 GMT
       server-timing:
-      - RedisCDXSource;dur=0.697900, exclusion.robots.policy;dur=0.305332, captures_list;dur=2191.253961,
-        esindex;dur=0.013204, load_resource;dur=547.469172, CDXLines.iter;dur=22.645042,
-        exclusion.robots;dur=0.319252, LoadShardBlock;dur=2141.747364, PetaboxLoader3.resolve;dur=497.287892,
-        PetaboxLoader3.datanode;dur=2098.347280
+      - captures_list;dur=244.391337, exclusion.robots;dur=0.202287, exclusion.robots.policy;dur=0.194084,
+        cdx.remote;dur=0.065431, esindex;dur=0.008743, LoadShardBlock;dur=68.366650,
+        PetaboxLoader3.datanode;dur=62.815223, CDXLines.iter;dur=18.293273, load_resource;dur=54.638106,
+        PetaboxLoader3.resolve;dur=26.952557
       x-app-server:
-      - wwwb-app104
+      - wwwb-app219
       x-archive-orig-content-length:
       - '2084'
       x-archive-orig-date:
@@ -1017,7 +1114,7 @@ interactions:
       x-archive-src:
       - FS-074149-c/FS-074235.arc.gz
       x-tr:
-      - '2762'
+      - '314'
       x-ts:
       - '200'
     status:
@@ -1029,9 +1126,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - wayback/0.3.0.post0.dev0+g024a80e (+https://github.com/edgi-govdata-archiving/wayback)
+      - wayback/0.3.3.post10.dev0+ga68c731 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/19970427191925id_/http://www.zew.de/
+    uri: https://web.archive.org/web/19970427191925id_/http://www.zew.de/
   response:
     body:
       string: !!binary |
@@ -1048,8 +1145,8 @@ interactions:
         X+/HnKs60XGO7ji0lWujtZJK8HWRc/5QAFfFK6RYa4P9506njn8TE/277CsNv54T3SopwxgDNmuZ
         fde7j+CJT2gt05ttokub76C3OBUehPBWQWC3F6P4Ptkl4ATOy1o7BbQvHPckQc3jjMWpU7bG9m72
         PK+Il1KyqXTncxnDzzKcc25ZIVHQTbrfyjWvxH8ltpDZnaLml2CMyjVO6wd66JAztcKLCJXR+H9F
-        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcULV9wbFiZ1lYQtvbmxNZWzCopT0umRvn+zvdchw5+Cw
-        i+tzJmUKXODNU1lQv8bAvXqJgxbveBxXxZ+D1h+4acC6JAgAAA==
+        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcUJhJCh/XODEzrKwhTc3tqYyNmFRSnpdsrdP9vc6ZLhz
+        cNjF9TmTMgUu8OapLKhfY+BevcRBi3c8jqviz0HrD7hpwLokCAAA
     headers:
       Connection:
       - keep-alive
@@ -1058,13 +1155,15 @@ interactions:
       Content-Type:
       - text/html
       Date:
-      - Mon, 22 Mar 2021 12:48:35 GMT
+      - Mon, 31 Oct 2022 20:44:46 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
       - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-Cache-Key:
-      - httpweb.archive.org/web/19970427191925id_/http://www.zew.de/DE
       X-NA:
       - '0'
       X-NID:
@@ -1081,22 +1180,22 @@ interactions:
       - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
         web.archive.org analytics.archive.org pragma.archivelab.org'
       link:
-      - <http://www.zew.de:80/>; rel="original", <http://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
-        rel="timemap"; type="application/link-format", <http://web.archive.org/web/http://www.zew.de:80/>;
-        rel="timegate", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
-        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <http://web.archive.org/web/20210320210013/https://zew.de/>;
-        rel="last memento"; datetime="Sat, 20 Mar 2021 21:00:13 GMT"
+      - <http://www.zew.de:80/>; rel="original", <https://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/http://www.zew.de:80/>;
+        rel="timegate", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
+        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <https://web.archive.org/web/20221031082507/http://www.zew.de/>;
+        rel="last memento"; datetime="Mon, 31 Oct 2022 08:25:07 GMT"
       memento-datetime:
       - Sun, 27 Apr 1997 19:19:25 GMT
       server-timing:
-      - RedisCDXSource;dur=0.697900, exclusion.robots.policy;dur=0.305332, captures_list;dur=2191.253961,
-        esindex;dur=0.013204, load_resource;dur=547.469172, CDXLines.iter;dur=22.645042,
-        exclusion.robots;dur=0.319252, LoadShardBlock;dur=2141.747364, PetaboxLoader3.resolve;dur=497.287892,
-        PetaboxLoader3.datanode;dur=2098.347280
+      - captures_list;dur=244.391337, exclusion.robots;dur=0.202287, exclusion.robots.policy;dur=0.194084,
+        cdx.remote;dur=0.065431, esindex;dur=0.008743, LoadShardBlock;dur=68.366650,
+        PetaboxLoader3.datanode;dur=62.815223, CDXLines.iter;dur=18.293273, load_resource;dur=54.638106,
+        PetaboxLoader3.resolve;dur=26.952557
       x-app-server:
-      - wwwb-app104
+      - wwwb-app219
       x-archive-orig-content-length:
       - '2084'
       x-archive-orig-date:
@@ -1110,7 +1209,7 @@ interactions:
       x-archive-src:
       - FS-074149-c/FS-074235.arc.gz
       x-tr:
-      - '2762'
+      - '314'
       x-ts:
       - '200'
     status:
@@ -1122,9 +1221,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - wayback/0.3.0.post0.dev0+g024a80e (+https://github.com/edgi-govdata-archiving/wayback)
+      - wayback/0.3.3.post10.dev0+ga68c731 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/19970427191925id_/http://www.zew.de/
+    uri: https://web.archive.org/web/19970427191925id_/http://www.zew.de/
   response:
     body:
       string: !!binary |
@@ -1141,8 +1240,8 @@ interactions:
         X+/HnKs60XGO7ji0lWujtZJK8HWRc/5QAFfFK6RYa4P9506njn8TE/277CsNv54T3SopwxgDNmuZ
         fde7j+CJT2gt05ttokub76C3OBUehPBWQWC3F6P4Ptkl4ATOy1o7BbQvHPckQc3jjMWpU7bG9m72
         PK+Il1KyqXTncxnDzzKcc25ZIVHQTbrfyjWvxH8ltpDZnaLml2CMyjVO6wd66JAztcKLCJXR+H9F
-        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcULV9wbFiZ1lYQtvbmxNZWzCopT0umRvn+zvdchw5+Cw
-        i+tzJmUKXODNU1lQv8bAvXqJgxbveBxXxZ+D1h+4acC6JAgAAA==
+        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcUJhJCh/XODEzrKwhTc3tqYyNmFRSnpdsrdP9vc6ZLhz
+        cNjF9TmTMgUu8OapLKhfY+BevcRBi3c8jqviz0HrD7hpwLokCAAA
     headers:
       Connection:
       - keep-alive
@@ -1151,13 +1250,15 @@ interactions:
       Content-Type:
       - text/html
       Date:
-      - Mon, 22 Mar 2021 12:48:35 GMT
+      - Mon, 31 Oct 2022 20:44:46 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
       - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-Cache-Key:
-      - httpweb.archive.org/web/19970427191925id_/http://www.zew.de/DE
       X-NA:
       - '0'
       X-NID:
@@ -1174,22 +1275,22 @@ interactions:
       - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
         web.archive.org analytics.archive.org pragma.archivelab.org'
       link:
-      - <http://www.zew.de:80/>; rel="original", <http://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
-        rel="timemap"; type="application/link-format", <http://web.archive.org/web/http://www.zew.de:80/>;
-        rel="timegate", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
-        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <http://web.archive.org/web/20210320210013/https://zew.de/>;
-        rel="last memento"; datetime="Sat, 20 Mar 2021 21:00:13 GMT"
+      - <http://www.zew.de:80/>; rel="original", <https://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/http://www.zew.de:80/>;
+        rel="timegate", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
+        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <https://web.archive.org/web/20221031082507/http://www.zew.de/>;
+        rel="last memento"; datetime="Mon, 31 Oct 2022 08:25:07 GMT"
       memento-datetime:
       - Sun, 27 Apr 1997 19:19:25 GMT
       server-timing:
-      - RedisCDXSource;dur=0.697900, exclusion.robots.policy;dur=0.305332, captures_list;dur=2191.253961,
-        esindex;dur=0.013204, load_resource;dur=547.469172, CDXLines.iter;dur=22.645042,
-        exclusion.robots;dur=0.319252, LoadShardBlock;dur=2141.747364, PetaboxLoader3.resolve;dur=497.287892,
-        PetaboxLoader3.datanode;dur=2098.347280
+      - captures_list;dur=244.391337, exclusion.robots;dur=0.202287, exclusion.robots.policy;dur=0.194084,
+        cdx.remote;dur=0.065431, esindex;dur=0.008743, LoadShardBlock;dur=68.366650,
+        PetaboxLoader3.datanode;dur=62.815223, CDXLines.iter;dur=18.293273, load_resource;dur=54.638106,
+        PetaboxLoader3.resolve;dur=26.952557
       x-app-server:
-      - wwwb-app104
+      - wwwb-app219
       x-archive-orig-content-length:
       - '2084'
       x-archive-orig-date:
@@ -1203,7 +1304,7 @@ interactions:
       x-archive-src:
       - FS-074149-c/FS-074235.arc.gz
       x-tr:
-      - '2762'
+      - '314'
       x-ts:
       - '200'
     status:
@@ -1215,9 +1316,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - wayback/0.3.0.post0.dev0+g024a80e (+https://github.com/edgi-govdata-archiving/wayback)
+      - wayback/0.3.3.post10.dev0+ga68c731 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/19970427191925id_/http://www.zew.de/
+    uri: https://web.archive.org/web/19970427191925id_/http://www.zew.de/
   response:
     body:
       string: !!binary |
@@ -1234,8 +1335,8 @@ interactions:
         X+/HnKs60XGO7ji0lWujtZJK8HWRc/5QAFfFK6RYa4P9506njn8TE/277CsNv54T3SopwxgDNmuZ
         fde7j+CJT2gt05ttokub76C3OBUehPBWQWC3F6P4Ptkl4ATOy1o7BbQvHPckQc3jjMWpU7bG9m72
         PK+Il1KyqXTncxnDzzKcc25ZIVHQTbrfyjWvxH8ltpDZnaLml2CMyjVO6wd66JAztcKLCJXR+H9F
-        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcULV9wbFiZ1lYQtvbmxNZWzCopT0umRvn+zvdchw5+Cw
-        i+tzJmUKXODNU1lQv8bAvXqJgxbveBxXxZ+D1h+4acC6JAgAAA==
+        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcUJhJCh/XODEzrKwhTc3tqYyNmFRSnpdsrdP9vc6ZLhz
+        cNjF9TmTMgUu8OapLKhfY+BevcRBi3c8jqviz0HrD7hpwLokCAAA
     headers:
       Connection:
       - keep-alive
@@ -1244,13 +1345,15 @@ interactions:
       Content-Type:
       - text/html
       Date:
-      - Mon, 22 Mar 2021 12:48:35 GMT
+      - Mon, 31 Oct 2022 20:44:46 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
       - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-Cache-Key:
-      - httpweb.archive.org/web/19970427191925id_/http://www.zew.de/DE
       X-NA:
       - '0'
       X-NID:
@@ -1267,22 +1370,22 @@ interactions:
       - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
         web.archive.org analytics.archive.org pragma.archivelab.org'
       link:
-      - <http://www.zew.de:80/>; rel="original", <http://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
-        rel="timemap"; type="application/link-format", <http://web.archive.org/web/http://www.zew.de:80/>;
-        rel="timegate", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
-        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <http://web.archive.org/web/20210320210013/https://zew.de/>;
-        rel="last memento"; datetime="Sat, 20 Mar 2021 21:00:13 GMT"
+      - <http://www.zew.de:80/>; rel="original", <https://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/http://www.zew.de:80/>;
+        rel="timegate", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
+        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <https://web.archive.org/web/20221031082507/http://www.zew.de/>;
+        rel="last memento"; datetime="Mon, 31 Oct 2022 08:25:07 GMT"
       memento-datetime:
       - Sun, 27 Apr 1997 19:19:25 GMT
       server-timing:
-      - RedisCDXSource;dur=0.697900, exclusion.robots.policy;dur=0.305332, captures_list;dur=2191.253961,
-        esindex;dur=0.013204, load_resource;dur=547.469172, CDXLines.iter;dur=22.645042,
-        exclusion.robots;dur=0.319252, LoadShardBlock;dur=2141.747364, PetaboxLoader3.resolve;dur=497.287892,
-        PetaboxLoader3.datanode;dur=2098.347280
+      - captures_list;dur=244.391337, exclusion.robots;dur=0.202287, exclusion.robots.policy;dur=0.194084,
+        cdx.remote;dur=0.065431, esindex;dur=0.008743, LoadShardBlock;dur=68.366650,
+        PetaboxLoader3.datanode;dur=62.815223, CDXLines.iter;dur=18.293273, load_resource;dur=54.638106,
+        PetaboxLoader3.resolve;dur=26.952557
       x-app-server:
-      - wwwb-app104
+      - wwwb-app219
       x-archive-orig-content-length:
       - '2084'
       x-archive-orig-date:
@@ -1296,7 +1399,7 @@ interactions:
       x-archive-src:
       - FS-074149-c/FS-074235.arc.gz
       x-tr:
-      - '2762'
+      - '314'
       x-ts:
       - '200'
     status:
@@ -1308,9 +1411,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - wayback/0.3.0.post0.dev0+g024a80e (+https://github.com/edgi-govdata-archiving/wayback)
+      - wayback/0.3.3.post10.dev0+ga68c731 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/19970427191925id_/http://www.zew.de/
+    uri: https://web.archive.org/web/19970427191925id_/http://www.zew.de/
   response:
     body:
       string: !!binary |
@@ -1327,8 +1430,8 @@ interactions:
         X+/HnKs60XGO7ji0lWujtZJK8HWRc/5QAFfFK6RYa4P9506njn8TE/277CsNv54T3SopwxgDNmuZ
         fde7j+CJT2gt05ttokub76C3OBUehPBWQWC3F6P4Ptkl4ATOy1o7BbQvHPckQc3jjMWpU7bG9m72
         PK+Il1KyqXTncxnDzzKcc25ZIVHQTbrfyjWvxH8ltpDZnaLml2CMyjVO6wd66JAztcKLCJXR+H9F
-        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcULV9wbFiZ1lYQtvbmxNZWzCopT0umRvn+zvdchw5+Cw
-        i+tzJmUKXODNU1lQv8bAvXqJgxbveBxXxZ+D1h+4acC6JAgAAA==
+        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcUJhJCh/XODEzrKwhTc3tqYyNmFRSnpdsrdP9vc6ZLhz
+        cNjF9TmTMgUu8OapLKhfY+BevcRBi3c8jqviz0HrD7hpwLokCAAA
     headers:
       Connection:
       - keep-alive
@@ -1337,13 +1440,15 @@ interactions:
       Content-Type:
       - text/html
       Date:
-      - Mon, 22 Mar 2021 12:48:35 GMT
+      - Mon, 31 Oct 2022 20:44:46 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
       - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-Cache-Key:
-      - httpweb.archive.org/web/19970427191925id_/http://www.zew.de/DE
       X-NA:
       - '0'
       X-NID:
@@ -1360,22 +1465,22 @@ interactions:
       - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
         web.archive.org analytics.archive.org pragma.archivelab.org'
       link:
-      - <http://www.zew.de:80/>; rel="original", <http://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
-        rel="timemap"; type="application/link-format", <http://web.archive.org/web/http://www.zew.de:80/>;
-        rel="timegate", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
-        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <http://web.archive.org/web/20210320210013/https://zew.de/>;
-        rel="last memento"; datetime="Sat, 20 Mar 2021 21:00:13 GMT"
+      - <http://www.zew.de:80/>; rel="original", <https://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/http://www.zew.de:80/>;
+        rel="timegate", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
+        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <https://web.archive.org/web/20221031082507/http://www.zew.de/>;
+        rel="last memento"; datetime="Mon, 31 Oct 2022 08:25:07 GMT"
       memento-datetime:
       - Sun, 27 Apr 1997 19:19:25 GMT
       server-timing:
-      - RedisCDXSource;dur=0.697900, exclusion.robots.policy;dur=0.305332, captures_list;dur=2191.253961,
-        esindex;dur=0.013204, load_resource;dur=547.469172, CDXLines.iter;dur=22.645042,
-        exclusion.robots;dur=0.319252, LoadShardBlock;dur=2141.747364, PetaboxLoader3.resolve;dur=497.287892,
-        PetaboxLoader3.datanode;dur=2098.347280
+      - captures_list;dur=244.391337, exclusion.robots;dur=0.202287, exclusion.robots.policy;dur=0.194084,
+        cdx.remote;dur=0.065431, esindex;dur=0.008743, LoadShardBlock;dur=68.366650,
+        PetaboxLoader3.datanode;dur=62.815223, CDXLines.iter;dur=18.293273, load_resource;dur=54.638106,
+        PetaboxLoader3.resolve;dur=26.952557
       x-app-server:
-      - wwwb-app104
+      - wwwb-app219
       x-archive-orig-content-length:
       - '2084'
       x-archive-orig-date:
@@ -1389,7 +1494,7 @@ interactions:
       x-archive-src:
       - FS-074149-c/FS-074235.arc.gz
       x-tr:
-      - '2762'
+      - '314'
       x-ts:
       - '200'
     status:
@@ -1401,9 +1506,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - wayback/0.3.0.post0.dev0+g024a80e (+https://github.com/edgi-govdata-archiving/wayback)
+      - wayback/0.3.3.post10.dev0+ga68c731 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/19970427191925id_/http://www.zew.de/
+    uri: https://web.archive.org/web/19970427191925id_/http://www.zew.de/
   response:
     body:
       string: !!binary |
@@ -1420,8 +1525,8 @@ interactions:
         X+/HnKs60XGO7ji0lWujtZJK8HWRc/5QAFfFK6RYa4P9506njn8TE/277CsNv54T3SopwxgDNmuZ
         fde7j+CJT2gt05ttokub76C3OBUehPBWQWC3F6P4Ptkl4ATOy1o7BbQvHPckQc3jjMWpU7bG9m72
         PK+Il1KyqXTncxnDzzKcc25ZIVHQTbrfyjWvxH8ltpDZnaLml2CMyjVO6wd66JAztcKLCJXR+H9F
-        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcULV9wbFiZ1lYQtvbmxNZWzCopT0umRvn+zvdchw5+Cw
-        i+tzJmUKXODNU1lQv8bAvXqJgxbveBxXxZ+D1h+4acC6JAgAAA==
+        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcUJhJCh/XODEzrKwhTc3tqYyNmFRSnpdsrdP9vc6ZLhz
+        cNjF9TmTMgUu8OapLKhfY+BevcRBi3c8jqviz0HrD7hpwLokCAAA
     headers:
       Connection:
       - keep-alive
@@ -1430,13 +1535,15 @@ interactions:
       Content-Type:
       - text/html
       Date:
-      - Mon, 22 Mar 2021 12:48:36 GMT
+      - Mon, 31 Oct 2022 20:44:46 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
       - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-Cache-Key:
-      - httpweb.archive.org/web/19970427191925id_/http://www.zew.de/DE
       X-NA:
       - '0'
       X-NID:
@@ -1453,22 +1560,22 @@ interactions:
       - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
         web.archive.org analytics.archive.org pragma.archivelab.org'
       link:
-      - <http://www.zew.de:80/>; rel="original", <http://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
-        rel="timemap"; type="application/link-format", <http://web.archive.org/web/http://www.zew.de:80/>;
-        rel="timegate", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
-        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <http://web.archive.org/web/20210320210013/https://zew.de/>;
-        rel="last memento"; datetime="Sat, 20 Mar 2021 21:00:13 GMT"
+      - <http://www.zew.de:80/>; rel="original", <https://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/http://www.zew.de:80/>;
+        rel="timegate", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
+        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <https://web.archive.org/web/20221031082507/http://www.zew.de/>;
+        rel="last memento"; datetime="Mon, 31 Oct 2022 08:25:07 GMT"
       memento-datetime:
       - Sun, 27 Apr 1997 19:19:25 GMT
       server-timing:
-      - RedisCDXSource;dur=0.697900, exclusion.robots.policy;dur=0.305332, captures_list;dur=2191.253961,
-        esindex;dur=0.013204, load_resource;dur=547.469172, CDXLines.iter;dur=22.645042,
-        exclusion.robots;dur=0.319252, LoadShardBlock;dur=2141.747364, PetaboxLoader3.resolve;dur=497.287892,
-        PetaboxLoader3.datanode;dur=2098.347280
+      - captures_list;dur=244.391337, exclusion.robots;dur=0.202287, exclusion.robots.policy;dur=0.194084,
+        cdx.remote;dur=0.065431, esindex;dur=0.008743, LoadShardBlock;dur=68.366650,
+        PetaboxLoader3.datanode;dur=62.815223, CDXLines.iter;dur=18.293273, load_resource;dur=54.638106,
+        PetaboxLoader3.resolve;dur=26.952557
       x-app-server:
-      - wwwb-app104
+      - wwwb-app219
       x-archive-orig-content-length:
       - '2084'
       x-archive-orig-date:
@@ -1482,7 +1589,7 @@ interactions:
       x-archive-src:
       - FS-074149-c/FS-074235.arc.gz
       x-tr:
-      - '2762'
+      - '314'
       x-ts:
       - '200'
     status:
@@ -1494,9 +1601,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - wayback/0.3.0.post0.dev0+g024a80e (+https://github.com/edgi-govdata-archiving/wayback)
+      - wayback/0.3.3.post10.dev0+ga68c731 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/19970427191925id_/http://www.zew.de/
+    uri: https://web.archive.org/web/19970427191925id_/http://www.zew.de/
   response:
     body:
       string: !!binary |
@@ -1513,8 +1620,8 @@ interactions:
         X+/HnKs60XGO7ji0lWujtZJK8HWRc/5QAFfFK6RYa4P9506njn8TE/277CsNv54T3SopwxgDNmuZ
         fde7j+CJT2gt05ttokub76C3OBUehPBWQWC3F6P4Ptkl4ATOy1o7BbQvHPckQc3jjMWpU7bG9m72
         PK+Il1KyqXTncxnDzzKcc25ZIVHQTbrfyjWvxH8ltpDZnaLml2CMyjVO6wd66JAztcKLCJXR+H9F
-        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcULV9wbFiZ1lYQtvbmxNZWzCopT0umRvn+zvdchw5+Cw
-        i+tzJmUKXODNU1lQv8bAvXqJgxbveBxXxZ+D1h+4acC6JAgAAA==
+        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcUJhJCh/XODEzrKwhTc3tqYyNmFRSnpdsrdP9vc6ZLhz
+        cNjF9TmTMgUu8OapLKhfY+BevcRBi3c8jqviz0HrD7hpwLokCAAA
     headers:
       Connection:
       - keep-alive
@@ -1523,13 +1630,15 @@ interactions:
       Content-Type:
       - text/html
       Date:
-      - Mon, 22 Mar 2021 12:48:36 GMT
+      - Mon, 31 Oct 2022 20:44:46 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
       - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-Cache-Key:
-      - httpweb.archive.org/web/19970427191925id_/http://www.zew.de/DE
       X-NA:
       - '0'
       X-NID:
@@ -1546,22 +1655,22 @@ interactions:
       - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
         web.archive.org analytics.archive.org pragma.archivelab.org'
       link:
-      - <http://www.zew.de:80/>; rel="original", <http://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
-        rel="timemap"; type="application/link-format", <http://web.archive.org/web/http://www.zew.de:80/>;
-        rel="timegate", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
-        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <http://web.archive.org/web/20210320210013/https://zew.de/>;
-        rel="last memento"; datetime="Sat, 20 Mar 2021 21:00:13 GMT"
+      - <http://www.zew.de:80/>; rel="original", <https://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/http://www.zew.de:80/>;
+        rel="timegate", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
+        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <https://web.archive.org/web/20221031082507/http://www.zew.de/>;
+        rel="last memento"; datetime="Mon, 31 Oct 2022 08:25:07 GMT"
       memento-datetime:
       - Sun, 27 Apr 1997 19:19:25 GMT
       server-timing:
-      - RedisCDXSource;dur=0.697900, exclusion.robots.policy;dur=0.305332, captures_list;dur=2191.253961,
-        esindex;dur=0.013204, load_resource;dur=547.469172, CDXLines.iter;dur=22.645042,
-        exclusion.robots;dur=0.319252, LoadShardBlock;dur=2141.747364, PetaboxLoader3.resolve;dur=497.287892,
-        PetaboxLoader3.datanode;dur=2098.347280
+      - captures_list;dur=244.391337, exclusion.robots;dur=0.202287, exclusion.robots.policy;dur=0.194084,
+        cdx.remote;dur=0.065431, esindex;dur=0.008743, LoadShardBlock;dur=68.366650,
+        PetaboxLoader3.datanode;dur=62.815223, CDXLines.iter;dur=18.293273, load_resource;dur=54.638106,
+        PetaboxLoader3.resolve;dur=26.952557
       x-app-server:
-      - wwwb-app104
+      - wwwb-app219
       x-archive-orig-content-length:
       - '2084'
       x-archive-orig-date:
@@ -1575,7 +1684,7 @@ interactions:
       x-archive-src:
       - FS-074149-c/FS-074235.arc.gz
       x-tr:
-      - '2762'
+      - '314'
       x-ts:
       - '200'
     status:
@@ -1587,9 +1696,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - wayback/0.3.0.post0.dev0+g024a80e (+https://github.com/edgi-govdata-archiving/wayback)
+      - wayback/0.3.3.post10.dev0+ga68c731 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/19970427191925id_/http://www.zew.de/
+    uri: https://web.archive.org/web/19970427191925id_/http://www.zew.de/
   response:
     body:
       string: !!binary |
@@ -1606,8 +1715,8 @@ interactions:
         X+/HnKs60XGO7ji0lWujtZJK8HWRc/5QAFfFK6RYa4P9506njn8TE/277CsNv54T3SopwxgDNmuZ
         fde7j+CJT2gt05ttokub76C3OBUehPBWQWC3F6P4Ptkl4ATOy1o7BbQvHPckQc3jjMWpU7bG9m72
         PK+Il1KyqXTncxnDzzKcc25ZIVHQTbrfyjWvxH8ltpDZnaLml2CMyjVO6wd66JAztcKLCJXR+H9F
-        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcULV9wbFiZ1lYQtvbmxNZWzCopT0umRvn+zvdchw5+Cw
-        i+tzJmUKXODNU1lQv8bAvXqJgxbveBxXxZ+D1h+4acC6JAgAAA==
+        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcUJhJCh/XODEzrKwhTc3tqYyNmFRSnpdsrdP9vc6ZLhz
+        cNjF9TmTMgUu8OapLKhfY+BevcRBi3c8jqviz0HrD7hpwLokCAAA
     headers:
       Connection:
       - keep-alive
@@ -1616,13 +1725,15 @@ interactions:
       Content-Type:
       - text/html
       Date:
-      - Mon, 22 Mar 2021 12:48:36 GMT
+      - Mon, 31 Oct 2022 20:44:47 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
       - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-Cache-Key:
-      - httpweb.archive.org/web/19970427191925id_/http://www.zew.de/DE
       X-NA:
       - '0'
       X-NID:
@@ -1639,22 +1750,22 @@ interactions:
       - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
         web.archive.org analytics.archive.org pragma.archivelab.org'
       link:
-      - <http://www.zew.de:80/>; rel="original", <http://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
-        rel="timemap"; type="application/link-format", <http://web.archive.org/web/http://www.zew.de:80/>;
-        rel="timegate", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
-        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <http://web.archive.org/web/20210320210013/https://zew.de/>;
-        rel="last memento"; datetime="Sat, 20 Mar 2021 21:00:13 GMT"
+      - <http://www.zew.de:80/>; rel="original", <https://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/http://www.zew.de:80/>;
+        rel="timegate", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
+        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <https://web.archive.org/web/20221031082507/http://www.zew.de/>;
+        rel="last memento"; datetime="Mon, 31 Oct 2022 08:25:07 GMT"
       memento-datetime:
       - Sun, 27 Apr 1997 19:19:25 GMT
       server-timing:
-      - RedisCDXSource;dur=0.697900, exclusion.robots.policy;dur=0.305332, captures_list;dur=2191.253961,
-        esindex;dur=0.013204, load_resource;dur=547.469172, CDXLines.iter;dur=22.645042,
-        exclusion.robots;dur=0.319252, LoadShardBlock;dur=2141.747364, PetaboxLoader3.resolve;dur=497.287892,
-        PetaboxLoader3.datanode;dur=2098.347280
+      - captures_list;dur=244.391337, exclusion.robots;dur=0.202287, exclusion.robots.policy;dur=0.194084,
+        cdx.remote;dur=0.065431, esindex;dur=0.008743, LoadShardBlock;dur=68.366650,
+        PetaboxLoader3.datanode;dur=62.815223, CDXLines.iter;dur=18.293273, load_resource;dur=54.638106,
+        PetaboxLoader3.resolve;dur=26.952557
       x-app-server:
-      - wwwb-app104
+      - wwwb-app219
       x-archive-orig-content-length:
       - '2084'
       x-archive-orig-date:
@@ -1668,7 +1779,7 @@ interactions:
       x-archive-src:
       - FS-074149-c/FS-074235.arc.gz
       x-tr:
-      - '2762'
+      - '314'
       x-ts:
       - '200'
     status:
@@ -1680,9 +1791,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - wayback/0.3.0.post0.dev0+g024a80e (+https://github.com/edgi-govdata-archiving/wayback)
+      - wayback/0.3.3.post10.dev0+ga68c731 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/19970427191925id_/http://www.zew.de/
+    uri: https://web.archive.org/web/19970427191925id_/http://www.zew.de/
   response:
     body:
       string: !!binary |
@@ -1699,8 +1810,8 @@ interactions:
         X+/HnKs60XGO7ji0lWujtZJK8HWRc/5QAFfFK6RYa4P9506njn8TE/277CsNv54T3SopwxgDNmuZ
         fde7j+CJT2gt05ttokub76C3OBUehPBWQWC3F6P4Ptkl4ATOy1o7BbQvHPckQc3jjMWpU7bG9m72
         PK+Il1KyqXTncxnDzzKcc25ZIVHQTbrfyjWvxH8ltpDZnaLml2CMyjVO6wd66JAztcKLCJXR+H9F
-        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcULV9wbFiZ1lYQtvbmxNZWzCopT0umRvn+zvdchw5+Cw
-        i+tzJmUKXODNU1lQv8bAvXqJgxbveBxXxZ+D1h+4acC6JAgAAA==
+        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcUJhJCh/XODEzrKwhTc3tqYyNmFRSnpdsrdP9vc6ZLhz
+        cNjF9TmTMgUu8OapLKhfY+BevcRBi3c8jqviz0HrD7hpwLokCAAA
     headers:
       Connection:
       - keep-alive
@@ -1709,13 +1820,15 @@ interactions:
       Content-Type:
       - text/html
       Date:
-      - Mon, 22 Mar 2021 12:48:37 GMT
+      - Mon, 31 Oct 2022 20:44:47 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
       - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-Cache-Key:
-      - httpweb.archive.org/web/19970427191925id_/http://www.zew.de/DE
       X-NA:
       - '0'
       X-NID:
@@ -1732,22 +1845,22 @@ interactions:
       - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
         web.archive.org analytics.archive.org pragma.archivelab.org'
       link:
-      - <http://www.zew.de:80/>; rel="original", <http://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
-        rel="timemap"; type="application/link-format", <http://web.archive.org/web/http://www.zew.de:80/>;
-        rel="timegate", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
-        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <http://web.archive.org/web/20210320210013/https://zew.de/>;
-        rel="last memento"; datetime="Sat, 20 Mar 2021 21:00:13 GMT"
+      - <http://www.zew.de:80/>; rel="original", <https://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/http://www.zew.de:80/>;
+        rel="timegate", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
+        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <https://web.archive.org/web/20221031082507/http://www.zew.de/>;
+        rel="last memento"; datetime="Mon, 31 Oct 2022 08:25:07 GMT"
       memento-datetime:
       - Sun, 27 Apr 1997 19:19:25 GMT
       server-timing:
-      - RedisCDXSource;dur=0.697900, exclusion.robots.policy;dur=0.305332, captures_list;dur=2191.253961,
-        esindex;dur=0.013204, load_resource;dur=547.469172, CDXLines.iter;dur=22.645042,
-        exclusion.robots;dur=0.319252, LoadShardBlock;dur=2141.747364, PetaboxLoader3.resolve;dur=497.287892,
-        PetaboxLoader3.datanode;dur=2098.347280
+      - captures_list;dur=244.391337, exclusion.robots;dur=0.202287, exclusion.robots.policy;dur=0.194084,
+        cdx.remote;dur=0.065431, esindex;dur=0.008743, LoadShardBlock;dur=68.366650,
+        PetaboxLoader3.datanode;dur=62.815223, CDXLines.iter;dur=18.293273, load_resource;dur=54.638106,
+        PetaboxLoader3.resolve;dur=26.952557
       x-app-server:
-      - wwwb-app104
+      - wwwb-app219
       x-archive-orig-content-length:
       - '2084'
       x-archive-orig-date:
@@ -1761,7 +1874,7 @@ interactions:
       x-archive-src:
       - FS-074149-c/FS-074235.arc.gz
       x-tr:
-      - '2762'
+      - '314'
       x-ts:
       - '200'
     status:
@@ -1773,9 +1886,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - wayback/0.3.0.post0.dev0+g024a80e (+https://github.com/edgi-govdata-archiving/wayback)
+      - wayback/0.3.3.post10.dev0+ga68c731 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/19970427191925id_/http://www.zew.de/
+    uri: https://web.archive.org/web/19970427191925id_/http://www.zew.de/
   response:
     body:
       string: !!binary |
@@ -1792,8 +1905,8 @@ interactions:
         X+/HnKs60XGO7ji0lWujtZJK8HWRc/5QAFfFK6RYa4P9506njn8TE/277CsNv54T3SopwxgDNmuZ
         fde7j+CJT2gt05ttokub76C3OBUehPBWQWC3F6P4Ptkl4ATOy1o7BbQvHPckQc3jjMWpU7bG9m72
         PK+Il1KyqXTncxnDzzKcc25ZIVHQTbrfyjWvxH8ltpDZnaLml2CMyjVO6wd66JAztcKLCJXR+H9F
-        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcULV9wbFiZ1lYQtvbmxNZWzCopT0umRvn+zvdchw5+Cw
-        i+tzJmUKXODNU1lQv8bAvXqJgxbveBxXxZ+D1h+4acC6JAgAAA==
+        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcUJhJCh/XODEzrKwhTc3tqYyNmFRSnpdsrdP9vc6ZLhz
+        cNjF9TmTMgUu8OapLKhfY+BevcRBi3c8jqviz0HrD7hpwLokCAAA
     headers:
       Connection:
       - keep-alive
@@ -1802,13 +1915,15 @@ interactions:
       Content-Type:
       - text/html
       Date:
-      - Mon, 22 Mar 2021 12:48:37 GMT
+      - Mon, 31 Oct 2022 20:44:47 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
       - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-Cache-Key:
-      - httpweb.archive.org/web/19970427191925id_/http://www.zew.de/DE
       X-NA:
       - '0'
       X-NID:
@@ -1825,22 +1940,22 @@ interactions:
       - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
         web.archive.org analytics.archive.org pragma.archivelab.org'
       link:
-      - <http://www.zew.de:80/>; rel="original", <http://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
-        rel="timemap"; type="application/link-format", <http://web.archive.org/web/http://www.zew.de:80/>;
-        rel="timegate", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
-        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <http://web.archive.org/web/20210320210013/https://zew.de/>;
-        rel="last memento"; datetime="Sat, 20 Mar 2021 21:00:13 GMT"
+      - <http://www.zew.de:80/>; rel="original", <https://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/http://www.zew.de:80/>;
+        rel="timegate", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
+        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <https://web.archive.org/web/20221031082507/http://www.zew.de/>;
+        rel="last memento"; datetime="Mon, 31 Oct 2022 08:25:07 GMT"
       memento-datetime:
       - Sun, 27 Apr 1997 19:19:25 GMT
       server-timing:
-      - RedisCDXSource;dur=0.697900, exclusion.robots.policy;dur=0.305332, captures_list;dur=2191.253961,
-        esindex;dur=0.013204, load_resource;dur=547.469172, CDXLines.iter;dur=22.645042,
-        exclusion.robots;dur=0.319252, LoadShardBlock;dur=2141.747364, PetaboxLoader3.resolve;dur=497.287892,
-        PetaboxLoader3.datanode;dur=2098.347280
+      - captures_list;dur=244.391337, exclusion.robots;dur=0.202287, exclusion.robots.policy;dur=0.194084,
+        cdx.remote;dur=0.065431, esindex;dur=0.008743, LoadShardBlock;dur=68.366650,
+        PetaboxLoader3.datanode;dur=62.815223, CDXLines.iter;dur=18.293273, load_resource;dur=54.638106,
+        PetaboxLoader3.resolve;dur=26.952557
       x-app-server:
-      - wwwb-app104
+      - wwwb-app219
       x-archive-orig-content-length:
       - '2084'
       x-archive-orig-date:
@@ -1854,7 +1969,7 @@ interactions:
       x-archive-src:
       - FS-074149-c/FS-074235.arc.gz
       x-tr:
-      - '2762'
+      - '314'
       x-ts:
       - '200'
     status:
@@ -1866,9 +1981,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - wayback/0.3.0.post0.dev0+g024a80e (+https://github.com/edgi-govdata-archiving/wayback)
+      - wayback/0.3.3.post10.dev0+ga68c731 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/19970427191925id_/http://www.zew.de/
+    uri: https://web.archive.org/web/19970427191925id_/http://www.zew.de/
   response:
     body:
       string: !!binary |
@@ -1885,8 +2000,8 @@ interactions:
         X+/HnKs60XGO7ji0lWujtZJK8HWRc/5QAFfFK6RYa4P9506njn8TE/277CsNv54T3SopwxgDNmuZ
         fde7j+CJT2gt05ttokub76C3OBUehPBWQWC3F6P4Ptkl4ATOy1o7BbQvHPckQc3jjMWpU7bG9m72
         PK+Il1KyqXTncxnDzzKcc25ZIVHQTbrfyjWvxH8ltpDZnaLml2CMyjVO6wd66JAztcKLCJXR+H9F
-        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcULV9wbFiZ1lYQtvbmxNZWzCopT0umRvn+zvdchw5+Cw
-        i+tzJmUKXODNU1lQv8bAvXqJgxbveBxXxZ+D1h+4acC6JAgAAA==
+        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcUJhJCh/XODEzrKwhTc3tqYyNmFRSnpdsrdP9vc6ZLhz
+        cNjF9TmTMgUu8OapLKhfY+BevcRBi3c8jqviz0HrD7hpwLokCAAA
     headers:
       Connection:
       - keep-alive
@@ -1895,13 +2010,15 @@ interactions:
       Content-Type:
       - text/html
       Date:
-      - Mon, 22 Mar 2021 12:48:37 GMT
+      - Mon, 31 Oct 2022 20:44:47 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
       - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-Cache-Key:
-      - httpweb.archive.org/web/19970427191925id_/http://www.zew.de/DE
       X-NA:
       - '0'
       X-NID:
@@ -1918,22 +2035,22 @@ interactions:
       - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
         web.archive.org analytics.archive.org pragma.archivelab.org'
       link:
-      - <http://www.zew.de:80/>; rel="original", <http://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
-        rel="timemap"; type="application/link-format", <http://web.archive.org/web/http://www.zew.de:80/>;
-        rel="timegate", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
-        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <http://web.archive.org/web/20210320210013/https://zew.de/>;
-        rel="last memento"; datetime="Sat, 20 Mar 2021 21:00:13 GMT"
+      - <http://www.zew.de:80/>; rel="original", <https://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/http://www.zew.de:80/>;
+        rel="timegate", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
+        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <https://web.archive.org/web/20221031082507/http://www.zew.de/>;
+        rel="last memento"; datetime="Mon, 31 Oct 2022 08:25:07 GMT"
       memento-datetime:
       - Sun, 27 Apr 1997 19:19:25 GMT
       server-timing:
-      - RedisCDXSource;dur=0.697900, exclusion.robots.policy;dur=0.305332, captures_list;dur=2191.253961,
-        esindex;dur=0.013204, load_resource;dur=547.469172, CDXLines.iter;dur=22.645042,
-        exclusion.robots;dur=0.319252, LoadShardBlock;dur=2141.747364, PetaboxLoader3.resolve;dur=497.287892,
-        PetaboxLoader3.datanode;dur=2098.347280
+      - captures_list;dur=244.391337, exclusion.robots;dur=0.202287, exclusion.robots.policy;dur=0.194084,
+        cdx.remote;dur=0.065431, esindex;dur=0.008743, LoadShardBlock;dur=68.366650,
+        PetaboxLoader3.datanode;dur=62.815223, CDXLines.iter;dur=18.293273, load_resource;dur=54.638106,
+        PetaboxLoader3.resolve;dur=26.952557
       x-app-server:
-      - wwwb-app104
+      - wwwb-app219
       x-archive-orig-content-length:
       - '2084'
       x-archive-orig-date:
@@ -1947,7 +2064,7 @@ interactions:
       x-archive-src:
       - FS-074149-c/FS-074235.arc.gz
       x-tr:
-      - '2762'
+      - '314'
       x-ts:
       - '200'
     status:
@@ -1959,9 +2076,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - wayback/0.3.0.post0.dev0+g024a80e (+https://github.com/edgi-govdata-archiving/wayback)
+      - wayback/0.3.3.post10.dev0+ga68c731 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/19970427191925id_/http://www.zew.de/
+    uri: https://web.archive.org/web/19970427191925id_/http://www.zew.de/
   response:
     body:
       string: !!binary |
@@ -1978,8 +2095,8 @@ interactions:
         X+/HnKs60XGO7ji0lWujtZJK8HWRc/5QAFfFK6RYa4P9506njn8TE/277CsNv54T3SopwxgDNmuZ
         fde7j+CJT2gt05ttokub76C3OBUehPBWQWC3F6P4Ptkl4ATOy1o7BbQvHPckQc3jjMWpU7bG9m72
         PK+Il1KyqXTncxnDzzKcc25ZIVHQTbrfyjWvxH8ltpDZnaLml2CMyjVO6wd66JAztcKLCJXR+H9F
-        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcULV9wbFiZ1lYQtvbmxNZWzCopT0umRvn+zvdchw5+Cw
-        i+tzJmUKXODNU1lQv8bAvXqJgxbveBxXxZ+D1h+4acC6JAgAAA==
+        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcUJhJCh/XODEzrKwhTc3tqYyNmFRSnpdsrdP9vc6ZLhz
+        cNjF9TmTMgUu8OapLKhfY+BevcRBi3c8jqviz0HrD7hpwLokCAAA
     headers:
       Connection:
       - keep-alive
@@ -1988,13 +2105,15 @@ interactions:
       Content-Type:
       - text/html
       Date:
-      - Mon, 22 Mar 2021 12:48:37 GMT
+      - Mon, 31 Oct 2022 20:44:47 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
       - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-Cache-Key:
-      - httpweb.archive.org/web/19970427191925id_/http://www.zew.de/DE
       X-NA:
       - '0'
       X-NID:
@@ -2011,22 +2130,22 @@ interactions:
       - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
         web.archive.org analytics.archive.org pragma.archivelab.org'
       link:
-      - <http://www.zew.de:80/>; rel="original", <http://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
-        rel="timemap"; type="application/link-format", <http://web.archive.org/web/http://www.zew.de:80/>;
-        rel="timegate", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
-        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <http://web.archive.org/web/20210320210013/https://zew.de/>;
-        rel="last memento"; datetime="Sat, 20 Mar 2021 21:00:13 GMT"
+      - <http://www.zew.de:80/>; rel="original", <https://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/http://www.zew.de:80/>;
+        rel="timegate", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
+        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <https://web.archive.org/web/20221031082507/http://www.zew.de/>;
+        rel="last memento"; datetime="Mon, 31 Oct 2022 08:25:07 GMT"
       memento-datetime:
       - Sun, 27 Apr 1997 19:19:25 GMT
       server-timing:
-      - RedisCDXSource;dur=0.697900, exclusion.robots.policy;dur=0.305332, captures_list;dur=2191.253961,
-        esindex;dur=0.013204, load_resource;dur=547.469172, CDXLines.iter;dur=22.645042,
-        exclusion.robots;dur=0.319252, LoadShardBlock;dur=2141.747364, PetaboxLoader3.resolve;dur=497.287892,
-        PetaboxLoader3.datanode;dur=2098.347280
+      - captures_list;dur=244.391337, exclusion.robots;dur=0.202287, exclusion.robots.policy;dur=0.194084,
+        cdx.remote;dur=0.065431, esindex;dur=0.008743, LoadShardBlock;dur=68.366650,
+        PetaboxLoader3.datanode;dur=62.815223, CDXLines.iter;dur=18.293273, load_resource;dur=54.638106,
+        PetaboxLoader3.resolve;dur=26.952557
       x-app-server:
-      - wwwb-app104
+      - wwwb-app219
       x-archive-orig-content-length:
       - '2084'
       x-archive-orig-date:
@@ -2040,7 +2159,7 @@ interactions:
       x-archive-src:
       - FS-074149-c/FS-074235.arc.gz
       x-tr:
-      - '2762'
+      - '314'
       x-ts:
       - '200'
     status:
@@ -2052,9 +2171,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - wayback/0.3.0.post0.dev0+g024a80e (+https://github.com/edgi-govdata-archiving/wayback)
+      - wayback/0.3.3.post10.dev0+ga68c731 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/19970427191925id_/http://www.zew.de/
+    uri: https://web.archive.org/web/19970427191925id_/http://www.zew.de/
   response:
     body:
       string: !!binary |
@@ -2071,8 +2190,8 @@ interactions:
         X+/HnKs60XGO7ji0lWujtZJK8HWRc/5QAFfFK6RYa4P9506njn8TE/277CsNv54T3SopwxgDNmuZ
         fde7j+CJT2gt05ttokub76C3OBUehPBWQWC3F6P4Ptkl4ATOy1o7BbQvHPckQc3jjMWpU7bG9m72
         PK+Il1KyqXTncxnDzzKcc25ZIVHQTbrfyjWvxH8ltpDZnaLml2CMyjVO6wd66JAztcKLCJXR+H9F
-        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcULV9wbFiZ1lYQtvbmxNZWzCopT0umRvn+zvdchw5+Cw
-        i+tzJmUKXODNU1lQv8bAvXqJgxbveBxXxZ+D1h+4acC6JAgAAA==
+        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcUJhJCh/XODEzrKwhTc3tqYyNmFRSnpdsrdP9vc6ZLhz
+        cNjF9TmTMgUu8OapLKhfY+BevcRBi3c8jqviz0HrD7hpwLokCAAA
     headers:
       Connection:
       - keep-alive
@@ -2081,13 +2200,15 @@ interactions:
       Content-Type:
       - text/html
       Date:
-      - Mon, 22 Mar 2021 12:48:37 GMT
+      - Mon, 31 Oct 2022 20:44:47 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
       - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-Cache-Key:
-      - httpweb.archive.org/web/19970427191925id_/http://www.zew.de/DE
       X-NA:
       - '0'
       X-NID:
@@ -2104,22 +2225,22 @@ interactions:
       - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
         web.archive.org analytics.archive.org pragma.archivelab.org'
       link:
-      - <http://www.zew.de:80/>; rel="original", <http://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
-        rel="timemap"; type="application/link-format", <http://web.archive.org/web/http://www.zew.de:80/>;
-        rel="timegate", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
-        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <http://web.archive.org/web/20210320210013/https://zew.de/>;
-        rel="last memento"; datetime="Sat, 20 Mar 2021 21:00:13 GMT"
+      - <http://www.zew.de:80/>; rel="original", <https://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/http://www.zew.de:80/>;
+        rel="timegate", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
+        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <https://web.archive.org/web/20221031082507/http://www.zew.de/>;
+        rel="last memento"; datetime="Mon, 31 Oct 2022 08:25:07 GMT"
       memento-datetime:
       - Sun, 27 Apr 1997 19:19:25 GMT
       server-timing:
-      - RedisCDXSource;dur=0.697900, exclusion.robots.policy;dur=0.305332, captures_list;dur=2191.253961,
-        esindex;dur=0.013204, load_resource;dur=547.469172, CDXLines.iter;dur=22.645042,
-        exclusion.robots;dur=0.319252, LoadShardBlock;dur=2141.747364, PetaboxLoader3.resolve;dur=497.287892,
-        PetaboxLoader3.datanode;dur=2098.347280
+      - captures_list;dur=244.391337, exclusion.robots;dur=0.202287, exclusion.robots.policy;dur=0.194084,
+        cdx.remote;dur=0.065431, esindex;dur=0.008743, LoadShardBlock;dur=68.366650,
+        PetaboxLoader3.datanode;dur=62.815223, CDXLines.iter;dur=18.293273, load_resource;dur=54.638106,
+        PetaboxLoader3.resolve;dur=26.952557
       x-app-server:
-      - wwwb-app104
+      - wwwb-app219
       x-archive-orig-content-length:
       - '2084'
       x-archive-orig-date:
@@ -2133,7 +2254,7 @@ interactions:
       x-archive-src:
       - FS-074149-c/FS-074235.arc.gz
       x-tr:
-      - '2762'
+      - '314'
       x-ts:
       - '200'
     status:
@@ -2145,9 +2266,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - wayback/0.3.0.post0.dev0+g024a80e (+https://github.com/edgi-govdata-archiving/wayback)
+      - wayback/0.3.3.post10.dev0+ga68c731 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/19970427191925id_/http://www.zew.de/
+    uri: https://web.archive.org/web/19970427191925id_/http://www.zew.de/
   response:
     body:
       string: !!binary |
@@ -2164,8 +2285,8 @@ interactions:
         X+/HnKs60XGO7ji0lWujtZJK8HWRc/5QAFfFK6RYa4P9506njn8TE/277CsNv54T3SopwxgDNmuZ
         fde7j+CJT2gt05ttokub76C3OBUehPBWQWC3F6P4Ptkl4ATOy1o7BbQvHPckQc3jjMWpU7bG9m72
         PK+Il1KyqXTncxnDzzKcc25ZIVHQTbrfyjWvxH8ltpDZnaLml2CMyjVO6wd66JAztcKLCJXR+H9F
-        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcULV9wbFiZ1lYQtvbmxNZWzCopT0umRvn+zvdchw5+Cw
-        i+tzJmUKXODNU1lQv8bAvXqJgxbveBxXxZ+D1h+4acC6JAgAAA==
+        udfAUdx3F97MLQHnygqWyuL0uxsgfjFGcUJhJCh/XODEzrKwhTc3tqYyNmFRSnpdsrdP9vc6ZLhz
+        cNjF9TmTMgUu8OapLKhfY+BevcRBi3c8jqviz0HrD7hpwLokCAAA
     headers:
       Connection:
       - keep-alive
@@ -2174,13 +2295,15 @@ interactions:
       Content-Type:
       - text/html
       Date:
-      - Mon, 22 Mar 2021 12:48:38 GMT
+      - Mon, 31 Oct 2022 20:44:47 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
       - nginx/1.19.5
       Transfer-Encoding:
       - chunked
-      X-Cache-Key:
-      - httpweb.archive.org/web/19970427191925id_/http://www.zew.de/DE
       X-NA:
       - '0'
       X-NID:
@@ -2197,22 +2320,22 @@ interactions:
       - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
         web.archive.org analytics.archive.org pragma.archivelab.org'
       link:
-      - <http://www.zew.de:80/>; rel="original", <http://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
-        rel="timemap"; type="application/link-format", <http://web.archive.org/web/http://www.zew.de:80/>;
-        rel="timegate", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
-        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <http://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
-        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <http://web.archive.org/web/20210320210013/https://zew.de/>;
-        rel="last memento"; datetime="Sat, 20 Mar 2021 21:00:13 GMT"
+      - <http://www.zew.de:80/>; rel="original", <https://web.archive.org/web/timemap/link/http://www.zew.de:80/>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/http://www.zew.de:80/>;
+        rel="timegate", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="first memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970427191925/http://www.zew.de:80/>;
+        rel="memento"; datetime="Sun, 27 Apr 1997 19:19:25 GMT", <https://web.archive.org/web/19970707142028/http://www.zew.de:80/>;
+        rel="next memento"; datetime="Mon, 07 Jul 1997 14:20:28 GMT", <https://web.archive.org/web/20221031082507/http://www.zew.de/>;
+        rel="last memento"; datetime="Mon, 31 Oct 2022 08:25:07 GMT"
       memento-datetime:
       - Sun, 27 Apr 1997 19:19:25 GMT
       server-timing:
-      - RedisCDXSource;dur=0.697900, exclusion.robots.policy;dur=0.305332, captures_list;dur=2191.253961,
-        esindex;dur=0.013204, load_resource;dur=547.469172, CDXLines.iter;dur=22.645042,
-        exclusion.robots;dur=0.319252, LoadShardBlock;dur=2141.747364, PetaboxLoader3.resolve;dur=497.287892,
-        PetaboxLoader3.datanode;dur=2098.347280
+      - captures_list;dur=244.391337, exclusion.robots;dur=0.202287, exclusion.robots.policy;dur=0.194084,
+        cdx.remote;dur=0.065431, esindex;dur=0.008743, LoadShardBlock;dur=68.366650,
+        PetaboxLoader3.datanode;dur=62.815223, CDXLines.iter;dur=18.293273, load_resource;dur=54.638106,
+        PetaboxLoader3.resolve;dur=26.952557
       x-app-server:
-      - wwwb-app104
+      - wwwb-app219
       x-archive-orig-content-length:
       - '2084'
       x-archive-orig-date:
@@ -2226,7 +2349,7 @@ interactions:
       x-archive-src:
       - FS-074149-c/FS-074235.arc.gz
       x-tr:
-      - '2762'
+      - '314'
       x-ts:
       - '200'
     status:

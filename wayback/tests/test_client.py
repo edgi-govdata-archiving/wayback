@@ -643,13 +643,15 @@ class TestWaybackSession:
         with WaybackClient() as client:
             for i in range(3):
                 next(client.search('zew.de'))
-        assert 2.0 <= time.time() - start_time <= 2.05
+        duration_with_limits = time.time() - start_time
+
         # Check that disabling the rate limits through the search API works.
         start_time = time.time()
         with WaybackClient() as client:
             for i in range(3):
                 next(client.search('zew.de', calls_per_second=0))
-        assert 0.0 <= time.time() - start_time <= 0.05
+        duration_without_limits = time.time() - start_time
+
         # Check that a different rate limit set through the session is applied correctly.
         # I need to sleep one half second in order to reset the rate limit.
         time.sleep(0.5)
@@ -658,7 +660,11 @@ class TestWaybackSession:
         start_time = time.time()
         for i in range(3):
             next(client.search('zew.de'))
-        assert 0.0 <= time.time() - start_time <= 1.05
+        duration_with_limits_custom = time.time() - start_time
+
+        assert 2.0 <= duration_with_limits <= 2.05
+        assert 0.0 <= duration_without_limits <= 0.05
+        assert 0.0 <= duration_with_limits_custom <= 1.05
 
     @ia_vcr.use_cassette()
     def test_memento_rate_limits(self):
@@ -674,13 +680,15 @@ class TestWaybackSession:
         with WaybackClient() as client:
             for i in range(11):
                 client.get_memento(cdx)
-        assert 0.33 <= time.time() - start_time <= 0.38
+        duration_with_limits = time.time() - start_time
+
         # Check that disabling the rate limits through the get_memento API works.
         start_time = time.time()
         with WaybackClient() as client:
             for i in range(3):
                 client.get_memento(cdx, calls_per_second=0)
-        assert 0.0 <= time.time() - start_time <= 0.05
+        duration_without_limits = time.time() - start_time
+
         # Check that a different rate limit set through the session is applied correctly.
         # I need to sleep 0.1 seconds in order to reset the rate limit.
         time.sleep(0.1)
@@ -689,4 +697,8 @@ class TestWaybackSession:
         start_time = time.time()
         for i in range(6):
             client.get_memento(cdx)
-        assert 0.5 <= time.time() - start_time <= 0.55
+        duration_with_limits_custom = time.time() - start_time
+
+        assert 0.33 <= duration_with_limits <= 0.38
+        assert 0.0 <= duration_without_limits <= 0.05
+        assert 0.5 <= duration_with_limits_custom <= 0.55
