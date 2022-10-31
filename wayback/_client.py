@@ -626,7 +626,8 @@ class WaybackClient(_utils.DepthCountedContext):
 
     def get_memento(self, url, datetime=None, mode=Mode.original, *,
                     exact=True, exact_redirects=None,
-                    target_window=24 * 60 * 60, follow_redirects=True, calls_per_second=None):
+                    target_window=24 * 60 * 60, follow_redirects=True,
+                    calls_per_second=None):
         """
         Fetch a memento (an archived HTTP response) from the Wayback Machine.
 
