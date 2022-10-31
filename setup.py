@@ -59,6 +59,12 @@ setup(
     },
     install_requires=requirements,
     license="BSD (3-clause)",
+    project_urls={
+        'Documentation': 'https://wayback.readthedocs.io/en/stable/',
+        'Changelog': 'https://wayback.readthedocs.io/en/stable/release-history.html',
+        'Source code': 'https://github.com/edgi-govdata-archiving/wayback',
+        'Issues': 'https://github.com/edgi-govdata-archiving/wayback/issues',
+    },
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Natural Language :: English',
