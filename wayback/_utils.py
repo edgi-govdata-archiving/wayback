@@ -1,4 +1,5 @@
-from collections import defaultdict
+from collections import defaultdict, OrderedDict
+from collections.abc import Mapping, MutableMapping
 from contextlib import contextmanager
 from datetime import date, datetime, timezone
 import logging
@@ -246,3 +247,75 @@ class DisableAfterCloseSession(requests.Session):
                                      'and cannot send new HTTP requests.')
 
         return super().send(*args, **kwargs)
+
+
+class CaseInsensitiveDict(MutableMapping):
+    """
+    A case-insensitive ``dict`` subclass.
+
+    Implements all methods and operations of ``MutableMapping`` as well as
+    dict's ``copy``.
+
+    All keys are expected to be strings. The structure remembers the case of
+    the last key to be set, and ``iter(instance)``, ``keys()``, ``items()``,
+    ``iterkeys()``, and ``iteritems()`` will contain case-sensitive keys.
+    However, querying and contains testing is case insensitive::
+
+      cid = CaseInsensitiveDict()
+      cid['Accept'] = 'application/json'
+      cid['aCCEPT'] == 'application/json'  # True
+      list(cid) == ['Accept']  # True
+
+    For example, ``headers['content-encoding']`` will return the value of a
+    ``'Content-Encoding'`` response header, regardless of how the header name
+    was originally stored. If the constructor, ``.update``, or equality
+    comparison operations are given keys that have equal lower-case keys, the
+    behavior is undefined.
+
+    This implementation is based on Requests v2.28.0, which is available under
+    the Apache 2.0 license at https://github.com/psf/requests.
+    """
+
+    def __init__(self, data=None, **kwargs):
+        self._store = OrderedDict()
+        if data is None:
+            data = {}
+        self.update(data, **kwargs)
+
+    def __setitem__(self, key, value):
+        if not isinstance(key, str):
+            raise TypeError(f'The key "{key}" is not a string')
+
+        # Use the lowercased key for lookups, but store the actual
+        # key alongside the value.
+        self._store[key.lower()] = (key, value)
+
+    def __getitem__(self, key):
+        return self._store[key.lower()][1]
+
+    def __delitem__(self, key):
+        del self._store[key.lower()]
+
+    def __iter__(self):
+        return (casedkey for casedkey, mappedvalue in self._store.values())
+
+    def __len__(self):
+        return len(self._store)
+
+    def _lower_items(self):
+        """Like iteritems(), but with all lowercase keys."""
+        return ((lowerkey, keyval[1]) for (lowerkey, keyval) in self._store.items())
+
+    def __eq__(self, other):
+        if isinstance(other, Mapping):
+            other = CaseInsensitiveDict(other)
+        else:
+            return NotImplemented
+        # Compare insensitively
+        return dict(self._lower_items()) == dict(other._lower_items())
+
+    def copy(self):
+        return CaseInsensitiveDict(self._store.values())
+
+    def __repr__(self):
+        return str(dict(self.items()))
