@@ -737,8 +737,9 @@ class WaybackClient(_utils.DepthCountedContext):
                                           mode=mode,
                                           url=original_url)
 
-        with _utils.rate_limited(calls_per_second=calls_per_second if calls_per_second is not None else
-                                                  self.session.memento_calls_per_second,
+        with _utils.rate_limited(calls_per_second=(calls_per_second
+                                                   if calls_per_second is not None
+                                                   else self.session.memento_calls_per_second),
                                  group='get_memento'):
             # Correctly following redirects is actually pretty complicated. In
             # the simplest case, a memento is a simple web page, and that's
