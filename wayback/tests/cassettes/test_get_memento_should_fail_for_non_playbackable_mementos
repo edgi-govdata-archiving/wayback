@@ -7,7 +7,7 @@ interactions:
       User-Agent:
       - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
     method: GET
-    uri: http://web.archive.org/web/20170929002712id_/https://www.fws.gov/birds/
+    uri: https://web.archive.org/web/20170929002712id_/https://www.fws.gov/birds/
   response:
     body:
       string: ''
@@ -21,7 +21,7 @@ interactions:
       Date:
       - Mon, 18 Nov 2019 17:25:10 GMT
       Location:
-      - http://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/
+      - https://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/
       Server:
       - nginx/1.15.8
       X-App-Server:

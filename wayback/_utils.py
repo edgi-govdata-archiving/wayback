@@ -142,7 +142,7 @@ def memento_url_data(memento_url):
     --------
     Extract original URL, time and mode.
 
-    >>> url = ('http://web.archive.org/web/20170813195036id_/'
+    >>> url = ('https://web.archive.org/web/20170813195036id_/'
     ...        'https://arpa-e.energy.gov/?q=engage/events-workshops')
     >>> memento_url_data(url)
     ('https://arpa-e.energy.gov/?q=engage/events-workshops',

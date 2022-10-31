@@ -7,7 +7,7 @@ interactions:
       User-Agent:
       - wayback/0.3.0a2.post0.dev0+gc2ca979 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/20201102232816id_/https://www.census.gov/geography/gss-initiative.html
+    uri: https://web.archive.org/web/20201102232816id_/https://www.census.gov/geography/gss-initiative.html
   response:
     body:
       string: "\n\n                    \n\n                    \n                    \n
@@ -1727,13 +1727,13 @@ interactions:
       Date:
       - Fri, 06 Nov 2020 01:22:16 GMT
       Link:
-      - <https://www.census.gov/geography/gss-initiative.html>; rel="original", <http://web.archive.org/web/timemap/link/https://www.census.gov/geography/gss-initiative.html>;
-        rel="timemap"; type="application/link-format", <http://web.archive.org/web/https://www.census.gov/geography/gss-initiative.html>;
-        rel="timegate", <http://web.archive.org/web/20150924052631/http://www.census.gov:80/geography/gss-initiative.html>;
-        rel="first memento"; datetime="Thu, 24 Sep 2015 05:26:31 GMT", <http://web.archive.org/web/20201101215426/https://www.census.gov/geography/gss-initiative.html>;
-        rel="prev memento"; datetime="Sun, 01 Nov 2020 21:54:26 GMT", <http://web.archive.org/web/20201102232816/https://www.census.gov/geography/gss-initiative.html>;
-        rel="memento"; datetime="Mon, 02 Nov 2020 23:28:16 GMT", <http://web.archive.org/web/20201104000002/https://www.census.gov/geography/gss-initiative.html>;
-        rel="next memento"; datetime="Wed, 04 Nov 2020 00:00:02 GMT", <http://web.archive.org/web/20201105002042/https://www.census.gov/geography/gss-initiative.html>;
+      - <https://www.census.gov/geography/gss-initiative.html>; rel="original", <https://web.archive.org/web/timemap/link/https://www.census.gov/geography/gss-initiative.html>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/https://www.census.gov/geography/gss-initiative.html>;
+        rel="timegate", <https://web.archive.org/web/20150924052631/http://www.census.gov:80/geography/gss-initiative.html>;
+        rel="first memento"; datetime="Thu, 24 Sep 2015 05:26:31 GMT", <https://web.archive.org/web/20201101215426/https://www.census.gov/geography/gss-initiative.html>;
+        rel="prev memento"; datetime="Sun, 01 Nov 2020 21:54:26 GMT", <https://web.archive.org/web/20201102232816/https://www.census.gov/geography/gss-initiative.html>;
+        rel="memento"; datetime="Mon, 02 Nov 2020 23:28:16 GMT", <https://web.archive.org/web/20201104000002/https://www.census.gov/geography/gss-initiative.html>;
+        rel="next memento"; datetime="Wed, 04 Nov 2020 00:00:02 GMT", <https://web.archive.org/web/20201105002042/https://www.census.gov/geography/gss-initiative.html>;
         rel="last memento"; datetime="Thu, 05 Nov 2020 00:20:42 GMT"
       Location:
       - //web.archive.org/web/20201102232816id_/https://www.census.gov/geo/gssi/
@@ -1798,7 +1798,7 @@ interactions:
       User-Agent:
       - wayback/0.3.0a2.post0.dev0+gc2ca979 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/20201102232816id_/https://www.census.gov/geo/gssi/
+    uri: https://web.archive.org/web/20201102232816id_/https://www.census.gov/geo/gssi/
   response:
     body:
       string: ''
@@ -1812,7 +1812,7 @@ interactions:
       Date:
       - Fri, 06 Nov 2020 01:22:16 GMT
       Location:
-      - http://web.archive.org/web/20201102233026id_/https://www.census.gov/geo/gssi/
+      - https://web.archive.org/web/20201102233026id_/https://www.census.gov/geo/gssi/
       Server:
       - nginx/1.15.8
       Server-Timing:
@@ -1844,7 +1844,7 @@ interactions:
       User-Agent:
       - wayback/0.3.0a2.post0.dev0+gc2ca979 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/20201102233026id_/https://www.census.gov/geo/gssi/
+    uri: https://web.archive.org/web/20201102233026id_/https://www.census.gov/geo/gssi/
   response:
     body:
       string: !!binary |
@@ -1966,13 +1966,13 @@ interactions:
       Date:
       - Fri, 06 Nov 2020 01:22:16 GMT
       Link:
-      - <https://www.census.gov/geo/gssi/>; rel="original", <http://web.archive.org/web/timemap/link/https://www.census.gov/geo/gssi/>;
-        rel="timemap"; type="application/link-format", <http://web.archive.org/web/https://www.census.gov/geo/gssi/>;
-        rel="timegate", <http://web.archive.org/web/20140903165709/https://www.census.gov/geo/gssi/>;
-        rel="first memento"; datetime="Wed, 03 Sep 2014 16:57:09 GMT", <http://web.archive.org/web/20201101215632/https://www.census.gov/geo/gssi/>;
-        rel="prev memento"; datetime="Sun, 01 Nov 2020 21:56:32 GMT", <http://web.archive.org/web/20201102233026/https://www.census.gov/geo/gssi/>;
-        rel="memento"; datetime="Mon, 02 Nov 2020 23:30:26 GMT", <http://web.archive.org/web/20201104000219/https://www.census.gov/geo/gssi/>;
-        rel="next memento"; datetime="Wed, 04 Nov 2020 00:02:19 GMT", <http://web.archive.org/web/20201105002246/https://www.census.gov/geo/gssi/>;
+      - <https://www.census.gov/geo/gssi/>; rel="original", <https://web.archive.org/web/timemap/link/https://www.census.gov/geo/gssi/>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/https://www.census.gov/geo/gssi/>;
+        rel="timegate", <https://web.archive.org/web/20140903165709/https://www.census.gov/geo/gssi/>;
+        rel="first memento"; datetime="Wed, 03 Sep 2014 16:57:09 GMT", <https://web.archive.org/web/20201101215632/https://www.census.gov/geo/gssi/>;
+        rel="prev memento"; datetime="Sun, 01 Nov 2020 21:56:32 GMT", <https://web.archive.org/web/20201102233026/https://www.census.gov/geo/gssi/>;
+        rel="memento"; datetime="Mon, 02 Nov 2020 23:30:26 GMT", <https://web.archive.org/web/20201104000219/https://www.census.gov/geo/gssi/>;
+        rel="next memento"; datetime="Wed, 04 Nov 2020 00:02:19 GMT", <https://web.archive.org/web/20201105002246/https://www.census.gov/geo/gssi/>;
         rel="last memento"; datetime="Thu, 05 Nov 2020 00:22:46 GMT"
       Memento-Datetime:
       - Mon, 02 Nov 2020 23:30:26 GMT

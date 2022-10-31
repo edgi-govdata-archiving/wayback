@@ -63,14 +63,14 @@ And these attributes are synthesized from the information provided by CDX.
 .. py:attribute:: raw_url
 
    The URL to the raw captured content, such as
-   :data:`'http://web.archive.org/web/19961231235847id_/http://www.nasa.gov/'`.
+   :data:`'https://web.archive.org/web/19961231235847id_/http://www.nasa.gov/'`.
 
 .. py:attribute:: view_url
 
    The URL to the public view on Wayback Machine. In this view, the links and
    some subresources in the document are rewritten to point to Wayback URLs.
    There is also a navigation panel around the content. Example URL:
-   :data:`'http://web.archive.org/web/19961231235847/http://www.nasa.gov/'`.
+   :data:`'https://web.archive.org/web/19961231235847/http://www.nasa.gov/'`.
 """
 
 
@@ -124,7 +124,7 @@ class Memento:
         List of all URLs redirects followed in order to produce this memento.
         These are "memento URLs" -- that is, they are absolute URLs to the
         Wayback machine like
-        ``http://web.archive.org/web/20180816111911id_/http://www.noaa.gov/``,
+        ``https://web.archive.org/web/20180816111911id_/http://www.noaa.gov/``,
         rather than URLs of captured redirects, like ``http://www.noaa.gov``.
         Many of the URLs in this list do not represent actual mementos.
 
@@ -153,7 +153,7 @@ class Memento:
         :type: str
 
         The URL at which the memento was fetched from the Wayback Machine, e.g.
-        ``http://web.archive.org/web/20180816111911id_/http://www.noaa.gov/``.
+        ``https://web.archive.org/web/20180816111911id_/http://www.noaa.gov/``.
 
     .. py:attribute:: ok
         :type: bool
@@ -252,7 +252,7 @@ class Memento:
         self.close()
 
     @classmethod
-    def parse_memento_headers(cls, raw_headers, url='http://web.archive.org/'):
+    def parse_memento_headers(cls, raw_headers, url='https://web.archive.org/'):
         """
         Extract historical headers from the Memento HTTP response's headers.
 

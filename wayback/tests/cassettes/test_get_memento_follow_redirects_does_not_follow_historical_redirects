@@ -7,7 +7,7 @@ interactions:
       User-Agent:
       - wayback/0.2.4.post5.dev0+g4e200c6 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/20200201020357id_/http://epa.gov/climatechange
+    uri: https://web.archive.org/web/20200201020357id_/http://epa.gov/climatechange
   response:
     body:
       string: ''
@@ -21,7 +21,7 @@ interactions:
       Date:
       - Mon, 21 Sep 2020 07:37:54 GMT
       Location:
-      - http://web.archive.org/web/20200201023757id_/https://www.epa.gov/climatechange
+      - https://web.archive.org/web/20200201023757id_/https://www.epa.gov/climatechange
       Server:
       - nginx/1.15.8
       Server-Timing:
@@ -52,7 +52,7 @@ interactions:
       User-Agent:
       - wayback/0.2.4.post5.dev0+g4e200c6 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/20200201023757id_/https://www.epa.gov/climatechange
+    uri: https://web.archive.org/web/20200201023757id_/https://www.epa.gov/climatechange
   response:
     body:
       string: '<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
@@ -83,16 +83,16 @@ interactions:
       Date:
       - Mon, 21 Sep 2020 07:37:54 GMT
       Link:
-      - <https://www.epa.gov/climatechange>; rel="original", <http://web.archive.org/web/timemap/link/https://www.epa.gov/climatechange>;
-        rel="timemap"; type="application/link-format", <http://web.archive.org/web/https://www.epa.gov/climatechange>;
-        rel="timegate", <http://web.archive.org/web/20061007193932/http://www.epa.gov/climatechange>;
-        rel="first memento"; datetime="Sat, 07 Oct 2006 19:39:32 GMT", <http://web.archive.org/web/20200201020358/https://epa.gov/climatechange>;
-        rel="prev memento"; datetime="Sat, 01 Feb 2020 02:03:58 GMT", <http://web.archive.org/web/20200201023757/https://www.epa.gov/climatechange>;
-        rel="memento"; datetime="Sat, 01 Feb 2020 02:37:57 GMT", <http://web.archive.org/web/20200201024403/http://www.epa.gov/climatechange/>;
-        rel="next memento"; datetime="Sat, 01 Feb 2020 02:44:03 GMT", <http://web.archive.org/web/20200918065453/https://www.epa.gov/climatechange>;
+      - <https://www.epa.gov/climatechange>; rel="original", <https://web.archive.org/web/timemap/link/https://www.epa.gov/climatechange>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/https://www.epa.gov/climatechange>;
+        rel="timegate", <https://web.archive.org/web/20061007193932/http://www.epa.gov/climatechange>;
+        rel="first memento"; datetime="Sat, 07 Oct 2006 19:39:32 GMT", <https://web.archive.org/web/20200201020358/https://epa.gov/climatechange>;
+        rel="prev memento"; datetime="Sat, 01 Feb 2020 02:03:58 GMT", <https://web.archive.org/web/20200201023757/https://www.epa.gov/climatechange>;
+        rel="memento"; datetime="Sat, 01 Feb 2020 02:37:57 GMT", <https://web.archive.org/web/20200201024403/http://www.epa.gov/climatechange/>;
+        rel="next memento"; datetime="Sat, 01 Feb 2020 02:44:03 GMT", <https://web.archive.org/web/20200918065453/https://www.epa.gov/climatechange>;
         rel="last memento"; datetime="Fri, 18 Sep 2020 06:54:53 GMT"
       Location:
-      - http://web.archive.org/web/20200201023757id_/https://www.epa.gov/sites/production/files/signpost/cc.html
+      - https://web.archive.org/web/20200201023757id_/https://www.epa.gov/sites/production/files/signpost/cc.html
       Memento-Datetime:
       - Sat, 01 Feb 2020 02:37:57 GMT
       Server:

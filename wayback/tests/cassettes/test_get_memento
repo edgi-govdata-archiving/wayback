@@ -7,7 +7,7 @@ interactions:
       User-Agent:
       - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
     method: GET
-    uri: http://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/
+    uri: https://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/
   response:
     body:
       string: !!binary |
@@ -455,13 +455,13 @@ interactions:
       Date:
       - Mon, 18 Nov 2019 17:21:23 GMT
       Link:
-      - <https://www.fws.gov/birds/>; rel="original", <http://web.archive.org/web/timemap/link/https://www.fws.gov/birds/>;
-        rel="timemap"; type="application/link-format", <http://web.archive.org/web/https://www.fws.gov/birds/>;
-        rel="timegate", <http://web.archive.org/web/20050323155300/http://www.fws.gov:80/birds>;
-        rel="first memento"; datetime="Wed, 23 Mar 2005 15:53:00 GMT", <http://web.archive.org/web/20170929002712/https://www.fws.gov/birds/>;
-        rel="prev memento"; datetime="Fri, 29 Sep 2017 00:27:12 GMT", <http://web.archive.org/web/20171124151315/https://www.fws.gov/birds/>;
-        rel="memento"; datetime="Fri, 24 Nov 2017 15:13:15 GMT", <http://web.archive.org/web/20171228222143/https://www.fws.gov/birds/>;
-        rel="next memento"; datetime="Thu, 28 Dec 2017 22:21:43 GMT", <http://web.archive.org/web/20190928223117/https://www.fws.gov/birds/>;
+      - <https://www.fws.gov/birds/>; rel="original", <https://web.archive.org/web/timemap/link/https://www.fws.gov/birds/>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/https://www.fws.gov/birds/>;
+        rel="timegate", <https://web.archive.org/web/20050323155300/http://www.fws.gov:80/birds>;
+        rel="first memento"; datetime="Wed, 23 Mar 2005 15:53:00 GMT", <https://web.archive.org/web/20170929002712/https://www.fws.gov/birds/>;
+        rel="prev memento"; datetime="Fri, 29 Sep 2017 00:27:12 GMT", <https://web.archive.org/web/20171124151315/https://www.fws.gov/birds/>;
+        rel="memento"; datetime="Fri, 24 Nov 2017 15:13:15 GMT", <https://web.archive.org/web/20171228222143/https://www.fws.gov/birds/>;
+        rel="next memento"; datetime="Thu, 28 Dec 2017 22:21:43 GMT", <https://web.archive.org/web/20190928223117/https://www.fws.gov/birds/>;
         rel="last memento"; datetime="Sat, 28 Sep 2019 22:31:17 GMT"
       Memento-Datetime:
       - Fri, 24 Nov 2017 15:13:15 GMT

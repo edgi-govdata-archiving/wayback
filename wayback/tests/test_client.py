@@ -165,7 +165,7 @@ def test_search_removes_malformed_entries(requests_mock):
         bad_cdx_data = f.read()
 
     with WaybackClient() as client:
-        requests_mock.get('http://web.archive.org/cdx/search/cdx'
+        requests_mock.get('https://web.archive.org/cdx/search/cdx'
                           '?url=https%3A%2F%2Fepa.gov%2F%2A'
                           '&from=20200418000000&to=20200419000000'
                           '&showResumeKey=true&resolveRevisits=true',
@@ -189,7 +189,7 @@ def test_search_handles_no_length_cdx_records(requests_mock):
         bad_cdx_data = f.read()
 
     with WaybackClient() as client:
-        requests_mock.get('http://web.archive.org/cdx/search/cdx'
+        requests_mock.get('https://web.archive.org/cdx/search/cdx'
                           '?url=www.cnn.com%2F%2A'
                           '&matchType=domain&filter=statuscode%3A200'
                           '&showResumeKey=true&resolveRevisits=true',
@@ -217,7 +217,7 @@ def test_search_handles_bad_timestamp_cdx_records(requests_mock):
         bad_cdx_data = f.read()
 
     with WaybackClient() as client:
-        requests_mock.get('http://web.archive.org/cdx/search/cdx'
+        requests_mock.get('https://web.archive.org/cdx/search/cdx'
                           '?url=www.usatoday.com%2F%2A'
                           '&matchType=domain&filter=statuscode%3A200'
                           '&showResumeKey=true&resolveRevisits=true',
@@ -311,13 +311,13 @@ def test_get_memento_with_requires_datetime_with_regular_url():
 def test_get_memento_with_archive_url():
     with WaybackClient() as client:
         memento = client.get_memento(
-            'http://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/')
+            'https://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/')
 
         # Metadata About the Memento
         assert 'https://www.fws.gov/birds/' == memento.url
         assert datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc) == memento.timestamp
         assert 'id_' == memento.mode
-        assert 'http://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/' == memento.memento_url
+        assert 'https://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/' == memento.memento_url
         assert () == memento.history
         assert () == memento.debug_history
 
@@ -346,8 +346,8 @@ def test_get_memento_with_cdx_record():
                            200,
                            'abc',
                            100,
-                           'http://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/',
-                           'http://web.archive.org/web/20171124151315/https://www.fws.gov/birds/')
+                           'https://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/',
+                           'https://web.archive.org/web/20171124151315/https://www.fws.gov/birds/')
         memento = client.get_memento(record)
         assert 'https://www.fws.gov/birds/' == memento.url
         assert datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc) == memento.timestamp
@@ -361,12 +361,12 @@ def test_get_memento_with_mode():
                                      datetime=datetime(2017, 11, 24, 15, 13, 15),
                                      mode=Mode.view)
         assert '' == memento.mode
-        assert 'http://web.archive.org/web/20171124151315/https://www.fws.gov/birds/' == memento.memento_url
+        assert 'https://web.archive.org/web/20171124151315/https://www.fws.gov/birds/' == memento.memento_url
 
         memento = client.get_memento('https://www.fws.gov/birds/',
                                      datetime=datetime(2017, 11, 24, 15, 13, 15))
         assert 'id_' == memento.mode
-        assert 'http://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/' == memento.memento_url
+        assert 'https://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/' == memento.memento_url
 
 
 @ia_vcr.use_cassette()
@@ -376,7 +376,7 @@ def test_get_memento_with_mode_string():
                                      datetime=datetime(2017, 11, 24, 15, 13, 15),
                                      mode='id_')
         assert 'id_' == memento.mode
-        assert 'http://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/' == memento.memento_url
+        assert 'https://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/' == memento.memento_url
 
 
 @ia_vcr.use_cassette()
@@ -412,7 +412,7 @@ def test_get_memento_raises_when_memento_is_outside_target_window():
 def test_get_memento_with_redirects():
     with WaybackClient() as client:
         memento = client.get_memento(
-            'http://web.archive.org/web/20180808094144id_/https://www.epa.gov/ghgreporting/san5779-factsheet')
+            'https://web.archive.org/web/20180808094144id_/https://www.epa.gov/ghgreporting/san5779-factsheet')
         assert len(memento.history) == 1        # memento redirects
         assert len(memento.debug_history) == 2  # actual HTTP redirects
 
@@ -421,7 +421,7 @@ def test_get_memento_with_redirects():
 def test_get_memento_with_path_based_redirects():
     """
     Most redirects in Wayback redirect to a complete URL, with headers like:
-        Location: http://web.archive.org/web/20201027215555id_/https://www.whitehouse.gov/administration
+        Location: https://web.archive.org/web/20201027215555id_/https://www.whitehouse.gov/administration
     But some include only an absolute path, e.g:
         Location: /web/20201027215555id_/https://www.whitehouse.gov/ostp/about/student/faqs
     This tests that we correctly handle the latter situation.
@@ -437,7 +437,7 @@ def test_get_memento_with_path_based_redirects():
 def test_get_memento_with_schemeless_redirects():
     """
     Most redirects in Wayback redirect to a complete URL, with headers like:
-        Location: http://web.archive.org/web/20201027215555id_/https://www.whitehouse.gov/administration
+        Location: https://web.archive.org/web/20201027215555id_/https://www.whitehouse.gov/administration
     But some do not include a scheme:
         Location: //web.archive.org/web/20201102232816id_/https://www.census.gov/geo/gssi/
     This tests that we correctly handle the latter situation.
@@ -487,16 +487,16 @@ def test_get_memento_follows_historical_redirects():
         #   https://www.epa.gov/sites/production/files/signpost/cc.html
         #
         # What should happen here under the hood:
-        # http://web.archive.org/web/20200201020357id_/http://epa.gov/climatechange
+        # https://web.archive.org/web/20200201020357id_/http://epa.gov/climatechange
         #   Is not a memento, and sends us to:
-        #   http://web.archive.org/web/20200201023757id_/https://www.epa.gov/climatechange
+        #   https://web.archive.org/web/20200201023757id_/https://www.epa.gov/climatechange
         #     Which is a memento of a redirect to:
-        #     http://web.archive.org/web/20200201023757id_/https://www.epa.gov/sites/production/files/signpost/cc.html
+        #     https://web.archive.org/web/20200201023757id_/https://www.epa.gov/sites/production/files/signpost/cc.html
         #       ...which is not a memento, and redirects to:
-        #       http://web.archive.org/web/20200201024405id_/https://www.epa.gov/sites/production/files/signpost/cc.html
-        start_url = ('http://web.archive.org/web/20200201020357id_/'
+        #       https://web.archive.org/web/20200201024405id_/https://www.epa.gov/sites/production/files/signpost/cc.html
+        start_url = ('https://web.archive.org/web/20200201020357id_/'
                      'http://epa.gov/climatechange')
-        target = ('http://web.archive.org/web/20200201024405id_/'
+        target = ('https://web.archive.org/web/20200201024405id_/'
                   'https://www.epa.gov/sites/production/files/signpost/cc.html')
         memento = client.get_memento(start_url, exact=False)
         assert 'https://www.epa.gov/sites/production/files/signpost/cc.html' == memento.url
@@ -512,17 +512,17 @@ def test_get_memento_follow_redirects_does_not_follow_historical_redirects():
         #   https://www.epa.gov/sites/production/files/signpost/cc.html
         #
         # What should happen here under the hood:
-        # http://web.archive.org/web/20200201020357id_/http://epa.gov/climatechange
+        # https://web.archive.org/web/20200201020357id_/http://epa.gov/climatechange
         #   Is not a memento, and sends us to:
-        #   http://web.archive.org/web/20200201023757id_/https://www.epa.gov/climatechange
+        #   https://web.archive.org/web/20200201023757id_/https://www.epa.gov/climatechange
         #     Which is a memento of a redirect. Because follow_redirects=False,
         #     we should *not* follow it to:
-        #     http://web.archive.org/web/20200201023757id_/https://www.epa.gov/sites/production/files/signpost/cc.html
+        #     https://web.archive.org/web/20200201023757id_/https://www.epa.gov/sites/production/files/signpost/cc.html
         #       ...and then to:
-        #       http://web.archive.org/web/20200201024405id_/https://www.epa.gov/sites/production/files/signpost/cc.html
-        start_url = ('http://web.archive.org/web/20200201020357id_/'
+        #       https://web.archive.org/web/20200201024405id_/https://www.epa.gov/sites/production/files/signpost/cc.html
+        start_url = ('https://web.archive.org/web/20200201020357id_/'
                      'http://epa.gov/climatechange')
-        target = ('http://web.archive.org/web/20200201023757id_/'
+        target = ('https://web.archive.org/web/20200201023757id_/'
                   'https://www.epa.gov/climatechange')
         memento = client.get_memento(start_url, exact=False, follow_redirects=False)
         assert 'https://www.epa.gov/climatechange' == memento.url

@@ -7,7 +7,7 @@ interactions:
       User-Agent:
       - wayback/0.3.0a3.post0.dev0+g7e9bccc (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/web/20170929002712id_/https://this-is-not-real-url.whatever/
+    uri: https://web.archive.org/web/20170929002712id_/https://this-is-not-real-url.whatever/
   response:
     body:
       string: !!binary |

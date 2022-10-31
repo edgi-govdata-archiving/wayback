@@ -7,7 +7,7 @@ interactions:
       User-Agent:
       - wayback/0.3.3.post6.dev0+ga3e1512 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true
+    uri: https://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true
   response:
     body:
       string: !!binary |
@@ -62,7 +62,7 @@ interactions:
       User-Agent:
       - wayback/0.3.3.post6.dev0+ga3e1512 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B2001041400593%253A
+    uri: https://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B2001041400593%253A
   response:
     body:
       string: !!binary |
@@ -117,7 +117,7 @@ interactions:
       User-Agent:
       - wayback/0.3.3.post6.dev0+ga3e1512 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B20010503212619
+    uri: https://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B20010503212619
   response:
     body:
       string: !!binary |
@@ -171,7 +171,7 @@ interactions:
       User-Agent:
       - wayback/0.3.3.post6.dev0+ga3e1512 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B20010504092326
+    uri: https://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B20010504092326
   response:
     body:
       string: !!binary |
@@ -226,7 +226,7 @@ interactions:
       User-Agent:
       - wayback/0.3.3.post6.dev0+ga3e1512 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B20010505085533
+    uri: https://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B20010505085533
   response:
     body:
       string: !!binary |
@@ -280,7 +280,7 @@ interactions:
       User-Agent:
       - wayback/0.3.3.post6.dev0+ga3e1512 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B20010505091254
+    uri: https://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B20010505091254
   response:
     body:
       string: !!binary |
@@ -335,7 +335,7 @@ interactions:
       User-Agent:
       - wayback/0.3.3.post6.dev0+ga3e1512 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B20010506001449
+    uri: https://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B20010506001449
   response:
     body:
       string: !!binary |
@@ -390,7 +390,7 @@ interactions:
       User-Agent:
       - wayback/0.3.3.post6.dev0+ga3e1512 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B20010506010648
+    uri: https://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B20010506010648
   response:
     body:
       string: !!binary |
@@ -443,7 +443,7 @@ interactions:
       User-Agent:
       - wayback/0.3.3.post6.dev0+ga3e1512 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B2001050614125%253A
+    uri: https://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B2001050614125%253A
   response:
     body:
       string: !!binary |
@@ -497,7 +497,7 @@ interactions:
       User-Agent:
       - wayback/0.3.3.post6.dev0+ga3e1512 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B20010507021559
+    uri: https://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B20010507021559
   response:
     body:
       string: !!binary |
@@ -552,7 +552,7 @@ interactions:
       User-Agent:
       - wayback/0.3.3.post6.dev0+ga3e1512 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B20010507180423
+    uri: https://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B20010507180423
   response:
     body:
       string: !!binary |
@@ -607,7 +607,7 @@ interactions:
       User-Agent:
       - wayback/0.3.3.post6.dev0+ga3e1512 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B2001050807025%253A
+    uri: https://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B2001050807025%253A
   response:
     body:
       string: !!binary |
@@ -661,7 +661,7 @@ interactions:
       User-Agent:
       - wayback/0.3.3.post6.dev0+ga3e1512 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B20010508143112
+    uri: https://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B20010508143112
   response:
     body:
       string: !!binary |
@@ -716,7 +716,7 @@ interactions:
       User-Agent:
       - wayback/0.3.3.post6.dev0+ga3e1512 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B2001050910252%253A
+    uri: https://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B2001050910252%253A
   response:
     body:
       string: !!binary |
@@ -771,7 +771,7 @@ interactions:
       User-Agent:
       - wayback/0.3.3.post6.dev0+ga3e1512 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: http://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B20010509235545
+    uri: https://web.archive.org/cdx/search/cdx?url=cnn.com&limit=25&from=20010410000000&to=20010510000000&showResumeKey=true&resolveRevisits=true&resumeKey=com%252Ccnn%2529%252F%2B20010509235545
   response:
     body:
       string: !!binary |

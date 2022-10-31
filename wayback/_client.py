@@ -45,7 +45,7 @@ from .exceptions import (WaybackException,
 
 logger = logging.getLogger(__name__)
 
-CDX_SEARCH_URL = 'http://web.archive.org/cdx/search/cdx'
+CDX_SEARCH_URL = 'https://web.archive.org/cdx/search/cdx'
 # This /web/timemap URL has newer features, but has other bugs and doesn't
 # support some features, like resume keys (for paging). It ignores robots.txt,
 # while /cdx/search obeys robots.txt (for now). It also has different/extra
@@ -53,9 +53,9 @@ CDX_SEARCH_URL = 'http://web.archive.org/cdx/search/cdx'
 # https://github.com/internetarchive/wayback/blob/bd205b9b26664a6e2ea3c0c2a8948f0dc6ff4519/wayback-cdx-server/src/main/java/org/archive/cdxserver/format/CDX11Format.java#L13-L17  # noqa
 # NOTE: the `length` and `robotflags` fields appear to always be empty
 # TODO: support new/upcoming CDX API
-# CDX_SEARCH_URL = 'http://web.archive.org/web/timemap/cdx'
+# CDX_SEARCH_URL = 'https://web.archive.org/web/timemap/cdx'
 
-ARCHIVE_URL_TEMPLATE = 'http://web.archive.org/web/{timestamp}{mode}/{url}'
+ARCHIVE_URL_TEMPLATE = 'https://web.archive.org/web/{timestamp}{mode}/{url}'
 REDUNDANT_HTTP_PORT = re.compile(r'^(http://[^:/]+):80(.*)$')
 REDUNDANT_HTTPS_PORT = re.compile(r'^(https://[^:/]+):443(.*)$')
 DATA_URL_START = re.compile(r'data:[\w]+/[\w]+;base64')
@@ -77,7 +77,7 @@ class Mode(Enum):
     these values to determine how the response body should be formatted.
 
     For more details, see:
-    http://archive-access.sourceforge.net/projects/wayback/administrator_manual.html#Archival_URL_Replay_Mode
+    https://archive-access.sourceforge.net/projects/wayback/administrator_manual.html#Archival_URL_Replay_Mode
 
     Examples
     --------
@@ -211,7 +211,7 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
     timeout : int or float or tuple of (int or float, int or float), default: 60
         A timeout to use for all requests.
         See the Requests docs for more:
-        http://docs.python-requests.org/en/master/user/advanced/#timeouts
+        https://docs.python-requests.org/en/master/user/advanced/#timeouts
     user_agent : str, optional
         A custom user-agent string to use in all requests. Defaults to:
         `wayback/{version} (+https://github.com/edgi-govdata-archiving/wayback)`
@@ -632,7 +632,7 @@ class WaybackClient(_utils.DepthCountedContext):
             - A ``CdxRecord`` retrieved from
               :meth:`wayback.WaybackClient.search`.
             - A URL of the memento in Wayback, e.g.
-              ``http://web.archive.org/web/20180816111911id_/http://www.noaa.gov/``
+              ``https://web.archive.org/web/20180816111911id_/http://www.noaa.gov/``
 
         datetime : datetime.datetime or datetime.date or str, optional
             The time at which to retrieve a memento of ``url``. If ``url`` is
@@ -645,7 +645,7 @@ class WaybackClient(_utils.DepthCountedContext):
             for a description of possible values.
 
             For more details, see:
-            http://archive-access.sourceforge.net/projects/wayback/administrator_manual.html#Archival_URL_Replay_Mode
+            https://archive-access.sourceforge.net/projects/wayback/administrator_manual.html#Archival_URL_Replay_Mode
 
         exact : boolean, default: True
             If false and the requested memento either doesn't exist or can't be
