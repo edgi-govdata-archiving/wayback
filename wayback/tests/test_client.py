@@ -244,6 +244,12 @@ def test_get_memento():
         assert 'https://www.fws.gov/birds/' == memento.url
         assert datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc) == memento.timestamp
         assert 'id_' == memento.mode
+        assert memento.headers == {
+            'Content-Type': 'text/html',
+            'Date': 'Fri, 24 Nov 2017 15:13:14 GMT',
+            'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
+            'Transfer-Encoding': 'chunked'
+        }
 
 
 @ia_vcr.use_cassette()

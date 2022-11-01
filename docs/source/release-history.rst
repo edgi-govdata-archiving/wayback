@@ -25,10 +25,23 @@ This release includes a significant overhaul of parameters for :meth:`wayback.Wa
 - Expanded the method documentation to explain things in more depth and link to more external references.
 
 
-Maintenance
-^^^^^^^^^^^
+Features
+^^^^^^^^
+
+:attr:`wayback.Memento.headers` is now case-insensitive. The keys of the ``headers`` dict are returned with their original case when iterating, but lookups are performed case-insensitively. For example::
+
+  list(memento.headers) == ['Content-Type', 'Date']
+  memento.headers['Content-Type'] == memento.headers['content-type']
+
+(:issue:`98`)
+
+
+Fixes & Maintenance
+^^^^^^^^^^^^^^^^^^^
 
 All API requests to archive.org now use HTTPS instead of HTTP. Thanks to @sundhaug92 for calling this out. (:issue:`81`)
+
+Headers from the original archived response are again included in :attr:`wayback.Memento.headers`. As part of this, the ``headers`` attribute is now case-insensitive (see new features above), since the Internet Archive servers now return headers with different cases depending on how the request was made. (:issue:`98`)
 
 
 v0.3.3 (2022-09-30)

@@ -1,6 +1,6 @@
 from collections import namedtuple
 from urllib.parse import urljoin
-from ._utils import memento_url_data
+from ._utils import CaseInsensitiveDict, memento_url_data
 
 
 CdxRecord = namedtuple('CdxRecord', (
@@ -110,7 +110,12 @@ class Memento:
         :type: dict
 
         A dict representing the headers of the archived HTTP response. The keys
-        are case-sensitive.
+        are case-insensitive. If you iterate over it, you will receive the
+        header names as they were originally sent. However, you can look them
+        up via strings that vary in upper/lower-case. For example::
+
+          list(memento.headers) == ['Content-Type', 'Date']
+          memento.headers['Content-Type'] == memento.headers['content-type']
 
     .. py:attribute:: history
         :type: tuple[wayback.Memento]
@@ -269,29 +274,29 @@ class Memento:
         dict
         """
         # Archived, historical headers are all reproduced as headers in the
-        # memento response, but start with "X-Archive-Orig-".
-        prefix = 'X-Archive-Orig-'
-        headers = {
+        # memento response, but start with "x-archive-orig-".
+        prefix = 'x-archive-orig-'
+        headers = CaseInsensitiveDict({
             key[len(prefix):]: value for key, value in raw_headers.items()
-            if key.startswith(prefix)
-        }
+            if key.lower().startswith(prefix)
+        })
 
         # Headers that are also needed for a browser to handle the played-back
         # memento are *not* prefixed, so we need to copy over each of those.
         # NOTE: Historical 'Content-Encoding' headers cannot be determined from
         # the Wayback Machine; we shouldn't pick up `Content-Encoding` here.
-        for unprefixed in ('Content-Type',):
+        for unprefixed in ('content-type',):
             if unprefixed in raw_headers:
                 headers[unprefixed] = raw_headers[unprefixed]
 
-        # The `Location` header for a redirect does not have an X-Archive-Orig-
+        # The `Location` header for a redirect does not have an x-archive-orig-
         # version, and the normal location header point to the next *Wayback*
         # URL, so we need to parse it to get the historical redirect URL.
-        if 'Location' not in headers and 'Location' in raw_headers:
+        if 'location' not in headers and 'location' in raw_headers:
             # Some Wayback redirects provide a complete URL with a scheme and
             # host in the `Location` header, not all do. Use `url` as a base
             # URL if the value in the header is missing a scheme, host, etc.
-            raw_location = urljoin(url, raw_headers['Location'])
-            headers['Location'], _, _ = memento_url_data(raw_location)
+            raw_location = urljoin(url, raw_headers['location'])
+            headers['location'], _, _ = memento_url_data(raw_location)
 
         return headers
