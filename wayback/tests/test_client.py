@@ -240,7 +240,7 @@ def test_search_handles_bad_timestamp_cdx_records(requests_mock):
 def test_get_memento():
     with WaybackClient() as client:
         memento = client.get_memento('https://www.fws.gov/birds/',
-                                     datetime=datetime(2017, 11, 24, 15, 13, 15))
+                                     timestamp=datetime(2017, 11, 24, 15, 13, 15))
         assert 'https://www.fws.gov/birds/' == memento.url
         assert datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc) == memento.timestamp
         assert 'id_' == memento.mode
@@ -256,7 +256,7 @@ def test_get_memento():
 def test_get_memento_with_date_datetime():
     with WaybackClient() as client:
         memento = client.get_memento('https://www.fws.gov/birds/',
-                                     datetime=date(2017, 11, 24),
+                                     timestamp=date(2017, 11, 24),
                                      exact=False)
         assert 'https://www.fws.gov/birds/' == memento.url
         assert datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc) == memento.timestamp
@@ -267,7 +267,7 @@ def test_get_memento_with_date_datetime():
 def test_get_memento_with_string_datetime():
     with WaybackClient() as client:
         memento = client.get_memento('https://www.fws.gov/birds/',
-                                     datetime='20171124151315')
+                                     timestamp='20171124151315')
         assert 'https://www.fws.gov/birds/' == memento.url
         assert datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc) == memento.timestamp
         assert 'id_' == memento.mode
@@ -277,7 +277,7 @@ def test_get_memento_with_string_datetime():
 def test_get_memento_with_inexact_string_datetime():
     with WaybackClient() as client:
         memento = client.get_memento('https://www.fws.gov/birds/',
-                                     datetime='20171124151310',
+                                     timestamp='20171124151310',
                                      exact=False)
         assert 'https://www.fws.gov/birds/' == memento.url
         assert datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc) == memento.timestamp
@@ -291,7 +291,7 @@ def test_get_memento_handles_non_utc_datetime():
         requested_time = datetime(2017, 11, 24, 8, 13, 15,
                                   tzinfo=timezone(timedelta(hours=-7)))
         memento = client.get_memento('https://www.fws.gov/birds/',
-                                     datetime=requested_time)
+                                     timestamp=requested_time)
 
         assert 'https://www.fws.gov/birds/' == memento.url
         assert datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc) == memento.timestamp
@@ -303,7 +303,7 @@ def test_get_memento_with_invalid_datetime_type():
     with WaybackClient() as client:
         with pytest.raises(TypeError):
             client.get_memento('https://www.fws.gov/birds/',
-                               datetime=True)
+                               timestamp=True)
 
 
 @ia_vcr.use_cassette()
@@ -364,13 +364,13 @@ def test_get_memento_with_cdx_record():
 def test_get_memento_with_mode():
     with WaybackClient() as client:
         memento = client.get_memento('https://www.fws.gov/birds/',
-                                     datetime=datetime(2017, 11, 24, 15, 13, 15),
+                                     timestamp=datetime(2017, 11, 24, 15, 13, 15),
                                      mode=Mode.view)
         assert '' == memento.mode
         assert 'https://web.archive.org/web/20171124151315/https://www.fws.gov/birds/' == memento.memento_url
 
         memento = client.get_memento('https://www.fws.gov/birds/',
-                                     datetime=datetime(2017, 11, 24, 15, 13, 15))
+                                     timestamp=datetime(2017, 11, 24, 15, 13, 15))
         assert 'id_' == memento.mode
         assert 'https://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/' == memento.memento_url
 
@@ -379,7 +379,7 @@ def test_get_memento_with_mode():
 def test_get_memento_with_mode_string():
     with WaybackClient() as client:
         memento = client.get_memento('https://www.fws.gov/birds/',
-                                     datetime=datetime(2017, 11, 24, 15, 13, 15),
+                                     timestamp=datetime(2017, 11, 24, 15, 13, 15),
                                      mode='id_')
         assert 'id_' == memento.mode
         assert 'https://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/' == memento.memento_url
@@ -390,7 +390,7 @@ def test_get_memento_with_mode_boolean_is_not_allowed():
     with WaybackClient() as client:
         with pytest.raises(TypeError):
             client.get_memento('https://www.fws.gov/birds/',
-                               datetime=datetime(2017, 11, 24, 15, 13, 15),
+                               timestamp=datetime(2017, 11, 24, 15, 13, 15),
                                mode=True)
 
 
