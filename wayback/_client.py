@@ -541,12 +541,12 @@ class WaybackClient(_utils.DepthCountedContext):
                 response = self.session.request('GET', CDX_SEARCH_URL,
                                                 params=sent_query)
                 try:
-                    # Read/cache the response and close straightaway. If we need to
-                    # raise for status, we want to pre-emptively close the response
-                    # so a user handling the error doesn't need to worry about it. If
-                    # we don't raise here, we still want to close the connection so it
-                    # doesn't leak when we move onto the next of results or when this
-                    # iterator ends.
+                    # Read/cache the response and close straightaway. If we need
+                    # to raise for status, we want to pre-emptively close the
+                    # response so a user handling the error doesn't need to
+                    # worry about it. If we don't raise here, we still want to
+                    # close the connection so it doesn't leak when we move onto
+                    # the next of results or when this iterator ends.
                     read_and_close(response)
                     response.raise_for_status()
                 except requests.exceptions.HTTPError as error:
