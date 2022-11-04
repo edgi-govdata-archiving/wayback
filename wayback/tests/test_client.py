@@ -647,19 +647,18 @@ class TestWaybackSession:
 
         # Check that disabling the rate limits through the search API works.
         start_time = time.time()
-        with WaybackClient() as client:
+        with WaybackClient(WaybackSession(search_calls_per_second=0)) as client:
             for i in range(3):
-                next(client.search('zew.de', calls_per_second=0))
+                next(client.search('zew.de'))
         duration_without_limits = time.time() - start_time
 
         # Check that a different rate limit set through the session is applied correctly.
         # I need to sleep one half second in order to reset the rate limit.
         time.sleep(0.5)
-        session = WaybackSession(search_calls_per_second=2)
-        client = WaybackClient(session)
         start_time = time.time()
-        for i in range(3):
-            next(client.search('zew.de'))
+        with WaybackClient(WaybackSession(search_calls_per_second=2)) as client:
+            for i in range(3):
+                next(client.search('zew.de'))
         duration_with_limits_custom = time.time() - start_time
 
         assert 2.0 <= duration_with_limits <= 2.05
@@ -684,19 +683,18 @@ class TestWaybackSession:
 
         # Check that disabling the rate limits through the get_memento API works.
         start_time = time.time()
-        with WaybackClient() as client:
+        with WaybackClient(WaybackSession(memento_calls_per_second=0)) as client:
             for i in range(3):
-                client.get_memento(cdx, calls_per_second=0)
+                client.get_memento(cdx)
         duration_without_limits = time.time() - start_time
 
         # Check that a different rate limit set through the session is applied correctly.
         # I need to sleep 0.1 seconds in order to reset the rate limit.
         time.sleep(0.1)
-        session = WaybackSession(memento_calls_per_second=10)
-        client = WaybackClient(session)
         start_time = time.time()
-        for i in range(6):
-            client.get_memento(cdx)
+        with WaybackClient(WaybackSession(memento_calls_per_second=10)) as client:
+            for i in range(6):
+                client.get_memento(cdx)
         duration_with_limits_custom = time.time() - start_time
 
         assert 0.33 <= duration_with_limits <= 0.38

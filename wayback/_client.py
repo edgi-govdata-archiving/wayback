@@ -187,12 +187,9 @@ HTTPConnectionPool.ResponseCls = WaybackResponse
 #####################################################################
 
 
-# TODO: make rate limiting configurable at the session level, rather than
-# arbitrarily set inside get_memento(). Idea: have a rate limit lock type and
-# pass an instance to the constructor here.
 class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
     """
-    A custom session object that network pools connections and resources for
+    A custom session object that pools network connections and resources for
     requests to the Wayback Machine.
 
     Parameters
@@ -215,12 +212,12 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
     user_agent : str, optional
         A custom user-agent string to use in all requests. Defaults to:
         `wayback/{version} (+https://github.com/edgi-govdata-archiving/wayback)`
-    search_calls_per_second : int or float, optional:
-        The number of calls made to the search API per second. The default value is 1.
-        To disable the rate limit, pass 0.
-    memento_calls_per_second : int or float, optional:
-        The number of calls made to the memento API per second. The default value is 30.
-        To disable the rate limit, pass 0.
+    search_calls_per_second : int or float, default: 1
+        The maximum number of calls made to the search API per second.
+        To disable the rate limit, set this to 0.
+    memento_calls_per_second : int or float, default: 30
+        The maximum number of calls made to the memento API per second.
+        To disable the rate limit, set this to 0.
     """
 
     # It seems Wayback sometimes produces 500 errors for transient issues, so
@@ -372,7 +369,7 @@ class WaybackClient(_utils.DepthCountedContext):
     def search(self, url, *, match_type=None, limit=1000, offset=None,
                fast_latest=None, from_date=None, to_date=None,
                filter_field=None, collapse=None, resolve_revisits=True,
-               skip_malformed_results=True, calls_per_second=None):
+               skip_malformed_results=True):
         """
         Search archive.org's CDX API for all captures of a given URL. This
         returns an iterator of :class:`CdxRecord` objects. The `StopIteration`
@@ -485,9 +482,6 @@ class WaybackClient(_utils.DepthCountedContext):
             ``http://mailto:someone@domain.com`` or
             ``http://data:image/jpeg;base64,AF34...`` and so on. This is a
             filter performed client side and is not a CDX API argument.
-        calls_per_second : int or float, optional
-            If not None this overwrites the rate limit set in the session.
-            Set to zero to disable rate limits for this call.
 
         Raises
         ------
@@ -542,9 +536,8 @@ class WaybackClient(_utils.DepthCountedContext):
         previous_result = None
         while next_query:
             sent_query, next_query = next_query, None
-            rate = (calls_per_second if calls_per_second is not None else
-                    self.session.search_calls_per_second)
-            with _utils.rate_limited(calls_per_second=rate, group='search'):
+            with _utils.rate_limited(self.session.search_calls_per_second,
+                                     group='search'):
                 response = self.session.request('GET', CDX_SEARCH_URL,
                                                 params=sent_query)
                 try:
@@ -626,8 +619,7 @@ class WaybackClient(_utils.DepthCountedContext):
 
     def get_memento(self, url, datetime=None, mode=Mode.original, *,
                     exact=True, exact_redirects=None,
-                    target_window=24 * 60 * 60, follow_redirects=True,
-                    calls_per_second=None):
+                    target_window=24 * 60 * 60, follow_redirects=True):
         """
         Fetch a memento (an archived HTTP response) from the Wayback Machine.
 
@@ -691,9 +683,6 @@ class WaybackClient(_utils.DepthCountedContext):
             ``http://example.com/b``, then this method returns the memento for
             ``/a`` when ``follow_redirects=False`` and the memento for ``/b``
             when ``follow_redirects=True``.
-        calls_per_second : int or float, optional
-            If not None this overwrites the rate limit set in the session.
-            Set to zero to disable rate limits for this call.
 
         Returns
         -------
@@ -737,9 +726,7 @@ class WaybackClient(_utils.DepthCountedContext):
                                           mode=mode,
                                           url=original_url)
 
-        with _utils.rate_limited(calls_per_second=(calls_per_second
-                                                   if calls_per_second is not None
-                                                   else self.session.memento_calls_per_second),
+        with _utils.rate_limited(calls_per_second=self.session.memento_calls_per_second,
                                  group='get_memento'):
             # Correctly following redirects is actually pretty complicated. In
             # the simplest case, a memento is a simple web page, and that's
