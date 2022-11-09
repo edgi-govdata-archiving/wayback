@@ -24,6 +24,8 @@ This release includes a significant overhaul of parameters for :meth:`wayback.Wa
 
 - Expanded the method documentation to explain things in more depth and link to more external references.
 
+While we were at it, we renamed the ``datetime`` parameter of :meth:`wayback.WaybackClient.get_memento` to ``timestamp`` for consistency with :class:`wayback.CdxRecord` and :class:`wayback.Memento`.
+
 
 Features
 ^^^^^^^^

@@ -82,7 +82,7 @@ class Mode(Enum):
     Examples
     --------
     >>> waybackClient.get_memento('https://noaa.gov/',
-    >>>                           datetime=datetime.datetime(2018, 1, 2),
+    >>>                           timestamp=datetime.datetime(2018, 1, 2),
     >>>                           mode=wayback.Mode.view)
 
     **Values**
@@ -609,7 +609,7 @@ class WaybackClient(_utils.DepthCountedContext):
 
         return count
 
-    def get_memento(self, url, datetime=None, mode=Mode.original, *,
+    def get_memento(self, url, timestamp=None, mode=Mode.original, *,
                     exact=True, exact_redirects=None,
                     target_window=24 * 60 * 60, follow_redirects=True):
         """
@@ -628,13 +628,13 @@ class WaybackClient(_utils.DepthCountedContext):
             URL to retrieve a memento of. This can be any of:
 
             - A normal URL (e.g. ``http://www.noaa.gov/``). When using this
-              form, you must also specify ``datetime``.
+              form, you must also specify ``timestamp``.
             - A ``CdxRecord`` retrieved from
               :meth:`wayback.WaybackClient.search`.
             - A URL of the memento in Wayback, e.g.
               ``https://web.archive.org/web/20180816111911id_/http://www.noaa.gov/``
 
-        datetime : datetime.datetime or datetime.date or str, optional
+        timestamp : datetime.datetime or datetime.date or str, optional
             The time at which to retrieve a memento of ``url``. If ``url`` is
             a :class:`wayback.CdxRecord` or full memento URL, this parameter
             can be omitted.
@@ -707,11 +707,11 @@ class WaybackClient(_utils.DepthCountedContext):
                 original_url, original_date, mode = _utils.memento_url_data(url)
             except ValueError:
                 original_url = url
-                if not datetime:
-                    raise TypeError('You must specify `datetime` when using a '
+                if not timestamp:
+                    raise TypeError('You must specify `timestamp` when using a '
                                     'normal URL for get_memento()')
                 else:
-                    original_date = _utils.ensure_utc_datetime(datetime)
+                    original_date = _utils.ensure_utc_datetime(timestamp)
 
         original_date_wayback = _utils.format_timestamp(original_date)
         url = ARCHIVE_URL_TEMPLATE.format(timestamp=original_date_wayback,
