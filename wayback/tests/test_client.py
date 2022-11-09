@@ -661,7 +661,7 @@ class TestWaybackSession:
                 next(client.search('zew.de'))
         duration_with_limits_custom = time.time() - start_time
 
-        assert 2.0 <= duration_with_limits <= 2.05
+        assert 1.3 <= duration_with_limits <= 1.4
         assert 0.0 <= duration_without_limits <= 0.05
         assert 0.0 <= duration_with_limits_custom <= 1.05
 
@@ -697,6 +697,6 @@ class TestWaybackSession:
                 client.get_memento(cdx)
         duration_with_limits_custom = time.time() - start_time
 
-        assert 0.33 <= duration_with_limits <= 0.38
+        assert 0.33 <= duration_with_limits <= 0.43
         assert 0.0 <= duration_without_limits <= 0.05
         assert 0.5 <= duration_with_limits_custom <= 0.55
