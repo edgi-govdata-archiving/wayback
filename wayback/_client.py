@@ -212,7 +212,7 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
     user_agent : str, optional
         A custom user-agent string to use in all requests. Defaults to:
         `wayback/{version} (+https://github.com/edgi-govdata-archiving/wayback)`
-    search_calls_per_second : int or float, default: 1
+    search_calls_per_second : int or float, default: 1.5
         The maximum number of calls made to the search API per second.
         To disable the rate limit, set this to 0.
     memento_calls_per_second : int or float, default: 30
@@ -231,7 +231,7 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
     handleable_errors = (ConnectionError,) + retryable_errors
 
     def __init__(self, retries=6, backoff=2, timeout=60, user_agent=None,
-                 search_calls_per_second=1, memento_calls_per_second=30):
+                 search_calls_per_second=1.5, memento_calls_per_second=30):
         super().__init__()
         self.retries = retries
         self.backoff = backoff
