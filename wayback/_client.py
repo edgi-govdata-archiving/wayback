@@ -31,6 +31,7 @@ from urllib3.connectionpool import HTTPConnectionPool
 from urllib3.exceptions import (ConnectTimeoutError,
                                 MaxRetryError,
                                 ReadTimeoutError)
+from warnings import warn
 from . import _utils, __version__
 from ._models import CdxRecord, Memento
 from .exceptions import (WaybackException,
@@ -369,7 +370,9 @@ class WaybackClient(_utils.DepthCountedContext):
     def search(self, url, *, match_type=None, limit=1000, offset=None,
                fast_latest=None, from_date=None, to_date=None,
                filter_field=None, collapse=None, resolve_revisits=True,
-               skip_malformed_results=True):
+               skip_malformed_results=True,
+               # Deprecated Parameters
+               matchType=None, fastLatest=None, resolveRevisits=None):
         """
         Search archive.org's CDX API for all captures of a given URL. This
         returns an iterator of :class:`CdxRecord` objects. The `StopIteration`
@@ -510,6 +513,27 @@ class WaybackClient(_utils.DepthCountedContext):
         pagination because they work differently from the `resumeKey` method
         this uses, and results do not include recent captures when using them.
         """
+        if matchType is not None:
+            warn('The `matchType` parameter for search() was renamed to '
+                 '`match_type`. Support for the old name will be removed in '
+                 'wayback v0.5.0; please update your code.',
+                 DeprecationWarning,
+                 stacklevel=2)
+            match_type = match_type or matchType
+        if fastLatest is not None:
+            warn('The `fastLatest` parameter for search() was renamed to '
+                 '`fast_latest`. Support for the old name will be removed in '
+                 'wayback v0.5.0; please update your code.',
+                 DeprecationWarning,
+                 stacklevel=2)
+            fast_latest = fast_latest or fastLatest
+        if resolveRevisits is not None:
+            warn('The `resolveRevisits` parameter for search() was renamed to '
+                 '`resolve_revisits`. Support for the old name will be removed '
+                 'in wayback v0.5.0; please update your code.',
+                 DeprecationWarning,
+                 stacklevel=2)
+            resolve_revisits = resolve_revisits or resolveRevisits
 
         # TODO: support args that can be set multiple times: filter, collapse
         # Should take input as a sequence and convert to repeat query args
@@ -619,7 +643,9 @@ class WaybackClient(_utils.DepthCountedContext):
 
     def get_memento(self, url, timestamp=None, mode=Mode.original, *,
                     exact=True, exact_redirects=None,
-                    target_window=24 * 60 * 60, follow_redirects=True):
+                    target_window=24 * 60 * 60, follow_redirects=True,
+                    # Deprecated Parameters
+                    datetime=None):
         """
         Fetch a memento (an archived HTTP response) from the Wayback Machine.
 
@@ -690,6 +716,14 @@ class WaybackClient(_utils.DepthCountedContext):
             A :class:`Memento` object with information about the archived HTTP
             response.
         """
+        if datetime:
+            warn('The `datetime` parameter for get_memento() was renamed to '
+                 '`timestamp`. Support for the old name will be removed '
+                 'in wayback v0.5.0; please update your code.',
+                 DeprecationWarning,
+                 stacklevel=2)
+            timestamp = timestamp or datetime
+
         if exact_redirects is None:
             exact_redirects = exact
 

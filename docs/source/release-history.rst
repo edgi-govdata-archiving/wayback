@@ -10,21 +10,21 @@ Breaking Changes
 
 This release includes a significant overhaul of parameters for :meth:`wayback.WaybackClient.search`.
 
-- The ``limit`` parameter now has a default value. There are very few cases where you should not set a ``limit`` (not doing so will typically break pagination), and there is now a default value to help prevent mistakes. We’ve also added documentation to explain how and when to adjust this value, since it is pretty complex. (:issue:`65`)
-
 - Removed parameters that did nothing, could break search, or that were for internal use only: ``gzip``, ``showResumeKey``, ``resumeKey``, ``page``, ``pageSize``, ``previous_result``.
 
 - Removed support for extra, arbitrary keyword parameters that could be added to each request to the search API.
 
-- All parameters now use snake_case. (Previously, parameters that were passed unchanged to the HTTP API used camelCase, while others used snake_case.)
+- All parameters now use snake_case. (Previously, parameters that were passed unchanged to the HTTP API used camelCase, while others used snake_case.) The old, non-snake-case names are deprecated, but still work. They’ll be completely removed in v0.5.0.
 
   - ``matchType`` → ``match_type``
   - ``fastLatest`` → ``fast_latest``
   - ``resolveRevisits`` → ``resolve_revisits``
 
+- The ``limit`` parameter now has a default value. There are very few cases where you should not set a ``limit`` (not doing so will typically break pagination), and there is now a default value to help prevent mistakes. We’ve also added documentation to explain how and when to adjust this value, since it is pretty complex. (:issue:`65`)
+
 - Expanded the method documentation to explain things in more depth and link to more external references.
 
-While we were at it, we renamed the ``datetime`` parameter of :meth:`wayback.WaybackClient.get_memento` to ``timestamp`` for consistency with :class:`wayback.CdxRecord` and :class:`wayback.Memento`.
+While we were at it, we also renamed the ``datetime`` parameter of :meth:`wayback.WaybackClient.get_memento` to ``timestamp`` for consistency with :class:`wayback.CdxRecord` and :class:`wayback.Memento`. The old name still works for now, but it will be fully removed in v0.5.0.
 
 
 Features
