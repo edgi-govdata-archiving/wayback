@@ -2,8 +2,8 @@
 Release History
 ===============
 
-In Development
---------------
+v0.4.0 (2022-11-10)
+-------------------
 
 Breaking Changes
 ^^^^^^^^^^^^^^^^
