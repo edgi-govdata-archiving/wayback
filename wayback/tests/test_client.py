@@ -1,5 +1,6 @@
 from datetime import date, datetime, timezone, timedelta
 from pathlib import Path
+import time
 import pytest
 import vcr
 import requests
@@ -629,3 +630,73 @@ class TestWaybackSession:
         # Overwriting the default
         res = session.request('GET', 'http://test.com', timeout=1)
         assert res.text == '1'
+
+    @ia_vcr.use_cassette()
+    def test_search_rate_limits(self):
+        # The timing relies on the cassettes being present,
+        # therefore the first run might fail.
+        # Since another test might run before this one,
+        # I have to wait one second before starting.
+        time.sleep(1)
+        # First test that the default rate limits are correctly applied.
+        start_time = time.time()
+        with WaybackClient() as client:
+            for i in range(3):
+                next(client.search('zew.de'))
+        duration_with_limits = time.time() - start_time
+
+        # Check that disabling the rate limits through the search API works.
+        start_time = time.time()
+        with WaybackClient(WaybackSession(search_calls_per_second=0)) as client:
+            for i in range(3):
+                next(client.search('zew.de'))
+        duration_without_limits = time.time() - start_time
+
+        # Check that a different rate limit set through the session is applied correctly.
+        # I need to sleep one half second in order to reset the rate limit.
+        time.sleep(0.5)
+        start_time = time.time()
+        with WaybackClient(WaybackSession(search_calls_per_second=2)) as client:
+            for i in range(3):
+                next(client.search('zew.de'))
+        duration_with_limits_custom = time.time() - start_time
+
+        assert 1.3 <= duration_with_limits <= 1.4
+        assert 0.0 <= duration_without_limits <= 0.05
+        assert 0.0 <= duration_with_limits_custom <= 1.05
+
+    @ia_vcr.use_cassette()
+    def test_memento_rate_limits(self):
+        # The timing relies on the cassettes being present,
+        # therefore the first run might fail.
+        # Since another test might run before this one,
+        # I have to wait one call before starting.
+        time.sleep(1/30)
+        with WaybackClient() as client:
+            cdx = next(client.search('zew.de'))
+        # First test that the default rate limits are correctly applied.
+        start_time = time.time()
+        with WaybackClient() as client:
+            for i in range(11):
+                client.get_memento(cdx)
+        duration_with_limits = time.time() - start_time
+
+        # Check that disabling the rate limits through the get_memento API works.
+        start_time = time.time()
+        with WaybackClient(WaybackSession(memento_calls_per_second=0)) as client:
+            for i in range(3):
+                client.get_memento(cdx)
+        duration_without_limits = time.time() - start_time
+
+        # Check that a different rate limit set through the session is applied correctly.
+        # I need to sleep 0.1 seconds in order to reset the rate limit.
+        time.sleep(0.1)
+        start_time = time.time()
+        with WaybackClient(WaybackSession(memento_calls_per_second=10)) as client:
+            for i in range(6):
+                client.get_memento(cdx)
+        duration_with_limits_custom = time.time() - start_time
+
+        assert 0.33 <= duration_with_limits <= 0.43
+        assert 0.0 <= duration_without_limits <= 0.05
+        assert 0.5 <= duration_with_limits_custom <= 0.55

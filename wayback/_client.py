@@ -187,12 +187,9 @@ HTTPConnectionPool.ResponseCls = WaybackResponse
 #####################################################################
 
 
-# TODO: make rate limiting configurable at the session level, rather than
-# arbitrarily set inside get_memento(). Idea: have a rate limit lock type and
-# pass an instance to the constructor here.
 class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
     """
-    A custom session object that network pools connections and resources for
+    A custom session object that pools network connections and resources for
     requests to the Wayback Machine.
 
     Parameters
@@ -215,6 +212,12 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
     user_agent : str, optional
         A custom user-agent string to use in all requests. Defaults to:
         `wayback/{version} (+https://github.com/edgi-govdata-archiving/wayback)`
+    search_calls_per_second : int or float, default: 1.5
+        The maximum number of calls made to the search API per second.
+        To disable the rate limit, set this to 0.
+    memento_calls_per_second : int or float, default: 30
+        The maximum number of calls made to the memento API per second.
+        To disable the rate limit, set this to 0.
     """
 
     # It seems Wayback sometimes produces 500 errors for transient issues, so
@@ -227,7 +230,8 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
     # just the error type. See `should_retry_error()`.
     handleable_errors = (ConnectionError,) + retryable_errors
 
-    def __init__(self, retries=6, backoff=2, timeout=60, user_agent=None):
+    def __init__(self, retries=6, backoff=2, timeout=60, user_agent=None,
+                 search_calls_per_second=1.5, memento_calls_per_second=30):
         super().__init__()
         self.retries = retries
         self.backoff = backoff
@@ -237,6 +241,8 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
                            f'wayback/{__version__} (+https://github.com/edgi-govdata-archiving/wayback)'),
             'Accept-Encoding': 'gzip, deflate'
         }
+        self.search_calls_per_second = search_calls_per_second
+        self.memento_calls_per_second = memento_calls_per_second
         # NOTE: the nice way to accomplish retry/backoff is with a urllib3:
         #     adapter = requests.adapters.HTTPAdapter(
         #         max_retries=Retry(total=5, backoff_factor=2,
@@ -530,24 +536,26 @@ class WaybackClient(_utils.DepthCountedContext):
         previous_result = None
         while next_query:
             sent_query, next_query = next_query, None
-            response = self.session.request('GET', CDX_SEARCH_URL,
-                                            params=sent_query)
-            try:
-                # Read/cache the response and close straightaway. If we need to
-                # raise for status, we want to pre-emptively close the response
-                # so a user handling the error doesn't need to worry about it. If
-                # we don't raise here, we still want to close the connection so it
-                # doesn't leak when we move onto the next of results or when this
-                # iterator ends.
-                read_and_close(response)
-                response.raise_for_status()
-            except requests.exceptions.HTTPError as error:
-                if 'AdministrativeAccessControlException' in response.text:
-                    raise BlockedSiteError(query['url'])
-                elif 'RobotAccessControlException' in response.text:
-                    raise BlockedByRobotsError(query['url'])
-                else:
-                    raise WaybackException(str(error))
+            with _utils.rate_limited(self.session.search_calls_per_second,
+                                     group='search'):
+                response = self.session.request('GET', CDX_SEARCH_URL,
+                                                params=sent_query)
+                try:
+                    # Read/cache the response and close straightaway. If we need
+                    # to raise for status, we want to pre-emptively close the
+                    # response so a user handling the error doesn't need to
+                    # worry about it. If we don't raise here, we still want to
+                    # close the connection so it doesn't leak when we move onto
+                    # the next of results or when this iterator ends.
+                    read_and_close(response)
+                    response.raise_for_status()
+                except requests.exceptions.HTTPError as error:
+                    if 'AdministrativeAccessControlException' in response.text:
+                        raise BlockedSiteError(query['url'])
+                    elif 'RobotAccessControlException' in response.text:
+                        raise BlockedByRobotsError(query['url'])
+                    else:
+                        raise WaybackException(str(error))
 
             lines = iter(response.content.splitlines())
 
@@ -718,7 +726,8 @@ class WaybackClient(_utils.DepthCountedContext):
                                           mode=mode,
                                           url=original_url)
 
-        with _utils.rate_limited(calls_per_second=30, group='get_memento'):
+        with _utils.rate_limited(calls_per_second=self.session.memento_calls_per_second,
+                                 group='get_memento'):
             # Correctly following redirects is actually pretty complicated. In
             # the simplest case, a memento is a simple web page, and that's
             # no problem. However...

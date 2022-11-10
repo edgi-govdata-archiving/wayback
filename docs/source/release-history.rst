@@ -30,20 +30,34 @@ While we were at it, we renamed the ``datetime`` parameter of :meth:`wayback.Way
 Features
 ^^^^^^^^
 
-:attr:`wayback.Memento.headers` is now case-insensitive. The keys of the ``headers`` dict are returned with their original case when iterating, but lookups are performed case-insensitively. For example::
+- :attr:`wayback.Memento.headers` is now case-insensitive. The keys of the ``headers`` dict are returned with their original case when iterating, but lookups are performed case-insensitively. For example::
 
-  list(memento.headers) == ['Content-Type', 'Date']
-  memento.headers['Content-Type'] == memento.headers['content-type']
+    list(memento.headers) == ['Content-Type', 'Date']
+    memento.headers['Content-Type'] == memento.headers['content-type']
 
-(:issue:`98`)
+  (:issue:`98`)
+
+- There are now built-in rate limits for calls to ``search()`` and ``get_memento()``. The default values should keep you from getting temporarily blocked by the Wayback Machine servers, but you can also adjust them when instantiating :class:`wayback.WaybackSession`:
+
+  .. code-block:: python
+
+     # Limit get_memento() calls to 2 per second (or one every 0.5 seconds):
+     client = WaybackClient(WaybackSession(memento_calls_per_second=2))
+
+     # These now take a minimum of 0.5 seconds, even if the Wayback Machine
+     # responds instantly (there's no delay on the first call):
+     client.get_memento('http://www.noaa.gov/', timestamp='20180816111911')
+     client.get_memento('http://www.noaa.gov/', timestamp='20180829092926')
+
+  A huge thanks to @LionSzl for implementing this. (:issue:`12`)
 
 
 Fixes & Maintenance
 ^^^^^^^^^^^^^^^^^^^
 
-All API requests to archive.org now use HTTPS instead of HTTP. Thanks to @sundhaug92 for calling this out. (:issue:`81`)
+- All API requests to archive.org now use HTTPS instead of HTTP. Thanks to @sundhaug92 for calling this out. (:issue:`81`)
 
-Headers from the original archived response are again included in :attr:`wayback.Memento.headers`. As part of this, the ``headers`` attribute is now case-insensitive (see new features above), since the Internet Archive servers now return headers with different cases depending on how the request was made. (:issue:`98`)
+- Headers from the original archived response are again included in :attr:`wayback.Memento.headers`. As part of this, the ``headers`` attribute is now case-insensitive (see new features above), since the Internet Archive servers now return headers with different cases depending on how the request was made. (:issue:`98`)
 
 
 v0.3.3 (2022-09-30)
