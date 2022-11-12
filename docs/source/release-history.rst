@@ -2,6 +2,12 @@
 Release History
 ===============
 
+In Development
+--------------
+
+Fix an issue where the :attr:`Memento.url` attribute might not be slightly off (it could have a different protocol, different upper/lower-casing, etc.). (:issue:`99`)
+
+
 v0.4.0 (2022-11-10)
 -------------------
 
