@@ -540,6 +540,15 @@ def test_get_memento_follow_redirects_does_not_follow_historical_redirects():
         assert len(memento.debug_history) == 1
 
 
+@ia_vcr.use_cassette()
+def test_get_memento_returns_memento_with_accurate_url():
+    with WaybackClient() as client:
+        # This memento is actually captured from 'https://www.', not 'http://'.
+        memento = client.get_memento('http://fws.gov/',
+                                     timestamp='20171124143728')
+        assert memento.url == 'https://www.fws.gov/'
+
+
 def return_timeout(self, *args, **kwargs) -> requests.Response:
     """
     Patch requests.Session.send with this in order to return a response with
