@@ -798,6 +798,12 @@ class WaybackClient(_utils.DepthCountedContext):
             while True:
                 is_memento = 'Memento-Datetime' in response.headers
                 current_url, current_date, current_mode = _utils.memento_url_data(response.url)
+                # A memento URL will match possible captures based on its SURT
+                # form, which means we might be getting back a memento captured
+                # from a different URL than the one specified in the request.
+                # If present, the `original` link will be the *captured* URL.
+                if response.links and ('original' in response.links):
+                    current_url = response.links['original']['url']
 
                 if is_memento:
                     memento = Memento(url=current_url,
