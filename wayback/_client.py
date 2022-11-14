@@ -815,6 +815,7 @@ class WaybackClient(_utils.DepthCountedContext):
                                       encoding=response.encoding,
                                       raw=response,
                                       raw_headers=response.headers,
+                                      links=response.links or {},
                                       history=history,
                                       debug_history=debug_history)
                     if not follow_redirects:
