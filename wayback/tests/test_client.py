@@ -251,6 +251,46 @@ def test_get_memento():
             'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
             'Transfer-Encoding': 'chunked'
         }
+        assert memento.links == {
+            'first memento': {
+                'datetime': 'Wed, 23 Mar 2005 15:53:00 GMT',
+                'rel': 'first memento',
+                'url': 'https://web.archive.org/web/20050323155300/http://www.fws.gov:80/birds'
+            },
+            'last memento': {
+                'datetime': 'Thu, 06 Oct 2022 03:10:05 GMT',
+                'rel': 'last memento',
+                'url': 'https://web.archive.org/web/20221006031005/https://fws.gov/birds'
+            },
+            'prev memento': {
+                'datetime': 'Fri, 29 Sep 2017 00:27:12 GMT',
+                'rel': 'prev memento',
+                'url': 'https://web.archive.org/web/20170929002712/https://www.fws.gov/birds/'
+            },
+            'next memento': {
+                'datetime': 'Thu, 28 Dec 2017 22:21:43 GMT',
+                'rel': 'next memento',
+                'url': 'https://web.archive.org/web/20171228222143/https://www.fws.gov/birds/'
+            },
+            'memento': {
+                'datetime': 'Fri, 24 Nov 2017 15:13:15 GMT',
+                'rel': 'memento',
+                'url': 'https://web.archive.org/web/20171124151315/https://www.fws.gov/birds/'
+            },
+            'original': {
+                'rel': 'original',
+                'url': 'https://www.fws.gov/birds/'
+            },
+            'timegate': {
+                'rel': 'timegate',
+                'url': 'https://web.archive.org/web/https://www.fws.gov/birds/'
+            },
+            'timemap': {
+                'rel': 'timemap',
+                'type': 'application/link-format',
+                'url': 'https://web.archive.org/web/timemap/link/https://www.fws.gov/birds/'
+            },
+        }
 
 
 @ia_vcr.use_cassette()
@@ -538,6 +578,15 @@ def test_get_memento_follow_redirects_does_not_follow_historical_redirects():
         assert 'https://www.epa.gov/sites/production/files/signpost/cc.html' == memento.headers['Location']
         assert len(memento.history) == 0
         assert len(memento.debug_history) == 1
+
+
+@ia_vcr.use_cassette()
+def test_get_memento_returns_memento_with_accurate_url():
+    with WaybackClient() as client:
+        # This memento is actually captured from 'https://www.', not 'http://'.
+        memento = client.get_memento('http://fws.gov/',
+                                     timestamp='20171124143728')
+        assert memento.url == 'https://www.fws.gov/'
 
 
 def return_timeout(self, *args, **kwargs) -> requests.Response:

@@ -2,6 +2,45 @@
 Release History
 ===============
 
+In Development
+--------------
+
+Fix an issue where the :attr:`Memento.url` attribute might not be slightly off (it could have a different protocol, different upper/lower-casing, etc.). (:issue:`99`)
+
+:class:`wayback.Memento` now has a ``links`` property with information about other URLs that are related to the memento, such as the previous or next mementos in time. It’s a dict where the keys identify the relationship (e.g. ``'prev memento'``) and the values are dicts with additional information about the link. (:issue:`57`) For example::
+
+  {
+      'original': {
+          'url': 'https://www.fws.gov/birds/',
+          'rel': 'original'
+      },
+      'first memento': {
+          'url': 'https://web.archive.org/web/20050323155300/http://www.fws.gov:80/birds',
+          'rel': 'first memento',
+          'datetime': 'Wed, 23 Mar 2005 15:53:00 GMT'
+      },
+      'prev memento': {
+          'url': 'https://web.archive.org/web/20210125125216/https://www.fws.gov/birds/',
+          'rel': 'prev memento',
+          'datetime': 'Mon, 25 Jan 2021 12:52:16 GMT'
+      },
+      'next memento': {
+          'url': 'https://web.archive.org/web/20210321180831/https://www.fws.gov/birds',
+          'rel': 'next memento',
+          'datetime': 'Sun, 21 Mar 2021 18:08:31 GMT'
+      },
+      'last memento': {
+          'url': 'https://web.archive.org/web/20221006031005/https://fws.gov/birds',
+          'rel': 'last memento',
+          'datetime': 'Thu, 06 Oct 2022 03:10:05 GMT'
+      }
+  }
+
+One use for these is to iterate through additional mementos. For example, to get the previous memento::
+
+  client.get_memento(memento.links['prev memento']['url'])
+
+
 v0.4.0 (2022-11-10)
 -------------------
 

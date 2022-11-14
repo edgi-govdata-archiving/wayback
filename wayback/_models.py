@@ -179,10 +179,50 @@ class Memento:
         :type: str
 
         The body of the archived HTTP response decoded as a string.
+
+    .. py:attribute:: links
+        :type: dict of (str, dict of (str, str))
+
+        Related links to this Memento (e.g. the previous and/or next Memento in
+        time). The keys are the relationship (e.g. ``'prev memento'``) as a
+        string and the values are dicts where the keys and values are strings.
+        One key will be ``'url'``, indicating the URL of the related link, and
+        the rest will be any other attributes specified for the link
+        (e.g. ``'rel'``, ``'type'``, etc.).
+
+        For example::
+
+          {
+              'original': {
+                  'url': 'https://www.fws.gov/birds/',
+                  'rel': 'original'
+              },
+              'first memento': {
+                  'url': 'https://web.archive.org/web/20050323155300/http://www.fws.gov:80/birds',
+                  'rel': 'first memento',
+                  'datetime': 'Wed, 23 Mar 2005 15:53:00 GMT'
+              },
+              'prev memento': {
+                  'url': 'https://web.archive.org/web/20210125125216/https://www.fws.gov/birds/',
+                  'rel': 'prev memento',
+                  'datetime': 'Mon, 25 Jan 2021 12:52:16 GMT'
+              },
+              'next memento': {
+                  'url': 'https://web.archive.org/web/20210321180831/https://www.fws.gov/birds',
+                  'rel': 'next memento',
+                  'datetime': 'Sun, 21 Mar 2021 18:08:31 GMT'
+              },
+              'last memento': {
+                  'url': 'https://web.archive.org/web/20221006031005/https://fws.gov/birds',
+                  'rel': 'last memento',
+                  'datetime': 'Thu, 06 Oct 2022 03:10:05 GMT'
+              }
+          }
     """
 
     def __init__(self, *, url, timestamp, mode, memento_url, status_code,
-                 headers, encoding, raw, raw_headers, history, debug_history):
+                 headers, encoding, raw, raw_headers, links, history,
+                 debug_history):
         self.url = url
         self.timestamp = timestamp
         self.mode = mode
@@ -192,6 +232,7 @@ class Memento:
         self.encoding = encoding
         self._raw = raw
         self._raw_headers = raw_headers
+        self.links = links
 
         # Ensure we have non-mutable copies of history info.
         self.history = tuple(history)
