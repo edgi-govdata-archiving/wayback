@@ -54,7 +54,7 @@ CDX_SEARCH_URL = 'https://web.archive.org/cdx/search/cdx'
 # https://github.com/internetarchive/wayback/blob/bd205b9b26664a6e2ea3c0c2a8948f0dc6ff4519/wayback-cdx-server/src/main/java/org/archive/cdxserver/format/CDX11Format.java#L13-L17  # noqa
 # NOTE: the `length` and `robotflags` fields appear to always be empty
 # TODO: support new/upcoming CDX API
-CDX_SEARCH_2_URL = 'https://web.archive.org/web/timemap/cdx'
+CDX_SEARCH_2_URL = 'https://web.archive.org/web/timemap'
 
 ARCHIVE_URL_TEMPLATE = 'https://web.archive.org/web/{timestamp}{mode}/{url}'
 REDUNDANT_HTTP_PORT = re.compile(r'^(http://[^:/]+):80(.*)$')
@@ -784,7 +784,7 @@ class WaybackClient(_utils.DepthCountedContext):
         # Since pages are a number of *blocks searched* and not results, a page
         # in the middle of the result set may have nothing in it. The only way
         # to know when to stop iterating is to check how many pages there are.
-        page_count = int(self.session.request('GET', CDX_SEARCH_2_URL, params={
+        page_count = int(self.session.request('GET', f'{CDX_SEARCH_2_URL}/cdx', params={
             **query,
             'showNumPages': 'true'
         }).text)
@@ -792,7 +792,11 @@ class WaybackClient(_utils.DepthCountedContext):
         page = 0
         previous_result = None
         while page < page_count:
-            response = self.session.request('GET', CDX_SEARCH_2_URL, params={
+            # Get the actual data as JSON rather than CDX because the fields
+            # are not yet stable. The JSON format includes field headers, so we
+            # can parse responses in a way that is robust to changes in order
+            # or what fields are included.
+            response = self.session.request('GET', f'{CDX_SEARCH_2_URL}/json', params={
                 **query,
                 'page': page
             })
@@ -815,48 +819,53 @@ class WaybackClient(_utils.DepthCountedContext):
                 else:
                     raise WaybackException(str(error))
 
-            lines = iter(response.content.splitlines())
-            for line in lines:
-                text = line.decode()
+            rows = response.json()
+            if not isinstance(rows, (tuple, list)) or not not isinstance(rows[0], (tuple, list)):
+                raise UnexpectedResponseFormat('JSON response from Wayback is not an array of arrays')
 
-                if text == previous_result:
+            field_indexes = {
+                field: index
+                for index, field in enumerate(rows[0])
+            }
+            missing_fields = set((
+                'urlkey',
+                'timestamp',
+                'original',
+                'mimetype',
+                'statuscode',
+                'digest',
+                'length',
+            )).difference(rows[0])
+            if missing_fields:
+                raise UnexpectedResponseFormat(f'JSON response is missing fields: {missing_fields}')
+
+            for row in rows[1:]:
+                # v2 currently has some additional fields (redirect, robotflags,
+                # offset, filename), but the internet archive plans to remove
+                # them, so we skip them here.
+                data = CdxRecord(
+                    key=row[field_indexes['urlkey']],
+                    timestamp=row[field_indexes['timestamp']],
+                    url=row[field_indexes['original']],
+                    mime_type=row[field_indexes['mimetype']],
+                    status_code=row[field_indexes['statuscode']],
+                    digest=row[field_indexes['digest']],
+                    length=row[field_indexes['length']],
+                )
+                row_key = f'{data.timestamp}|{data.key}|{data.digest}'
+                if row_key == previous_result:
                     # This result line is a repeat. Skip it.
                     continue
                 else:
-                    previous_result = text
+                    previous_result = row_key
 
-                try:
-                    # The v2 search currently has a different format than v1.
-                    # - 0-5 are the same as v1 (urlkey, timestamp, original,
-                    #   mimetype, statuscode, digest (SHA-1))
-                    # - 6-7 I haven't been able to figure out (but I understand
-                    #   they are planned for removal later, so we should
-                    #   probably ignore)
-                    # - 8 is `length` (field 6 in v1) (byte length of the data
-                    #   IN THE WARC file, not the archived response).
-                    # - 9 is the byte offset of the data in the WARC file.
-                    #   (Planned for removal in the future)
-                    # - 10 is the name of the WARC file.
-                    #   (Planned for removal in the future)
-                    #
-                    # FIXME: if `output=json` is supported in the future, we
-                    # should really use it (even though there's higher parsing
-                    # overhead) since we can check field names and not risk
-                    # errors if the field order changes.
-                    fields = text.split(' ')
-                    data = CdxRecord(*(fields[:6]), fields[8], '', '')
-                    if data.status_code == '-':
-                        # the status code given for a revisit record
-                        status_code = None
-                    else:
-                        status_code = int(data.status_code)
-                    length = None if data.length == '-' else int(data.length)
-                    capture_time = _utils.parse_timestamp(data.timestamp)
-                except Exception as err:
-                    if 'RobotAccessControlException' in text:
-                        raise BlockedByRobotsError(query["url"])
-                    raise UnexpectedResponseFormat(
-                        f'Could not parse CDX output: "{text}" (query: {query})') from err
+                if data.status_code == '-':
+                    # the status code given for a revisit record
+                    status_code = None
+                else:
+                    status_code = int(data.status_code)
+                length = None if data.length == '-' else int(data.length)
+                capture_time = _utils.parse_timestamp(data.timestamp)
 
                 clean_url = REDUNDANT_HTTPS_PORT.sub(
                     r'\1\2', REDUNDANT_HTTP_PORT.sub(
