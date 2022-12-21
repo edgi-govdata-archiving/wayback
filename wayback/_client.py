@@ -766,9 +766,13 @@ class WaybackClient(_utils.DepthCountedContext):
         # TODO: support args that can be set multiple times: filter, collapse
         # Should take input as a sequence and convert to repeat query args
         # TODO: Check types
+        # XXX: resolveRevisits is currently broken and poisons the query.
+        #      Waiting to hear back about whether it's just not going to be
+        #      supported here or if it's just a bug or not done yet.
         query_args = {'url': url, 'matchType': match_type, 'from': from_date,
                       'to': to_date, 'filter': filter_field,
-                      'collapse': collapse, 'resolveRevisits': resolve_revisits,
+                      'collapse': collapse,
+                      # 'resolveRevisits': resolve_revisits,
                       'pageSize': page_size}
 
         query = {}
