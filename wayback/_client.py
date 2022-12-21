@@ -17,6 +17,7 @@ from base64 import b32encode
 from datetime import date
 from enum import Enum
 import hashlib
+from json import JSONDecodeError
 import logging
 import re
 import requests
@@ -823,8 +824,13 @@ class WaybackClient(_utils.DepthCountedContext):
                 else:
                     raise WaybackException(str(error))
 
-            rows = response.json()
-            if not isinstance(rows, (tuple, list)) or not not isinstance(rows[0], (tuple, list)):
+            try:
+                rows = response.json()
+            except JSONDecodeError as error:
+                # XXX: do not include the whole response text here! Maybe just the first 100 chars or so.
+                raise UnexpectedResponseFormat(f'Did not receive JSON. Error: {error} Raw response: "{response.text}"')
+
+            if not isinstance(rows, (tuple, list)) or not isinstance(rows[0], (tuple, list)):
                 raise UnexpectedResponseFormat('JSON response from Wayback is not an array of arrays')
 
             field_indexes = {
