@@ -794,6 +794,8 @@ class WaybackClient(_utils.DepthCountedContext):
             'showNumPages': 'true'
         }).text)
 
+        # FIXME: surface error messages from x-archive-wayback-runtime-error header
+
         page = 0
         previous_result = None
         while page < page_count:
@@ -815,6 +817,7 @@ class WaybackClient(_utils.DepthCountedContext):
                 # doesn't leak when we move onto the next of results or when this
                 # iterator ends.
                 read_and_close(response)
+                # FIXME: surface error messages from x-archive-wayback-runtime-error header
                 response.raise_for_status()
             except requests.exceptions.HTTPError as error:
                 if 'AdministrativeAccessControlException' in response.text:
