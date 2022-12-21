@@ -1,0 +1,121 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.4.0.post7.dev0+gb117aea (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: https://web.archive.org/web/timemap/cdx?url=nasa.gov&from=19961001000000&to=19970201000000&pageSize=5&showNumPages=true
+  response:
+    body:
+      string: '1
+
+        '
+    headers:
+      Connection:
+      - keep-alive
+      Content-Type:
+      - text/plain
+      Date:
+      - Wed, 21 Dec 2022 20:13:18 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Server:
+      - nginx/1.19.5
+      Transfer-Encoding:
+      - chunked
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
+      X-Page-Cache:
+      - MISS
+      X-RL:
+      - '0'
+      X-location:
+      - cdx-p
+      x-app-server:
+      - wwwb-app208
+      x-tr:
+      - '5'
+      x-ts:
+      - '200'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.4.0.post7.dev0+gb117aea (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: https://web.archive.org/web/timemap/json?url=nasa.gov&from=19961001000000&to=19970201000000&pageSize=5&page=0
+  response:
+    body:
+      string: '[["urlkey","timestamp","original","mimetype","statuscode","digest","redirect","robotflags","length","offset","filename"],
+
+        ["gov,nasa)/","19961231235847","http://www.nasa.gov:80/","text/html","200","MGIGF4GRGGF5GKV6VNCBAXOE3OR5BTZC","-","-","1811","10985598","ARCHIVEIT-5184-EXTRACTION-EMBEDS-20180208000000-ARCS-PART-00000-000000-00000/ARCHIVEIT-5184-EXTRACTION-EMBEDS-20180208000000-ARCS-PART-00000-000000.arc.gz"],
+
+        ["gov,nasa)/","19961231235847","http://www.nasa.gov:80/","text/html","200","MGIGF4GRGGF5GKV6VNCBAXOE3OR5BTZC","-","-","1811","43457988","FS-100816-c/FS-101157.arc.gz"],
+
+        ["gov,nasa)/","19961231235847","http://www.nasa.gov:80/","text/html","200","MGIGF4GRGGF5GKV6VNCBAXOE3OR5BTZC","-","-","1811","88016492","ARCHIVEIT-6477-20161216232536-EXTRACTION-EMBEDS-ARCS-PART-00001-000027-00000/ARCHIVEIT-6477-20161216232536-EXTRACTION-EMBEDS-ARCS-PART-00001-000027.arc.gz"],
+
+        ["gov,nasa)/","20221216224525","https://www.nasa.gov/","text/html","200","IJ2NTAS36TGC7OBZLO6SPHA2TBCIYJUN","-","-","4410","228796998","spn2-20221216221927-wwwb-spn07.us.archive.org-8002.warc.gz"],
+
+        ["gov,nasa)/","20221217142250","http://www.nasa.gov/","text/html","301","WMCR2F5G5SGJ4FTL6CNGFNECMGVYNFL3","-","-","667","474933063","spn2-20221217140332-wwwb-spn08.us.archive.org-8002.warc.gz"],
+
+        ["gov,nasa)/","20221217142250","https://www.nasa.gov/","text/html","200","BLDF2OHC7HUQQOSLLMG52VHSXZFUBFXU","-","-","4451","466214119","spn2-20221217133149-wwwb-spn22.us.archive.org-8000.warc.gz"],
+
+        ["gov,nasa)/","20221219003241","https://nasa.gov/","text/html","301","OM6ALWQTEGJ5NTY5RYSC2EXCKJOAHOVU","-","-","569","795735542","spn2-20221219001004-wwwb-spn08.us.archive.org-8003.warc.gz"],
+
+        ["gov,nasa)/","20221219003246","https://www.nasa.gov/","text/html","200","BLDF2OHC7HUQQOSLLMG52VHSXZFUBFXU","-","-","4455","864659076","spn2-20221219002046-wwwb-spn07.us.archive.org-8004.warc.gz"],
+
+        ["gov,nasa)/","20221220002218","http://www.nasa.gov/","text/html","301","WMCR2F5G5SGJ4FTL6CNGFNECMGVYNFL3","-","-","667","158099613","spn2-20221220000034-wwwb-spn23.us.archive.org-8002.warc.gz"],
+
+        ["gov,nasa)/","20221220002218","https://www.nasa.gov/","text/html","200","IEFO37CAEC5JBFKATFBQKP47CCPD4VKE","-","-","4413","942509505","spn2-20221219231550-wwwb-spn07.us.archive.org-8005.warc.gz"]]
+
+        '
+    headers:
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 21 Dec 2022 20:13:23 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Server:
+      - nginx/1.19.5
+      Transfer-Encoding:
+      - chunked
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
+      X-Page-Cache:
+      - MISS
+      X-RL:
+      - '0'
+      X-location:
+      - cdx-p
+      server-timing:
+      - exclusion.robots;dur=0.113003, exclusion.robots.policy;dur=0.102706, cdx.remote;dur=0.045251,
+        esindex;dur=0.008445
+      x-app-server:
+      - wwwb-app208
+      x-tr:
+      - '5776'
+      x-ts:
+      - '200'
+    status:
+      code: 200
+      message: OK
+version: 1
