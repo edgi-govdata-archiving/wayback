@@ -851,6 +851,8 @@ class WaybackClient(_utils.DepthCountedContext):
                     status_code=row[field_indexes['statuscode']],
                     digest=row[field_indexes['digest']],
                     length=row[field_indexes['length']],
+                    raw_url=None,
+                    view_url=None,
                 )
                 row_key = f'{data.timestamp}|{data.key}|{data.digest}'
                 if row_key == previous_result:
