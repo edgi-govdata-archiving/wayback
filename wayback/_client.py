@@ -820,10 +820,15 @@ class WaybackClient(_utils.DepthCountedContext):
                 # FIXME: surface error messages from x-archive-wayback-runtime-error header
                 response.raise_for_status()
             except requests.exceptions.HTTPError as error:
+                # XXX: it looks like these messages will be in the
+                # x-archive-wayback-runtime-error header now instead of the
+                # body; we should check both.
                 if 'AdministrativeAccessControlException' in response.text:
                     raise BlockedSiteError(query['url'])
                 elif 'RobotAccessControlException' in response.text:
                     raise BlockedByRobotsError(query['url'])
+                elif 'x-archive-wayback-runtime-error' in response.headers:
+                    raise WaybackException(response.headers['x-archive-wayback-runtime-error'])
                 else:
                     raise WaybackException(str(error))
 
