@@ -27,7 +27,7 @@ from requests.exceptions import (ChunkedEncodingError,
                                  RetryError,
                                  Timeout)
 import time
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urljoin
 from urllib3.connectionpool import HTTPConnectionPool
 from urllib3.exceptions import (ConnectTimeoutError,
                                 MaxRetryError,
