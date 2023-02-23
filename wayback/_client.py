@@ -27,6 +27,7 @@ from requests.exceptions import (ChunkedEncodingError,
                                  RetryError,
                                  Timeout)
 import time
+from urllib.parse import urljoin, urlparse
 from urllib3.connectionpool import HTTPConnectionPool
 from urllib3.exceptions import (ConnectTimeoutError,
                                 MaxRetryError,
@@ -798,6 +799,42 @@ class WaybackClient(_utils.DepthCountedContext):
             while True:
                 is_memento = 'Memento-Datetime' in response.headers
                 current_url, current_date, current_mode = _utils.memento_url_data(response.url)
+
+                # In view mode, mementos of redirects get served as a normal
+                # web page that displays info about the redirect and then uses
+                # JavaScript to redirect after a delay. This page is also
+                # missing some important memento headers, even though it is only
+                # served when there is an actual memento.
+                # Do our best to detect and handle this case.
+                if (
+                    current_mode == Mode.view.value
+                    and is_memento is False
+                    and response.status_code == 200
+                    and 'x-archive-src' in response.headers
+                    and re.search(r'Got an? HTTP 3\d\d response at crawl time',
+                                  response.text,
+                                  re.IGNORECASE)
+                ):
+                    redirect_match = re.search(r'<a [^>]*href=(["\'])(/web/\d{14}/.*?)\1[\s|>]', response.text)
+                    if redirect_match:
+                        redirect_url = redirect_match.group(2)
+                        # Handle redirects without scheme (RFC 1808 Section 4)
+                        # or that are relative (RFC 7231).
+                        if redirect_url.startswith('/'):
+                            redirect_url = urljoin(response.url, redirect_url)
+
+                        # Update the response object with correct info
+                        redirect = requests.Request('GET', redirect_url)
+                        response._next = self.session.prepare_request(redirect)
+                        is_memento = True
+                    else:
+                        raise WaybackException(
+                            'The server sent a response in `view` mode that looks like a redirect, '
+                            'but the URL to redirect to could not be found on the page. Please file '
+                            'an issue at  https://github.com/edgi-govdata-archiving/wayback/issues/ '
+                            'with details about what happened.'
+                        )
+
                 # A memento URL will match possible captures based on its SURT
                 # form, which means we might be getting back a memento captured
                 # from a different URL than the one specified in the request.
