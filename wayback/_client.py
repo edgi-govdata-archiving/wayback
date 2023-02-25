@@ -815,7 +815,19 @@ class WaybackClient(_utils.DepthCountedContext):
                                   response.text,
                                   re.IGNORECASE)
                 ):
-                    redirect_match = re.search(r'<a [^>]*href=(["\'])(/web/\d{14}/.*?)\1[\s|>]', response.text)
+                    current_timestamp = _utils.format_timestamp(current_date)
+                    redirect_match = re.search(fr'''
+                        <a\s                              # <a> element
+                        (?:[^>\s]+\s)*                    # Possible other attributes
+                        href=(["\'])                      # href attribute and quote
+                        (                                 # URL of another archived page with the same timestamp
+                            (?:(?:https?:)//[^/]+)?       # Optional schema and host
+                            /web/{current_timestamp}/.*?
+                        )
+                        \1                                # End quote
+                        [\s|>]                            # Space before another attribute or end of element
+                    ''', response.text, re.VERBOSE | re.IGNORECASE)
+
                     if redirect_match:
                         redirect_url = redirect_match.group(2)
                         # Handle redirects without scheme (RFC 1808 Section 4)
