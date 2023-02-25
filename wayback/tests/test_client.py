@@ -506,6 +506,21 @@ def test_get_memento_raises_for_mementos_that_redirect_in_a_loop():
 
 
 @ia_vcr.use_cassette()
+def test_get_memento_with_redirect_in_view_mode():
+    """
+    Redirects in view mode respond with different headers, status codes, and
+    bodies that other modes. They require special handling and testing.
+    """
+    with WaybackClient() as client:
+        memento = client.get_memento(
+            'https://www.whitehouse.gov/administration/eop/ostp/about/student/faqs',
+            timestamp='20201027215555',
+            mode=Mode.view)
+        assert len(memento.history) == 1        # memento redirects
+        assert len(memento.debug_history) == 2  # actual HTTP redirects
+
+
+@ia_vcr.use_cassette()
 def test_get_memento_should_fail_for_non_playbackable_mementos():
     with WaybackClient() as client:
         with pytest.raises(MementoPlaybackError):
