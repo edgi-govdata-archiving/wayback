@@ -157,6 +157,62 @@ def read_and_close(response):
         response.close()
 
 
+REDIRECT_PAGE_PATTERN = re.compile(r'Got an? HTTP 3\d\d response at crawl time', re.IGNORECASE)
+
+
+def detect_view_mode_redirect(response, current_date):
+    """
+    Given a response for a page in view mode, detect whether it represents
+    a historical redirect and return the target URL or ``None``.
+
+    In view mode, historical redirects aren't served as actual 3xx
+    responses. Instead, they are a normal web page that displays information
+    about the redirect. After a short delay, JavaScript on the page
+    redirects the browser. That obviously doesn't work great for us! The
+    goal here is to detect that we got one of those pages and extract the
+    URL that was redirected to.
+
+    If the page looks like a redirect but we can't find the target URL,
+    this raises an exception.
+    """
+    if (
+        response.status_code == 200
+        and 'x-archive-src' in response.headers
+        and REDIRECT_PAGE_PATTERN.search(response.text)
+    ):
+        # The page should have a link to the redirect target. Only look for URLs
+        # using the same timestamp to reduce the chance of picking up some other
+        # link that isn't about the redirect.
+        current_timestamp = _utils.format_timestamp(current_date)
+        redirect_match = re.search(fr'''
+            <a\s                              # <a> element
+            (?:[^>\s]+\s)*                    # Possible other attributes
+            href=(["\'])                      # href attribute and quote
+            (                                 # URL of another archived page with the same timestamp
+                (?:(?:https?:)//[^/]+)?       # Optional schema and host
+                /web/{current_timestamp}/.*?
+            )
+            \1                                # End quote
+            [\s|>]                            # Space before another attribute or end of element
+        ''', response.text, re.VERBOSE | re.IGNORECASE)
+
+        if redirect_match:
+            redirect_url = redirect_match.group(2)
+            if redirect_url.startswith('/'):
+                redirect_url = urljoin(response.url, redirect_url)
+
+            return redirect_url
+        else:
+            raise WaybackException(
+                'The server sent a response in `view` mode that looks like a redirect, '
+                'but the URL to redirect to could not be found on the page. Please file '
+                'an issue at  https://github.com/edgi-govdata-archiving/wayback/issues/ '
+                'with details about what happened.'
+            )
+
+    return None
+
+
 #####################################################################
 # HACK: handle malformed Content-Encoding headers from Wayback.
 # When you send `Accept-Encoding: gzip` on a request for a memento, Wayback
@@ -797,55 +853,20 @@ class WaybackClient(_utils.DepthCountedContext):
             protocol_and_www = re.compile(r'^https?://(www\d?\.)?')
             memento = None
             while True:
-                is_memento = 'Memento-Datetime' in response.headers
                 current_url, current_date, current_mode = _utils.memento_url_data(response.url)
 
-                # In view mode, mementos of redirects get served as a normal
-                # web page that displays info about the redirect and then uses
-                # JavaScript to redirect after a delay. This page is also
-                # missing some important memento headers, even though it is only
-                # served when there is an actual memento.
-                # Do our best to detect and handle this case.
-                if (
-                    current_mode == Mode.view.value
-                    and is_memento is False
-                    and response.status_code == 200
-                    and 'x-archive-src' in response.headers
-                    and re.search(r'Got an? HTTP 3\d\d response at crawl time',
-                                  response.text,
-                                  re.IGNORECASE)
-                ):
-                    current_timestamp = _utils.format_timestamp(current_date)
-                    redirect_match = re.search(fr'''
-                        <a\s                              # <a> element
-                        (?:[^>\s]+\s)*                    # Possible other attributes
-                        href=(["\'])                      # href attribute and quote
-                        (                                 # URL of another archived page with the same timestamp
-                            (?:(?:https?:)//[^/]+)?       # Optional schema and host
-                            /web/{current_timestamp}/.*?
-                        )
-                        \1                                # End quote
-                        [\s|>]                            # Space before another attribute or end of element
-                    ''', response.text, re.VERBOSE | re.IGNORECASE)
-
-                    if redirect_match:
-                        redirect_url = redirect_match.group(2)
-                        # Handle redirects without scheme (RFC 1808 Section 4)
-                        # or that are relative (RFC 7231).
-                        if redirect_url.startswith('/'):
-                            redirect_url = urljoin(response.url, redirect_url)
-
-                        # Update the response object with correct info
+                # In view mode, redirects need special handling.
+                if current_mode == Mode.view.value:
+                    redirect_url = detect_view_mode_redirect(response, current_date)
+                    if redirect_url:
+                        # Fix up response properties to be like other modes.
                         redirect = requests.Request('GET', redirect_url)
                         response._next = self.session.prepare_request(redirect)
-                        is_memento = True
-                    else:
-                        raise WaybackException(
-                            'The server sent a response in `view` mode that looks like a redirect, '
-                            'but the URL to redirect to could not be found on the page. Please file '
-                            'an issue at  https://github.com/edgi-govdata-archiving/wayback/issues/ '
-                            'with details about what happened.'
+                        response.headers['Memento-Datetime'] = current_date.strftime(
+                            '%a, %d %b %Y %H:%M:%S %Z'
                         )
+
+                is_memento = 'Memento-Datetime' in response.headers
 
                 # A memento URL will match possible captures based on its SURT
                 # form, which means we might be getting back a memento captured
