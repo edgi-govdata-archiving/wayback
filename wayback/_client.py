@@ -57,7 +57,6 @@ CDX_SEARCH_URL = 'https://web.archive.org/cdx/search/cdx'
 # TODO: support new/upcoming CDX API
 # CDX_SEARCH_URL = 'https://web.archive.org/web/timemap/cdx'
 
-ARCHIVE_URL_TEMPLATE = 'https://web.archive.org/web/{timestamp}{mode}/{url}'
 REDUNDANT_HTTP_PORT = re.compile(r'^(http://[^:/]+):80(.*)$')
 REDUNDANT_HTTPS_PORT = re.compile(r'^(https://[^:/]+):443(.*)$')
 DATA_URL_START = re.compile(r'data:[\w]+/[\w]+;base64')
@@ -213,26 +212,6 @@ def detect_view_mode_redirect(response, current_date):
     return None
 
 
-def set_memento_url_mode(url, mode):
-    """
-    Return a memento URL with the "mode" component set to the given mode. If
-    the URL is not a memento URL, raises ``ValueError``.
-
-    Parameters
-    ----------
-    url : string
-    mode : string
-
-    Returns
-    -------
-    string
-    """
-    captured_url, timestamp, _ = _utils.memento_url_data(url)
-    return ARCHIVE_URL_TEMPLATE.format(url=captured_url,
-                                       timestamp=_utils.format_timestamp(timestamp),
-                                       mode=mode)
-
-
 def clean_memento_links(links, mode):
     """
     Clean up the links associated with a memento to make them more usable.
@@ -247,7 +226,7 @@ def clean_memento_links(links, mode):
     Parameters
     ----------
     links : dict
-    current_mode : string
+    current_mode : str
 
     Returns
     -------
@@ -264,7 +243,7 @@ def clean_memento_links(links, mode):
             try:
                 result[key] = {
                     **value,
-                    'url': set_memento_url_mode(value['url'], mode)
+                    'url': _utils.set_memento_url_mode(value['url'], mode)
                 }
             except Exception:
                 logger.warn(
@@ -749,11 +728,11 @@ class WaybackClient(_utils.DepthCountedContext):
                     status_code=status_code,
                     length=length,
                     timestamp=capture_time,
-                    raw_url=ARCHIVE_URL_TEMPLATE.format(
+                    raw_url=_utils.format_memento_url(
                         url=data.url,
                         timestamp=data.timestamp,
                         mode=Mode.original.value),
-                    view_url=ARCHIVE_URL_TEMPLATE.format(
+                    view_url=_utils.format_memento_url(
                         url=data.url,
                         timestamp=data.timestamp,
                         mode=Mode.view.value)
@@ -878,9 +857,9 @@ class WaybackClient(_utils.DepthCountedContext):
                     original_date = _utils.ensure_utc_datetime(timestamp)
 
         original_date_wayback = _utils.format_timestamp(original_date)
-        url = ARCHIVE_URL_TEMPLATE.format(timestamp=original_date_wayback,
-                                          mode=mode,
-                                          url=original_url)
+        url = _utils.format_memento_url(url=original_url,
+                                        timestamp=original_date_wayback,
+                                        mode=mode)
 
         with _utils.rate_limited(calls_per_second=self.session.memento_calls_per_second,
                                  group='get_memento'):
