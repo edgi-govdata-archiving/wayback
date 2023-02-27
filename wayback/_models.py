@@ -231,7 +231,7 @@ class Memento:
           view_memento = client.get_memento('https://fws.gov/birds', '20210318004901', mode=Mode.view)
           view_memento.links['next memento']['url'] == 'https://web.archive.org/web/20210321180831/https://fws.gov/birds'
           # Nothing after the timestamp for "view" mode -----------------------------------------^
-    """
+    """  # noqa: E501
 
     def __init__(self, *, url, timestamp, mode, memento_url, status_code,
                  headers, encoding, raw, raw_headers, links, history,
