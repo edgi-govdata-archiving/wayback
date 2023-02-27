@@ -255,27 +255,27 @@ def test_get_memento():
             'first memento': {
                 'datetime': 'Wed, 23 Mar 2005 15:53:00 GMT',
                 'rel': 'first memento',
-                'url': 'https://web.archive.org/web/20050323155300/http://www.fws.gov:80/birds'
+                'url': 'https://web.archive.org/web/20050323155300id_/http://www.fws.gov:80/birds'
             },
             'last memento': {
                 'datetime': 'Thu, 06 Oct 2022 03:10:05 GMT',
                 'rel': 'last memento',
-                'url': 'https://web.archive.org/web/20221006031005/https://fws.gov/birds'
+                'url': 'https://web.archive.org/web/20221006031005id_/https://fws.gov/birds'
             },
             'prev memento': {
                 'datetime': 'Fri, 29 Sep 2017 00:27:12 GMT',
                 'rel': 'prev memento',
-                'url': 'https://web.archive.org/web/20170929002712/https://www.fws.gov/birds/'
+                'url': 'https://web.archive.org/web/20170929002712id_/https://www.fws.gov/birds/'
             },
             'next memento': {
                 'datetime': 'Thu, 28 Dec 2017 22:21:43 GMT',
                 'rel': 'next memento',
-                'url': 'https://web.archive.org/web/20171228222143/https://www.fws.gov/birds/'
+                'url': 'https://web.archive.org/web/20171228222143id_/https://www.fws.gov/birds/'
             },
             'memento': {
                 'datetime': 'Fri, 24 Nov 2017 15:13:15 GMT',
                 'rel': 'memento',
-                'url': 'https://web.archive.org/web/20171124151315/https://www.fws.gov/birds/'
+                'url': 'https://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/'
             },
             'original': {
                 'rel': 'original',
@@ -408,12 +408,22 @@ def test_get_memento_with_mode():
                                      timestamp=datetime(2017, 11, 24, 15, 13, 15),
                                      mode=Mode.view)
         assert '' == memento.mode
-        assert 'https://web.archive.org/web/20171124151315/https://www.fws.gov/birds/' == memento.memento_url
+        assert ('https://web.archive.org/web/20171124151315/https://www.fws.gov/birds/'
+                == memento.memento_url)
+        assert ('https://web.archive.org/web/20171124151315/https://www.fws.gov/birds/'
+                == memento.links['memento']['url'])
+        assert ('https://web.archive.org/web/20050323155300/http://www.fws.gov:80/birds'
+                == memento.links['first memento']['url'])
 
         memento = client.get_memento('https://www.fws.gov/birds/',
                                      timestamp=datetime(2017, 11, 24, 15, 13, 15))
         assert 'id_' == memento.mode
-        assert 'https://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/' == memento.memento_url
+        assert ('https://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/'
+                == memento.memento_url)
+        assert ('https://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/'
+                == memento.links['memento']['url'])
+        assert ('https://web.archive.org/web/20050323155300id_/http://www.fws.gov:80/birds'
+                == memento.links['first memento']['url'])
 
 
 @ia_vcr.use_cassette()
