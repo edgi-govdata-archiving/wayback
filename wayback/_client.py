@@ -213,6 +213,71 @@ def detect_view_mode_redirect(response, current_date):
     return None
 
 
+def set_memento_url_mode(url, mode):
+    """
+    Return a memento URL with the "mode" component set to the given mode. If
+    the URL is not a memento URL, raises ``ValueError``.
+
+    Parameters
+    ----------
+    url : string
+    mode : string
+
+    Returns
+    -------
+    string
+    """
+    captured_url, timestamp, _ = _utils.memento_url_data(url)
+    return ARCHIVE_URL_TEMPLATE.format(url=captured_url,
+                                       timestamp=_utils.format_timestamp(timestamp),
+                                       mode=mode)
+
+
+def clean_memento_links(links, mode):
+    """
+    Clean up the links associated with a memento to make them more usable.
+    Returns a new links dict and does not alter the original.
+
+    Specifically, this updates the URLs of any memento references in a links
+    object to URLs using the given mode. The Wayback Machine always returns
+    links to the `view` mode version of a memento regardless of what mode it is
+    sending the current memento in, but users will usually want links to use
+    the same mode as the current memento.
+
+    Parameters
+    ----------
+    links : dict
+    current_mode : string
+
+    Returns
+    -------
+    dict
+    """
+    if links is None:
+        return {}
+    elif not isinstance(links, dict):
+        return TypeError(f'links should be a dict, not {type(links)}')
+
+    result = {}
+    for key, value in links.items():
+        if 'memento' in key:
+            try:
+                result[key] = {
+                    **value,
+                    'url': set_memento_url_mode(value['url'], mode)
+                }
+            except Exception:
+                logger.warn(
+                    f'The link "{key}" should have had a memento URL in the '
+                    f'`url` field, but instead it was: {value}'
+                )
+                result[key] = value
+        else:
+            result[key] = value
+
+    return result
+
+
 #####################################################################
 # HACK: handle malformed Content-Encoding headers from Wayback.
 # When you send `Accept-Encoding: gzip` on a request for a memento, Wayback
@@ -876,6 +941,7 @@ class WaybackClient(_utils.DepthCountedContext):
                     current_url = response.links['original']['url']
 
                 if is_memento:
+                    links = clean_memento_links(response.links, mode)
                     memento = Memento(url=current_url,
                                       timestamp=current_date,
                                       mode=current_mode,
@@ -885,7 +951,7 @@ class WaybackClient(_utils.DepthCountedContext):
                                       encoding=response.encoding,
                                       raw=response,
                                       raw_headers=response.headers,
-                                      links=response.links or {},
+                                      links=links,
                                       history=history,
                                       debug_history=debug_history)
                     if not follow_redirects:
