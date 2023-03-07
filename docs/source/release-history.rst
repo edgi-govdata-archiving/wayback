@@ -2,14 +2,8 @@
 Release History
 ===============
 
-In Development
---------------
-
-Breaking Changes
-^^^^^^^^^^^^^^^^
-
-N/A
-
+v0.4.1 (2023-03-07)
+-------------------
 
 Features
 ^^^^^^^^
@@ -46,6 +40,7 @@ Features
 One use for these is to iterate through additional mementos. For example, to get the previous memento::
 
   client.get_memento(memento.links['prev memento']['url'])
+
 
 Fixes & Maintenance
 ^^^^^^^^^^^^^^^^^^^
