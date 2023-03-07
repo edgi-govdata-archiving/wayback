@@ -16,6 +16,7 @@ logger = logging.getLogger(__name__)
 URL_DATE_FORMAT = '%Y%m%d%H%M%S'
 MEMENTO_URL_PATTERN = re.compile(
     r'^http(?:s)?://web.archive.org/web/(\d+)(\w\w_)?/(.+)$')
+MEMENTO_URL_TEMPLATE = 'https://web.archive.org/web/{timestamp}{mode}/{url}'
 
 
 def format_timestamp(value):
@@ -159,6 +160,43 @@ def memento_url_data(memento_url):
     mode = match.group(2) or ''
 
     return url, date, mode
+
+
+def format_memento_url(url, timestamp, mode=''):
+    """
+    Get the URL for a memento of a given URL, timestamp, and mode.
+
+    Parameters
+    ----------
+    url : str
+    timestamp : str or datetime.datetime or datetime.date
+    mode : str
+
+    Returns
+    -------
+    str
+    """
+    return MEMENTO_URL_TEMPLATE.format(url=url,
+                                       timestamp=format_timestamp(timestamp),
+                                       mode=mode)
+
+
+def set_memento_url_mode(url, mode):
+    """
+    Return a memento URL with the "mode" component set to the given mode. If
+    the URL is not a memento URL, raises ``ValueError``.
+
+    Parameters
+    ----------
+    url : str
+    mode : str
+
+    Returns
+    -------
+    str
+    """
+    captured_url, timestamp, _ = memento_url_data(url)
+    return format_memento_url(captured_url, timestamp, mode)
 
 
 _last_call_by_group = defaultdict(int)

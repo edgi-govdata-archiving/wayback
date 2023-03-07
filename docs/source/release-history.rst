@@ -22,22 +22,22 @@ Features
           'rel': 'original'
       },
       'first memento': {
-          'url': 'https://web.archive.org/web/20050323155300/http://www.fws.gov:80/birds',
+          'url': 'https://web.archive.org/web/20050323155300id_/http://www.fws.gov:80/birds',
           'rel': 'first memento',
           'datetime': 'Wed, 23 Mar 2005 15:53:00 GMT'
       },
       'prev memento': {
-          'url': 'https://web.archive.org/web/20210125125216/https://www.fws.gov/birds/',
+          'url': 'https://web.archive.org/web/20210125125216id_/https://www.fws.gov/birds/',
           'rel': 'prev memento',
           'datetime': 'Mon, 25 Jan 2021 12:52:16 GMT'
       },
       'next memento': {
-          'url': 'https://web.archive.org/web/20210321180831/https://www.fws.gov/birds',
+          'url': 'https://web.archive.org/web/20210321180831id_/https://www.fws.gov/birds',
           'rel': 'next memento',
           'datetime': 'Sun, 21 Mar 2021 18:08:31 GMT'
       },
       'last memento': {
-          'url': 'https://web.archive.org/web/20221006031005/https://fws.gov/birds',
+          'url': 'https://web.archive.org/web/20221006031005id_/https://fws.gov/birds',
           'rel': 'last memento',
           'datetime': 'Thu, 06 Oct 2022 03:10:05 GMT'
       }

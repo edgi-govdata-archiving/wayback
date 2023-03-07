@@ -57,7 +57,6 @@ CDX_SEARCH_URL = 'https://web.archive.org/cdx/search/cdx'
 # TODO: support new/upcoming CDX API
 # CDX_SEARCH_URL = 'https://web.archive.org/web/timemap/cdx'
 
-ARCHIVE_URL_TEMPLATE = 'https://web.archive.org/web/{timestamp}{mode}/{url}'
 REDUNDANT_HTTP_PORT = re.compile(r'^(http://[^:/]+):80(.*)$')
 REDUNDANT_HTTPS_PORT = re.compile(r'^(https://[^:/]+):443(.*)$')
 DATA_URL_START = re.compile(r'data:[\w]+/[\w]+;base64')
@@ -211,6 +210,51 @@ def detect_view_mode_redirect(response, current_date):
             )
 
     return None
+
+
+def clean_memento_links(links, mode):
+    """
+    Clean up the links associated with a memento to make them more usable.
+    Returns a new links dict and does not alter the original.
+
+    Specifically, this updates the URLs of any memento references in a links
+    object to URLs using the given mode. The Wayback Machine always returns
+    links to the `view` mode version of a memento regardless of what mode it is
+    sending the current memento in, but users will usually want links to use
+    the same mode as the current memento.
+
+    Parameters
+    ----------
+    links : dict
+    current_mode : str
+
+    Returns
+    -------
+    dict
+    """
+    if links is None:
+        return {}
+    elif not isinstance(links, dict):
+        return TypeError(f'links should be a dict, not {type(links)}')
+
+    result = {}
+    for key, value in links.items():
+        if 'memento' in key:
+            try:
+                result[key] = {
+                    **value,
+                    'url': _utils.set_memento_url_mode(value['url'], mode)
+                }
+            except Exception:
+                logger.warn(
+                    f'The link "{key}" should have had a memento URL in the '
+                    f'`url` field, but instead it was: {value}'
+                )
+                result[key] = value
+        else:
+            result[key] = value
+
+    return result
 
 
 #####################################################################
@@ -684,11 +728,11 @@ class WaybackClient(_utils.DepthCountedContext):
                     status_code=status_code,
                     length=length,
                     timestamp=capture_time,
-                    raw_url=ARCHIVE_URL_TEMPLATE.format(
+                    raw_url=_utils.format_memento_url(
                         url=data.url,
                         timestamp=data.timestamp,
                         mode=Mode.original.value),
-                    view_url=ARCHIVE_URL_TEMPLATE.format(
+                    view_url=_utils.format_memento_url(
                         url=data.url,
                         timestamp=data.timestamp,
                         mode=Mode.view.value)
@@ -813,9 +857,9 @@ class WaybackClient(_utils.DepthCountedContext):
                     original_date = _utils.ensure_utc_datetime(timestamp)
 
         original_date_wayback = _utils.format_timestamp(original_date)
-        url = ARCHIVE_URL_TEMPLATE.format(timestamp=original_date_wayback,
-                                          mode=mode,
-                                          url=original_url)
+        url = _utils.format_memento_url(url=original_url,
+                                        timestamp=original_date_wayback,
+                                        mode=mode)
 
         with _utils.rate_limited(calls_per_second=self.session.memento_calls_per_second,
                                  group='get_memento'):
@@ -876,6 +920,7 @@ class WaybackClient(_utils.DepthCountedContext):
                     current_url = response.links['original']['url']
 
                 if is_memento:
+                    links = clean_memento_links(response.links, mode)
                     memento = Memento(url=current_url,
                                       timestamp=current_date,
                                       mode=current_mode,
@@ -885,7 +930,7 @@ class WaybackClient(_utils.DepthCountedContext):
                                       encoding=response.encoding,
                                       raw=response,
                                       raw_headers=response.headers,
-                                      links=response.links or {},
+                                      links=links,
                                       history=history,
                                       debug_history=debug_history)
                     if not follow_redirects:

@@ -186,9 +186,11 @@ class Memento:
         Related links to this Memento (e.g. the previous and/or next Memento in
         time). The keys are the relationship (e.g. ``'prev memento'``) as a
         string and the values are dicts where the keys and values are strings.
-        One key will be ``'url'``, indicating the URL of the related link, and
-        the rest will be any other attributes specified for the link
-        (e.g. ``'rel'``, ``'type'``, etc.).
+
+        In each entry, the ``'url'`` key is the URL of the related link, the
+        ``'rel'`` key is the relationship (the same as the key in the top-level
+        dict), and the rest of the keys will be any other attributes that are
+        relevant for that link (e.g. ``'datetime'`` or ``'type'``).
 
         For example::
 
@@ -218,7 +220,18 @@ class Memento:
                   'datetime': 'Thu, 06 Oct 2022 03:10:05 GMT'
               }
           }
-    """
+
+        Links to other mementos use the same mode as the memento object this
+        ``links`` attribute belongs to. For example::
+
+          raw_memento = client.get_memento('https://fws.gov/birds', '20210318004901')
+          raw_memento.links['next memento']['url'] == 'https://web.archive.org/web/20210321180831id_/https://fws.gov/birds'
+          # The "id_" after the timestamp means "original" mode ---------------------------------^^^
+
+          view_memento = client.get_memento('https://fws.gov/birds', '20210318004901', mode=Mode.view)
+          view_memento.links['next memento']['url'] == 'https://web.archive.org/web/20210321180831/https://fws.gov/birds'
+          # Nothing after the timestamp for "view" mode -----------------------------------------^
+    """  # noqa: E501
 
     def __init__(self, *, url, timestamp, mode, memento_url, status_code,
                  headers, encoding, raw, raw_headers, links, history,
