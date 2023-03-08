@@ -45,7 +45,7 @@ One use for these is to iterate through additional mementos. For example, to get
 Fixes & Maintenance
 ^^^^^^^^^^^^^^^^^^^
 
-- Fix an issue where the :attr:`Memento.url` attribute might not be slightly off (it could have a different protocol, different upper/lower-casing, etc.). (:issue:`99`)
+- Fix an issue where the :attr:`Memento.url` attribute might be slightly off from the exact URL that was captured (it could have a different protocol, different upper/lower-casing, etc.). (:issue:`99`)
 
 - Fix an error when getting a memento for a redirect in ``view`` mode. If you called :meth:`wayback.WaybackClient.get_memento` with a URL that turned out to be a redirect at the given time and set the ``mode`` option to :attr:`wayback.Mode.view`, you’d get an exception saying “Memento at {url} could not be played.” Now this works just fine. (:issue:`109`)
 
