@@ -6,5 +6,6 @@ exclude =
     dist,
     versioneer.py,
     wayback/_version.py,
-    docs/source/conf.py
+    docs/source/conf.py,
+    scratch.*
 max-line-length = 115

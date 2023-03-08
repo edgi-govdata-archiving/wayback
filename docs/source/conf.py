@@ -65,7 +65,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'wayback'
-copyright = '2019–2022, Environmental Data & Governance Initiative'
+copyright = '2019–2023, Environmental Data & Governance Initiative'
 author = 'Environmental Data & Governance Initiative'
 
 # The version info for the project you're documenting, acts as replacement for
