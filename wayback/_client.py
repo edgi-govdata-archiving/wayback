@@ -456,7 +456,7 @@ class WaybackClient(_utils.DepthCountedContext):
 
     Parameters
     ----------
-    session : :class:`requests.Session`, optional
+    session : :class:`WaybackSession`, optional
     """
     def __init__(self, session=None):
         self.session = session or WaybackSession()
