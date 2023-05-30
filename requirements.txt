@@ -1,2 +1,2 @@
 requests
-urllib3
+urllib3 >=1.20, <2
