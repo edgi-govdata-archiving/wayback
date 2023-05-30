@@ -2,25 +2,10 @@
 Release History
 ===============
 
-In Development
---------------
+v0.4.2 (2023-05-29)
+-------------------
 
-Breaking Changes
-^^^^^^^^^^^^^^^^
-
-N/A
-
-
-Features
-^^^^^^^^
-
-N/A
-
-
-Fixes & Maintenance
-^^^^^^^^^^^^^^^^^^^
-
-N/A
+Wayback is not compatible with urllib3 v2, and this release updates the package's requirements to make sure Pip and other package managers install compatible versions of Wayback and urllib3. There are no other fixes or new features.
 
 
 v0.4.1 (2023-03-07)
