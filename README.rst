@@ -68,6 +68,7 @@ Thanks to the following people for their contributions and help on this package!
 - `Will Sackfield <https://github.com/8W9aG>`_ (Code, Tests)
 - `Ed Summers <https://github.com/edsu>`_ (Code, Tests)
 - `Lion Szlagowski <https://github.com/LionSzl>`_ (Code, Tests)
+- `David Gilman <https://pro-football-history.com>`_ (Complaints)
 
 
 License & Copyright
