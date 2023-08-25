@@ -456,7 +456,7 @@ class WaybackClient(_utils.DepthCountedContext):
 
     Parameters
     ----------
-    session : :class:`WaybackSession`, optional
+    session : :class:`requests.Session`, optional
     """
     def __init__(self, session=None):
         self.session = session or WaybackSession()
@@ -641,7 +641,7 @@ class WaybackClient(_utils.DepthCountedContext):
         # TODO: Check types
         query_args = {'url': url, 'matchType': match_type, 'limit': limit,
                       'offset': offset, 'from': from_date,
-                      'to': to_date, 'filter': filter_field,
+                      'to': to_date, 'filter': filter_field,  # filter_field should now be a list of strings
                       'fastLatest': fast_latest, 'collapse': collapse,
                       'showResumeKey': True,
                       'resolveRevisits': resolve_revisits}
@@ -651,10 +651,13 @@ class WaybackClient(_utils.DepthCountedContext):
             if value is not None:
                 if isinstance(value, str):
                     query[key] = value
+                elif isinstance(value, list) and key == 'filter':      ##### specifically handle 'filter' field as list
+                    query[key] = value                                 # Assign the list directly to the 'filter' key
                 elif isinstance(value, date):
                     query[key] = _utils.format_timestamp(value)
                 else:
                     query[key] = str(value).lower()
+
 
         next_query = query
         count = 0
