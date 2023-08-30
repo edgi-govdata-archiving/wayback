@@ -651,8 +651,8 @@ class WaybackClient(_utils.DepthCountedContext):
             if value is not None:
                 if isinstance(value, str):
                     query[key] = value
-                elif isinstance(value, list) and key == 'filter':      ##### specifically handle 'filter' field as list
-                    query[key] = value                                 # Assign the list directly to the 'filter' key
+                elif isinstance(value, list):                         # automatically handle both string and list inputs
+                    query[key] = value                                
                 elif isinstance(value, date):
                     query[key] = _utils.format_timestamp(value)
                 else:
