@@ -4,7 +4,7 @@ wheel
 check-wheel-contents ~=0.1.0
 codecov
 coverage
-flake8 ~=5.0.4
+flake8 ~=6.1.0
 requests-mock
 pytest
 vcrpy
