@@ -6,6 +6,10 @@ commands:
     parameters:
       python-version:
         type: string
+      install-dev:
+        description: Install dev dependencies (not just test dependencies)
+        type: boolean
+        default: false
       install-docs:
         description: Install docs dependencies
         type: boolean
@@ -26,7 +30,17 @@ commands:
             # Ensure pip is up-to-date
             pip install --upgrade pip
             pip install .
-            pip install -r requirements-dev.txt  # Extra requirements for tests.
+            pip install -r requirements-test.txt  # Extra requirements for tests.
+
+      # Dev dependencies are only compatible on Python 3.8+, so only install
+      # them on demand.
+      - when:
+          condition: << parameters.install-dev >>
+          steps:
+            - run:
+                command: |
+                  . ~/venv/bin/activate
+                  pip install -r requirements-dev.txt
 
       # Docs dependencies are only compatible on Python 3.10+, so only install
       # them on demand.
@@ -76,6 +90,7 @@ jobs:
       - checkout
       - setup_pip:
           python-version: "3.11"
+          install-dev: true
       - run:
           name: Code linting
           command: |
@@ -90,6 +105,7 @@ jobs:
       - checkout
       - setup_pip:
           python-version: "3.11"
+          install-dev: true
       - run:
           name: Build Distribution
           command: |
