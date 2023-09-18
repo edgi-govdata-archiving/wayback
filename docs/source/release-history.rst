@@ -20,7 +20,7 @@ N/A
 Fixes & Maintenance
 ^^^^^^^^^^^^^^^^^^^
 
-N/A
+- Add support for Python 3.12.0.
 
 
 v0.4.2 (2023-05-29)
