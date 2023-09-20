@@ -138,13 +138,55 @@ jobs:
             . ~/venv/bin/activate
             make -C docs html
 
+  test-python-prerelease:
+    working_directory: ~/wayback
+    docker:
+      - image: mr0grog/circle-python-pre:3.12.0rc3
+    steps:
+      - checkout
+      - setup_pip:
+          python-version: 3-12-pre
+          install-dev: true
+
+      - run:
+          name: Tests
+          command: |
+            . ~/venv/bin/activate
+            coverage run -m pytest -vv
+      - run:
+          name: Coverage
+          command: |
+            . ~/venv/bin/activate
+            coverage report -m
+
+      # Lint
+      - run:
+          name: Code linting
+          command: |
+            . ~/venv/bin/activate
+            flake8 .
+
+      # Build
+      - run:
+          name: Build Distribution
+          command: |
+            . ~/venv/bin/activate
+            python setup.py sdist bdist_wheel
+      - run:
+          name: Check Distribution
+          command: |
+            . ~/venv/bin/activate
+            twine check dist/*
+            check-wheel-contents --toplevel wayback dist
+
 workflows:
-  build:
+  ci:
     jobs:
       - test:
           matrix:
             parameters:
               python-version: ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11"]
+      - test-python-prerelease
       - lint
       - build
       - docs
