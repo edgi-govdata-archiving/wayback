@@ -1,0 +1,9 @@
+# These are required for testing the package but not necessarily required for
+# _using_ it or for other build-time tasks (packaging, linting, etc.).
+# Some dev tooling requires newer versions of Python (3.8+) than we want to
+# require for the whole package.
+codecov
+coverage
+requests-mock
+pytest
+vcrpy
