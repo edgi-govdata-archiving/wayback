@@ -5,6 +5,6 @@
 codecov
 coverage
 requests-mock
-setuptools ~=68.2
+setuptools
 pytest
 vcrpy
