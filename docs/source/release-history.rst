@@ -20,7 +20,13 @@ N/A
 Fixes & Maintenance
 ^^^^^^^^^^^^^^^^^^^
 
-- Add support for Python 3.12.0.
+- Add support for Python 3.12.0. (:issue:`123`)
+
+
+v0.4.3a1 (2023-09-22)
+---------------------
+
+This is a test release for properly supporting the upcoming release of Python 3.12.0. Please file an issue if you encounter issues using on Python 3.12.0rc3 or later. (:issue:`123`)
 
 
 v0.4.2 (2023-05-29)
