@@ -456,7 +456,7 @@ class WaybackClient(_utils.DepthCountedContext):
 
     Parameters
     ----------
-    session : :class:`requests.Session`, optional
+    session : :class:`WaybackSession`, optional
     """
     def __init__(self, session=None):
         self.session = session or WaybackSession()
@@ -570,9 +570,12 @@ class WaybackClient(_utils.DepthCountedContext):
             Only include captures before this date. Equivalent to the `to`
             argument in the CDX API. If it does not have a time zone, it is
             assumed to be in UTC.
-        filter_field : str, optional
-            A filter for any field in the results. Equivalent to the ``filter``
-            argument in the CDX API. (format: ``[!]field:regex``)
+        filter_field : str or list of str, optional
+            A filter or list of filters for any field in the results. Equivalent
+            to the ``filter`` argument in the CDX API. To apply multiple
+            filters, use a list of strings instead of a single string. Format:
+            ``[!]field:regex``, e.g. ``'!statuscode:200'`` to select only
+            captures with a non-200 status code.
         collapse : str, optional
             Collapse consecutive results that match on a given field. (format:
             `fieldname` or `fieldname:N` -- N is the number of chars to match.)
@@ -636,12 +639,10 @@ class WaybackClient(_utils.DepthCountedContext):
                  stacklevel=2)
             resolve_revisits = resolve_revisits or resolveRevisits
 
-        # TODO: support args that can be set multiple times: filter, collapse
-        # Should take input as a sequence and convert to repeat query args
         # TODO: Check types
         query_args = {'url': url, 'matchType': match_type, 'limit': limit,
                       'offset': offset, 'from': from_date,
-                      'to': to_date, 'filter': filter_field,  # filter_field should now be a list of strings
+                      'to': to_date, 'filter': filter_field,
                       'fastLatest': fast_latest, 'collapse': collapse,
                       'showResumeKey': True,
                       'resolveRevisits': resolve_revisits}
@@ -651,13 +652,12 @@ class WaybackClient(_utils.DepthCountedContext):
             if value is not None:
                 if isinstance(value, str):
                     query[key] = value
-                elif isinstance(value, list):                         # automatically handle both string and list inputs
-                    query[key] = value                                
+                elif isinstance(value, list):
+                    query[key] = value
                 elif isinstance(value, date):
                     query[key] = _utils.format_timestamp(value)
                 else:
                     query[key] = str(value).lower()
-
 
         next_query = query
         count = 0
