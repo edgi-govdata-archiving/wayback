@@ -1,4 +1,5 @@
 from datetime import date, datetime, timezone, timedelta
+from itertools import islice
 from pathlib import Path
 import time
 import pytest
@@ -149,6 +150,71 @@ def test_search_raises_for_blocked_urls():
                                      from_date=datetime(2019, 10, 1),
                                      to_date=datetime(2019, 10, 2))
             next(versions)
+
+
+@ia_vcr.use_cassette()
+def test_search_with_filter():
+    with WaybackClient() as client:
+        # Check an unfiltered request to cover false positives.
+        versions = client.search('nasa.gov/',
+                                 match_type='prefix',
+                                 limit=10,
+                                 from_date=date(2022, 1, 1),
+                                 to_date=date(2022, 2, 1))
+        versions = list(islice(versions, 10))
+        assert any((v.status_code == 200 for v in versions))
+
+        # Then an actually filtered request.
+        versions = client.search('nasa.gov/',
+                                 match_type='prefix',
+                                 limit=10,
+                                 from_date=date(2022, 1, 1),
+                                 to_date=date(2022, 2, 1),
+                                 filter_field='statuscode:404')
+        versions = list(islice(versions, 10))
+        assert all((v.status_code == 404 for v in versions))
+
+
+@ia_vcr.use_cassette()
+def test_search_with_filter_list():
+    with WaybackClient() as client:
+        # Check an unfiltered request to cover false positives.
+        versions = client.search('nasa.gov/',
+                                 match_type='prefix',
+                                 limit=10,
+                                 from_date=date(2022, 1, 1),
+                                 to_date=date(2022, 2, 1))
+        versions = list(islice(versions, 10))
+        assert any((v.status_code == 200 for v in versions))
+        assert any(('feature' not in v.url for v in versions))
+
+        # Then an actually filtered request.
+        versions = client.search('nasa.gov/',
+                                 match_type='prefix',
+                                 limit=10,
+                                 from_date=date(2022, 1, 1),
+                                 to_date=date(2022, 2, 1),
+                                 filter_field=['statuscode:404',
+                                               'urlkey:.*feature.*'])
+        versions = list(islice(versions, 10))
+        assert all((v.status_code == 404 for v in versions))
+        assert all(('feature' in v.url for v in versions))
+
+
+@ia_vcr.use_cassette()
+def test_search_with_filter_tuple():
+    with WaybackClient() as client:
+        # Then an actually filtered request.
+        versions = client.search('nasa.gov/',
+                                 match_type='prefix',
+                                 limit=10,
+                                 from_date=date(2022, 1, 1),
+                                 to_date=date(2022, 2, 1),
+                                 filter_field=('statuscode:404',
+                                               'urlkey:.*feature.*'))
+        versions = list(islice(versions, 10))
+        assert all((v.status_code == 404 for v in versions))
+        assert all(('feature' in v.url for v in versions))
 
 
 def test_search_removes_malformed_entries(requests_mock):

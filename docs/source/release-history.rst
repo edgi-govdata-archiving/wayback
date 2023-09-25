@@ -14,7 +14,16 @@ N/A
 Features
 ^^^^^^^^
 
-N/A
+- You can now apply multiple filters to a search by using a list or tuple for the ``filter_field`` parameter of :meth:`wayback.WaybackClient.search`. (:issue:`119`)
+
+  For example, to search for all captures at ``nasa.gov`` with a 404 status and “feature” somewhere in the URL:
+
+  .. code-block:: python
+
+     client.search('nasa.gov/',
+                   match_type='prefix',
+                   filter_field=['statuscode:404',
+                                 'urlkey:.*feature.*'])
 
 
 Fixes & Maintenance
