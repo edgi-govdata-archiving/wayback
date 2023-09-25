@@ -3,11 +3,9 @@ from itertools import islice
 from pathlib import Path
 import time
 import pytest
-from vcr import VCR
-from vcr.util import compose
 import requests
 from unittest import mock
-import urllib3
+from .support import create_vcr
 from .._utils import SessionClosedError
 from .._client import (CdxRecord,
                        Mode,
@@ -19,27 +17,7 @@ from ..exceptions import (BlockedSiteError,
                           RateLimitError)
 
 
-urllib3_major = urllib3.__version__.split('.', 1)[0]
-
-
-# VCR stashes HTTP responses in YAML files (one per test) so that an actual
-# server does not have to be running.
-cassette_library_dir = str(Path(__file__).parent / Path('cassettes/'))
-# VCR outputs different cassettes for urllib3 v1 vs. v2, so we need to include
-# include the urllib3 version in the cassette path. :(
-# https://github.com/kevin1024/vcrpy/issues/719
-cassette_namer = compose(
-    VCR.ensure_suffix('.yaml'),
-    VCR.ensure_suffix(f'.urllib3v{urllib3_major}')
-)
-ia_vcr = VCR(
-    serializer='yaml',
-    cassette_library_dir=cassette_library_dir,
-    path_transformer=cassette_namer,
-    record_mode='once',
-    match_on=['uri', 'method'],
-)
-
+ia_vcr = create_vcr()
 
 # It's tough to capture a rate-limited response. Using VCR to do so would
 # require an overly-complex test and a very verbose recording (with lots of
