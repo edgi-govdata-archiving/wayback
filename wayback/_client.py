@@ -456,7 +456,7 @@ class WaybackClient(_utils.DepthCountedContext):
 
     Parameters
     ----------
-    session : :class:`WaybackSession`, optional
+    session : WaybackSession, optional
     """
     def __init__(self, session=None):
         self.session = session or WaybackSession()
@@ -639,7 +639,7 @@ class WaybackClient(_utils.DepthCountedContext):
                  stacklevel=2)
             resolve_revisits = resolve_revisits or resolveRevisits
 
-        # TODO: Check types
+        # TODO: Check types (requires major update)
         query_args = {'url': url, 'matchType': match_type, 'limit': limit,
                       'offset': offset, 'from': from_date,
                       'to': to_date, 'filter': filter_field,
