@@ -1,0 +1,57 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.4.3a1.post5.dev0+gaf68963 (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: https://web.archive.org/web/20150509080314id_/https://www.fws.gov/birds/
+  response:
+    body:
+      string: ''
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Mon, 25 Sep 2023 19:51:48 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Server:
+      - nginx/1.25.1
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
+      X-Page-Cache:
+      - HIT
+      X-RL:
+      - '0'
+      X-location:
+      - All
+      location:
+      - https://web.archive.org/web/20150503090125id_/http://www.fws.gov/birds/
+      server-timing:
+      - captures_list;dur=278.385921, exclusion.robots;dur=0.184694, exclusion.robots.policy;dur=0.174026,
+        cdx.remote;dur=0.059065, esindex;dur=0.008835, LoadShardBlock;dur=134.519404,
+        PetaboxLoader3.resolve;dur=143.126584, PetaboxLoader3.datanode;dur=108.231029,
+        load_resource;dur=130.837851
+      x-app-server:
+      - wwwb-app215
+      x-archive-redirect-reason:
+      - found capture at 20150503090125
+      x-tr:
+      - '417'
+      x-ts:
+      - '302'
+    status:
+      code: 302
+      message: FOUND
+version: 1

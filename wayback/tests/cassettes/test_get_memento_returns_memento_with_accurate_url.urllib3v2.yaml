@@ -1,0 +1,797 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.4.3a1.post5+gaf68963 (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: https://web.archive.org/web/20171124143728id_/http://fws.gov/
+  response:
+    body:
+      string: "\uFEFF<!DOCTYPE html>\n<html lang=\"en\"><!-- InstanceBegin template=\"/Templates/HomeBoot3Nested2.dwt\"
+        codeOutsideHTMLIsLocked=\"false\" -->\n \t<HEAD>\n        <meta charset=\"utf-8\">\n
+        \       <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n        <meta
+        name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <!--
+        The above 3 meta tags *must* come first in the head; any other head content
+        must come *after* these tags -->\n    <!--THIS IS A PART OF A SET OF NESTED
+        TEMPLATES. SOME CHANGES MAY NEED TO BE MADE IN ONE OF THE OTHER TEMPLATES
+        THAT ARE PART OF THIS NEST. The templates included in this nest are: HomeBoot3.dwt,
+        HomeBoot3Nested.dwt and HomeBoot3Nested2.dwt -->\n    \n\n    \n    <!-- InstanceBeginEditable
+        name=\"head\" -->\n    <!-- InstanceEndEditable -->\n    \n    \n    \n    <!--
+        REQUIRED METADATA -->\n    \n\n   <!-- InstanceBeginEditable name=\"doctitle\"
+        --> <title>U.S. Fish and Wildlife Service</title><!-- InstanceEndEditable
+        -->\n       <!-- InstanceBeginEditable name=\"metatags\" -->\n       <meta
+        name=\"Description\" content=\"Agency manages National wildlife refuges, protects
+        endangered species, manages migratory birds, restores nationally significant
+        fisheries and enforces federal wildlife laws.\" />\n    <meta name=\"author\"
+        content=\"U.S. Fish and Wildlife Service\" />\n    <!-- \"Last Reviewed Date\"
+        indicates when this page received a full review and edit to ensure compliance
+        with FWS Web standards. -->\n    <meta name=\"Last Reviewed Date:\" content=\"09/02/2015\"
+        />\n    <meta name=\"p:domain_verify\" content=\"93118909b2f0a911385cf2ae3c6c51f8\"/>\n
+        \   <script type=\"text/javascript\">\nfunction MM_swapImgRestore() { //v3.0\n
+        \ var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;\n}\nfunction
+        MM_preloadImages() { //v3.0\n  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new
+        Array();\n    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0;
+        i<a.length; i++)\n    if (a[i].indexOf(\"#\")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}\n}\n\nfunction
+        MM_findObj(n, d) { //v4.01\n  var p,i,x;  if(!d) d=document; if((p=n.indexOf(\"?\"))>0&&parent.frames.length)
+        {\n    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}\n
+        \ if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];\n
+        \ for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);\n
+        \ if(!x && d.getElementById) x=d.getElementById(n); return x;\n}\n\nfunction
+        MM_swapImage() { //v3.0\n  var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new
+        Array; for(i=0;i<(a.length-2);i+=3)\n   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x;
+        if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}\n}\n    </script>\n    <!-- InstanceEndEditable
+        -->\n    <!-- END REQUIRED METADATA -->\n    <!-- Bootstrap -->\n    <link
+        href=\"home/Boot3/assets/css/bootstrap.min.css\" rel=\"stylesheet\" type=\"text/css\">\n
+        \    \n     <!--Service styles -->\n    <link href=\"home/Boot3/assets/css/HomeStyles.css\"
+        rel=\"stylesheet\" type=\"text/css\" media=\"screen\">\n    <link href=\"home/Boot3/assets/css/serviceStyles.css\"
+        rel=\"stylesheet\" type=\"text/css\" media=\"screen\">\n    <!-- <link href=\"link
+        to your css file\" rel=\"stylesheet\" type=\"text/css\" media=\"screen\">
+        -->\n    \n    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements
+        and media queries -->\n    <!-- WARNING: Respond.js doesn't work if you view
+        the page via file:// -->\n    <!--[if lt IE 9]>\n    <script src=\"https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js\"></script>\n
+        \   <script src=\"https://oss.maxcdn.com/respond/1.4.2/respond.min.js\"></script>\n
+        \   <![endif]-->    \n    \n    <script src=\"js/jquery-2.1.4.min.js\"></script>\n
+        \   \n    <!--Start Google Analytics code with enhanced link attribution-->\n
+        \   <script type=\"text/javascript\">\n    \n      var _gaq = _gaq || [];\n
+        \     \n      var pluginUrl = \n      '//www.google-analytics.com/plugins/ga/inpage_linkid.js';\n
+        \     \n     _gaq.push(['_require', 'inpage_linkid', pluginUrl]);\n     \n
+        \     _gaq.push(['_setAccount', 'UA-20707705-1']);\n    \n      _gaq.push(['_setDomainName',
+        'fws.gov']);\n    \n      _gaq.push(['_trackPageview']);\n    \n      (function()
+        {\n    \n        var ga = document.createElement('script'); ga.type = 'text/javascript';
+        ga.async = true;\n    \n        ga.src = ('https:' == document.location.protocol
+        ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';\n    \n        var
+        s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga,
+        s);\n    \n      })();\n    \n    </script>\n    <!--End Google Analytics
+        code -->\n  \n  <!-- The Digital Analytics Program (DAP) code. DAP is a central,
+        shared web analytics service for federal agencies. Participating agencies
+        report web analytics to a central account. Data from the program is also shared
+        publicly at analytics.usa.gov.  -->\n  <script id=\"_fed_an_ua_tag\" type=\"text/javascript\"
+        src=\"https://www.fws.gov/scripts/js/Universal-Federated-Analytics.js?agency=DOI&amp;subagency=USFWS\"></script>
+        \ \n    </HEAD>\n<BODY onLoad=\"MM_preloadImages('images/sidebar/Summeroffishingsidebutton2017fad.jpg')\">\n<DIV
+        class=\"container\"><!-- CONTAINER -->\n    <div class=\"masthead\">\n        <div
+        id=\"logo\">\n        \t<a href=\"https://www.fws.gov\"><img src=\"https://www.fws.gov/home/graphics/logo2005.gif\"
+        alt=\"Official Web page of the U S Fish and Wildlife Service\" border=\"0\"
+        /></a>\n        </div>\n        <div id=\"fwsBar\" title=\"link to fws.gov
+        homepage\"><a href=\"https://www.fws.gov\"><img name=\"blank\" src=\"images/blank.jpg\"
+        width=\"1\" height=\"1\" alt=\"link to fws.gov homepage\"></a></div>\n        <span
+        id=\"siteName\" class=\"noPrint\"><!-- InstanceBeginEditable name=\"siteName\"
+        --><a href=\"https://www.fws.gov\" title=\"Conserving the Nature of America\">Conserving
+        the Nature of America</a><!-- InstanceEndEditable --></span>\n        <!--
+        Link the Site Name back to the site's home page -->\n        <!-- InstanceBeginEditable
+        name=\"OrgName\" --><!-- THIS HAS BEEN REMOVED AND NO LONGER NEEDED. BY MB
+        07/28/2016--><!-- InstanceEndEditable --><!-- if applicable, add your organization
+        / region here and link it to the proper web page -->\n        <div id=\"searchBar\"
+        class=\"noPrint\">\n        <!-- Replace USA.gov Search form code with site-specific
+        search form code, if available. -->\n        <!-- USAGOV SEARCH FORM -->\n
+        \           <form accept-charset=\"UTF-8\" action=\"https://search.usa.gov/search\"
+        id=\"search_form\" method=\"get\">\n                <div style=\"margin:10;padding:0;display:inline\">\n
+        \               \t<input name=\"utf8\" type=\"hidden\" value=\"&#x2713;\"
+        />\n                </div>\n         <!-- On small mobile devices, only show
+        search button that links to search page -->\n                <div class=\"visible-xs\"
+        \ align=\"right\">\n                \t<input name=\"Search\" type=\"button\"
+        onClick=\"location.href='https://search.usa.gov/search?utf8=%E2%9C%93&amp;affiliate=fws.gov'\"
+        value=\"Search USFWS\" style=\"margin:auto 6px 4px auto\">\n                </div>\n
+        \        <!-- On larger devices, show the search field and button and social
+        icons in blue search row-->\n                <div class=\"hidden-xs\">\n                <input
+        id=\"affiliate\" name=\"affiliate\" type=\"hidden\" value=\"fws.gov\" />\n
+        \               <label for=\"query\" id=\"query-field\" style=\"display:none\">Enter
+        Search Term(s):</label>\n                <input autocomplete=\"off\" class=\"usagov-search-autocomplete\"
+        id=\"query\" name=\"query\" type=\"text\" />\n                <input name=\"commit\"
+        type=\"submit\" value=\"Search\" class=\"form-search\" />\n                \t\n
+        \               <span id=\"socIcons\">\n                    <a href=\"https://www.facebook.com/usfws\"
+        title=\"Link to non-FWS site\" target=\"_blank\" rel=\"tooltip\"><img src=\"images/social/social_facebook.png\"
+        alt=\"Facebook icon\"></a>\n                    <a href=\"https://twitter.com/usfws/\"
+        \ rel=\"tooltip\" target=\"_blank\" title=\"Link to non-FWS site\"><img src=\"images/social/social_twitter_bird.png\"
+        alt=\"Twitter icon\"></a>\n                    <a href=\"http://www.flickr.com/photos/usfwshq\"
+        rel=\"tooltip\" target=\"_blank\" title=\"Link to non-FWS site\"><img src=\"images/social/flickr_32.gif\"
+        alt=\"Flicker icon\"></a>\n                    <a href=\"http://www.youtube.com/usfws\"
+        rel=\"tooltip\" target=\"_blank\" title=\"Link to non-FWS site\"><img src=\"images/social/social_you_tube.png\"
+        alt=\"You Tube icon\"></a> \n                    <a href=\"http://instagram.com/usfws\"
+        rel=\"tooltip\" target=\"_blank\" title=\"Link to non-FWS site\"><img src=\"images/social/Instagram_Icon_32p.png\"
+        alt=\"Instagram icon\" style=\"padding-right:10px\"></a>\n                </span>
+        \n            </div> \n            </form><!-- END USAGOV SEARCH FORM -->\n
+        \       </div><!-- /searchbar -->\n    </div><!-- /masthead -->\n<!-- Subhead\n==================================================
+        -->\n    <header class=\"jumbotron subhead hidden-xs noPrint\" id=\"overview\">\n
+        \       <div class=\"jumboimage\">\n        <!-- Javascript file for rotating
+        banner images. -->\n            <script src=\"js/randomImagesBS3.js\">\n            </script>\n
+        \       </div>\n    </header>\n<!-- Navbar\n==================================================
+        -->\n\t<div class=\"navbar navbar-inverse noPrint\">\n        <div class=\"container-fluid\">\n
+        \           <div class=\"navbar-header\">  \n              <!-- On smaller
+        devices social icons display in black header row-->         \n                <span
+        class=\"visible-xs\" id=\"socIcons\">\n                    <a href=\"https://www.facebook.com/usfws\"
+        \ rel=\"tooltip\" title=\"Link to non-FWS site\"><img src=\"images/social/social_facebook.png\"
+        alt=\"Facebook icon\" style=\"margin-top:2px;\" /></a>\n                    <a
+        href=\"https://twitter.com/usfwshq/\"  rel=\"tooltip\" title=\"Link to non-FWS
+        site\"><img src=\"images/social/social_twitter_bird.png\" alt=\"Twitter icon\"
+        style=\"margin-top:2px\" /></a>\n                    <a href=\"http://www.flickr.com/photos/usfwshq\"
+        rel=\"tooltip\" title=\"Link to non-FWS site\"><img src=\"images/social/flickr_32.gif\"
+        alt=\"Flicker icon\" style=\"margin-top:2px\" /></a>\n                    <a
+        href=\"http://www.youtube.com/usfws\" rel=\"tooltip\" title=\"Link to non-FWS
+        site\"><img src=\"images/social/social_you_tube.png\" alt=\"You Tube icon\"
+        style=\"margin-top:2px;\" /></a>\n                    <a href=\"http://instagram.com/usfws\"
+        rel=\"tooltip\" target=\"_blank\" title=\"Link to non-FWS site\"><img src=\"images/social/Instagram_Icon_32p.png\"
+        alt=\"Instagram icon\" style=\"margin-top:2px;\" /></a>\n                </span>\n
+        \               <!-- Navbar Hamburger toggle for small devices. Displayed
+        instead of text links -->\n                <button type=\"button\" class=\"navbar-toggle
+        collapsed\" data-toggle=\"collapse\" data-target=\"#navbar-collapse\" title=\"click
+        for navigation links\" alt=\"toggle navigation\"> links\n                    <span
+        class=\"icon-bar\"></span> \n                    <span class=\"icon-bar\"></span>\n
+        \                   <span class=\"icon-bar\"></span>\n                </button>\n
+        \          </div>\n          <!-- Navbar links. On larger devices text links
+        are visible-->\n           <div id=\"navbar-collapse\" class=\"navbar-collapse
+        collapse\">\n                <ul class=\"nav navbar-nav navbar-right\" id=\"headerLinks\">\n
+        \               <li class=\"visible-lg\"><a href=\"index.html\">Home</a></li>\n
+        \               <li class=\"\"><a href=\"https://www.fws.gov/endangered/?ref=topbar\">Endangered
+        Species</a></li>\n                <li class=\"\"><a href=\"https://www.fws.gov/humancapital/jobs.html?ref=topbar\">Jobs</a>
+        </li>\n                <li class=\"\"><a href=\"https://www.fws.gov/refuges/?ref=topbar\">National
+        Wildlife Refuges</a></li>\n                <li class=\"\"><a href=\"https://www.fws.gov/news/?ref=topbar\">Newsroom</a></li>\n
+        \               <li class=\"\"><a href=\"https://www.fws.gov/offices/?ref=topbar\">Offices</a></li>\n
+        \               <li class=\"\"><a href=\"https://www.fws.gov/permits/?ref=topbar\">Permits</a></li>\n
+        \               <li class=\"\"><a href=\"https://www.fws.gov/home/socialmedia/index.html?ref=topbar\">Social
+        Media</a></li>\n                <li class=\"nodisplay\"> <a href=\"#more\"
+        class=\"nodisplay\">More Links</a></li>\n                </ul>\n           </div>\n
+        \       </div>\n    </div>\n\t\n\t<div class=\"row\">\n        <div id=\"MainCol\"
+        class=\"col-md-push-3 col-md-6\">\n\t\t  \n\n<!--BEGIN FEATURE STORIES -->\n<!--
+        **** IMPORTANT**** COPY AND PASTE THE 3RD STORY CONTENT INTO THE ARCHIVE FORM:
+        https://intranet.fws.gov/news/indexfeature.cfm. DON'T Forget to add a LINK
+        to it Under the \"More Stories from the Home Page\" Links section. THEN, COPY
+        AND PASTE THE CURRENT 2ND STORY CONTENT INTO THE 3RD STORY AREA. THEN, COPY
+        THE MAIN STORY CONTENT INTO THE 2ND STORY AREA (Don't forget to resize the
+        image to 150px width!!!!!). Once you have moved all the stories, add the new
+        MAIN FEATURE. -->\n\n\n\n<!--MAIN FEATURE STORY with 600px wide image--><!--
+        IF THE MAIN FEATURE CODE GETS MESSED UP, SEE www.fws.gov/home/examples/MainFeatureExample.html
+        -->\n          <div class=\"row\">\n            <div class=\"col-xs-12\">\n\t\t\t<!--
+        InstanceBeginEditable name=\"MainFeature_600pxW\" -->\n<!-- COPY EVERYTHING
+        BELOW-->\n           <!-- Step 1: Image and caption -->\n                <!--
+        Image & Caption container starts here. The image and caption go BEFORE the
+        story.  -->\n            <div style=\"padding-top: 10px;\" z-index=\"-1\">\n
+        \                   <!--Thumbnail image (width: 580px) with link goes here.
+        Make sure you update the alt tag!!! -->\n                    <div align=\"center\"><!--
+        !!!!!!!!! IF YOU ARE INSERTING A VIDEO VIA iframe, YOU MUST include class=\"video-container\"
+        and add this title text: 'title=\"Video for lead story\"' IN THIS DIV TAG!!!!!!!!!!!!-->\n<!--
+        \                       <iframe width=\"462\" height=\"315\" src=\"https://www.youtube.com/embed/g_Niq5otGf0?wmode=opaque\"
+        frameborder=\"0\" allowfullscreen></iframe> -->\n                        <a
+        href=\"https://www.flickr.com/photos/usfwsnortheast/4131096505/\" target=\"_blank\"><img
+        src=\"home/feature/2017/WildTurkey-at-Wallkill NWRCreditUSFWS.jpg\" alt=\"Wild
+        Turkey on grass. \" width=\"580\" height=\"486\" class=\"img-thumbnail\"/></a>\n
+        \                 </div>\n                    <!--Image Caption goes here
+        -->\n       \t\t  <div class=\"caption\">Turkey in full display at\_<a href=\"https://www.fws.gov/refuge/wallkill_river/\"
+        target=\"_blank\">Wallkill National Wildlife Refuge</a>. Credit:\_USFWS </div>\n
+        \           </div>\n            <!-- /end Image & Caption containers-->\n\n
+        \               <!-- Step 1: Story -->\n                <!--Headline -->\n
+        \               <h4>Let\u2019s Talk Turkey</h4>\n                <!--Date
+        -->\n            <div class=\"Date\">November 17, 2017</div>\n            <!--Story
+        body -->Thought the only turkey sound is gobble, gobble? In fact, turkeys
+        make all kinds of sounds: fly-down or fly-up cackle; kee kee run; excited
+        yelp and more. Wild turkeys are not hard to find \u2013 if you look in the
+        right place.\_<a href=\"https://www.fws.gov/refuges/\" target=\"_blank\">National
+        wildlife refuges</a>\_are great places to view wild turkeys or find the perfect
+        hunt. Refuge\_<a href=\"https://www.fws.gov/refuges/trails/index.cfm\" target=\"_blank\">trails</a>\_generally
+        are open sunrise to sunset, many even on Thanksgiving Day when refuge visitor
+        centers will be closed.<br>\n            <a href=\"https://www.fws.gov/refuges/about/FunOnWildlifeRefuges/Wild_Facts_about_Turkeys.html\"
+        target=\"_blank\"> Story &raquo;</a><!-- InstanceEndEditable -->\n                <hr>\n
+        \           </div>\n        </div>\n<!-- /END MAIN FEATURE -->\n<!--2nd STORY
+        with 150px wide image--><!-- IF THE 2nd or 3rd FEATURE CODE GETS MESSED UP,
+        SEE www.fws.gov/home/examples/SecondaryFeatureExample.html  -->\n          <div
+        class=\"row\">\n          <div class=\"col-xs-12\">\n            <!-- InstanceBeginEditable
+        name=\"2ndStory_150pxW\" -->\n<!-- COPY EVERYTHING BELOW-->\n                    <!--
+        Step 1: Image and caption -->\n            <!-- Image & Caption container
+        starts here. The image and caption go BEFORE the story.  -->\n            <div
+        class=\"thumbnail\">\n       \n       <!--Thumbnail image (width: 150px) with
+        link goes here. Make sure you update the alt tag!!! -->     \n             \n
+        \      <a href=\"https://usfwsnortheast.files.wordpress.com/2017/10/31843860441_c65a533cca_o.jpg\"
+        target=\"_blank\"><img src=\"home/feature/2017/Northern-bobwhiteCreditWillParsonCBP-CreativeCommons150.jpg\"
+        alt=\"Northern bobwhite perched on a twig in bush with prairie in the background.
+        \" width=\"150\" height=\"100\" class=\"img-thumbnail\"/></a>\n            <!--Image
+        Caption goes here -->\n            <div class=\"caption\">Northern bobwhite.\nCredit:
+        Will Parson/Chesapeake Bay Program (Creative Commons)</div>\n            <!--
+        /end Caption -->\n            </div><!-- /end Image & Caption containers-->\n\n
+        \           <!-- Step 2: Story -->\n            <!--Headline -->\n            <h4>Enticing
+        the \u2018Prince of Game Birds,\u2019 and its Court, Back to a Maryland Farm</h4>\n
+        \           <!--Date -->\n            <div class=\"Date\">November 14, 2017</div>\n
+        \           It was the early 1980s when Bob Spiering noticed that the whistling
+        call of the bobwhite had gone silent on the family farm on Maryland\u2019s
+        Eastern Shore. He has worked with federal agencies for years, restoring the
+        land and bringing back not just the quail but a host of native wildlife.<br>\n
+        \           <a href=\"https://usfwsnortheast.wordpress.com/2017/11/03/enticing-the-prince-of-game-birds-back-to-a-maryland-farm/\"
+        target=\"_blank\"> Story &raquo;</a><!-- COPY EVERYTHING ABOVE-->           \n
+        \             \n              \n            \n            <!-- InstanceEndEditable
+        -->\n            </div>\n       \t  </div>\n<!-- /END 2ND STORY -->\n<!--
+        3rd STORY with 150px wide image -->\n           <div class=\"row\">\n          <div
+        class=\"col-xs-12\">\n               <!-- InstanceBeginEditable name=\"3rdStory_150pxW\"
+        -->\n<!-- COPY EVERYTHING BELOW-->\n                    <!-- Step 1: Image
+        and caption -->\n            <!-- Image & Caption container starts here. The
+        image and caption go BEFORE the story.  -->\n            <div class=\"thumbnail\">\n
+        \      \n       <!--Thumbnail image (width: 150px) with link goes here. Make
+        sure you update the alt tag!!! -->     \n             \n             <a href=\"https://www.flickr.com/photos/usfwshq/37540338694/in/album-72157627957958795/\"
+        target=\"_blank\"><img src=\"home/feature/2017/CollagePhotoOfNavyVeterenTomDietschCreditUSFWS150.jpg\"
+        alt=\"Collage photo of Navy Veteren Tom Dietsch, Migratory Bird Biologist.
+        \" width=\"150\" height=\"84\" class=\"img-thumbnail\"/></a>\n            <!--Image
+        Caption goes here -->\n            <div class=\"caption\">Navy veteran Tom
+        Dietsch is a Migratory Bird Biologist for the Pacific Southwest Region. <a
+        href=\"https://www.flickr.com/photos/usfwshq/sets/72157627957958795/\" target=\"_blank\">See
+        more veterans in the Fish and Wildlife Service</a>. </div>\n            <!--
+        /end Caption -->\n            </div><!-- /end Image & Caption containers-->\n\n
+        \           <!-- Step 3: Story -->\n            <!--Headline -->\n            <h4>Betting
+        on Vets Helps Achieve the Service\u2019s Mission</h4>\n            <!--Date
+        -->\n            <div class=\"Date\">November 08, 2017</div>\n            The
+        Service\u2019s Carlsbad Fish and Wildlife Office has worked closely with the
+        local Veterans Affairs\u2019 Regional Office over the years to welcome returning
+        veterans with career development opportunities. In addition to assisting with
+        the\_transition from military to civilian life, the Service benefits from
+        the diversity of the veterans\u2019 skills.<br>\n            <a href=\"https://www.fws.gov/news/blog/index.cfm/2017/11/8/Betting-on-Vets-Benefits-Mission-Accomplishment\"
+        target=\"_blank\"> Story &raquo;</a>\n            \n             <br>\n            <a
+        href=\"https://usfwsnortheast.wordpress.com/2017/11/09/freedom-hunters-outdoor-experiences-serving-those-who-have-served/\"
+        target=\"_blank\"> Freedom Hunters: Outdoor Experiences Serving Those Who
+        Have Served &raquo;</a>\n             <br>\n            <a href=\"https://www.flickr.com/photos/usfwshq/sets/72157627957958795/\"
+        target=\"_blank\"> Photo Gallery: Veterans in the Service &raquo;</a>\n               <!--
+        COPY EVERYTHING ABOVE-->           \n              \n              \n            \n
+        \             \n         \n            <!-- InstanceEndEditable -->\n            </div>\n
+        \      \t  </div>\n<!-- /END 3RD STORY -->\n\n<!-- ADDITIONAL EDITABLE FIELD,
+        below, for those instances when you need to have a 4TH FEATURE STORY. MAKE
+        SURE YOU INCLUDE the <div class=\"row\"><div class=\"col-xs-12\"></div></div>
+        INSIDE THE EDITABLE AREA if you use this field. --><!-- InstanceBeginEditable
+        name=\"ExtraFeatureArea\" -->\n<!-- COPY EVERYTHING BELOW-->\n\n            <!--
+        COPY EVERYTHING ABOVE -->\n<!-- InstanceEndEditable -->\n\n<!-- /END FEATURE
+        STORIES -->\n\n<!-- BEGIN FEATURE HEADLINES ONLY LINKS-->\n          <div
+        class=\"row\">\n            <div class=\"col-xs-12\">\n              <div
+        style=\"padding-left:10px; padding-top:8px\">\n                <hr>\n                <a
+        href=\"https://www.fws.gov/home/stories/\">More Stories &raquo;</a>\n                <br>\n
+        \               <ul style=\"list-style-image:url(graphics/bulletCircle.png)\">\n
+        \                 <!-- InstanceBeginEditable name=\"RecentFeatureLink_1\"
+        -->\n\n                <li><a href=\"https://www.fws.gov/home/stories/index.cfm#806\">Betting
+        on Vets Helps Achieve the Service\u2019s Mission</a></li>\n                \n
+        \             <li><a href=\"https://www.fws.gov/home/stories/index.cfm#805\">U.S.
+        Fish and Wildlife Service Expands Hunting and Fishing Opportunities at 10
+        National Wildlife Refuges</a></li>\n              \n               <li><a
+        href=\"https://www.fws.gov/home/stories/index.cfm#804\">From the Desk of a
+        Novice Sportswoman</a></li>\n\n               <li><a href=\"https://www.fws.gov/home/stories/index.cfm#803\">Former
+        Fish and Wildlife Service Director Smith dies at 94</a></li>\n\n\n               \n\n
+        \              \n      \n \n\n<!-- InstanceEndEditable -->\n\n<!-- ADDITIONAL
+        EDITABLE FIELD, below, for those instances when you need to have more than
+        the standard 4 RECENT FEATURE HEADLINES Links. MAKE SURE YOU INCLUDE the <li></li>
+        INSIDE THE EDITABLE FIELD AREA if you use this field. --><!-- InstanceBeginEditable
+        name=\"RecentFeatureLink_Extra\" --><!-- InstanceEndEditable -->\n                </ul>\n
+        \             </div>\n            </div>\n\t\t</div>\n <!--/ END FEATURE HEADLINES
+        ONLY LINKS -->\n\n <!-- BEGIN FEDERAL REGISTER-->\n          <div class=\"row\">\n
+        \           <div class=\"col-xs-12\" style=\"padding-top:16px\">\n            <table
+        width=\"100%\" class=\"table table-bordered\">\n                <tr bgcolor=\"#EDF9FE\">\n
+        \                   <td height=\"53\" colspan=\"3\"><strong>Fish and Wildlife
+        Service Federal Register Notices</strong>\n                    <span class=\"pull-right\"><img
+        src=\"graphics/FRrule.png\" alt=\"Final Rule\" />Final Rule <img src=\"graphics/FRpr.png\"
+        alt=\"Proposed Rule\" />Proposed Rule <img src=\"graphics/FRnotice.png\" alt=\"Notice\"
+        />Notice</span>\n                    </td>\n                </tr>\n <!-- BEGIN
+        1ST FR ITEM -->\n                <tr style=\"background-color:#FFF\">\n                    <td
+        width=\"20\"><span class=\"pull-right\"><!-- InstanceBeginEditable name=\"RuleType_Image_1\"
+        --><img src=\"graphics/FRpr.png\" alt=\"Proposed Rule\" /><!-- InstanceEndEditable
+        --></span>\n                    </td>\n                    <td><span class=\"Date\"><!--
+        InstanceBeginEditable name=\"RuleDate_1\" -->11/22/17.<!-- InstanceEndEditable
+        --> </span>\n\t\t\t\t\t<!-- InstanceBeginEditable name=\"RuleLinkandTitle_1\"
+        --><a href=\"https://www.federalregister.gov/documents/2017/11/22/2017-25268/endangered-and-threatened-wildlife-and-plants-regulations-for-candidate-conservation-agreements-with\"
+        title=\"Link to non-FWS site\" target=\"_blank\">Endangered and Threatened
+        Wildlife and Plants; Regulations for Candidate Conservation Agreements With
+        Assurances\n</a><!-- InstanceEndEditable -->\n                    </td>\n
+        \               </tr>\n<!-- /END 1ST FR ITEM -->\n<!-- BEGIN 2ND FR ITEM -->\n
+        \               <tr style=\"background-color:#FFF\">\n                     <td
+        width=\"20\"><span class=\"pull-right\"><!-- InstanceBeginEditable name=\"RuleType_Image_2\"
+        --><img src=\"graphics/FRnotice.png\" alt=\"Notice\" /><!-- InstanceEndEditable
+        --></span>\n                    </td>\n                    <td><span class=\"Date\"><!--
+        InstanceBeginEditable name=\"RuleDate_2\" -->11/22/17.<!-- InstanceEndEditable
+        --> </span>\n\t\t\t\t\t<!-- InstanceBeginEditable name=\"RuleLinkandTitle_2\"
+        --><a href=\"https://www.federalregister.gov/documents/2017/11/22/2017-25267/candidate-conservation-agreements-with-assurances-policy\"
+        title=\"Link to non-FWS site\" target=\"_blank\">Candidate Conservation Agreements
+        With Assurances Policy\n</a><!-- InstanceEndEditable -->\n                    </td>\n
+        \               </tr>\n<!-- /END 2ND FR ITEM -->\n<!-- BEGIN 3RD FR ITEM -->\n
+        \               <tr style=\"background-color:#FFF\">\n                    <td
+        width=\"20\"><span class=\"pull-right\"><!-- InstanceBeginEditable name=\"RuleType_Image_3\"
+        --><img src=\"graphics/FRnotice.png\" alt=\"Notice\" /><!-- InstanceEndEditable
+        --></span>\n                    </td>\n                    <td><span class=\"Date\"><!--
+        InstanceBeginEditable name=\"RuleDate_3\" -->11/17/17.<!-- InstanceEndEditable
+        --> </span>\n\t\t\t\t\t<!-- InstanceBeginEditable name=\"RuleLinkandTitle_3\"
+        --><a href=\"https://www.federalregister.gov/documents/2017/11/17/2017-24974/issuance-of-import-permits-for-zimbabwe-elephant-trophies-taken-on-or-after-january-21-2016-and-on\"
+        title=\"Link to non-FWS site\" target=\"_blank\">Zimbabwe Elephant Trophies
+        Taken On or After January 21, 2016, and On or Before December 31, 2018\n</a><!--
+        InstanceEndEditable -->\n                     </td>\n                </tr>\n<!--
+        /END 3RD FR ITEM -->\n<!-- BEGIN 4TH FR ITEM -->\n                <tr style=\"background-color:#FFF\">\n
+        \                   <td width=\"20\"><span class=\"pull-right\"><!-- InstanceBeginEditable
+        name=\"RuleType_Image_4\" --><img src=\"graphics/FRnotice.png\" alt=\"Notice\"
+        /><!-- InstanceEndEditable --></span>\n                    </td>\n                    <td><span
+        class=\"Date\"><!-- InstanceBeginEditable name=\"RuleDate_4\" -->11/15/17.<!--
+        InstanceEndEditable --> </span>\n\t\t\t\t\t<!-- InstanceBeginEditable name=\"RuleLinkandTitle_4\"
+        --><a href=\"https://www.federalregister.gov/documents/2017/11/15/2017-24702/environmental-assessment-and-finding-of-no-significant-impact-for-the-issuance-of-depredation\"
+        title=\"Link to non-FWS site\" target=\"_blank\">Environmental Assessment
+        and Finding of No Significant Impact for the Issuance of Depredation Permits
+        for Double-Crested Cormorants\n</a><!-- InstanceEndEditable -->\n                     </td>\n
+        \               </tr>\n<!-- /END 4TH RF ITEM -->\n\n<!-- ADDITIONAL EDITABLE
+        FIELD, below, for those instances when you need to have more than the standard
+        4 FEDERAL REGISTER ITEMS. MAKE SURE YOU INCLUDE all the <tr><td><span> etc.
+        INSIDE THE EDITABLE FIELD AREA if you use this field. -->\n<!-- InstanceBeginEditable
+        name=\"ExtraFR_Rule\" --><!-- BEGIN 5TH FR ITEM -->\n                <tr style=\"background-color:#FFF\">\n
+        \                   <td width=\"20\"><img src=\"graphics/FRpr.png\" alt=\"Proposed
+        Rule\" /></td>\n                    \n                    <td>11/14/17. <a
+        href=\"https://www.federalregister.gov/documents/2017/11/13/2017-24474/endangered-and-threatened-wildlife-and-plants-threatened-species-status-for-chorizanthe-parryi-var\"
+        title=\"Link to non-FWS site\" target=\"_blank\">Endangered and Threatened
+        Wildlife and Plants; Threatened Species Status for Chorizanthe parryi var.
+        fernandina (San Fernando Valley Spineflower)\n</a><!--<!-- /END 5TH RF ITEM
+        --> <!-- InstanceEndEditable -->\n\n              <tr style=\"background-color:#FFF\"
+        class=\"noPrint\">\n                    <td colspan=\"3\">\n                    <ul
+        style=\"list-style-image:url(graphics/bulletCircle.png)\">\n                    <li
+        style=\"list-style-position:inside\">\n                    <a href=\"https://www.regulations.gov/searchResults?rpp=50&so=DESC&sb=postedDate&po=0&cp=O&a=FWS&dct=PR%2BN%2BFR%2BSR%2BO\"
+        title=\"Link to non-FWS site\">Open Comment Periods</a></li>\n                    <li
+        style=\"list-style-position:inside\"><a href=\"https://www.regulations.gov/searchResults?rpp=25&so=DESC&sb=postedDate&po=0&dct=FR&a=FWS\"
+        title=\"Link to non-FWS site\">All Final Rules</a></li>\n                    <li
+        style=\"list-style-position:inside\"><a href=\"https://www.regulations.gov/searchResults?rpp=25&so=DESC&sb=postedDate&po=0&dct=PR&a=FWS\"
+        title=\"Link to non-FWS site\">All Proposed Rules</a></li>\n                    <li
+        style=\"list-style-position:inside\"><a href=\"https://www.regulations.gov/searchResults?rpp=25&so=DESC&sb=postedDate&po=0&dct=N&a=FWS\"
+        title=\"Link to non-FWS site\">All Notices</a></li>\n                    </ul>\n
+        \                 </td>\n                </tr>\n            </table>\n            <br
+        />\n        </div>\n </div>\n<!-- /END Federal Register -->\n\n        </div>\n
+        \       <div class=\"col-md-push-3 col-md-3\">\n\t\t\t\n                <div
+        class=\"row\"><!--sub-row 1 within right-hand column-->\n                    <div
+        class=\"col-xs-12\">\n                    <h4 align=\"center\">Got a Question?
+        <a href=\"https://www.fws.gov/duspit/contactus.htm\" style=\"display:inline\">Contact
+        Us</a> or Call <a href=\"tel:1-800-344-9453\">1&#8209;800&#8209;344&#8209;WILD</a></h4>\n
+        \                   </div>\n                </div><!--/ sub-row 1 -->\n                <div
+        class=\"row\"><!-- sub-row 2 -->\n                    <div class=\"col-xs-12
+        noPrint\">\n                   <!-- Small banner included in Right-hand navigation
+        should be created at a WIDTH OF 395px (height can vary. Dan's blog image is
+        158px.) DO NOT INCLUDE image sizes in the img src description. This will allow
+        image to resize as needed. INCLUDE CLASS INFO included in the image below
+        (class=\"img-responsive img-rounded\"). This is insure a rounded look and
+        proper spacing. -->\n                    <!-- InstanceBeginEditable name=\"BlogBanners\"
+        -->\n\n                <a href=\"https://www.fws.gov/news/blog\"><img src=\"images/sidebar/SideBannerOpenSpacesfrog.jpg\"
+        alt=\"Photo of green frog next the the words: the Open Spaces blog, a talk
+        on the wild side.\" class=\"img-responsive img-rounded\" /></a> \n                \n
+        \              <!-- <br /> <a href=\"https://www.fws.gov/home/batconservation/\"><img
+        src=\"images/sidebar/BatWeek2017SQ.jpg\" alt=\"Bat Week 2017 - Bats help farmers,
+        naturally!\" class=\"img-responsive img-rounded\" /></a>-->\n                              \n<!--
+        \               <a href=\"https://www.fws.gov/hurricane/\"><img src=\"images/sidebar/Hurricanebutton.jpg\"
+        alt=\"Hurriance Season News, informatiion, closures, and more.\" class=\"img-responsive
+        img-rounded\" /></a>-->\n\t\t\t\t\t<!-- InstanceEndEditable -->\n                    </div>\n
+        \               </div><!--/ sub-row 2 -->\n                <div class=\"row
+        noPrint\"><!--sub-row 3 -->\n                    <div class=\"col-xs-12\">\n
+        \                       <div class=\"iframe\" align=\"center\" title=\"FWS
+        Twitter feed\"><!-- iframe -->\n                    <!-- BEGIN Twitter Feed
+        -->\n                            <div class=\"twitterHeader\">USFWS Tweets:<img
+        src=\"images/social/twitter-bird-light-bgs30.png\" alt=\"Official Twitter
+        logo\" style=\"padding:0px 10px 0px 10px\" /></div>\n                            <a
+        href=\"https://twitter.com/twitterapi\" class=\"twitter-timeline\" lang=\"en\"
+        data-widget-id=\"302093654355484672\"  data-chrome=\"noheader nofooter transparent\"
+        data-theme=\"light\" data-related=\"twitterapi,twitter\" xml:lang=\"en\" title=\"Twitter
+        widget\">Tweets from around the USFWS</a>\n                            <script>!function(d,s,id){var
+        js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=\"//platform.twitter.com/widgets.js\";fjs.parentNode.insertBefore(js,fjs);}}(document,\"script\",\"twitter-wjs\");</script>\n
+        \                   <!-- /END Twitter Feed -->\n                        </div><!--
+        / iframe-->\n                    </div>\n                </div><!-- / sub-row
+        3 -->\n                <div class=\"row noPrint\"><!--sub-row 4-->\n                    <div
+        class=\"col-xs-12\"><p>\n                        <iframe allowtransparency=\"true\"
+        frameborder=\"0\" scrolling=\"No\" src=\"https://platform.twitter.com/widgets/follow_button.html?screen_name=usfws\"
+        style=\"height:20px;padding-top:0px;\" title =\"Follow us on Twitter\">\n
+        \                       </iframe></p>\n                    </div>\n                </div><!--
+        / sub-row 4 -->\n                <div class=\"row noPrint\"><!--sub-row 5-->\n
+        \   <div class=\"col-xs-12\">\n        <div id=\"myCarousel1\" class=\"carousel
+        slide\"><!-- Container for Carousel of Publications -->\n            <ol class=\"carousel-indicators\">\n
+        \           <!-- You need a data-slide for each Publication you want to include
+        in the carousel. Note: the first data slide is numbered \"0\" so the last
+        number you have here will be 1 less than your actual total. For example. I
+        you have 7 Publications, the last data slide will be \"6\". -->\n              <li
+        data-target=\"#myCarousel1\" data-slide-to=\"0\" class=\"active\"></li>\n</ol>\n
+        \       <!-- Top-most (Visible) Publication - Carousel (Publication) images
+        should be 396 px wide. You CAN NOT CHANGE THE IMG NAME. SO, YOU MUST RENAME
+        NEW THUMBNAILS TO MATCH THE CURRENT THUMBNAIL NAME (below)  -->\n            <div
+        class=\"carousel-inner\">\n                <div class=\"item active\"><img
+        src=\"images/carousel/F&WNews_cover.jpg\" alt=\"Fish and Wildlife News A Newsletter
+        Written by and About Fish and Wildlife Service Employees in Offices Around
+        the Nation.\" />\n                    <div class=\"carousel-caption\">\n                        <a
+        href=\"https://www.fws.gov/home/fwn/newspdf.html\"><h4>Fish and Wildlife News</h4>\n
+        \                       <p>A Newsletter written by and about Fish and Wildlife
+        Service employees in offices around the nation.</p>\n                        </a>\n
+        \                   </div>\n                </div>\n                <!-- Additional
+        Publication - Carousel (Publication) images should be 396 px wide -->\n                <div
+        class=\"item\"><img src=\"images/carousel/Bulletin_cover.jpg\" alt=\"The Endangered
+        Species Bulletin A Newsletter Providing Information on a Variety of Other
+        Endangered and Threatened Species Issues.\" />\n                    <div class=\"carousel-caption\">\n
+        \                       <a href=\"https://www.fws.gov/endangered/news/bulletin.html\"><h4>The
+        Endangered Species Bulletin</h4>\n                        <p>A newsletter
+        providing information on a variety of other endangered and threatened species
+        Issues.</p>\n                        </a>\n                    </div>\n                </div>\n
+        \               <!-- Additional Publication - Carousel (Publication) images
+        should be 396 px wide -->\n                <div class=\"item\"><img src=\"images/carousel/RefugeUpdate_cover.jpg\"
+        alt=\"Refuge Update\" />\n                    <div class=\"carousel-caption\">\n
+        \                       <a href=\"https://www.fws.gov/refuges/RefugeUpdate/\"><h4>Refuge
+        Update</h4>\n                        <p>A National Wildlife Refuge newsletter</p>\n
+        \                       </a>\n                    </div>\n                </div>\n
+        \               <!-- Additional Publication - Carousel (Publication) images
+        should be 396 px wide\n                <div class=\"item\"><img src=\"http://www.fws.gov/eddies/eddies-cover.jpg\"
+        alt=\"Eddies: Reflections on Fisheries Conservation\" />\n                <div
+        class=\"carousel-caption\">\n                    <a href=\"http://www.fws.gov/eddies/\"><h4>Eddies:
+        Reflections on Fisheries Conservation</h4>\n                    <p>Newsletter
+        by the Division of Fish and Aquatic Conservation.</p>\n                    </a>\n
+        \               </div>\n                </div> -->\n                <!-- Additional
+        Publication - Carousel (Publication) images should be 396 px wide -->\n                <div
+        class=\"item\"><img src=\"images/carousel/F&WMgt_cover.jpg\" alt=\"Journal
+        of Fish and Wildlife Management Scientific Journal Focusing on the Practical
+        Application and Integration of Science to Conservation and Management of Native
+        North American Fish, Wildlife, Plants and their Habitats.\" width=\"396\"
+        height=\"513\" />\n                    <div class=\"carousel-caption\">\n
+        \                       <a href=\"http://fwspubs.org/loi/fwma\"><h4>Journal
+        of Fish and Wildlife Management</h4>\n                        <p>Scientific
+        Journal focusing on the practical application and integration of science to
+        conservation and management of Native North American fish, wildlife, plants
+        and their habitats.</p>\n                        </a>\n                    </div>\n
+        \               </div>\n                <!-- Additional Publication - Carousel
+        (Publication) images should be 396 px wide -->\n                <div class=\"item\"><img
+        src=\"images/carousel/NAfauna_cover.jpg\" alt=\"North American Fauna Scientific
+        Journal Focusing on an array of topics relating to North American vertebrates,
+        invertebrates and plants.\" />\n                    <div class=\"carousel-caption\">\n
+        \                       <a href=\"http://fwspubs.org/loi/nafa\"><h4>North
+        American Fauna</h4>\n                        <p>Scientific Journal Focusing
+        on an array of topics relating to North American vertebrates, invertebrates
+        and plants.</p>\n                        </a>\n                    </div>\n
+        \               </div>\n                <!-- Additional Publication - Carousel
+        (Publication) images should be 396 px wide\n                <div class=\"item\"><img
+        src=\"images/carousel/CCRisingChallenge_cover.jpg\" alt=\"Rising to the Urgent
+        Challenge A Strategic Plan for Responding to Accelerating Climate Change\"
+        />\n                    <div class=\"carousel-caption\">\n                        <a
+        href=\"http://www.fws.gov/home/climatechange/pdf/CCStrategicPlan.pdf\"><h4>Rising
+        to the Urgent Challenge</h4>\n                        <p>A Strategic Plan
+        for Responding to Accelerating Climate Change</p>\n                        </a>\n
+        \                   </div>\n                </div> -->\n            </div>\n
+        \       <!-- Arrows for moving forward and backward through Publications-->\n
+        \       <a class=\"left carousel-control\" href=\"#myCarousel1\" data-slide=\"prev\">&lsaquo;</a>\n
+        \       <a class=\"right carousel-control\" href=\"#myCarousel1\" data-slide=\"next\">&rsaquo;</a>\n
+        \       </div><!-- End of Publications Container -->\n    </div><!-- /span
+        -->\n</div><!--/ sub-row 5 -->\n\t\t\t\n        </div>\n       <div class=\"col-md-pull-9
+        col-md-3\"><!-- #BeginLeftNavigation -->\n\n<div id=\"MainMenu\">\n<a name=\"more\"></a>\n
+        \ <div class=\"list-group panel\">\n  <!-- BEGIN National Programs Vertical
+        Nav list -->\n    <a href=\"#Programs\" class=\"list-group-item list-group-item-info
+        strong\" data-toggle=\"collapse\" data-parent=\"#MainMenu\" title=\"click
+        for links to national program sites\">National Programs<span class=\"caret\"></span></a>\n
+        \   <div class=\"collapse\" id=\"Programs\">\n      <a href=\"#SubMenu1\"
+        class=\"list-group-item\" data-toggle=\"collapse\" data-parent=\"#SubMenu1\"
+        title=\"click to access more links\">Budget, Planning & Human Capital<span
+        class=\"caret\"></span></a>\n      <div class=\"collapse list-group-submenu\"
+        id=\"SubMenu1\">\n        <a href=\"https://www.fws.gov/budget/\" class=\"list-group-item\"
+        data-parent=\"#SubMenu1\">Budget</a>\n        <a href=\"https://www.fws.gov/planning/abc/\"
+        class=\"list-group-item\" data-parent=\"#SubMenu1\">Conservation Business
+        Management</a>\n        <a href=\"https://www.fws.gov/jobs/\" class=\"list-group-item\"
+        data-parent=\"#SubMenu1\">Human Capital</a>\n        <a href=\"https://www.fws.gov/policy/\"
+        class=\"list-group-item\" data-parent=\"#SubMenu1\">Policy & Directives Management</a>\n
+        \     </div>\n\n      <a href=\"#SubMenu2\" class=\"list-group-item\" data-toggle=\"collapse\"
+        data-parent=\"#SubMenu2\" title=\"click to access more links\">Business Management
+        and Operations<span class=\"caret\"></span></a>\n      <div class=\"collapse
+        list-group-submenu\" id=\"SubMenu2\">\n        <a href=\"https://www.fws.gov/cfm/\"
+        class=\"list-group-item\" data-parent=\"#SubMenu2\">Contracting & Facilities
+        Management</a>\n        <a href=\"https://www.fws.gov/economics/\" class=\"list-group-item\"
+        data-parent=\"#SubMenu2\">Economics</a>\n        <a href=\"https://www.fws.gov/engineering/\"
+        class=\"list-group-item\" data-parent=\"#SubMenu2\">Engineering</a>\n        <a
+        href=\"https://www.fws.gov/fbms/\" class=\"list-group-item\" data-parent=\"#SubMenu2\">Financial
+        Management</a>\n        <a href=\"https://www.fws.gov/safety/index.htm\" class=\"list-group-item\"
+        data-parent=\"#SubMenu2\">Safety and Health</a>\n      </div>\n\n      <a
+        href=\"https://www.fws.gov/ecological-services/\" class=\"list-group-item\">Ecological
+        Services</a>\n\n      <a href=\"#SubMenu3\" class=\"list-group-item\" data-toggle=\"collapse\"
+        data-parent=\"#SubMenu3\" title=\"click to access more links\">External Affairs<span
+        class=\"caret\"></span></a>\n      <div class=\"collapse list-group-submenu\"
+        id=\"SubMenu3\">\n        <a href=\"https://www.fws.gov/laws/\" class=\"list-group-item\"
+        data-parent=\"#SubMenu3\">Congressional &amp; Legislative Affairs</a>\n        <a
+        href=\"https://www.fws.gov/external-affairs/marketing-communications/\" class=\"list-group-item\"
+        data-parent=\"#SubMenu3\">Marketing Communications</a>\n        <a href=\"https://www.fws.gov/external-affairs/public-affairs/\"
+        class=\"list-group-item\" data-parent=\"#SubMenu3\">Office of Public Affairs</a>\n
+        \       <a href=\"https://www.fws.gov/partnerships/\" class=\"list-group-item\"
+        data-parent=\"#SubMenu3\">Partners and Intergovernmental Affairs</a>\n      </div>\n\n
+        \     <a href=\"#SubMenu4\" class=\"list-group-item\" data-toggle=\"collapse\"
+        data-parent=\"#SubMenu4\" title=\"click to access more links\">Fish and Aquatic
+        Conservation</a>\n      <div class=\"collapse list-group-submenu\" id=\"SubMenu4\">\n
+        \     \t<a href=\"https://www.fws.gov/fisheries/\" class=\"list-group-item\"
+        data-parent=\"#SubMenu4\">Fish and Aquatic Conservation Home</a>\n        <a
+        href=\"https://www.fws.gov/fisheries/aadap/home.htm\" class=\"list-group-item\"
+        data-parent=\"#SubMenu4\">Aquatic Animal Drug Approval Partnership</a>\n        <a
+        href=\"https://www.fws.gov/fisheries/ANS/index.html\" class=\"list-group-item\"
+        data-parent=\"#SubMenu4\">Aquatic Invasive Species</a>\n        <a href=\"https://www.fws.gov/fisheries/whatwedo/NFPP/nfpp.html\"
+        class=\"list-group-item\" data-parent=\"#SubMenu4\">Fish Passage</a>\n        <a
+        href=\"https://www.fws.gov/injuriouswildlife/\" class=\"list-group-item\"
+        data-parent=\"#SubMenu4\">Injurious Wildlife</a>\n        <a href=\"https://www.fws.gov/fisheries/whatwedo/NFHAP/nfhap.html\"
+        class=\"list-group-item\" data-parent=\"#SubMenu4\">National Fish Habitat
+        Partnership</a>\n         <a href=\"https://www.fws.gov/fisheries/nfhs/index.html\"
+        class=\"list-group-item\" data-parent=\"#SubMenu4\">National Fish Hatchery
+        System</a>\n         <a href=\"https://www.fws.gov/fisheries/sikes_act/\"
+        class=\"list-group-item\" data-parent=\"#SubMenu4\">Sikes Act</a>\n      </div>\n\n
+        \     <a href=\"https://www.fws.gov/irm/\" class=\"list-group-item\">Information
+        Resources and Technology Management</a>\n\n      <a href=\"#SubMenu5\" class=\"list-group-item\"
+        data-toggle=\"collapse\" data-parent=\"#SubMenu5\" title=\"click to access
+        more links\">International Affairs<span class=\"caret\"></span></a>\n      <div
+        class=\"collapse list-group-submenu\" id=\"SubMenu5\">\n      \t<a href=\"https://www.fws.gov/international/\"
+        class=\"list-group-item\" data-parent=\"#SubMenu5\">International Affairs
+        Home</a>\n        <a href=\"https://www.fws.gov/international/cites/what-is-cites.html\"
+        class=\"list-group-item\" data-parent=\"#SubMenu5\">CITES</a>\n        <a
+        href=\"https://www.fws.gov/international/permits/index.html\" class=\"list-group-item\"
+        data-parent=\"#SubMenu5\">Import/Export Permits</a>\n        <a href=\"https://www.fws.gov/international/save-vanishing-species-stamp.html\"
+        class=\"list-group-item\" data-parent=\"#SubMenu5\">Save Vanishing Species
+        Stamp</a>\n        <a href=\"https://www.fws.gov/international/wildlife-without-borders/\"
+        class=\"list-group-item\" data-parent=\"#SubMenu5\">Wildlife Without Borders</a>\n
+        \     </div>\n\n      <a href=\"#SubMenu6\" class=\"list-group-item\" data-toggle=\"collapse\"
+        data-parent=\"#SubMenu6\" title=\"click to access more links\">Law Enforcement<span
+        class=\"caret\"></span></a>\n      <div class=\"collapse list-group-submenu\"
+        id=\"SubMenu6\">\n      \t<a href=\"https://www.fws.gov/le/\" class=\"list-group-item\"
+        data-parent=\"#SubMenu6\">Law Enforcement Home</a>\n        <a href=\"www.fws.gov/lab/\"
+        class=\"list-group-item\" data-parent=\"#SubMenu6\">National Forensics Laboratory</a>\n
+        \       <a href=\"https://www.fws.gov/le/regional-law-enforcement-offices.html\"
+        class=\"list-group-item\" data-parent=\"#SubMenu6\">Regional Offices</a>\n
+        \     </div>\n\n      <a href=\"#SubMenu7\" class=\"list-group-item\" data-toggle=\"collapse\"
+        data-parent=\"#SubMenu7\" title=\"click to access more links\">Migratory Birds<span
+        class=\"caret\"></span></a>\n      <div class=\"collapse list-group-submenu\"
+        id=\"SubMenu7\">\n      \t<a href=\"https://www.fws.gov/birds/index.php\"
+        class=\"list-group-item\" data-parent=\"#SubMenu7\">Migratory Birds Home</a>\n
+        \       <a href=\"https://www.fws.gov/birdhabitat/index.shtm\" class=\"list-group-item\"
+        data-parent=\"#SubMenu7\">Bird Habitat Conservation</a>\n        <a href=\"https://www.fws.gov/migratorybirds/\"
+        class=\"list-group-item\" data-parent=\"#SubMenu7\">Migratory Bird Management</a>\n
+        \     </div>\n\n      <a href=\"http://training.fws.gov/\" class=\"list-group-item\">National
+        Conservation Training Center</a>\n\n      <a href=\"#SubMenu8\" class=\"list-group-item\"
+        data-toggle=\"collapse\" data-parent=\"#SubMenu8\" title=\"click to access
+        more links\">National Wildlife Refuge System<span class=\"caret\"></span></a>\n
+        \     <div class=\"collapse list-group-submenu\" id=\"SubMenu8\">\n      \t<a
+        href=\"https://www.fws.gov/refuges/\" class=\"list-group-item\" data-parent=\"#SubMenu8\">Refuges
+        Home</a>\n        <a href=\"https://www.fws.gov/refuges/youcanhelp/\" class=\"list-group-item\"
+        data-parent=\"#SubMenu8\">How You Can Help</a>\n        <a href=\"https://www.fws.gov/refuges/land/\"
+        class=\"list-group-item\" data-parent=\"#SubMenu8\">Land</a>\n        <a href=\"https://www.fws.gov/refuges/visitors/\"
+        class=\"list-group-item\" data-parent=\"#SubMenu8\">Visitors</a>\n        <a
+        href=\"https://www.fws.gov/refuges/whm/\" class=\"list-group-item\" data-parent=\"#SubMenu8\">Wildlife
+        and Habitat</a>\n      </div>\n\n    <a href=\"https://www.fws.gov/nativeamerican/\"
+        class=\"list-group-item\">Native American Program</a>\n    <a href=\"https://www.fws.gov/odiwm/\"
+        class=\"list-group-item\">Office of Diversity and Inclusive Workforce Management</a>\n
+        \   <a href=\"https://www.fws.gov/science/\" class=\"list-group-item\">Office
+        of the Science Applications</a>\n    <a href=\"http://wsfrprograms.fws.gov/\"
+        class=\"list-group-item\">Wildlife &amp; Sport Fish Restoration</a>\n    </div>\n<!--
+        END National Programs Vertical Nav list -->\n\n<!-- BEGIN Regions Vertical
+        Nav list -->\n    <a href=\"#Regions\" class=\"list-group-item list-group-item-info
+        strong\" data-toggle=\"collapse\" data-parent=\"#MainMenu\" title=\"click
+        for links to regional sites\">Regions<span class=\"caret\"></span></a>\n    <div
+        class=\"collapse\" id=\"Regions\">\n        <a href=\"https://www.fws.gov/pacific/\"
+        class=\"list-group-item\">Pacific (1)</a>\n        <a href=\"https://www.fws.gov/southwest/\"
+        class=\"list-group-item\">Southwest (2)</a>\n        <a href=\"https://www.fws.gov/midwest/\"
+        class=\"list-group-item\">Midwest (3)</a>\n        <a href=\"https://www.fws.gov/southeast/\"
+        class=\"list-group-item\">Southeast (4)</a>\n        <a href=\"https://www.fws.gov/northeast/\"
+        class=\"list-group-item\">Northeast (5)</a>\n        <a href=\"https://www.fws.gov/mountain-prairie/\"
+        class=\"list-group-item\">Mountain-Prairie (6)</a>\n        <a href=\"http://alaska.fws.gov/\"
+        class=\"list-group-item\">Alaska (7)</a>\n        <a href=\"https://www.fws.gov/cno/\"
+        class=\"list-group-item\">Pacific Southwest (8)</a>\n     </div>\n<!-- BEGIN
+        Regions Vertical Nav list -->\n\t<a href=\"#Employees\" class=\"list-group-item
+        list-group-item-info strong\" data-toggle=\"collapse\" data-parent=\"#MainMenu\"
+        title=\"click for links to employee resource pages\">Employee Resources<span
+        class=\"caret\"></span></a>\n        <div class=\"collapse\" id=\"Employees\">\n
+        \          <a href=\"#SubMenu20\" class=\"list-group-item\" data-toggle=\"collapse\"
+        data-parent=\"#SubMenu20\">Benefits, Pay and Work/Life Programs<span class=\"caret\"></span></a>\n
+        \           <div class=\"collapse list-group-submenu\" id=\"SubMenu20\">\n
+        \               <a href=\"https://www.fws.gov/humancapital/benefits.html\"
+        \ class=\"list-group-item\" data-parent=\"#SubMenu20\">Benefits</a>\n                <a
+        href=\"https://www.fws.gov/humancapital/pay-leave.html\"  class=\"list-group-item\"
+        data-parent=\"#SubMenu20\">Pay and Leave</a>\n                <a href=\"https://www.fws.gov/humancapital/worklife.html\"
+        \ class=\"list-group-item\" data-parent=\"#SubMenu20\">Work/Life Programs</a>\n
+        \           </div>\n    <a href=\"https://www.fws.gov/odiwm/\" class=\"list-group-item\">Diversity
+        &amp; Equal Employment Opportunity</a>\n        <a href=\"https://www.fws.gov/Ethics\"
+        class=\"list-group-item\">Ethics</a>\n    <a href=\"https://www.fws.gov/humancapital\"
+        class=\"list-group-item\">Jobs</a>\n    <a href=\"https://nctc.fws.gov/resources/knowledge-resources/\"
+        class=\"list-group-item\">Library </a>\n    <a href=\"http://nctc.fws.gov/\"
+        class=\"list-group-item\">Training (NCTC)</a>\n    </div>\n<!-- END Regions
+        Vertical Nav list -->\n\n<!--  THUMBNAIL MAP -->\n<div align=\"center\"><a
+        href=\"offices/index.html\"><img src=\"https://www.fws.gov/home/homepage/images/usamapbutton.png\"
+        alt=\"Map of U.S. with links to information by State.\"/ class=\"img-responsive\"></a></div>\n<!--
+        End THUMBNAIL MAP -->\n\n<!-- BEGIN Topic-based Nav List -->\n    <a href=\"https://www.fws.gov/cfm/\"
+        class=\"list-group-item list-group-item-info\" data-parent=\"#MainMenu\">Business
+        Opportunities</a>\n    <a href=\"https://www.fws.gov/home/climatechange/\"
+        class=\"list-group-item list-group-item-info\" data-parent=\"#MainMenu\">Climate
+        Change </a>\n    <a href=\"https://www.fws.gov/coastal/\" class=\"list-group-item
+        list-group-item-info\" data-parent=\"#MainMenu\">Coastal Program</a>\n    <a
+        href=\"https://www.fws.gov/duckstamps\" class=\"list-group-item list-group-item-info\"
+        data-parent=\"#MainMenu\">Duck Stamp</a>\n    <a href=\"https://www.fws.gov/ecological-services/\"
+        class=\"list-group-item list-group-item-info\" data-parent=\"#MainMenu\">Ecological
+        Services</a>\n    <a href=\"https://www.fws.gov/emergency/\" class=\"list-group-item
+        list-group-item-info\" data-parent=\"#MainMenu\">Emergency Management</a>\n
+        \   <a href=\"https://www.fws.gov/endangered/\" class=\"list-group-item list-group-item-info\"
+        data-parent=\"#MainMenu\">Endangered Species</a>\n    <a href=\"https://www.fws.gov/fire/\"
+        class=\"list-group-item list-group-item-info\" data-parent=\"#MainMenu\">Fire
+        Management</a>\n    <a href=\"https://www.fws.gov/fisheries/\" class=\"list-group-item
+        list-group-item-info\" data-parent=\"#MainMenu\">Fish and Aquatic Conservation</a>\n
+        \    <a href=\"https://www.fws.gov/gis/data/national/\" class=\"list-group-item
+        list-group-item-info\" data-parent=\"#MainMenu\">Geospatial Services</a>\n
+        \   <a href=\"https://www.fws.gov/grants/\" class=\"list-group-item list-group-item-info\"
+        data-parent=\"#MainMenu\">Grants</a>\n    <a href=\"http://training.fws.gov/history/index.html\"
+        class=\"list-group-item list-group-item-info\" data-parent=\"#MainMenu\">History</a>\n
+        \   <a href=\"https://www.fws.gov/historicpreservation/NHPA.html\" class=\"list-group-item
+        list-group-item-info\" data-parent=\"#MainMenu\">Historic Preservation</a>\n
+        \   <a href=\"https://www.fws.gov/hunting/\" class=\"list-group-item list-group-item-info\"
+        data-parent=\"#MainMenu\">Hunting</a>\n    <a href=\"https://www.fws.gov/le/businesses.html\"
+        class=\"list-group-item list-group-item-info\" data-parent=\"#MainMenu\">Importing/Exporting</a>\n
+        \   <a href=\"https://www.fws.gov/international\" class=\"list-group-item
+        list-group-item-info\" data-parent=\"#MainMenu\">International Affairs</a>\n
+        \   <a href=\"https://www.fws.gov/invasives/\" class=\"list-group-item list-group-item-info\"
+        data-parent=\"#MainMenu\">Invasive Species</a>\n    <a href=\"https://www.fws.gov/humancapital/jobs.html\"
+        class=\"list-group-item list-group-item-info\" data-parent=\"#MainMenu\">Jobs</a>\n
+        \   <!--<a href=\"https://www.fws.gov/letsgooutside/\" class=\"list-group-item
+        list-group-item-info\" data-parent=\"#MainMenu\">Kids, Educators, Parents</a>-->\n
+        \   <a href=\"http://lccnetwork.org/\" title=\"Link to non-FWS site\" class=\"list-group-item
+        list-group-item-info\" data-parent=\"#MainMenu\">Landscape Conservation Cooperatives</a>\n
+        \   \n<!-- BEGIN LE Activities Vertical Nav list -->\n    <a href=\"#LEActivities\"
+        class=\"list-group-item list-group-item-info\" data-toggle=\"collapse\" data-parent=\"#MainMenu\"
+        title=\"click for links to regional sites\">Law Enforcement Activities<span
+        class=\"caret\"></span></a>\n    <div class=\"collapse\" id=\"LEActivities\">\n
+        \       <a href=\"https://www.fws.gov/le/\" class=\"list-group-item\">Office
+        of Law Enforcement</a>\n        <a href=\"https://www.fws.gov/refuges/lawEnforcement/index.php\"
+        class=\"list-group-item\">Refuge Law Enforcement</a>\n     </div>\n<!-- END
+        LE Activities Vertical Nav list --> \n        \n    <a href=\"http://library.fws.gov/\"
+        class=\"list-group-item list-group-item-info\" data-parent=\"#MainMenu\">Library</a>\n
+        \   <a href=\"https://www.fws.gov/migratorybirds/dmbmdbhc.html\" class=\"list-group-item
+        list-group-item-info\" data-parent=\"#MainMenu\">Migratory Birds</a>\n    <a
+        href=\"https://www.fws.gov/refuges/\" class=\"list-group-item list-group-item-info\"
+        data-parent=\"#MainMenu\">National Wildlife Refuges</a>\n    <a href=\"https://www.fws.gov/news/\"
+        class=\"list-group-item list-group-item-info\" data-parent=\"#MainMenu\">Newsroom</a>\n
+        \   <a href=\"https://www.fws.gov/offices/\" class=\"list-group-item list-group-item-info\"
+        data-parent=\"#MainMenu\">Offices</a>\n    <a href=\"https://www.fws.gov/partners/\"
+        class=\"list-group-item list-group-item-info\" data-parent=\"#MainMenu\">Partners
+        for Fish and Wildlife</a>\n    <a href=\"https://www.fws.gov/permits/\" class=\"list-group-item
+        list-group-item-info\" data-parent=\"#MainMenu\">Permits</a>\n    <a href=\"https://www.fws.gov/policy/\"
+        class=\"list-group-item list-group-item-info\" data-parent=\"#MainMenu\">Policy
+        and Directives</a>\n    <a href=\"https://www.fws.gov/pollinators/\" class=\"list-group-item
+        list-group-item-info\" data-parent=\"#MainMenu\">Pollinators</a>\n    <a href=\"http://www.recreation.gov/\"
+        title=\"Link to non-FWS site\" class=\"list-group-item list-group-item-info\"
+        data-parent=\"#MainMenu\">Recreation</a>\n    <a href=\"https://www.fws.gov/science/\"
+        class=\"list-group-item list-group-item-info\" data-parent=\"#MainMenu\">Science</a>\n
+        \   <a href=\"https://www.fws.gov/home/socialmedia/index.html\" class=\"list-group-item
+        list-group-item-info\" data-parent=\"#MainMenu\">Social Media</a>\n    <a
+        href=\"https://www.fws.gov/landscape-conservation/\" class=\"list-group-item
+        list-group-item-info\" data-parent=\"#MainMenu\">Strategic Habitat Conservation</a>\n
+        \   <a href=\"https://www.fws.gov/laws/Testimony.cfm\" class=\"list-group-item
+        list-group-item-info\" data-parent=\"#MainMenu\">Testimony</a>\n<a href=\"http://training.fws.gov/\"
+        class=\"list-group-item list-group-item-info\" data-parent=\"#MainMenu\">Training</a>\n
+        \   <a href=\"https://www.fws.gov/ecological-services/energy-development/transportation.html\"
+        class=\"list-group-item list-group-item-info\" data-parent=\"#MainMenu\">Transportation</a>\n
+        \   <a href=\"https://www.fws.gov/volunteers/\" class=\"list-group-item list-group-item-info\"
+        data-parent=\"#MainMenu\">Volunteer</a>\n    <a href=\"https://www.fws.gov/wetlands/\"
+        class=\"list-group-item list-group-item-info\" data-parent=\"#MainMenu\">Wetlands</a>\n
+        \   <a href=\"https://www.fws.gov/windenergy\" class=\"list-group-item list-group-item-info\"
+        data-parent=\"#MainMenu\">Wind Energy</a>\n<!-- END Topics-based Nav list
+        -->\n\n  </div>\n</div>\n\n<!-- #EndLeftNavigation --></div>\n \t</div>\n\t\n\t<div
+        class=\"row\">\n        <div class=\"footer noPrint\">\n            <div id=\"lastUpdated\">\n
+        \           <p class=\"muted\">Last updated: \n            <!-- #BeginDate
+        format:Am1 -->November 22, 2017<!-- #EndDate -->\n            </p>\n            </div>\n
+        \           <div id=\"siteFooter\">\n            <!-- InstanceBeginEditable
+        name=\"site footer\" --><!-- InstanceEndEditable -->\t\t\n            </div>\n
+        \           <div id=\"serviceFooter\"><a href=\"https://www.fws.gov\">U.S.&nbsp;Fish&nbsp;and&nbsp;Wildlife&nbsp;Service&nbsp;Home&nbsp;Page</a>&nbsp;|
+        <a href=\"http://www.doi.gov/\" title=\"Link to non-FWS site\">Department&nbsp;of&nbsp;the&nbsp;Interior</a>
+        \n            &nbsp;| <a href=\"http://www.usa.gov/\" title=\"Link to non-FWS
+        site\">USA.gov</a> &nbsp;| <a href=\"https://www.fws.gov/help/about_us.html\">About&nbsp;the&nbsp;U.S.&nbsp;Fish&nbsp;and&nbsp;Wildlife&nbsp;Service</a>
+        &nbsp;| \n            <a href=\"https://www.fws.gov/help/accessibility.html\">Accessibility</a>
+        &nbsp;| <a href=\"https://www.fws.gov/help/policies.html\">Privacy</a> \n
+        \           &nbsp;| <a href=\"https://www.fws.gov/help/notices.html\">Notices</a>
+        &nbsp;| <a href=\"https://www.fws.gov/help/disclaimer.html\">Disclaimer</a>
+        \n            &nbsp;| <a href=\"https://www.fws.gov/irm/bpim/foia.html\">FOIA</a></div>\n</div><!--
+        /footer -->    \n\t</div>\n</DIV> <!-- /CONTAINER -->\n</BODY><!-- Include
+        all compiled plugins (below), or include individual files as needed -->\n<script
+        src=\"home/Boot3/assets/js/bootstrap.min.js\"></script>\n<script src=\"home/Boot3/assets/js/bootstrap-carousel.js\"></script>\n\n<!--
+        USA Search Tag snippet for type-ahead --> \n<script type=\"text/javascript\">\n//<![CDATA[\n
+        \     var usasearch_config = { siteHandle:\"fws.gov\" };\n\n      var script
+        = document.createElement(\"script\");\n      script.type = \"text/javascript\";\n
+        \     script.src = \"https://search.usa.gov/javascripts/remote.loader.js\";\n
+        \     document.getElementsByTagName(\"head\")[0].appendChild(script);\n\n//]]>\n</script>\n<!--
+        End USA Search Tag snippet -->\n\n\n<!-- Enable tooltip-->\n<script type=\"text/javascript\">\n
+        \   $(function () {\n        $(\"[rel='tooltip']\").tooltip();\n    });\n</script><!--End
+        tootip-->\n<!-- Enable popover-->\n<script>\n// Popover Help\n$(function ()
+        {\n\n    var overPopup = false;\n\n    $('[rel=popover]').popover({\n        trigger:
+        'manual',\n        placement: 'top'\n\n    // replacing hover with mouseover
+        and mouseout\n    }).mouseover(function (e) {\n        // when hovering over
+        an element which has a popover, hide\n        // them all except the current
+        one being hovered upon\n        $('[rel=popover]').not('#' + $(this).attr('id')).popover('hide');\n
+        \       var $popover = $(this);\n        $popover.popover('show');\n\n        //
+        set a flag when you move from button to popover\n        // dirty but only
+        way I could think of to prevent\n        // closing the popover when you are
+        navigate across\n        // the white space between the two\n        $popover.data('popover').tip().mouseenter(function
+        () {\n            overPopup = true;\n        }).mouseleave(function () {\n
+        \           overPopup = false;\n            $popover.popover('hide');\n        });\n\n
+        \   }).mouseout(function (e) {\n        // on mouse out of button, close the
+        related popover\n        // in 2000 milliseconds=2sec if you're not hovering
+        over the popover\n        var $popover = $(this);\n        setTimeout(function
+        () {\n            if (!overPopup) {\n                $popover.popover('hide');\n
+        \           }\n        }, 2000);\n    });\n});\n</script><!--End popover-->\n\n<script
+        type=\"text/javascript\">\n\t$(function(){ // document ready\n\n\t\t  if (!!$('.sticky').offset())
+        { // make sure \".sticky\" element exists\n\n\t\t    var stickyTop = $('.sticky').offset().top;
+        // returns number \n\n\t\t    $(window).scroll(function(){ // scroll event\n\n\t\t
+        \     var windowTop = $(window).scrollTop(); // returns number \n\n\t\t      if
+        (stickyTop < windowTop){\n\t\t        $('.sticky').css({ position: 'fixed',
+        top: 0 });\n\t\t      }\n\t\t      else {\n\t\t        $('.sticky').css('position','static');\n\t\t
+        \     }\n\n\t\t    });\n\n\t\t  }\n\n\t\t});\n\t</script>\n<!-- InstanceEnd
+        --></html>\n"
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/html
+      Date:
+      - Mon, 25 Sep 2023 19:11:52 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Server:
+      - nginx/1.25.1
+      Transfer-Encoding:
+      - chunked
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
+      X-Page-Cache:
+      - MISS
+      X-RL:
+      - '0'
+      X-location:
+      - All
+      cache-control:
+      - max-age=1800
+      content-security-policy:
+      - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
+        web.archive.org web-static.archive.org wayback-api.archive.org analytics.archive.org
+        pragma.archivelab.org'
+      link:
+      - <https://www.fws.gov/>; rel="original", <https://web.archive.org/web/timemap/link/https://www.fws.gov/>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/https://www.fws.gov/>;
+        rel="timegate", <https://web.archive.org/web/19970118072440/http://www.fws.gov:80/>;
+        rel="first memento"; datetime="Sat, 18 Jan 1997 07:24:40 GMT", <https://web.archive.org/web/20171124143727/http://www.fws.gov/>;
+        rel="prev memento"; datetime="Fri, 24 Nov 2017 14:37:27 GMT", <https://web.archive.org/web/20171124143728/https://www.fws.gov/>;
+        rel="memento"; datetime="Fri, 24 Nov 2017 14:37:28 GMT", <https://web.archive.org/web/20171124232038/https://www.fws.gov/>;
+        rel="next memento"; datetime="Fri, 24 Nov 2017 23:20:38 GMT", <https://web.archive.org/web/20230925131916/https://fws.gov/>;
+        rel="last memento"; datetime="Mon, 25 Sep 2023 13:19:16 GMT"
+      memento-datetime:
+      - Fri, 24 Nov 2017 14:37:28 GMT
+      server-timing:
+      - captures_list;dur=738.814597, exclusion.robots;dur=0.198629, exclusion.robots.policy;dur=0.187697,
+        cdx.remote;dur=0.061457, esindex;dur=0.009578, LoadShardBlock;dur=339.907479,
+        PetaboxLoader3.resolve;dur=170.374996, PetaboxLoader3.datanode;dur=208.711147,
+        load_resource;dur=103.251114
+      x-app-server:
+      - wwwb-app219
+      x-archive-orig-accept-ranges:
+      - bytes
+      x-archive-orig-date:
+      - Fri, 24 Nov 2017 14:37:27 GMT
+      x-archive-orig-etag:
+      - '"874c4f6aa563d31:0"'
+      x-archive-orig-last-modified:
+      - Wed, 22 Nov 2017 15:20:22 GMT
+      x-archive-orig-strict-transport-security:
+      - max-age=31536000; includeSubDomains; preload
+      x-archive-orig-transfer-encoding:
+      - chunked
+      x-archive-src:
+      - archiveteam_archivebot_go_20171125060002/nostalgia.esmartkid.com-inf-20171124-135423-93c54-00000.warc.gz
+      x-tr:
+      - '887'
+      x-ts:
+      - '200'
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -1,0 +1,95 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.4.3a1.post5+gaf68963 (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: https://web.archive.org/cdx/search/cdx?url=energystar.gov%2F&limit=1000&from=20200612000000&to=20200613000000&showResumeKey=true&resolveRevisits=true
+  response:
+    body:
+      string: 'gov,energystar)/ 20200612014007 http://energystar.gov/ text/html 301
+        HLNR6AWVWYCU3YAENY3HYHLIPNWN66X7 432
+
+        gov,energystar)/ 20200612014014 https://www.energystar.gov/ warc/revisit -
+        DBA3N454ZRZ42QEBER5QRT332DJTTLR5 606
+
+        gov,energystar)/ 20200612061543 http://energystar.gov/ text/html 301 HLNR6AWVWYCU3YAENY3HYHLIPNWN66X7
+        433
+
+        gov,energystar)/ 20200612061552 https://www.energystar.gov/ warc/revisit -
+        DBA3N454ZRZ42QEBER5QRT332DJTTLR5 605
+
+        gov,energystar)/ 20200612101416 http://energystar.gov/ text/html 301 HLNR6AWVWYCU3YAENY3HYHLIPNWN66X7
+        432
+
+        gov,energystar)/ 20200612101422 https://www.energystar.gov/ warc/revisit -
+        DBA3N454ZRZ42QEBER5QRT332DJTTLR5 607
+
+        gov,energystar)/ 20200612113656 https://www.energystar.gov/ text/html 200
+        DBA3N454ZRZ42QEBER5QRT332DJTTLR5 5267
+
+        gov,energystar)/ 20200612125807 http://energystar.gov/ text/html 301 HLNR6AWVWYCU3YAENY3HYHLIPNWN66X7
+        432
+
+        gov,energystar)/ 20200612125814 https://www.energystar.gov/ text/html 200
+        DBA3N454ZRZ42QEBER5QRT332DJTTLR5 605
+
+        gov,energystar)/ 20200612154726 http://energystar.gov/ text/html 301 HLNR6AWVWYCU3YAENY3HYHLIPNWN66X7
+        433
+
+        gov,energystar)/ 20200612154733 https://www.energystar.gov/ text/html 200
+        DBA3N454ZRZ42QEBER5QRT332DJTTLR5 607
+
+        gov,energystar)/ 20200612210149 https://www.energystar.gov/ text/html 200
+        DBA3N454ZRZ42QEBER5QRT332DJTTLR5 5475
+
+        gov,energystar)/ 20200612210839 https://www.energystar.gov/ text/html 200
+        DBA3N454ZRZ42QEBER5QRT332DJTTLR5 5471
+
+        gov,energystar)/ 20200612232310 https://www.energystar.gov/ text/html 200
+        DBA3N454ZRZ42QEBER5QRT332DJTTLR5 605
+
+        gov,energystar)/ 20200612232323 http://energystar.gov/ text/html 301 HLNR6AWVWYCU3YAENY3HYHLIPNWN66X7
+        430
+
+        '
+    headers:
+      Connection:
+      - keep-alive
+      Content-Type:
+      - text/plain;charset=UTF-8
+      Date:
+      - Mon, 25 Sep 2023 19:11:20 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Server:
+      - nginx/1.25.1
+      Transfer-Encoding:
+      - chunked
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
+      X-Page-Cache:
+      - BYPASS
+      X-RL:
+      - '0'
+      X-location:
+      - cdx
+      content-encoding:
+      - gzip
+      x-app-server:
+      - wwwb-app53
+      x-tr:
+      - '207'
+      x-ts:
+      - '200'
+    status:
+      code: 200
+      message: OK
+version: 1

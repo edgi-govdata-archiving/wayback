@@ -1,0 +1,54 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.4.3a1.post5+gaf68963 (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: https://web.archive.org/cdx/search/cdx?url=https%3A%2F%2Fnationalpost.com%2Fhealth&limit=1000&from=20191001000000&to=20191002000000&showResumeKey=true&resolveRevisits=true
+  response:
+    body:
+      string: 'org.archive.util.io.RuntimeIOException: org.archive.wayback.exception.AdministrativeAccessControlException:
+        Blocked Site Error
+
+        '
+    headers:
+      Connection:
+      - keep-alive
+      Content-Type:
+      - text/plain;charset=UTF-8
+      Date:
+      - Mon, 25 Sep 2023 19:11:21 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Server:
+      - nginx/1.25.1
+      Transfer-Encoding:
+      - chunked
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
+      X-Page-Cache:
+      - BYPASS
+      X-RL:
+      - '0'
+      content-encoding:
+      - gzip
+      x-app-server:
+      - wwwb-app52
+      x-archive-wayback-runtime-error:
+      - 'org.archive.util.io.RuntimeIOException: org.archive.wayback.exception.AdministrativeAccessControlException:
+        Blocked Site Error'
+      x-tr:
+      - '1'
+      x-ts:
+      - '403'
+    status:
+      code: 403
+      message: Forbidden
+version: 1

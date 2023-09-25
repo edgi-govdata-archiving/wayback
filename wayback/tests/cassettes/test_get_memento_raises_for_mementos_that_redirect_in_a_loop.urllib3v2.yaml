@@ -1,0 +1,356 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.4.3a1.post5+gaf68963 (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: https://web.archive.org/web/20200925075402id_/https://link.springer.com/article/10.1007/s00382-012-1331-2
+  response:
+    body:
+      string: ''
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Date:
+      - Mon, 25 Sep 2023 19:11:39 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Server:
+      - nginx/1.25.1
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
+      X-Page-Cache:
+      - MISS
+      X-RL:
+      - '0'
+      X-location:
+      - All
+      cache-control:
+      - max-age=1800
+      content-security-policy:
+      - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
+        web.archive.org web-static.archive.org wayback-api.archive.org analytics.archive.org
+        pragma.archivelab.org'
+      link:
+      - <https://link.springer.com/article/10.1007/s00382-012-1331-2>; rel="original",
+        <https://web.archive.org/web/timemap/link/https://link.springer.com/article/10.1007/s00382-012-1331-2>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/https://link.springer.com/article/10.1007/s00382-012-1331-2>;
+        rel="timegate", <https://web.archive.org/web/20160410042521/http://link.springer.com:80/article/10.1007/s00382-012-1331-2>;
+        rel="first memento"; datetime="Sun, 10 Apr 2016 04:25:21 GMT", <https://web.archive.org/web/20200925075359/http://link.springer.com/article/10.1007/s00382-012-1331-2>;
+        rel="prev memento"; datetime="Fri, 25 Sep 2020 07:53:59 GMT", <https://web.archive.org/web/20200925075402/https://link.springer.com/article/10.1007/s00382-012-1331-2>;
+        rel="memento"; datetime="Fri, 25 Sep 2020 07:54:02 GMT", <https://web.archive.org/web/20200925075440/https://link.springer.com/article/10.1007/s00382-012-1331-2>;
+        rel="next memento"; datetime="Fri, 25 Sep 2020 07:54:40 GMT", <https://web.archive.org/web/20230924185025/https://link.springer.com/article/10.1007/s00382-012-1331-2>;
+        rel="last memento"; datetime="Sun, 24 Sep 2023 18:50:25 GMT"
+      location:
+      - https://web.archive.org/web/20200925075402id_/https://idp.springer.com/authorize?response_type=cookie&client_id=springerlink&redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2
+      memento-datetime:
+      - Fri, 25 Sep 2020 07:54:02 GMT
+      server-timing:
+      - captures_list;dur=270.485135, exclusion.robots;dur=0.203308, exclusion.robots.policy;dur=0.192592,
+        cdx.remote;dur=0.066629, esindex;dur=0.012744, LoadShardBlock;dur=186.625756,
+        PetaboxLoader3.datanode;dur=200.126455, load_resource;dur=152.206786, PetaboxLoader3.resolve;dur=82.131339
+      x-app-server:
+      - wwwb-app223
+      x-archive-orig-accept-ranges:
+      - bytes
+      - bytes
+      x-archive-orig-age:
+      - '0'
+      x-archive-orig-cache-control:
+      - no-cache
+      x-archive-orig-connection:
+      - close
+      x-archive-orig-content-length:
+      - '0'
+      x-archive-orig-date:
+      - Fri, 25 Sep 2020 07:54:02 GMT
+      x-archive-orig-server:
+      - Oscar Platform 0.230.0
+      x-archive-orig-set-cookie:
+      - sim-inst-token="1::1601050442675:a4f8057d"; Domain=.springer.com; Path=/;
+        secure; HttpOnly
+      - trackid="9vvnlgq9dh3qh7nus068mmils"; Domain=.springer.com; Path=/; secure;
+        HttpOnly
+      x-archive-orig-vary:
+      - X-Oscar-Cache-Mode
+      x-archive-orig-via:
+      - 1.1 google
+      - 1.1 varnish
+      x-archive-orig-x-b3-parentspanid:
+      - 951acd715f172ef6
+      x-archive-orig-x-b3-sampled:
+      - '0'
+      x-archive-orig-x-b3-spanid:
+      - de6dd28213fbd703
+      x-archive-orig-x-b3-traceid:
+      - 951acd715f172ef6
+      x-archive-orig-x-cache:
+      - MISS, MISS
+      x-archive-orig-x-cache-grace:
+      - 'NO'
+      x-archive-orig-x-cache-hits:
+      - '0'
+      x-archive-orig-x-cacheable:
+      - NO:Not Cacheable
+      x-archive-orig-x-cdn-origin:
+      - SNPaaS
+      x-archive-orig-x-dump-request-bodies:
+      - '0'
+      x-archive-orig-x-served-by:
+      - 9d852584-e818-47e9-a726-4e43d86a6155, cache-sjc10027-SJC
+      x-archive-orig-x-timer:
+      - S1601020442.494388,VS0,VE281
+      x-archive-orig-x-vcap-request-id:
+      - 37e2cc4d-7495-4501-4712-d3033745fde9
+      x-archive-src:
+      - nesdis.noaa.gov-20200905-095243/IA-FOC-nesdis.noaa.gov-20200925075354-00000.warc.gz
+      x-tr:
+      - '437'
+      x-ts:
+      - '303'
+    status:
+      code: 303
+      message: See Other
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.4.3a1.post5+gaf68963 (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: https://web.archive.org/web/20200925075402id_/https://idp.springer.com/authorize?response_type=cookie&client_id=springerlink&redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2
+  response:
+    body:
+      string: ''
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Mon, 25 Sep 2023 19:11:39 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Server:
+      - nginx/1.25.1
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
+      X-Page-Cache:
+      - MISS
+      X-RL:
+      - '0'
+      X-location:
+      - All
+      location:
+      - https://web.archive.org/web/20200925075411id_/https://idp.springer.com/authorize?response_type=cookie&client_id=springerlink&redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2
+      server-timing:
+      - captures_list;dur=145.761762, exclusion.robots;dur=0.201603, exclusion.robots.policy;dur=0.190927,
+        cdx.remote;dur=0.054123, esindex;dur=0.009776, LoadShardBlock;dur=108.702219,
+        PetaboxLoader3.datanode;dur=62.424857
+      x-app-server:
+      - wwwb-app217
+      x-archive-redirect-reason:
+      - found capture at 20200925075411
+      x-tr:
+      - '150'
+      x-ts:
+      - '302'
+    status:
+      code: 302
+      message: FOUND
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.4.3a1.post5+gaf68963 (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: https://web.archive.org/web/20200925075411id_/https://idp.springer.com/authorize?response_type=cookie&client_id=springerlink&redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2
+  response:
+    body:
+      string: ''
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Date:
+      - Mon, 25 Sep 2023 19:11:41 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Server:
+      - nginx/1.25.1
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
+      X-Page-Cache:
+      - MISS
+      X-RL:
+      - '0'
+      X-location:
+      - All
+      cache-control:
+      - max-age=1800
+      content-security-policy:
+      - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
+        web.archive.org web-static.archive.org wayback-api.archive.org analytics.archive.org
+        pragma.archivelab.org'
+      link:
+      - <https://idp.springer.com/authorize?response_type=cookie&amp;client_id=springerlink&amp;redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2>;
+        rel="original", <https://web.archive.org/web/timemap/link/https://idp.springer.com/authorize?response_type=cookie&amp;client_id=springerlink&amp;redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/https://idp.springer.com/authorize?response_type=cookie&amp;client_id=springerlink&amp;redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2>;
+        rel="timegate", <https://web.archive.org/web/20200611102358/https://idp.springer.com/authorize?response_type=cookie&amp;client_id=springerlink&amp;redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2>;
+        rel="first memento"; datetime="Thu, 11 Jun 2020 10:23:58 GMT", <https://web.archive.org/web/20200924070527/https://idp.springer.com/authorize?response_type=cookie&amp;client_id=springerlink&amp;redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2>;
+        rel="prev memento"; datetime="Thu, 24 Sep 2020 07:05:27 GMT", <https://web.archive.org/web/20200925075411/https://idp.springer.com/authorize?response_type=cookie&amp;client_id=springerlink&amp;redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2>;
+        rel="memento"; datetime="Fri, 25 Sep 2020 07:54:11 GMT", <https://web.archive.org/web/20200926080807/https://idp.springer.com/authorize?response_type=cookie&amp;client_id=springerlink&amp;redirect_uri=https://link.springer.com/article/10.1007/s00382-012-1331-2>;
+        rel="next memento"; datetime="Sat, 26 Sep 2020 08:08:07 GMT", <https://web.archive.org/web/20220812060528/https://idp.springer.com/authorize?response_type=cookie&amp;client_id=springerlink&amp;redirect_uri=https%3A%2F%2Flink.springer.com%2Farticle%2F10.1007%2Fs00382-012-1331-2>;
+        rel="last memento"; datetime="Fri, 12 Aug 2022 06:05:28 GMT"
+      location:
+      - https://web.archive.org/web/20200925075411id_/https://link.springer.com/article/10.1007/s00382-012-1331-2
+      memento-datetime:
+      - Fri, 25 Sep 2020 07:54:11 GMT
+      server-timing:
+      - captures_list;dur=1456.630275, exclusion.robots;dur=0.233479, exclusion.robots.policy;dur=0.219259,
+        cdx.remote;dur=0.076737, esindex;dur=0.011622, LoadShardBlock;dur=1402.749363,
+        PetaboxLoader3.resolve;dur=1016.275124, PetaboxLoader3.datanode;dur=177.291153,
+        load_resource;dur=286.455378
+      x-app-server:
+      - wwwb-app224
+      x-archive-orig-accept-ranges:
+      - bytes
+      - bytes
+      x-archive-orig-age:
+      - '0'
+      - '0'
+      x-archive-orig-cache-control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      x-archive-orig-connection:
+      - close
+      x-archive-orig-content-length:
+      - '0'
+      x-archive-orig-date:
+      - Fri, 25 Sep 2020 07:54:12 GMT
+      x-archive-orig-expires:
+      - '0'
+      x-archive-orig-pragma:
+      - no-cache
+      x-archive-orig-set-cookie:
+      - idp_session=sVERSION_1ff6f3423-baf0-45c9-b184-420b448c5762; Domain=.springer.com;
+        Path=/; Secure; HttpOnly
+      - idp_session_http=hVERSION_167b70f8d-84d6-48f9-96bc-bb6132f55cd6; Domain=.springer.com;
+        Path=/; HttpOnly
+      - idp_marker=80f2bcb9-56f2-47b3-b6e3-bb4f003793f1; Domain=.springer.com; Path=/;
+        Max-Age=315360000; HttpOnly
+      x-archive-orig-strict-transport-security:
+      - max-age=31536000 ; includeSubDomains
+      x-archive-orig-vary:
+      - x-forwarded-proto
+      x-archive-orig-via:
+      - 1.1 google
+      - 1.1 varnish
+      x-archive-orig-x-b3-spanid:
+      - 61569bc2a10861aa
+      x-archive-orig-x-b3-traceid:
+      - 61569bc2a10861aa
+      x-archive-orig-x-cache:
+      - MISS
+      x-archive-orig-x-cache-hits:
+      - '0'
+      x-archive-orig-x-cdn-origin:
+      - SNPaaS
+      x-archive-orig-x-content-type-options:
+      - nosniff
+      x-archive-orig-x-frame-options:
+      - DENY
+      x-archive-orig-x-served-by:
+      - cache-sjc10025-SJC
+      x-archive-orig-x-timer:
+      - S1601020452.923216,VS0,VE224
+      x-archive-orig-x-vcap-request-id:
+      - 8aefa929-c6fa-49e8-58b5-a647f99b91ae
+      x-archive-orig-x-xss-protection:
+      - 1; mode=block
+      x-archive-src:
+      - nesdis.noaa.gov-20200905-095243/IA-FOC-nesdis.noaa.gov-20200925075354-00000.warc.gz
+      x-tr:
+      - '1759'
+      x-ts:
+      - '302'
+    status:
+      code: 302
+      message: Found
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.4.3a1.post5+gaf68963 (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: https://web.archive.org/web/20200925075411id_/https://link.springer.com/article/10.1007/s00382-012-1331-2
+  response:
+    body:
+      string: ''
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Mon, 25 Sep 2023 19:11:41 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Server:
+      - nginx/1.25.1
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
+      X-Page-Cache:
+      - MISS
+      X-RL:
+      - '0'
+      X-location:
+      - All
+      location:
+      - https://web.archive.org/web/20200925075402id_/https://link.springer.com/article/10.1007/s00382-012-1331-2
+      server-timing:
+      - captures_list;dur=215.038125, exclusion.robots;dur=0.192128, exclusion.robots.policy;dur=0.182010,
+        cdx.remote;dur=0.064299, esindex;dur=0.010628, LoadShardBlock;dur=137.092276,
+        PetaboxLoader3.datanode;dur=121.249317
+      x-app-server:
+      - wwwb-app215
+      x-archive-redirect-reason:
+      - found capture at 20200925075402
+      x-tr:
+      - '224'
+      x-ts:
+      - '302'
+    status:
+      code: 302
+      message: FOUND
+version: 1

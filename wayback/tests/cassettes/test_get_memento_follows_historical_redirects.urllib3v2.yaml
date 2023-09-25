@@ -1,0 +1,458 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.4.3a1.post5+gaf68963 (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: https://web.archive.org/web/20200201020357id_/http://epa.gov/climatechange
+  response:
+    body:
+      string: ''
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Mon, 25 Sep 2023 19:11:47 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Server:
+      - nginx/1.25.1
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
+      X-Page-Cache:
+      - MISS
+      X-RL:
+      - '0'
+      X-location:
+      - All
+      location:
+      - https://web.archive.org/web/20200201023757id_/https://www.epa.gov/climatechange
+      server-timing:
+      - captures_list;dur=546.103450, exclusion.robots;dur=0.197930, exclusion.robots.policy;dur=0.188210,
+        cdx.remote;dur=0.067102, esindex;dur=0.009583, LoadShardBlock;dur=170.654809,
+        PetaboxLoader3.resolve;dur=614.678334, PetaboxLoader3.datanode;dur=152.792351,
+        load_resource;dur=734.505522
+      x-app-server:
+      - wwwb-app216
+      x-archive-redirect-reason:
+      - found capture at 20200201023757
+      x-tr:
+      - '1318'
+      x-ts:
+      - '302'
+    status:
+      code: 302
+      message: FOUND
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.4.3a1.post5+gaf68963 (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: https://web.archive.org/web/20200201023757id_/https://www.epa.gov/climatechange
+  response:
+    body:
+      string: '<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+
+        <html><head>
+
+        <title>301 Moved Permanently</title>
+
+        </head><body>
+
+        <h1>Moved Permanently</h1>
+
+        <p>The document has moved <a href="https://www.epa.gov/sites/production/files/signpost/cc.html">here</a>.</p>
+
+        </body></html>
+
+        '
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '267'
+      Content-Type:
+      - text/html; charset=iso-8859-1
+      Date:
+      - Mon, 25 Sep 2023 19:11:49 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Server:
+      - nginx/1.25.1
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
+      X-Page-Cache:
+      - MISS
+      X-RL:
+      - '0'
+      X-location:
+      - All
+      cache-control:
+      - max-age=1800
+      content-security-policy:
+      - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
+        web.archive.org web-static.archive.org wayback-api.archive.org analytics.archive.org
+        pragma.archivelab.org'
+      link:
+      - <https://www.epa.gov/climatechange>; rel="original", <https://web.archive.org/web/timemap/link/https://www.epa.gov/climatechange>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/https://www.epa.gov/climatechange>;
+        rel="timegate", <https://web.archive.org/web/20061007193932/http://www.epa.gov/climatechange>;
+        rel="first memento"; datetime="Sat, 07 Oct 2006 19:39:32 GMT", <https://web.archive.org/web/20200201020358/https://epa.gov/climatechange>;
+        rel="prev memento"; datetime="Sat, 01 Feb 2020 02:03:58 GMT", <https://web.archive.org/web/20200201023757/https://www.epa.gov/climatechange>;
+        rel="memento"; datetime="Sat, 01 Feb 2020 02:37:57 GMT", <https://web.archive.org/web/20200201024403/http://www.epa.gov/climatechange/>;
+        rel="next memento"; datetime="Sat, 01 Feb 2020 02:44:03 GMT", <https://web.archive.org/web/20230925125309/https://www.epa.gov/climatechange/>;
+        rel="last memento"; datetime="Mon, 25 Sep 2023 12:53:09 GMT"
+      location:
+      - https://web.archive.org/web/20200201023757id_/https://www.epa.gov/sites/production/files/signpost/cc.html
+      memento-datetime:
+      - Sat, 01 Feb 2020 02:37:57 GMT
+      server-timing:
+      - captures_list;dur=948.004588, exclusion.robots;dur=0.233971, exclusion.robots.policy;dur=0.222512,
+        cdx.remote;dur=0.077765, esindex;dur=0.011474, LoadShardBlock;dur=280.594986,
+        PetaboxLoader3.resolve;dur=347.329251, PetaboxLoader3.datanode;dur=293.428324,
+        load_resource;dur=405.062273
+      x-app-server:
+      - wwwb-app204
+      x-archive-orig-cache-control:
+      - max-age=34196
+      x-archive-orig-connection:
+      - close
+      x-archive-orig-content-length:
+      - '267'
+      x-archive-orig-date:
+      - Sat, 01 Feb 2020 02:37:57 GMT
+      x-archive-orig-expires:
+      - Sat, 01 Feb 2020 12:07:53 GMT
+      x-archive-orig-server:
+      - Apache
+      x-archive-orig-strict-transport-security:
+      - max-age=31536000; preload;
+      x-archive-orig-x-content-type-options:
+      - nosniff
+      x-archive-src:
+      - epa.gov4-20190324-210417/IA-FOC-epa.gov4-20200201020111-00000.warc.gz
+      x-tr:
+      - '1417'
+      x-ts:
+      - '301'
+    status:
+      code: 301
+      message: Moved Permanently
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.4.3a1.post5+gaf68963 (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: https://web.archive.org/web/20200201023757id_/https://www.epa.gov/sites/production/files/signpost/cc.html
+  response:
+    body:
+      string: ''
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Mon, 25 Sep 2023 19:11:49 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Server:
+      - nginx/1.25.1
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
+      X-Page-Cache:
+      - MISS
+      X-RL:
+      - '0'
+      X-location:
+      - All
+      location:
+      - https://web.archive.org/web/20200201024405id_/https://www.epa.gov/sites/production/files/signpost/cc.html
+      server-timing:
+      - exclusion.robots;dur=0.106669, exclusion.robots.policy;dur=0.097776, cdx.remote;dur=0.083908,
+        esindex;dur=0.007663, LoadShardBlock;dur=341.785461, PetaboxLoader3.resolve;dur=85.767854,
+        PetaboxLoader3.datanode;dur=162.372950
+      x-app-server:
+      - wwwb-app211
+      x-archive-redirect-reason:
+      - found capture at 20200201024405
+      x-tr:
+      - '518'
+      x-ts:
+      - '302'
+    status:
+      code: 302
+      message: FOUND
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.4.3a1.post5+gaf68963 (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: https://web.archive.org/web/20200201024405id_/https://www.epa.gov/sites/production/files/signpost/cc.html
+  response:
+    body:
+      string: "<!DOCTYPE html>\r\n<html class=\"js\" lang=\"en\" dir=\"ltr\">\r\n<head>\r\n
+        \ <meta charset=\"utf-8\" />\r\n  <meta http-equiv=\"ImageToolbar\" content=\"false\"
+        />\r\n  <meta http-equiv=\"cleartype\" content=\"on\" />\r\n  <meta name=\"HandheldFriendly\"
+        content=\"true\" />\r\n  <link rel=\"shortcut icon\" href=\"https://www.epa.gov/sites/all/themes/epa/favicon.ico\"
+        type=\"image/vnd.microsoft.icon\" />\r\n  <meta name=\"MobileOptimized\" content=\"width\"
+        />\r\n  <meta name=\"viewport\" content=\"width=device-width\" />\r\n  <!--googleon:
+        all-->\r\n  <meta name=\"DC.description\" content=\"\" />\r\n  <meta name=\"DC.title\"
+        content=\"\" />\r\n  <!--googleoff: snippet-->\r\n  <meta name=\"keywords\"
+        content=\"\" />\r\n  <link rel=\"canonical\" href=\"\" />\r\n  <link rel=\"shortlink\"
+        href=\"\" />\r\n  <meta name=\"DC.language\" content=\"en\" />\r\n  <meta
+        name=\"DC.Subject.epachannel\" content=\"\" />\r\n  <meta name=\"DC.type\"
+        content=\"\" />\r\n  <meta name=\"DC.Subject.epaopt\" content=\"\" />\r\n
+        \ <meta name=\"DC.date.created\" content=\"\" />\r\n  <meta name=\"DC.date.modified\"
+        content=\"\" />\r\n  <meta name=\"DC.date.reviewed\" content=\"\" />\r\n  <meta
+        name=\"DC.creator\" content=\"\" />\r\n  <title>Help finding information |
+        US EPA</title>\r\n  <!--googleoff: all-->\r\n  <link rel=\"stylesheet\" href=\"https://www.epa.gov/sites/all/libraries/standalone/css/core/style.css\"
+        media=\"all\" />\r\n  <!-- Google Tag Manager -->\r\n  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({\"gtm.start\":new
+        Date().getTime(),event:\"gtm.js\"});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!=\"dataLayer\"?\"&l=\"+l:\"\";j.async=true;j.src=\"//www.googletagmanager.com/gtm.js?id=\"+i+dl;f.parentNode.insertBefore(j,f);})(window,document,\"script\",\"dataLayer\",\"GTM-L8ZB\");</script>\r\n
+        \ <!-- End Google Tag Manager --> \r\n\r\n</head>\r\n<body class=\"html\">\r\n
+        \ <!-- Google Tag Manager -->\r\n  <noscript><iframe src=\"//www.googletagmanager.com/ns.html?id=GTM-L8ZB\"
+        height=\"0\" width=\"0\" style=\"display:none;visibility:hidden\"></iframe></noscript>\r\n
+        \ <!-- End Google Tag Manager -->  \r\n  <div class=\"skip-links\">\r\n    <a
+        href=\"#main-content\" class=\"skip-link element-invisible element-focusable\">Jump
+        to main content</a>\r\n  </div>\r\n  <div id=\"block-pane-official-website-header\"
+        class=\"block block-pane  block-pane-official-website-header sitewide-alert
+        sitewide-alert--official\">\r\n    <div class=\"sitewide-alert__content\">\r\n\t
+        \ <p>An official website of the United States government.</p>\r\n\t</div>\r\n
+        \ </div>\r\n\t<header class=\"masthead clearfix\" role=\"banner\">\r\n\t\t<img
+        alt=\"\" class=\"site-logo\" src=\"https://www.epa.gov/sites/all/themes/epa/logo.png\">\r\n\t\t<div
+        class=\"site-name-and-slogan\">\r\n\t\t\t<h1 class=\"site-name\"><a href=\"https://www.epa.gov/\"
+        rel=\"home\" title=\"Go to the home page\"><span>US EPA</span></a></h1>\r\n\t\t\t<div
+        class=\"site-slogan\">United States Environmental Protection Agency</div>\r\n\t\t</div>\r\n\t\t<div
+        class=\"region-header\">\r\n\t\t\t<div class=\"block-epa-core-gsa-epa-search\"
+        id=\"block-epa-core-gsa-epa-search\">\r\n\t\t\t\t<form action=\"https://search.epa.gov/epasearch/epasearch\"
+        class=\"epa-search\" method=\"get\">\r\n\t\t\t\t\t<label class=\"element-hidden\"
+        for=\"search-box\">Search</label>\r\n          <input class=\"form-text\"
+        id=\"search-box\" name=\"querytext\" placeholder=\"Search EPA.gov\" value=\"\">\r\n
+        \         <button class=\"epa-search-button\" id=\"search-button\" title=\"Search\"
+        type=\"submit\">Search</button>\r\n          <input name=\"areaname\" type=\"hidden\"
+        value=\"\">\r\n          <input name=\"areacontacts\" type=\"hidden\" value=\"\">\r\n
+        \         <input name=\"areasearchurl\" type=\"hidden\" value=\"\">\r\n          <input
+        name=\"typeofsearch\" type=\"hidden\" value=\"epa\">\r\n          <input name=\"result_template\"
+        type=\"hidden\" value=\"2col.ftl\">\r\n\t\t\t\t</form>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t</header>\r\n\t<nav
+        class=\"nav main-nav clearfix\" role=\"navigation\">\r\n\t\t<div class=\"nav__inner\">\r\n\t\t\t<h2
+        class=\"element-invisible\">Main menu</h2>\r\n\t\t\t<ul class=\"menu\" role=\"menu\">\r\n\t\t\t\t<li
+        class=\"menu-item\" role=\"presentation\"><a class=\"menu-link\" href=\"https://www.epa.gov/environmental-topics\"
+        role=\"menuitem\" title=\"Learn about Environmental Topics that EPA covers.\">Environmental
+        Topics</a></li>\r\n\t\t\t\t<li class=\"menu-item\" role=\"presentation\"><a
+        class=\"menu-link\" href=\"https://www.epa.gov/laws-regulations\" role=\"menuitem\"
+        title=\"Laws written by Congress provide the authority for EPA to write regulations.
+        Regulations explain the technical, operational, and legal details necessary
+        to implement laws.\">Laws &amp; Regulations</a></li>\r\n\t\t\t\t<li class=\"menu-item\"
+        role=\"presentation\"><a class=\"menu-link\" href=\"https://www.epa.gov/aboutepa\"
+        role=\"menuitem\" title=\"Learn more about our mission and what we do, how
+        we are organized, and our history.\">About EPA</a></li>\r\n\t\t\t</ul>\r\n\t\t</div>\r\n\t</nav>\r\n\t<div
+        class=\"mobile-nav\" id=\"mobile-nav\">\r\n\t\t<div class=\"mobile-bar clearfix\">\r\n\t\t\t<label
+        class=\"menu-button\" for=\"mobile-nav-toggle\">Menu</label>\r\n\t\t</div>\r\n
+        \   <input checked id=\"mobile-nav-toggle\" type=\"checkbox\">\r\n\t\t<div
+        class=\"mobile-links element-hidden\" id=\"mobile-links\" style=\"height:2404px;\">\r\n\t\t\t<ul
+        class=\"mobile-menu\">\r\n\t\t\t\t<li class=\"menu-item\" role=\"presentation\"><a
+        class=\"menu-link\" href=\"https://www.epa.gov/environmental-topics\" role=\"menuitem\"
+        title=\"Learn about Environmental Topics that EPA covers.\">Environmental
+        Topics</a></li>\r\n\t\t\t\t<li class=\"menu-item\" role=\"presentation\"><a
+        class=\"menu-link\" href=\"https://www.epa.gov/laws-regulations\" role=\"menuitem\"
+        title=\"Laws written by Congress provide the authority for EPA to write regulations.
+        Regulations explain the technical, operational, and legal details necessary
+        to implement laws.\">Laws &amp; Regulations</a></li>\r\n\t\t\t\t<li class=\"menu-item\"
+        role=\"presentation\"><a class=\"menu-link\" href=\"https://www.epa.gov/aboutepa\"
+        role=\"menuitem\" title=\"Learn more about our mission and what we do, how
+        we are organized, and our history.\">About EPA</a></li>\r\n\t\t\t</ul>\r\n\t\t</div>\r\n\t</div>\r\n\t<section
+        class=\"main-content clearfix\" id=\"main-content\" lang=\"en\" role=\"main\"
+        tabindex=\"-1\">\r\n\t\t<!--<div class=\"region-preface clearfix\">\r\n\t\t\t<div
+        class=\"block-views-revision-hublinks-block\" id=\"block-views-revision-hublinks-block\">\r\n\t\t\t\t<div
+        class=\"view view-revision-hublinks view-id-revision_hublinks\">\r\n\t\t\t\t\t<span
+        class=\"related-info\"><strong>Related Topics:</strong></span>\r\n\t\t\t\t\t<ul
+        class=\"menu pipeline\">\r\n\t\t\t\t\t\t<li class=\"menu-item\"><a href=\"{HOME
+        PAGE LINK}\">Home Page</a></li>\r\n\t\t\t\t\t</ul>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\t\t<div
+        class=\"block block-pane block-pane-epa-web-area-connect\" id=\"block-pane-epa-web-area-connect\">\r\n\t\t\t\t<ul
+        class=\"menu utility-menu\">\r\n\t\t\t\t\t <li class=\"menu-item\"><a class=\"menu-link\"
+        href=\"{CONTACT URL}\">Contact Us</a></li>\r\n\t\t\t\t</ul> \r\n\t\t\t</div>\r\n\t\t</div>
+        -->\r\n    <div class=\"main-column clearfix\">\r\n      <!--googleon:all-->\r\n
+        \     <h1  class=\"page-title\">We want to help you find what you are looking
+        for.</h1>\r\n\t  <p>You can view an archived version of this content on the
+        \r\n\t  \t<a href=\"https://19january2017snapshot.epa.gov\">January 19, 2017,
+        snapshot</a>.\r\n\t  </p>\r\n\r\n\t  <h2>Other ways to help you find what
+        you are looking for:</h2>\r\n\t  <div class=\"panel-pane pane-node-content\">\r\n
+        \       <div class=\"pane-content\">\r\n          <div class=\"node node-page
+        clearfix view-mode-full\">\r\n\t\t\t<ul>\r\n                <li><a href=\"https://www.epa.gov/home/advanced-search\">Use
+        our advanced search page</a></li>\r\n\t\t\t\t<li><a href=\"https://www.epa.gov/environmental-topics/z-index\">Browse
+        our curated A-Z index of terms and topics</a> or <a href=\"https://www.epa.gov/topics-epa-web\">see
+        our automated list of website topics</a></li>\r\n\t\t\t\t<li><a href=\"https://publicaccess.zendesk.com/hc/en-us?faq=true\">Search
+        frequently asked questions or submit a question</a></li>\r\n\t\t\t\t<li><a
+        href=\"https://www.epa.gov/\">Go to the EPA home page</a></li>\r\n\t\t\t\t<li>To
+        report problems with our website, or to suggest improvements to our website,
+        please use the \"Contact Us\" link on the page where you see a problem, or
+        where you would like to suggest an improvement. This link is located at the
+        upper right and bottom of each web page.</li>\r\n              </ul>\r\n              <p>You
+        can also search our site.</p>\r\n              <form action=\"https://search.epa.gov/epasearch/epasearch\"
+        method=\"get\">\r\n                <div class=\"form-item form-type-textfield\">\r\n
+        \                 <label for=\"what-look\">What are you looking for?</label><br/>\r\n
+        \                 <input class=\"form-text\" id=\"what-look\" name=\"querytext\"
+        size=\"40\" value=\"\" type=\"text\" />\r\n                  <input class=\"form-submit\"
+        value=\"Search EPA.gov\" type=\"submit\" />\r\n                  <input name=\"typeofsearch\"
+        value=\"epa\" type=\"hidden\" />\r\n                </div>\r\n              </form>\t\t
+        \ \r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n\t</section>\r\n\t<footer
+        class=\"main-footer clearfix\" role=\"contentinfo\">\r\n\t\t<div class=\"main-footer__inner\">\r\n\t\t\t<div
+        class=\"region-footer\">\r\n\t\t\t\t<div class=\"block-pane-epa-global-footer\"
+        id=\"block-pane-epa-global-footer\">\r\n\t\t\t\t\t<div class=\"row cols-3\">\r\n\t\t\t\t\t\t<div
+        class=\"col size-1of3\">\r\n\t\t\t\t\t\t\t<div class=\"col__title\">\r\n\t\t\t\t\t\t\t\tDiscover.\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t<ul
+        class=\"menu\">\r\n\t\t\t\t\t\t\t\t<li><a href=\"https://www.epa.gov/accessibility\">Accessibility</a></li>\r\n\t\t\t\t\t\t\t\t<li><a
+        href=\"https://www.epa.gov/aboutepa/epas-administrator\">EPA Administrator</a></li>\r\n\t\t\t\t\t\t\t\t<li><a
+        href=\"https://www.epa.gov/planandbudget\">Budget &amp; Performance</a></li>\r\n\t\t\t\t\t\t\t\t<li><a
+        href=\"https://www.epa.gov/contracts\">Contracting</a></li>\r\n\t\t\t\t\t\t\t\t<li><a
+        href=\"https://www.epa.gov/home/grants-and-other-funding-opportunities\">Grants</a></li>\r\n\t\t\t\t\t\t\t\t<li><a
+        href=\"https://19january2017snapshot.epa.gov\">January 19, 2017 Web Snapshot</a></li>\r\n\t\t\t\t\t\t\t\t<li><a
+        href=\"https://www.epa.gov/ocr/whistleblower-protections-epa-and-how-they-relate-non-disclosure-agreements-signed-epa-employees\">No
+        FEAR Act Data</a></li>\r\n\t\t\t\t\t\t\t\t<li><a href=\"https://www.epa.gov/privacy\">Privacy</a></li>\r\n\t\t\t\t\t\t\t</ul>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div
+        class=\"col size-1of3\">\r\n\t\t\t\t\t\t\t<div class=\"col__title\">\r\n\t\t\t\t\t\t\t\tConnect.\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t<ul
+        class=\"menu\">\r\n\t\t\t\t\t\t\t\t<li><a href=\"https://www.data.gov/\">Data.gov</a></li>\r\n\t\t\t\t\t\t\t\t<li><a
+        href=\"https://www.epa.gov/office-inspector-general/about-epas-office-inspector-general\">Inspector
+        General</a></li>\r\n\t\t\t\t\t\t\t\t<li><a href=\"https://www.epa.gov/careers\">Jobs</a></li>\r\n\t\t\t\t\t\t\t\t<li><a
+        href=\"https://www.epa.gov/newsroom\">Newsroom</a></li>\r\n\t\t\t\t\t\t\t\t<li><a
+        href=\"https://www.epa.gov/open\">Open Government</a></li>\r\n\t\t\t\t\t\t\t\t<li><a
+        href=\"https://www.regulations.gov/\">Regulations.gov</a></li>\r\n\t\t\t\t\t\t\t\t<li><a
+        href=\"https://www.epa.gov/newsroom/email-subscriptions\">Subscribe</a></li>\r\n\t\t\t\t\t\t\t\t<li><a
+        href=\"https://www.usa.gov/\">USA.gov</a></li>\r\n\t\t\t\t\t\t\t\t<li><a href=\"https://www.whitehouse.gov/\">White
+        House</a></li>\r\n\t\t\t\t\t\t\t</ul>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div
+        class=\"col size-1of3\">\r\n\t\t\t\t\t\t\t<div class=\"col__title\">\r\n\t\t\t\t\t\t\t\tAsk.\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t<ul
+        class=\"menu\">\r\n\t\t\t\t\t\t\t\t<li><a href=\"https://www.epa.gov/home/forms/contact-us\">Contact
+        Us</a></li>\r\n\t\t\t\t\t\t\t\t<li><a href=\"https://www.epa.gov/home/epa-hotlines\">Hotlines</a></li>\r\n\t\t\t\t\t\t\t\t<li><a
+        href=\"https://www.epa.gov/foia\">FOIA Requests</a></li>\r\n\t\t\t\t\t\t\t\t<li><a
+        href=\"https://www.epa.gov/home/frequent-questions-specific-epa-programstopics\">Frequent
+        Questions</a></li>\r\n\t\t\t\t\t\t\t</ul>\r\n\t\t\t\t\t\t\t<div class=\"col__title\">\r\n\t\t\t\t\t\t\t\tFollow.\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t<ul
+        class=\"social-menu\">\r\n\t\t\t\t\t\t\t\t<li><a class=\"menu-link social-facebook\"
+        href=\"https://www.facebook.com/EPA\">Facebook</a></li>\r\n\t\t\t\t\t\t\t\t<li><a
+        class=\"menu-link social-twitter\" href=\"https://twitter.com/epa\">Twitter</a></li>\r\n\t\t\t\t\t\t\t\t<li><a
+        class=\"menu-link social-youtube\" href=\"https://www.youtube.com/user/USEPAgov\">YouTube</a></li>\r\n\t\t\t\t\t\t\t\t<li><a
+        class=\"menu-link social-flickr\" href=\"https://www.flickr.com/photos/usepagov\">Flickr</a></li>\r\n\t\t\t\t\t\t\t\t<li><a
+        class=\"menu-link social-instagram\" href=\"https://www.instagram.com/epagov\">Instagram</a></li>\r\n\t\t\t\t\t\t\t</ul>\r\n\t\t\t\t\t\t\t<p
+        class=\"last-updated\">Last updated on July 23, 2018</p>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t</footer>\r\n<script>\r\n
+        // Small function to take URL pathname, clean it up, and place terms into
+        search box\r\n var pathName = window.location.pathname;\r\n if ( pathName.indexOf('signpost')
+        == -1 ) {\r\n  var re = /[\\/\\-]/gi; // Find all '/' and '-'\r\n  pathName
+        = pathName.replace(re, ' ', 'gi'); // Replace with ' '\r\n  pathName = pathName.substr(0,
+        pathName.lastIndexOf('.')) || pathName; // Strip out any extension\r\n  var
+        whatLook = document.querySelector('#what-look');\r\n  whatLook.value = pathName;\r\n
+        }\r\n\r\n // Insert referer element to override HTTP referrer header\r\n function
+        addReferer(thisForm) {\r\n  var input = document.createElement('input');\r\n
+        \ input.type = 'hidden';\r\n  input.name = 'referer';\r\n  input.value = 'https://www.epa.gov/sites/production/files/signpost/cc.html';\r\n
+        \ thisForm.appendChild(input);\r\n }\r\n // Check for search forms by action
+        \r\n var forms = document.getElementsByTagName('form');\r\n for ( var i=0;
+        i < forms.length; i++ ) {\r\n  attr = forms[i].getAttribute('action');\r\n
+        \ if ( attr.indexOf('epasearch') ) {\r\n   addReferer(document.forms[i]);\r\n
+        \ }\r\n }\r\n</script>\r\n\r\n</body>\r\n</html>\r\n"
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/html
+      Date:
+      - Mon, 25 Sep 2023 19:11:51 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Server:
+      - nginx/1.25.1
+      Transfer-Encoding:
+      - chunked
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
+      X-Page-Cache:
+      - MISS
+      X-RL:
+      - '0'
+      X-location:
+      - All
+      cache-control:
+      - max-age=1800
+      content-security-policy:
+      - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
+        web.archive.org web-static.archive.org wayback-api.archive.org analytics.archive.org
+        pragma.archivelab.org'
+      link:
+      - <https://www.epa.gov/sites/production/files/signpost/cc.html>; rel="original",
+        <https://web.archive.org/web/timemap/link/https://www.epa.gov/sites/production/files/signpost/cc.html>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/https://www.epa.gov/sites/production/files/signpost/cc.html>;
+        rel="timegate", <https://web.archive.org/web/20170428232846/https://www.epa.gov/sites/production/files/signpost/cc.html>;
+        rel="first memento"; datetime="Fri, 28 Apr 2017 23:28:46 GMT", <https://web.archive.org/web/20200131034551/https://www.epa.gov/sites/production/files/signpost/cc.html>;
+        rel="prev memento"; datetime="Fri, 31 Jan 2020 03:45:51 GMT", <https://web.archive.org/web/20200201024405/https://www.epa.gov/sites/production/files/signpost/cc.html>;
+        rel="memento"; datetime="Sat, 01 Feb 2020 02:44:05 GMT", <https://web.archive.org/web/20200201030423/https://www.epa.gov/sites/production/files/signpost/cc.html>;
+        rel="next memento"; datetime="Sat, 01 Feb 2020 03:04:23 GMT", <https://web.archive.org/web/20230925125314/https://www.epa.gov/sites/production/files/signpost/cc.html>;
+        rel="last memento"; datetime="Mon, 25 Sep 2023 12:53:14 GMT"
+      memento-datetime:
+      - Sat, 01 Feb 2020 02:44:05 GMT
+      server-timing:
+      - exclusion.robots;dur=1.198360, exclusion.robots.policy;dur=1.123508, cdx.remote;dur=0.533330,
+        esindex;dur=0.064664, LoadShardBlock;dur=457.817281, PetaboxLoader3.resolve;dur=304.909465,
+        PetaboxLoader3.datanode;dur=285.532180, load_resource;dur=351.626000
+      x-app-server:
+      - wwwb-app215
+      x-archive-orig-cache-control:
+      - max-age=1
+      x-archive-orig-connection:
+      - close
+      x-archive-orig-content-length:
+      - '13031'
+      x-archive-orig-date:
+      - Sat, 01 Feb 2020 02:44:06 GMT
+      x-archive-orig-etag:
+      - '"d4bfbfb8016cc7c58d0972204aa7d8ff:1554207360"'
+      x-archive-orig-expires:
+      - Sat, 01 Feb 2020 02:44:07 GMT
+      x-archive-orig-last-modified:
+      - Tue, 02 Apr 2019 11:12:12 GMT
+      x-archive-orig-server:
+      - AkamaiNetStorage
+      x-archive-orig-strict-transport-security:
+      - max-age=31536000; preload;
+      x-archive-orig-x-content-type-options:
+      - nosniff
+      x-archive-src:
+      - ofmpub.epa.gov-20171125-095336/IA-FOC-ofmpub.epa.gov-20200201023948-00000.warc.gz
+      x-tr:
+      - '1319'
+      x-ts:
+      - '200'
+    status:
+      code: 200
+      message: OK
+version: 1
