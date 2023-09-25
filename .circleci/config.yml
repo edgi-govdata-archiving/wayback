@@ -76,6 +76,7 @@ jobs:
       - checkout
       - setup_pip:
           python-version: << parameters.python-version >>
+          urllib3-version: << parameters.urllib3-version >>
 
       - run:
           name: Tests
