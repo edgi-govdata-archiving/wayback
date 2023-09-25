@@ -3,9 +3,11 @@ from itertools import islice
 from pathlib import Path
 import time
 import pytest
-import vcr
+from vcr import VCR
+from vcr.util import compose
 import requests
 from unittest import mock
+import urllib3
 from .._utils import SessionClosedError
 from .._client import (CdxRecord,
                        Mode,
@@ -17,14 +19,25 @@ from ..exceptions import (BlockedSiteError,
                           RateLimitError)
 
 
-# This stashes HTTP responses in JSON files (one per test) so that an actual
+urllib3_major = urllib3.__version__.split('.', 1)[0]
+
+
+# VCR stashes HTTP responses in YAML files (one per test) so that an actual
 # server does not have to be running.
 cassette_library_dir = str(Path(__file__).parent / Path('cassettes/'))
-ia_vcr = vcr.VCR(
-         serializer='yaml',
-         cassette_library_dir=cassette_library_dir,
-         record_mode='once',
-         match_on=['uri', 'method'],
+# VCR outputs different cassettes for urllib3 v1 vs. v2, so we need to include
+# include the urllib3 version in the cassette path. :(
+# https://github.com/kevin1024/vcrpy/issues/719
+cassette_namer = compose(
+    VCR.ensure_suffix('.yaml'),
+    VCR.ensure_suffix(f'.urllib3v{urllib3_major}')
+)
+ia_vcr = VCR(
+    serializer='yaml',
+    cassette_library_dir=cassette_library_dir,
+    path_transformer=cassette_namer,
+    record_mode='once',
+    match_on=['uri', 'method'],
 )
 
 
