@@ -5,9 +5,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - edgi.web_monitoring.WaybackClient/0.2.0a1.post0.dev0+g800608f
+      - wayback/0.4.3a1.post5.dev0+gaf68963 (+https://github.com/edgi-govdata-archiving/wayback)
     method: GET
-    uri: https://web.archive.org/web/20170929002712id_/https://www.fws.gov/birds/
+    uri: https://web.archive.org/web/20150509080314id_/https://www.fws.gov/birds/
   response:
     body:
       string: ''
@@ -19,22 +19,37 @@ interactions:
       Content-Type:
       - text/plain; charset=utf-8
       Date:
-      - Mon, 18 Nov 2019 17:25:10 GMT
-      Location:
-      - https://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/
+      - Mon, 25 Sep 2023 19:51:21 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
       Server:
-      - nginx/1.15.8
-      X-App-Server:
-      - wwwb-app29
-      X-Archive-Redirect-Reason:
-      - found capture at 20171124151315
-      X-Cache-Key:
-      - httpweb.archive.org/web/20170929002712id_/https://www.fws.gov/birds/US
+      - nginx/1.25.1
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
       X-Page-Cache:
       - MISS
+      X-RL:
+      - '0'
       X-location:
       - All
-      X-ts:
+      location:
+      - https://web.archive.org/web/20150503090125id_/http://www.fws.gov/birds/
+      server-timing:
+      - captures_list;dur=278.385921, exclusion.robots;dur=0.184694, exclusion.robots.policy;dur=0.174026,
+        cdx.remote;dur=0.059065, esindex;dur=0.008835, LoadShardBlock;dur=134.519404,
+        PetaboxLoader3.resolve;dur=143.126584, PetaboxLoader3.datanode;dur=108.231029,
+        load_resource;dur=130.837851
+      x-app-server:
+      - wwwb-app215
+      x-archive-redirect-reason:
+      - found capture at 20150503090125
+      x-tr:
+      - '417'
+      x-ts:
       - '302'
     status:
       code: 302
