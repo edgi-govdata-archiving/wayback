@@ -1,0 +1,111 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.4.3a1.post3.dev0+g738efb9 (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: https://web.archive.org/cdx/search/cdx?url=nasa.gov%2F&matchType=prefix&limit=10&from=20220101000000&to=20220201000000&showResumeKey=true&resolveRevisits=true
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAK3TPU/DMBAG4L2/wksHBGrsO19M2KqENA11ndB8NVsHlA5AkRo1/HwSBiSkWEUi
+        8nq6R3fvuTld7t4P58ONw4ADcNE/jh5IdmzbjwfH6bpuMRQsmtPFYe3LZ+sc27fXvpqz5TKDx9yE
+        lUxNHCujSrUyAWD0rItIU8oQCGbNGCFBqmsEcsFqdx1LN67qXGX+xg/W2wyNLsKooFWd7HOmSFiF
+        +2/h/N8pJHFpMQjFRAYiHzUEl6gmM8bTEJz4Txq2JACkzrfVTqPeGUqKkjauLqX2gyBP0v1Tvya0
+        dRcwSdakLAIKnEpwrQJOlsL4NQn06OoUf/x2/aIGYw7+0GQO3hzC218Szr4AdYEU1/sDAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Type:
+      - text/plain;charset=UTF-8
+      Date:
+      - Mon, 25 Sep 2023 00:35:32 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Server:
+      - nginx/1.25.1
+      Transfer-Encoding:
+      - chunked
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
+      X-Page-Cache:
+      - BYPASS
+      X-RL:
+      - '0'
+      X-location:
+      - cdx
+      content-encoding:
+      - gzip
+      x-app-server:
+      - wwwb-app15
+      x-tr:
+      - '253'
+      x-ts:
+      - '200'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.4.3a1.post3.dev0+g738efb9 (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: https://web.archive.org/cdx/search/cdx?url=nasa.gov%2F&matchType=prefix&limit=10&from=20220101000000&to=20220201000000&filter=statuscode%3A404&showResumeKey=true&resolveRevisits=true
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAALWUX0/CMBTF3/kUvPTBKGt7266db4TIg8bE+A/DC2mgbIusXVh1+u3dIISpQx2J
+        e7g7SZv7O+e2W+xez6wu9AlGQLK0KFJnZ7mOTYEzvS6wNeVWZcYn2pog8dmqDwSAUBqRiFCAfuJ9
+        fo5xWZZB3SuI3Wundt68ebxRnPD+5fUEwvubOzZ5uBtyeTUUT49wPb29mk7E+Ene9EFR2oubxr3L
+        03mBtVk7q198rZdG+5d1xfXr1WxhsvfCp8vULD4HoJxyHm4CFC0JOvftnkS2JvFmnli3cvH7Hvic
+        +nli7MDltZFmDpA0pIKrQwfRsWnXEDISzRAGkCJIw84cEMIYhwNDvtjsHgLujpX0ByyjlFUv9Q9Y
+        /hWrkFru0hIixS5tK7XaPD6CqlSDOtjRaPVIxltpg2OyNa/jIF8sMQ0jAirTqZ0t9MrMrCv1c1Ct
+        NCxUirVb+LlD56+FNC9agOaANNnW/fgFi7hodROgEaAh2dYjhhPBIfr3uv/DKGAs/N3P93rM8ZFe
+        bRHBqIYgiBCMAwSisgSisvZHdfrJvOx9AOhJokklBgAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Type:
+      - text/plain;charset=UTF-8
+      Date:
+      - Mon, 25 Sep 2023 00:35:33 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Server:
+      - nginx/1.25.1
+      Transfer-Encoding:
+      - chunked
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
+      X-Page-Cache:
+      - BYPASS
+      X-RL:
+      - '0'
+      X-location:
+      - cdx
+      content-encoding:
+      - gzip
+      x-app-server:
+      - wwwb-app52
+      x-tr:
+      - '371'
+      x-ts:
+      - '200'
+    status:
+      code: 200
+      message: OK
+version: 1

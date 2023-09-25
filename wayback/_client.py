@@ -570,7 +570,7 @@ class WaybackClient(_utils.DepthCountedContext):
             Only include captures before this date. Equivalent to the `to`
             argument in the CDX API. If it does not have a time zone, it is
             assumed to be in UTC.
-        filter_field : str or list of str, optional
+        filter_field : str or list of str or tuple of str, optional
             A filter or list of filters for any field in the results. Equivalent
             to the ``filter`` argument in the CDX API. To apply multiple
             filters, use a list of strings instead of a single string. Format:
@@ -652,7 +652,7 @@ class WaybackClient(_utils.DepthCountedContext):
             if value is not None:
                 if isinstance(value, str):
                     query[key] = value
-                elif isinstance(value, list):
+                elif isinstance(value, (list, tuple)):
                     query[key] = value
                 elif isinstance(value, date):
                     query[key] = _utils.format_timestamp(value)
