@@ -6,6 +6,9 @@ commands:
     parameters:
       python-version:
         type: string
+      urllib3-version:
+        type: string
+        default: "1"
       install-dev:
         description: Install dev dependencies (not just test dependencies)
         type: boolean
@@ -31,6 +34,7 @@ commands:
             pip install --upgrade pip
             pip install .
             pip install -r requirements-test.txt  # Extra requirements for tests.
+            pip install urllib3~=<< parameters.urllib3-version >>
 
       # Dev dependencies are only compatible on Python 3.8+, so only install
       # them on demand.
@@ -61,6 +65,8 @@ jobs:
   test:
     parameters:
       python-version:
+        type: string
+      urllib3-version:
         type: string
 
     working_directory: ~/wayback
@@ -186,6 +192,11 @@ workflows:
           matrix:
             parameters:
               python-version: ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11"]
+              urllib3-version: ["1", "2"]
+            exclude:
+              # urllib3v2 is not compatible with Python < 3.7.
+              - python-version: "3.6"
+                urllib3-version: "2"
       - test-python-prerelease
       - lint
       - build
