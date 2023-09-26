@@ -2,32 +2,32 @@
 Release History
 ===============
 
-v0.4.3 (2023-09-25)
+v0.4.3 (2023-09-26)
 -------------------
 
-This is mainly a compatibility releae: it adds support for urllib3 v2.x and Python 3.12.0 (not yet released, but SOON!). It also adds support for multiple filters in :meth:`wayback.WaybackClient.search`. There are no breaking changes.
+This is mainly a compatibility releae: it adds support for urllib3 v2.x and the next upcoming major release of Python, v3.12.0. It also adds support for multiple filters in :meth:`wayback.WaybackClient.search`. There are no breaking changes.
 
 
 Features
 ^^^^^^^^
 
-- You can now apply multiple filters to a search by using a list or tuple for the ``filter_field`` parameter of :meth:`wayback.WaybackClient.search`. (:issue:`119`)
+You can now apply multiple filters to a search by using a list or tuple for the ``filter_field`` parameter of :meth:`wayback.WaybackClient.search`. (:issue:`119`)
 
-  For example, to search for all captures at ``nasa.gov`` with a 404 status and “feature” somewhere in the URL:
+For example, to search for all captures at ``nasa.gov`` with a 404 status and “feature” somewhere in the URL:
 
-  .. code-block:: python
+.. code-block:: python
 
-     client.search('nasa.gov/',
-                   match_type='prefix',
-                   filter_field=['statuscode:404',
-                                 'urlkey:.*feature.*'])
+   client.search('nasa.gov/',
+                 match_type='prefix',
+                 filter_field=['statuscode:404',
+                               'urlkey:.*feature.*'])
 
 
 Fixes & Maintenance
 ^^^^^^^^^^^^^^^^^^^
 
 - Add support for Python 3.12.0. (:issue:`123`)
-- Add support for urllib3 v2.x. (:issue:`116`)
+- Add support for urllib3 v2.x (urllib3 v1.20+ also still works). (:issue:`116`)
 
 
 v0.4.3a1 (2023-09-22)
