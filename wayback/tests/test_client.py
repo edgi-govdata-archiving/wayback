@@ -3,9 +3,9 @@ from itertools import islice
 from pathlib import Path
 import time
 import pytest
-import vcr
 import requests
 from unittest import mock
+from .support import create_vcr
 from .._utils import SessionClosedError
 from .._client import (CdxRecord,
                        Mode,
@@ -17,16 +17,7 @@ from ..exceptions import (BlockedSiteError,
                           RateLimitError)
 
 
-# This stashes HTTP responses in JSON files (one per test) so that an actual
-# server does not have to be running.
-cassette_library_dir = str(Path(__file__).parent / Path('cassettes/'))
-ia_vcr = vcr.VCR(
-         serializer='yaml',
-         cassette_library_dir=cassette_library_dir,
-         record_mode='once',
-         match_on=['uri', 'method'],
-)
-
+ia_vcr = create_vcr()
 
 # It's tough to capture a rate-limited response. Using VCR to do so would
 # require an overly-complex test and a very verbose recording (with lots of
@@ -324,9 +315,9 @@ def test_get_memento():
                 'url': 'https://web.archive.org/web/20050323155300id_/http://www.fws.gov:80/birds'
             },
             'last memento': {
-                'datetime': 'Thu, 06 Oct 2022 03:10:05 GMT',
+                'datetime': 'Sun, 19 Mar 2023 07:02:36 GMT',
                 'rel': 'last memento',
-                'url': 'https://web.archive.org/web/20221006031005id_/https://fws.gov/birds'
+                'url': 'https://web.archive.org/web/20230319070236id_/http://fws.gov/birds/'
             },
             'prev memento': {
                 'datetime': 'Fri, 29 Sep 2017 00:27:12 GMT',
@@ -600,7 +591,7 @@ def test_get_memento_with_redirect_in_view_mode():
 def test_get_memento_should_fail_for_non_playbackable_mementos():
     with WaybackClient() as client:
         with pytest.raises(MementoPlaybackError):
-            client.get_memento('https://www.fws.gov/birds/', '20170929002712')
+            client.get_memento('https://www.fws.gov/birds/', '20150509080314')
 
 
 @ia_vcr.use_cassette()
@@ -822,6 +813,7 @@ class TestWaybackSession:
         duration_with_limits = time.time() - start_time
 
         # Check that disabling the rate limits through the get_memento API works.
+        time.sleep(1)  # Wait to exceed any previous rate limits.
         start_time = time.time()
         with WaybackClient(WaybackSession(memento_calls_per_second=0)) as client:
             for i in range(3):
@@ -829,8 +821,7 @@ class TestWaybackSession:
         duration_without_limits = time.time() - start_time
 
         # Check that a different rate limit set through the session is applied correctly.
-        # I need to sleep 0.1 seconds in order to reset the rate limit.
-        time.sleep(0.1)
+        time.sleep(1)  # Wait to exceed any previous rate limits.
         start_time = time.time()
         with WaybackClient(WaybackSession(memento_calls_per_second=10)) as client:
             for i in range(6):

@@ -30,6 +30,7 @@ Fixes & Maintenance
 ^^^^^^^^^^^^^^^^^^^
 
 - Add support for Python 3.12.0. (:issue:`123`)
+- Add support for urllib3 v2.x. (:issue:`116`)
 
 
 v0.4.3a1 (2023-09-22)
