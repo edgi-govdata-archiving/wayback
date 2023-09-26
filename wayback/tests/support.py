@@ -132,6 +132,8 @@ def create_vcr():
         record_mode='once',
         match_on=['uri', 'method'],
     )
-    custom_vcr.register_serializer('yaml',
-                                   Urllib3Serializer(vcr.serializers.yamlserializer))
+    custom_vcr.register_serializer(
+        'yaml',
+        Urllib3Serializer(vcr.serializers.yamlserializer)
+    )
     return custom_vcr
