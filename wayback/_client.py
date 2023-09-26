@@ -605,10 +605,23 @@ class WaybackClient(_utils.DepthCountedContext):
             assumed to be in UTC.
         filter_field : str or list of str or tuple of str, optional
             A filter or list of filters for any field in the results. Equivalent
-            to the ``filter`` argument in the CDX API. To apply multiple
-            filters, use a list of strings instead of a single string. Format:
-            ``[!]field:regex``, e.g. ``'!statuscode:200'`` to select only
-            captures with a non-200 status code.
+            to the ``filter`` argument in the CDX HTTP API. Format:
+            ``[!]field:regex`` or ``~[!]field:substring``, e.g.
+            ``'!statuscode:200'`` to select only captures with a non-2xx status
+            code, or ``'~urlkey:feature'`` to select only captures where the
+            SURT-formatted URL key has "feature" somewhere in it.
+
+            To apply multiple filters, use a list or tuple of strings instead of
+            a single string, e.g. ``['statuscode:200', 'urlkey:.*feature.*']``.
+
+            Regexes are matched against the *entire* field value. For example,
+            ``'statuscode:2'`` will never match, because all ``statuscode``
+            values are three characters. Instead, to match all status codes with
+            a "2" in them, use ``'statuscode:.*2.*'``. Add a ``!`` at before the
+            field name to negate the match.
+
+            Valid field names are: ``urlkey``, ``timestamp``, ``original``,
+            ``mimetype``, ``statuscode``, ``digest``, ``length``.
         collapse : str, optional
             Collapse consecutive results that match on a given field. (format:
             `fieldname` or `fieldname:N` -- N is the number of chars to match.)
