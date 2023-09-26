@@ -2,10 +2,31 @@
 Release History
 ===============
 
+In Development
+--------------
+
+Breaking Changes
+^^^^^^^^^^^^^^^^
+
+- N/A
+
+
+Features
+^^^^^^^^
+
+- N/A
+
+
+Fixes & Maintenance
+^^^^^^^^^^^^^^^^^^^
+
+- N/A
+
+
 v0.4.3 (2023-09-26)
 -------------------
 
-This is mainly a compatibility releae: it adds support for urllib3 v2.x and the next upcoming major release of Python, v3.12.0. It also adds support for multiple filters in :meth:`wayback.WaybackClient.search`. There are no breaking changes.
+This is mainly a compatibility release: it adds support for urllib3 v2.x and the next upcoming major release of Python, v3.12.0. It also adds support for multiple filters in :meth:`wayback.WaybackClient.search`. There are no breaking changes.
 
 
 Features
