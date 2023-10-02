@@ -145,10 +145,11 @@ jobs:
             . ~/venv/bin/activate
             make -C docs html
 
+  # TODO: Remove when 3.12 is available from the cimg/python repo.
   test-python-prerelease:
     working_directory: ~/wayback
     docker:
-      - image: mr0grog/circle-python-pre:3.12.0rc3
+      - image: mr0grog/circle-python-pre:3.12.0
     steps:
       - checkout
       - setup_pip:
@@ -166,25 +167,26 @@ jobs:
             . ~/venv/bin/activate
             coverage report -m
 
-      # Lint
-      - run:
-          name: Code linting
-          command: |
-            . ~/venv/bin/activate
-            flake8 .
+      # These are kept in case we discover we need to do builds or other checks in 3.12.
+      # # Lint
+      # - run:
+      #     name: Code linting
+      #     command: |
+      #       . ~/venv/bin/activate
+      #       flake8 .
 
-      # Build
-      - run:
-          name: Build Distribution
-          command: |
-            . ~/venv/bin/activate
-            python setup.py sdist bdist_wheel
-      - run:
-          name: Check Distribution
-          command: |
-            . ~/venv/bin/activate
-            twine check dist/*
-            check-wheel-contents --toplevel wayback dist
+      # # Build
+      # - run:
+      #     name: Build Distribution
+      #     command: |
+      #       . ~/venv/bin/activate
+      #       python setup.py sdist bdist_wheel
+      # - run:
+      #     name: Check Distribution
+      #     command: |
+      #       . ~/venv/bin/activate
+      #       twine check dist/*
+      #       check-wheel-contents --toplevel wayback dist
 
 workflows:
   ci:
