@@ -33,6 +33,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as readme_file:
 # https://pip.pypa.io/en/stable/reference/pip_install/#requirements-file-format
 REQUIREMENT_DELIMITER = re.compile(r';|--')
 
+
 def read_requirements(filename):
     """
     Read a pip requirements file into a list of standard package requirements.
