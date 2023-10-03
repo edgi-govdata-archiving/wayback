@@ -1,0 +1,10 @@
+version: 2
+
+updates:
+- package-ecosystem: pip
+  directory: "/"
+  schedule:
+    interval: monthly
+  allow:
+    - dependency-type: "development"
+  open-pull-requests-limit: 10

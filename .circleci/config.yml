@@ -32,8 +32,7 @@ commands:
             . ~/venv/bin/activate
             # Ensure pip is up-to-date
             pip install --upgrade pip
-            pip install .
-            pip install -r requirements-test.txt  # Extra requirements for tests.
+            pip install .[test]
             pip install 'urllib3 ~=<< parameters.urllib3-version >>'
 
       # Dev dependencies are only compatible on Python 3.8+, so only install
@@ -44,7 +43,7 @@ commands:
             - run:
                 command: |
                   . ~/venv/bin/activate
-                  pip install -r requirements-dev.txt
+                  pip install .[dev]
 
       # Docs dependencies are only compatible on Python 3.10+, so only install
       # them on demand.
@@ -54,7 +53,7 @@ commands:
             - run:
                 command: |
                   . ~/venv/bin/activate
-                  pip install -r requirements-docs.txt
+                  pip install .[docs]
 
       - save_cache:
           key: cache_v6-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}-{{ checksum "requirements-docs.txt" }}
