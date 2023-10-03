@@ -2,7 +2,7 @@
 # etc.) but not necessarily required for _using_ it. Some dev tooling requires
 # newer Python versions than the package itself (>=3.8)
 wheel
-check-wheel-contents ~=0.1.0
+check-wheel-contents ~=0.5.0
 flake8 ~=6.1.0
 twine
 -r requirements-test.txt
