@@ -27,10 +27,21 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.rst'), encoding='utf-8') as readme_file:
     readme = readme_file.read()
 
-with open(path.join(here, 'requirements.txt')) as requirements_file:
-    # Parse requirements.txt, ignoring any commented-out lines.
-    requirements = [line for line in requirements_file.read().splitlines()
-                    if not line.startswith('#')]
+# Delimits a setup.py-compatible requirement name/version from the extras that
+# only pip supports (environment info, CLI options, etc.).
+# https://pip.pypa.io/en/stable/reference/pip_install/#requirements-file-format
+REQUIREMENT_DELIMITER = re.compile(r';|--')
+
+def read_requirements(filename):
+    """
+    Read a pip requirements file into a list of standard package requirements.
+    """
+    with open(path.join(here, filename)) as file:
+        return [REQUIREMENT_DELIMITER.split(line, 1)[0]
+                for line in file.read().splitlines()
+                if (not line.startswith('git+https://') and
+                    not line.startswith('#') and
+                    not line.startswith('-r'))]
 
 
 setup(
@@ -57,7 +68,12 @@ setup(
             # 'path/to/data_file',
         ]
     },
-    install_requires=requirements,
+    install_requires=read_requirements('requirements.txt'),
+    extras_require={
+        'dev': read_requirements('requirements-dev.txt'),
+        'docs': read_requirements('requirements-docs.txt'),
+        'test': read_requirements('requirements-test.txt'),
+    },
     license="BSD (3-clause)",
     project_urls={
         'Documentation': 'https://wayback.readthedocs.io/en/stable/',
