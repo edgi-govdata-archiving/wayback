@@ -91,11 +91,11 @@ jobs:
   lint:
     working_directory: ~/wayback
     docker:
-      - image: cimg/python:3.11
+      - image: cimg/python:3.12
     steps:
       - checkout
       - setup_pip:
-          python-version: "3.11"
+          python-version: "3.12"
           install-dev: true
       - run:
           name: Code linting
@@ -106,11 +106,11 @@ jobs:
   build:
     working_directory: ~/wayback
     docker:
-      - image: cimg/python:3.11
+      - image: cimg/python:3.12
     steps:
       - checkout
       - setup_pip:
-          python-version: "3.11"
+          python-version: "3.12"
           install-dev: true
       - run:
           name: Build Distribution
@@ -132,11 +132,11 @@ jobs:
   docs:
     working_directory: ~/wayback
     docker:
-      - image: cimg/python:3.11
+      - image: cimg/python:3.12
     steps:
       - checkout
       - setup_pip:
-          python-version: "3.11"
+          python-version: "3.12"
           install-docs: true
       - run:
           name: Build docs
@@ -144,62 +144,18 @@ jobs:
             . ~/venv/bin/activate
             make -C docs html
 
-  # TODO: Remove when 3.12 is available from the cimg/python repo.
-  test-python-prerelease:
-    working_directory: ~/wayback
-    docker:
-      - image: mr0grog/circle-python-pre:3.12.0
-    steps:
-      - checkout
-      - setup_pip:
-          python-version: 3-12-0
-          install-dev: true
-
-      - run:
-          name: Tests
-          command: |
-            . ~/venv/bin/activate
-            coverage run -m pytest -vv
-      - run:
-          name: Coverage
-          command: |
-            . ~/venv/bin/activate
-            coverage report -m
-
-      # These are kept in case we discover we need to do builds or other checks in 3.12.
-      # # Lint
-      # - run:
-      #     name: Code linting
-      #     command: |
-      #       . ~/venv/bin/activate
-      #       flake8 .
-
-      # # Build
-      # - run:
-      #     name: Build Distribution
-      #     command: |
-      #       . ~/venv/bin/activate
-      #       python setup.py sdist bdist_wheel
-      # - run:
-      #     name: Check Distribution
-      #     command: |
-      #       . ~/venv/bin/activate
-      #       twine check dist/*
-      #       check-wheel-contents dist
-
 workflows:
   ci:
     jobs:
       - test:
           matrix:
             parameters:
-              python-version: ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11"]
+              python-version: ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
               urllib3-version: ["1.20", "2.0"]
             exclude:
               # urllib3v2 is not compatible with Python < 3.7.
               - python-version: "3.6"
                 urllib3-version: "2.0"
-      - test-python-prerelease
       - lint
       - build
       - docs
