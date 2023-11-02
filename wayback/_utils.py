@@ -204,7 +204,7 @@ _rate_limit_lock = threading.Lock()
 
 
 @contextmanager
-def rate_limited(calls_per_second=2, group='default'):
+def rate_limited(calls_per_second=1, group='default'):
     """
     A context manager that restricts entries to its body to occur only N times
     per second (N can be a float). The current thread will be put to sleep in
