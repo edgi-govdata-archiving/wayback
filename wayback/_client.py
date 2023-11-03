@@ -414,7 +414,6 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
                     read_and_close(response)
 
                 if retries >= maximum:
-                    logger.error("Too many retries %s >= %s", retries, maximum)
                     raise WaybackRetryError(retries, total_time, error) from error
                 elif not self.should_retry_error(error):
                     raise
@@ -717,7 +716,6 @@ class WaybackClient(_utils.DepthCountedContext):
             sent_query, next_query = next_query, None
             with _utils.rate_limited(self.session.search_calls_per_second,
                                      group='search'):
-                logger.debug("querying %s %s", CDX_SEARCH_URL, sent_query)
                 response = self.session.request('GET', CDX_SEARCH_URL,
                                                 params=sent_query)
                 try:
