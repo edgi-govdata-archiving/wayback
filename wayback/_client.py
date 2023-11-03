@@ -423,7 +423,7 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
             if retries > 0:
                 seconds = self.backoff * 2 ** (retries - 1)
                 total_time += seconds
-                logger.debug("retrying after sleep of %s seconds", seconds)
+                logger.debug("Will retry after sleeping for %s seconds...", seconds)
                 time.sleep(seconds)
 
             retries += 1
