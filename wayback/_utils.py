@@ -227,7 +227,7 @@ def rate_limited(calls_per_second=2, group='default'):
             current_time = time.time()
             if current_time - last_call < minimum_wait:
                 secs = minimum_wait - (current_time - last_call)
-                logger.debug("sleeping %s", secs)
+                logger.debug("Hit rate limit, sleeping for %s seconds", secs)
                 time.sleep(secs)
             _last_call_by_group[group] = time.time()
         yield
