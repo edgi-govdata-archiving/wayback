@@ -408,14 +408,15 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
                         raise RateLimitError(result)
                     return result
             except WaybackSession.handleable_errors as error:
-                logger.warn("caught exception during request: %s", error)
                 response = getattr(error, 'response', None)
                 if response:
                     read_and_close(response)
 
                 if retries >= maximum:
                     raise WaybackRetryError(retries, total_time, error) from error
-                elif not self.should_retry_error(error):
+                elif self.should_retry_error(error):
+                    logger.warn("Caught exception during request, will retry: %s", error)
+                else:
                     raise
 
             # The first retry has no delay.
