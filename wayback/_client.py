@@ -400,7 +400,7 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
         retries = 0
         while True:
             try:
-                logger.debug("sending %s", kwargs)
+                logger.debug("sending HTTP request %s '%s', %s", args[0].method, args[0].url, kwargs)
                 result = super().send(*args, **kwargs)
                 if retries >= maximum or not self.should_retry(result):
                     if result.status_code == 429:
