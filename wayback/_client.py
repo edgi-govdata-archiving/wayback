@@ -400,7 +400,7 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
         retries = 0
         while True:
             try:
-                logger.debug("sending HTTP request %s '%s', %s", args[0].method, args[0].url, kwargs)
+                logger.debug('sending HTTP request %s "%s", %s', args[0].method, args[0].url, kwargs)
                 result = super().send(*args, **kwargs)
                 if retries >= maximum or not self.should_retry(result):
                     if result.status_code == 429:
@@ -418,7 +418,7 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
                 if retries >= maximum:
                     raise WaybackRetryError(retries, total_time, error) from error
                 elif self.should_retry_error(error):
-                    logger.warn("Caught exception during request, will retry: %s", error)
+                    logger.warn('Caught exception during request, will retry: %s', error)
                 else:
                     raise
 
@@ -426,7 +426,7 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
             if retries > 0:
                 seconds = self.backoff * 2 ** (retries - 1)
                 total_time += seconds
-                logger.debug("Will retry after sleeping for %s seconds...", seconds)
+                logger.debug('Will retry after sleeping for %s seconds...', seconds)
                 time.sleep(seconds)
 
             retries += 1
