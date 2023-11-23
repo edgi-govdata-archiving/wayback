@@ -20,7 +20,8 @@ Features
 Fixes & Maintenance
 ^^^^^^^^^^^^^^^^^^^
 
-- N/A
+- Adjusted default rate limits to work better with current throttling in use at archive.org. (:issue:`140`)
+- Added more logging around requests are rate limiting. (:issue:`139`)
 
 
 v0.4.3 (2023-09-26)
