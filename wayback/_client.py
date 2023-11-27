@@ -418,7 +418,7 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
                 if retries >= maximum:
                     raise WaybackRetryError(retries, total_time, error) from error
                 elif self.should_retry_error(error):
-                    logger.warn('Caught exception during request, will retry: %s', error)
+                    logger.info('Caught exception during request, will retry: %s', error)
                 else:
                     raise
 
