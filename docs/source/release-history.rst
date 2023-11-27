@@ -22,6 +22,7 @@ Fixes & Maintenance
 
 - Adjusted default rate limits to work better with current throttling in use at archive.org. (:issue:`140`)
 - Added more logging around requests are rate limiting. (:issue:`139`)
+- Fix calculation of the ``time`` attribute on :class:`wayback.exceptions.WaybackRetryError`. It turns out it was only accounting for the time spent waiting between retries and skipping the time waiting for the server to respond. (:issue:`142`)
 
 
 v0.4.3 (2023-09-26)
