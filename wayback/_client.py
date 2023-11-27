@@ -407,7 +407,7 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
             try:
                 logger.debug('sending HTTP request %s "%s", %s', args[0].method, args[0].url, kwargs)
                 result = super().send(*args, **kwargs)
-                retry_delay = self.get_response_retry_after(result)
+                retry_delay = self.get_retry_delay(retries, result)
 
                 if retries >= maximum or not self.should_retry(result):
                     if result.status_code == 429:
@@ -419,21 +419,19 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
                 response = getattr(error, 'response', None)
                 if response:
                     read_and_close(response)
-                    retry_delay = self.get_response_retry_after(response)
 
                 if retries >= maximum:
                     raise WaybackRetryError(retries, total_time, error) from error
                 elif self.should_retry_error(error):
+                    retry_delay = self.get_retry_delay(retries, response)
                     logger.info('Caught exception during request, will retry: %s', error)
                 else:
                     raise
 
             # The first retry has no delay unless the response specified one.
-            if retries > 0 or retry_delay > 0:
-                retry_delay = max(self.backoff * 2 ** (retries - 1), retry_delay)
-                total_time += retry_delay
-                logger.debug('Will retry after sleeping for %s seconds...', retry_delay)
-                time.sleep(retry_delay)
+            total_time += retry_delay
+            logger.debug('Will retry after sleeping for %s seconds...', retry_delay)
+            time.sleep(retry_delay)
 
             retries += 1
 
@@ -478,12 +476,20 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
 
         return False
 
-    def get_response_retry_after(self, response):
+    def get_retry_delay(self, retries, response=None):
+        delay = 0
+
         # As of 2023-11-27, the Wayback Machine does not include a `Retry-After`
         # header on 429 responses, so this parsing is just future-proofing.
-        delay = _utils.parse_retry_after(response.headers.get('Retry-After')) or 0
+        if response:
+            delay = _utils.parse_retry_after(response.headers.get('Retry-After')) or delay
+
         if response.status_code == 429 and delay == 0:
             delay = DEFAULT_RATE_LIMIT_DELAY
+
+        # No default backoff on the first retry.
+        if retries > 0:
+            delay = max(self.backoff * 2 ** (retries - 1), delay)
 
         return delay
 
