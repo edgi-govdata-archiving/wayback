@@ -404,7 +404,7 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
                 result = super().send(*args, **kwargs)
                 if retries >= maximum or not self.should_retry(result):
                     if result.status_code == 429:
-                        raise RateLimitError(result)
+                        raise RateLimitError(result, _utils.parse_retry_after(result.headers.get('Retry-After')))
                     return result
                 else:
                     # TODO: parse and use Retry-After header if present.

@@ -90,15 +90,9 @@ class RateLimitError(WaybackException):
         ``None``.
     """
 
-    def __init__(self, response):
+    def __init__(self, response, retry_after):
         self.response = response
-
-        # The Wayback Machine does not generally include a `Retry-After` header
-        # at the time of this writing, but this code is included in case they
-        # add it in the future. The standard recommends it:
-        # https://tools.ietf.org/html/rfc6585#section-4
-        retry_header = response.headers.get('Retry-After')
-        self.retry_after = int(retry_header) if retry_header else None
+        self.retry_after = retry_after
 
         message = 'Wayback rate limit exceeded'
         if self.retry_after:
