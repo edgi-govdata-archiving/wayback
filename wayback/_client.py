@@ -411,13 +411,15 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
 
                 if retries >= maximum or not self.should_retry(response):
                     if response.status_code == 429:
+                        read_and_close(response)
                         raise RateLimitError(response, retry_delay)
                     return response
                 else:
                     logger.debug('Received error response (status: %s), will retry', response.status_code)
+                    read_and_close(response)
             except WaybackSession.handleable_errors as error:
                 response = getattr(error, 'response', None)
-                if response:
+                if response is not None:
                     read_and_close(response)
 
                 if retries >= maximum:
@@ -478,11 +480,10 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
 
         # As of 2023-11-27, the Wayback Machine does not include a `Retry-After`
         # header on 429 responses, so this parsing is just future-proofing.
-        if response:
+        if response is not None:
             delay = _utils.parse_retry_after(response.headers.get('Retry-After')) or delay
-
-        if response.status_code == 429 and delay == 0:
-            delay = DEFAULT_RATE_LIMIT_DELAY
+            if response.status_code == 429 and delay == 0:
+                delay = DEFAULT_RATE_LIMIT_DELAY
 
         # No default backoff on the first retry.
         if retries > 0:
