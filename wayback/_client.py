@@ -399,7 +399,7 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
     # NOTE: worth considering whether we should push this logic to a custom
     # requests.adapters.HTTPAdapter
     def send(self, *args, **kwargs):
-        total_time = 0
+        start_time = time.time()
         maximum = self.retries
         retries = 0
         while True:
@@ -421,18 +421,15 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
                     read_and_close(response)
 
                 if retries >= maximum:
-                    raise WaybackRetryError(retries, total_time, error) from error
+                    raise WaybackRetryError(retries, time.time() - start_time, error) from error
                 elif self.should_retry_error(error):
                     retry_delay = self.get_retry_delay(retries, response)
                     logger.info('Caught exception during request, will retry: %s', error)
                 else:
                     raise
 
-            # The first retry has no delay unless the response specified one.
-            total_time += retry_delay
             logger.debug('Will retry after sleeping for %s seconds...', retry_delay)
             time.sleep(retry_delay)
-
             retries += 1
 
     # Customize `request` in order to set a default timeout from the session.
