@@ -70,6 +70,10 @@ EMAILISH_URL = re.compile(r'^https?://(<*)((mailto:)|([^/@:]*@))')
 # Make sure it roughly starts with a valid protocol + domain + port?
 URL_ISH = re.compile(r'^[\w+\-]+://[^/?=&]+\.\w\w+(:\d+)?(/|$)')
 
+# How long to delay after a rate limit error if the response does not include a
+# recommended retry time (e.g. via the `Retry-After` header).
+DEFAULT_RATE_LIMIT_DELAY = 60
+
 
 class Mode(Enum):
     """
@@ -399,21 +403,23 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
         maximum = self.retries
         retries = 0
         while True:
+            retry_delay = 0
             try:
                 logger.debug('sending HTTP request %s "%s", %s', args[0].method, args[0].url, kwargs)
                 result = super().send(*args, **kwargs)
+                retry_delay = self.get_response_retry_after(result)
+
                 if retries >= maximum or not self.should_retry(result):
                     if result.status_code == 429:
-                        raise RateLimitError(result, _utils.parse_retry_after(result.headers.get('Retry-After')))
+                        raise RateLimitError(result, retry_delay)
                     return result
                 else:
-                    # TODO: parse and use Retry-After header if present.
-                    # TODO: add additional delay for 429 responses.
                     logger.debug('Received error response (status: %s), will retry', result.status_code)
             except WaybackSession.handleable_errors as error:
                 response = getattr(error, 'response', None)
                 if response:
                     read_and_close(response)
+                    retry_delay = self.get_response_retry_after(response)
 
                 if retries >= maximum:
                     raise WaybackRetryError(retries, total_time, error) from error
@@ -422,12 +428,12 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
                 else:
                     raise
 
-            # The first retry has no delay.
-            if retries > 0:
-                seconds = self.backoff * 2 ** (retries - 1)
-                total_time += seconds
-                logger.debug('Will retry after sleeping for %s seconds...', seconds)
-                time.sleep(seconds)
+            # The first retry has no delay unless the response specified one.
+            if retries > 0 or retry_delay > 0:
+                retry_delay = max(self.backoff * 2 ** (retries - 1), retry_delay)
+                total_time += retry_delay
+                logger.debug('Will retry after sleeping for %s seconds...', retry_delay)
+                time.sleep(retry_delay)
 
             retries += 1
 
@@ -471,6 +477,15 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
                 return True
 
         return False
+
+    def get_response_retry_after(self, response):
+        # As of 2023-11-27, the Wayback Machine does not include a `Retry-After`
+        # header on 429 responses, so this parsing is just future-proofing.
+        delay = _utils.parse_retry_after(response.headers.get('Retry-After')) or 0
+        if response.status_code == 429 and delay == 0:
+            delay = DEFAULT_RATE_LIMIT_DELAY
+
+        return delay
 
     def reset(self):
         "Reset any network connections the session is using."
