@@ -2,6 +2,27 @@
 Release History
 ===============
 
+In Development
+--------------
+
+Breaking Changes
+^^^^^^^^^^^^^^^^
+
+- N/A
+
+
+Features
+^^^^^^^^
+
+- N/A
+
+
+Fixes & Maintenance
+^^^^^^^^^^^^^^^^^^^
+
+- N/A
+
+
 v0.4.4 (2023-11-27)
 -------------------
 
