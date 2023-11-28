@@ -2,6 +2,7 @@ from collections import defaultdict, OrderedDict
 from collections.abc import Mapping, MutableMapping
 from contextlib import contextmanager
 from datetime import date, datetime, timezone
+import email.utils
 import logging
 import re
 import requests
@@ -84,6 +85,27 @@ def parse_timestamp(time_string):
     return (datetime
             .strptime(time_string, URL_DATE_FORMAT)
             .replace(tzinfo=timezone.utc))
+
+
+def parse_retry_after(retry_after_header):
+    """
+    Given a response object, return the recommended retry-after time in seconds
+    or ``None`` if there is no recommended timeframe. Returns ``0`` if the
+    time was in the past or could not be parsed.
+    """
+    if isinstance(retry_after_header, str):
+        seconds = 0
+        try:
+            seconds = int(retry_after_header)
+        except ValueError:
+            retry_date_tuple = email.utils.parsedate_tz(retry_after_header)
+            if retry_date_tuple:
+                retry_date = email.utils.mktime_tz(retry_date_tuple)
+                seconds = retry_date - int(time.time())
+
+        return max(0, seconds)
+
+    return None
 
 
 def ensure_utc_datetime(value):

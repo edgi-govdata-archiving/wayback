@@ -1,7 +1,8 @@
 from datetime import datetime, timezone
+import email.utils
 import pytest
 import time
-from .._utils import memento_url_data, rate_limited
+from .._utils import memento_url_data, rate_limited, parse_retry_after
 
 
 class TestMementoUrlData:
@@ -75,3 +76,25 @@ class TestRateLimited:
                     with rate_limited(calls_per_second=3, group='sim2'):
                         pass
         assert 1.66 <= time.time() - start_time <= 1.7
+
+
+class TestParseRetryAfter:
+    def test_seconds(self):
+        assert 30 == parse_retry_after('30')
+
+    def test_date(self):
+        result = parse_retry_after(email.utils.formatdate(time.time() + 30))
+        assert 29 <= result <= 31
+
+    def test_no_input(self):
+        assert parse_retry_after(None) is None
+
+    def test_invalid_input(self):
+        assert 0 == parse_retry_after('hello!')
+
+    def test_negative_seconds(self):
+        assert 0 == parse_retry_after('-10')
+
+    def test_negative_date(self):
+        result = parse_retry_after(email.utils.formatdate(time.time() - 30))
+        assert 0 == result
