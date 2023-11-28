@@ -2,27 +2,18 @@
 Release History
 ===============
 
-In Development
---------------
+v0.4.4 (2023-11-27)
+-------------------
 
-Breaking Changes
-^^^^^^^^^^^^^^^^
+This release makes some small fixes to rate limits and retries in order to better match with the current behavior of Wayback Machine servers:
 
-- N/A
+- Updated the :meth:`wayback.WaybackClient.search` rate limit to 1 call per second (it was previously 1.5 per second). (:issue:`140`)
+- Delayed retries for 60 seconds when receiving rate limit errors from the server. (:issue:`142`)
+- Added more logging around requests and rate limiting. This should make it easier to debug future rate limit issues. (:issue:`139`)
+- Fixed calculation of the ``time`` attribute on :class:`wayback.exceptions.WaybackRetryError`. It turns out it was only accounting for the time spent waiting between retries and skipping the time waiting for the server to respond! (:issue:`142`)
+- Fixed some spots where we leaked HTTP connections during retries or during exception handling. (:issue:`142`)
 
-
-Features
-^^^^^^^^
-
-- N/A
-
-
-Fixes & Maintenance
-^^^^^^^^^^^^^^^^^^^
-
-- Adjusted default rate limits to work better with current throttling in use at archive.org. (:issue:`140`)
-- Added more logging around requests are rate limiting. (:issue:`139`)
-- Fix calculation of the ``time`` attribute on :class:`wayback.exceptions.WaybackRetryError`. It turns out it was only accounting for the time spent waiting between retries and skipping the time waiting for the server to respond. (:issue:`142`)
+The next minor release (v0.5) will almost certainly include some bigger changes to how rate limits and retries are handled.
 
 
 v0.4.3 (2023-09-26)
