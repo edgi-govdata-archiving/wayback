@@ -1,0 +1,100 @@
+[project]
+name = "wayback"
+# version = "0.0.1"
+dynamic=["version"]
+description = "Python API to Internet Archive Wayback Machine"
+# FIXME: validate this is the correct replacement for long_description and
+# long_description_content_type!
+# It seems this can also be:
+# readme = {content-type = "text/x-rst", file = "README.rst"}
+readme = "README.rst"
+maintainers = [
+  { name = "Rob Brackett", email = "rob@robbrackett.com" },
+  { name="Environmental Data Governance Initiative", email="EnviroDGI@protonmail.com" },
+]
+# TODO: put contributors in `authors` field:
+# authors = [
+#   { name="XYZ" },
+# ]
+# FIXME: how does this show up in PyPI? In setup.py we had:
+#   license="BSD (3-clause)"
+# But that's not the right format here. And there's no trove classifier for it.
+# Maybe this should be:
+#   license = {text = "BSD (3-clause)"}
+license = {file = "LICENSE"}
+requires-python = ">=3.6"
+# FIXME: what is the equivalent of:
+#   packages=find_packages(exclude=['docs', 'tests'])
+#   include_package_data=True,
+#   package_data={
+#       'wayback': [
+#           # When adding files here, remember to update MANIFEST.in as well,
+#           # or else they will not be included in the distribution on PyPI!
+#           # 'path/to/data_file',
+#       ]
+#   },
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    # It would be nice to have a license classifier here, but there isn't one:
+    # https://github.com/pypa/trove-classifiers/issues/70
+]
+dependencies = [
+  "requests",
+  "urllib3>=1.20",
+]
+# TODO: what other things should be here?
+
+[project.optional-dependencies]
+# For developing the package (running tests, packaging, etc.) but not needed
+# for _using_ it. Some tooling requires newer Python versions than the package
+# itself (>=3.8). This depends on the `test` extra, which _does_ work on the
+# same Python versions as the main package source.
+dev = [
+    "wheel",
+    "check-wheel-contents ~=0.6.0",
+    "flake8 ~=6.1.0",
+    "twine",
+    "wayback[test]"
+]
+# For building documentation. These are separated from dev because there are a
+# a variety of compatibility issues with our other dev dependencies on Python
+# versions < 3.10 (which we support), so you have to install them in a separate
+# environment from the other dev dependencies.
+docs = [
+    "sphinx ~=7.2.6",
+    "ipython ~=8.16.1",
+    "numpydoc ~=1.6.0",
+    "sphinx-copybutton ~=0.5.2",
+    "sphinx_rtd_theme ~=1.3.0",
+]
+# For running tests.
+test = [
+    "codecov",
+    "coverage",
+    "requests-mock",
+    "setuptools",
+    "pytest",
+    "vcrpy",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/edgi-govdata-archiving/wayback"
+"Documentation" = "https://wayback.readthedocs.io/en/stable/"
+"Changelog" = "https://wayback.readthedocs.io/en/stable/release-history.html"
+"Source code" = "https://github.com/edgi-govdata-archiving/wayback"
+"Issues" = "https://github.com/edgi-govdata-archiving/wayback/issues"
+
+[build-system]
+requires = ["setuptools", "versioneer[toml]==0.29"]
+
+[tool.versioneer]
+VCS = "git"
+style = "pep440-post"
+versionfile_source = "wayback/_version.py"
+versionfile_build = "wayback/_version.py"
+tag_prefix = "v"
+
+[tool.check-wheel-contents]
+toplevel = "wayback"
