@@ -1,8 +1,0 @@
-# These are required for developing the package (running the tests, packaging
-# etc.) but not necessarily required for _using_ it. Some dev tooling requires
-# newer Python versions than the package itself (>=3.8)
-wheel
-check-wheel-contents ~=0.6.0
-flake8 ~=6.1.0
-twine
--r requirements-test.txt
