@@ -23,16 +23,6 @@ maintainers = [
 #   license = {text = "BSD (3-clause)"}
 license = {file = "LICENSE"}
 requires-python = ">=3.6"
-# FIXME: what is the equivalent of:
-#   packages=find_packages(exclude=['docs', 'tests'])
-#   include_package_data=True,
-#   package_data={
-#       'wayback': [
-#           # When adding files here, remember to update MANIFEST.in as well,
-#           # or else they will not be included in the distribution on PyPI!
-#           # 'path/to/data_file',
-#       ]
-#   },
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Programming Language :: Python :: 3",
@@ -44,7 +34,6 @@ dependencies = [
   "requests",
   "urllib3>=1.20",
 ]
-# TODO: what other things should be here?
 
 [project.optional-dependencies]
 # For developing the package (running tests, packaging, etc.) but not needed
@@ -87,7 +76,22 @@ test = [
 "Issues" = "https://github.com/edgi-govdata-archiving/wayback/issues"
 
 [build-system]
-requires = ["setuptools", "versioneer[toml]==0.29"]
+requires = ["setuptools>=61.0", "versioneer[toml]==0.29"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["docs", "tests"]
+
+[tool.setuptools.package-data]
+wayback = [
+    # When adding files here, remember to update MANIFEST.in as well, or else
+    # they will not be included in the distribution on PyPI!
+    # Details: https://setuptools.pypa.io/en/latest/userguide/datafiles.html
+]
+
+[tool.setuptools.dynamic]
+version = {attr = "wayback.__version__"}
 
 [tool.versioneer]
 VCS = "git"
