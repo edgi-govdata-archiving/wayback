@@ -63,7 +63,6 @@ test = [
     "codecov",
     "coverage",
     "requests-mock",
-    "setuptools",
     "pytest",
     "vcrpy",
 ]
@@ -76,29 +75,12 @@ test = [
 "Issues" = "https://github.com/edgi-govdata-archiving/wayback/issues"
 
 [build-system]
-requires = ["setuptools>=61.0", "versioneer[toml]==0.29"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
 
-[tool.setuptools.packages.find]
-where = ["."]
-exclude = ["docs", "tests"]
-
-[tool.setuptools.package-data]
-wayback = [
-    # When adding files here, remember to update MANIFEST.in as well, or else
-    # they will not be included in the distribution on PyPI!
-    # Details: https://setuptools.pypa.io/en/latest/userguide/datafiles.html
-]
-
-[tool.setuptools.dynamic]
-version = {attr = "wayback.__version__"}
-
-[tool.versioneer]
-VCS = "git"
-style = "pep440-post"
-versionfile_source = "wayback/_version.py"
-versionfile_build = "wayback/_version.py"
-tag_prefix = "v"
+[tool.hatch]
+version.source = "vcs"
+build.hooks.vcs.version-file = "wayback/_version.py"
 
 [tool.check-wheel-contents]
 toplevel = "wayback"
