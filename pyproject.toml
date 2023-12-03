@@ -41,10 +41,10 @@ dependencies = [
 # itself (>=3.8). This depends on the `test` extra, which _does_ work on the
 # same Python versions as the main package source.
 dev = [
-    "wheel",
+    "build ~=1.0.3",
     "check-wheel-contents ~=0.6.0",
     "flake8 ~=6.1.0",
-    "twine",
+    "twine ~=4.0.2",
     "wayback[test]"
 ]
 # For building documentation. These are separated from dev because there are a

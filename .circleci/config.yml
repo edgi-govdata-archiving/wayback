@@ -114,7 +114,7 @@ jobs:
           name: Build Distribution
           command: |
             . ~/venv/bin/activate
-            python setup.py sdist bdist_wheel
+            python -m build .
       - run:
           name: Check Distribution
           command: |
