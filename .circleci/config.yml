@@ -20,9 +20,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - cache_v7-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}-{{ checksum "requirements-docs.txt" }}
-            - cache_v7-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
-            - cache_v7-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-
+            - cache_v7-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "pyproject.toml" }}
             - cache_v7-wayback-<< parameters.python-version >>-{{ arch }}-
 
       - run:
@@ -56,7 +54,7 @@ commands:
                   pip install .[docs]
 
       - save_cache:
-          key: cache_v7-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}-{{ checksum "requirements-docs.txt" }}
+          key: cache_v7-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "pyproject.toml" }}
           paths:
             - ~/venv
 
