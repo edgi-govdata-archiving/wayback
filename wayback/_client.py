@@ -361,7 +361,7 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
 
     # It seems Wayback sometimes produces 500 errors for transient issues, so
     # they make sense to retry here. Usually not in other contexts, though.
-    retryable_statuses = frozenset((413, 421, 429, 500, 502, 503, 504, 599))
+    retryable_statuses = frozenset((413, 421, 500, 502, 503, 504, 599))
 
     retryable_errors = (ConnectTimeoutError, MaxRetryError, ReadTimeoutError,
                         ProxyError, RetryError, Timeout)
