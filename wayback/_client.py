@@ -70,8 +70,8 @@ EMAILISH_URL = re.compile(r'^https?://(<*)((mailto:)|([^/@:]*@))')
 # Make sure it roughly starts with a valid protocol + domain + port?
 URL_ISH = re.compile(r'^[\w+\-]+://[^/?=&]+\.\w\w+(:\d+)?(/|$)')
 
-# How long to delay after a rate limit error if the response does not include a
-# recommended retry time (e.g. via the `Retry-After` header).
+# If a rate limit response (i.e. a response with status == 429) does not
+# include a `Retry-After` header, recommend pausing for this long.
 DEFAULT_RATE_LIMIT_DELAY = 60
 
 
@@ -361,7 +361,7 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
 
     # It seems Wayback sometimes produces 500 errors for transient issues, so
     # they make sense to retry here. Usually not in other contexts, though.
-    retryable_statuses = frozenset((413, 421, 429, 500, 502, 503, 504, 599))
+    retryable_statuses = frozenset((413, 421, 500, 502, 503, 504, 599))
 
     retryable_errors = (ConnectTimeoutError, MaxRetryError, ReadTimeoutError,
                         ProxyError, RetryError, Timeout)
@@ -478,8 +478,8 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
     def get_retry_delay(self, retries, response=None):
         delay = 0
 
-        # As of 2023-11-27, the Wayback Machine does not include a `Retry-After`
-        # header on 429 responses, so this parsing is just future-proofing.
+        # As of 2023-11-27, the Wayback Machine does not set a `Retry-After`
+        # header, so this parsing is just future-proofing.
         if response is not None:
             delay = _utils.parse_retry_after(response.headers.get('Retry-After')) or delay
             if response.status_code == 429 and delay == 0:
