@@ -8,6 +8,7 @@ import requests
 import requests.adapters
 import threading
 import time
+from typing import Union
 import urllib.parse
 from .exceptions import SessionClosedError
 
@@ -270,6 +271,17 @@ class RateLimit:
 
     def __exit__(self, type, value, traceback):
         pass
+
+    @classmethod
+    def make_limit(cls, per_second: Union['RateLimit',  int, float]) -> 'RateLimit':
+        """
+        If the given rate is a ``RateLimit`` object, return it unchanged.
+        Otherwise, create a new ``RateLimit`` with the given rate.
+        """
+        if isinstance(per_second, cls):
+            return per_second
+        else:
+            return cls(per_second)
 
 
 class DepthCountedContext:

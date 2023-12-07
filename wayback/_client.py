@@ -404,15 +404,12 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
                            f'wayback/{__version__} (+https://github.com/edgi-govdata-archiving/wayback)'),
             'Accept-Encoding': 'gzip, deflate'
         }
-        self.rate_cdx = (search_calls_per_second
-                         if isinstance(search_calls_per_second, _utils.RateLimit)
-                         else _utils.RateLimit(search_calls_per_second))
-        self.rate_timemap = (timemap_calls_per_second
-                             if isinstance(timemap_calls_per_second, _utils.RateLimit)
-                             else _utils.RateLimit(timemap_calls_per_second))
-        self.rate_memento = (memento_calls_per_second
-                             if isinstance(memento_calls_per_second, _utils.RateLimit)
-                             else _utils.RateLimit(memento_calls_per_second))
+        self.rate_limts = {
+            '/web/timemap': _utils.RateLimit.make_limit(timemap_calls_per_second),
+            '/cdx': _utils.RateLimit.make_limit(search_calls_per_second),
+            # The memento limit is actually a generic Wayback limit.
+            '/': _utils.RateLimit.make_limit(memento_calls_per_second),
+        }
         # NOTE: the nice way to accomplish retry/backoff is with a urllib3:
         #     adapter = requests.adapters.HTTPAdapter(
         #         max_retries=Retry(total=5, backoff_factor=2,
@@ -426,20 +423,19 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
         # with Wayback's APIs, but urllib3 logs a warning on every retry:
         # https://github.com/urllib3/urllib3/blob/5b047b645f5f93900d5e2fc31230848c25eb1f5f/src/urllib3/connectionpool.py#L730-L737
 
-    # Customize the built-in `send` functionality with retryability.
-    # NOTE: worth considering whether we should push this logic to a custom
-    # requests.adapters.HTTPAdapter
+    # Customize the built-in `send()` with retryability and rate limiting.
     def send(self, request: requests.PreparedRequest, **kwargs):
         start_time = time.time()
         maximum = self.retries
         retries = 0
+
         url = urlparse(request.url)
-        if url.path.startswith('/cdx/'):
-            rate_limit = self.rate_cdx
-        elif url.path.startswith('/web/timemap/'):
-            rate_limit = self.rate_timemap
+        for path, limit in self.rate_limts.items():
+            if url.path.startswith(path):
+                rate_limit = limit
+                break
         else:
-            rate_limit = self.rate_memento
+            rate_limit = DEFAULT_MEMENTO_RATE_LIMIT
 
         while True:
             retry_delay = 0
