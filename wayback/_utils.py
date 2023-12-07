@@ -1,6 +1,5 @@
-from collections import defaultdict, OrderedDict
+from collections import OrderedDict
 from collections.abc import Mapping, MutableMapping
-from contextlib import contextmanager
 from datetime import date, datetime, timezone
 import email.utils
 import logging
