@@ -148,6 +148,10 @@ def is_malformed_url(url):
     return False
 
 
+def is_memento_response(response):
+    return 'Memento-Datetime' in response.headers
+
+
 def cdx_hash(content):
     if isinstance(content, str):
         content = content.encode()
@@ -476,7 +480,7 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
 
     def should_retry(self, response):
         # A memento may actually be a capture of an error, so don't retry it :P
-        if 'Memento-Datetime' in response.headers:
+        if is_memento_response(response):
             return False
 
         return response.status_code in self.retryable_statuses
@@ -1007,7 +1011,7 @@ class WaybackClient(_utils.DepthCountedContext):
                             '%a, %d %b %Y %H:%M:%S %Z'
                         )
 
-                is_memento = 'Memento-Datetime' in response.headers
+                is_memento = is_memento_response(response)
 
                 # A memento URL will match possible captures based on its SURT
                 # form, which means we might be getting back a memento captured
