@@ -129,6 +129,8 @@ Utilities
 
 .. autoclass:: wayback.Mode
 
+.. autoclass:: wayback.RateLimit
+
 Exception Classes
 -----------------
 

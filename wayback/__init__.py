@@ -2,7 +2,7 @@ from ._version import get_versions
 __version__ = get_versions()['version']
 del get_versions
 
-from ._utils import memento_url_data  # noqa
+from ._utils import memento_url_data, RateLimit  # noqa
 
 from ._models import (  # noqa
     CdxRecord,

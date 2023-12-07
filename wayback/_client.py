@@ -70,6 +70,12 @@ EMAILISH_URL = re.compile(r'^https?://(<*)((mailto:)|([^/@:]*@))')
 # Make sure it roughly starts with a valid protocol + domain + port?
 URL_ISH = re.compile(r'^[\w+\-]+://[^/?=&]+\.\w\w+(:\d+)?(/|$)')
 
+# Global default rate limits for various endpoints. Internet Archive folks have
+# asked us to set the defaults at 80% of the hard limits.
+DEFAULT_CDX_RATE_LIMIT = _utils.RateLimit(0.8 * 60 / 60)
+DEFAULT_TIMEMAP_RATE_LIMIT = _utils.RateLimit(0.8 * 100 / 60)
+DEFAULT_MEMENTO_RATE_LIMIT = _utils.RateLimit(0.8 * 600 / 60)
+
 # If a rate limit response (i.e. a response with status == 429) does not
 # include a `Retry-After` header, recommend pausing for this long.
 DEFAULT_RATE_LIMIT_DELAY = 60
@@ -351,12 +357,24 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
     user_agent : str, optional
         A custom user-agent string to use in all requests. Defaults to:
         `wayback/{version} (+https://github.com/edgi-govdata-archiving/wayback)`
-    search_calls_per_second : int or float, default: 1
+    search_calls_per_second : wayback.RateLimit or int or float, default: 0.8
         The maximum number of calls made to the search API per second.
         To disable the rate limit, set this to 0.
-    memento_calls_per_second : int or float, default: 30
+
+        To have multiple sessions share a rate limit (so requests made by one
+        session count towards the limit of the other session), use a
+        single :class:`wayback.RateLimit` instance and pass it to each
+        ``WaybackSession`` instance. If you do not set a limit, the default
+        limit is shared globally across all sessions.
+    memento_calls_per_second : wayback.RateLimit or int or float, default: 8
         The maximum number of calls made to the memento API per second.
         To disable the rate limit, set this to 0.
+
+        To have multiple sessions share a rate limit (so requests made by one
+        session count towards the limit of the other session), use a
+        single :class:`wayback.RateLimit` instance and pass it to each
+        ``WaybackSession`` instance. If you do not set a limit, the default
+        limit is shared globally across all sessions.
     """
 
     # It seems Wayback sometimes produces 500 errors for transient issues, so
@@ -370,7 +388,8 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
     handleable_errors = (ConnectionError,) + retryable_errors
 
     def __init__(self, retries=6, backoff=2, timeout=60, user_agent=None,
-                 search_calls_per_second=1, memento_calls_per_second=30):
+                 search_calls_per_second=DEFAULT_CDX_RATE_LIMIT,
+                 memento_calls_per_second=DEFAULT_MEMENTO_RATE_LIMIT):
         super().__init__()
         self.retries = retries
         self.backoff = backoff
@@ -380,8 +399,12 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
                            f'wayback/{__version__} (+https://github.com/edgi-govdata-archiving/wayback)'),
             'Accept-Encoding': 'gzip, deflate'
         }
-        self.search_calls_per_second = search_calls_per_second
-        self.memento_calls_per_second = memento_calls_per_second
+        self.rate_cdx = (search_calls_per_second
+                         if isinstance(search_calls_per_second, _utils.RateLimit)
+                         else _utils.RateLimit(search_calls_per_second))
+        self.rate_memento = (memento_calls_per_second
+                             if isinstance(memento_calls_per_second, _utils.RateLimit)
+                             else _utils.RateLimit(memento_calls_per_second))
         # NOTE: the nice way to accomplish retry/backoff is with a urllib3:
         #     adapter = requests.adapters.HTTPAdapter(
         #         max_retries=Retry(total=5, backoff_factor=2,
@@ -737,8 +760,7 @@ class WaybackClient(_utils.DepthCountedContext):
         previous_result = None
         while next_query:
             sent_query, next_query = next_query, None
-            with _utils.rate_limited(self.session.search_calls_per_second,
-                                     group='search'):
+            with self.session.rate_cdx:
                 response = self.session.request('GET', CDX_SEARCH_URL,
                                                 params=sent_query)
                 try:
@@ -937,8 +959,7 @@ class WaybackClient(_utils.DepthCountedContext):
                                         timestamp=original_date_wayback,
                                         mode=mode)
 
-        with _utils.rate_limited(calls_per_second=self.session.memento_calls_per_second,
-                                 group='get_memento'):
+        with self.session.rate_memento:
             # Correctly following redirects is actually pretty complicated. In
             # the simplest case, a memento is a simple web page, and that's
             # no problem. However...
