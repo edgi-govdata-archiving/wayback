@@ -82,5 +82,8 @@ build-backend = "hatchling.build"
 version.source = "vcs"
 build.hooks.vcs.version-file = "wayback/_version.py"
 
+[tool.hatch.build.targets.sdist]
+exclude = [".git_archival.txt"]
+
 [tool.check-wheel-contents]
 toplevel = "wayback"
