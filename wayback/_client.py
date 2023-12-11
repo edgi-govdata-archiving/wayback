@@ -362,7 +362,7 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
         A custom user-agent string to use in all requests. Defaults to:
         `wayback/{version} (+https://github.com/edgi-govdata-archiving/wayback)`
     search_calls_per_second : wayback.RateLimit or int or float, default: 0.8
-        The maximum number of calls made to the search API per second.
+        The maximum number of calls per second made to the CDX search API.
         To disable the rate limit, set this to 0.
 
         To have multiple sessions share a rate limit (so requests made by one
@@ -371,7 +371,17 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
         ``WaybackSession`` instance. If you do not set a limit, the default
         limit is shared globally across all sessions.
     memento_calls_per_second : wayback.RateLimit or int or float, default: 8
-        The maximum number of calls made to the memento API per second.
+        The maximum number of calls per second made to the memento API.
+        To disable the rate limit, set this to 0.
+
+        To have multiple sessions share a rate limit (so requests made by one
+        session count towards the limit of the other session), use a
+        single :class:`wayback.RateLimit` instance and pass it to each
+        ``WaybackSession`` instance. If you do not set a limit, the default
+        limit is shared globally across all sessions.
+    timemap_calls_per_second : wayback.RateLimit or int or float, default: 1.33
+        The maximum number of calls per second made to the timemap API (the
+        Wayback Machine's new, beta CDX search is part of the timemap API).
         To disable the rate limit, set this to 0.
 
         To have multiple sessions share a rate limit (so requests made by one
