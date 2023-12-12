@@ -148,7 +148,7 @@ workflows:
       - test:
           matrix:
             parameters:
-              python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
+              python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
               urllib3-version: ["1.20", "2.0"]
       - lint
       - build
