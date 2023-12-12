@@ -246,7 +246,11 @@ class RateLimit:
     >>>     with limit:
     >>>         print(x)
     """
-    def __init__(self, per_second):
+    def __init__(self, per_second: Union[int, float]):
+        if not isinstance(per_second, (int, float)):
+            raise TypeError('The RateLimit per_second argument must be an int '
+                            f'or float, not {type(per_second).__name__}')
+
         self._lock = threading.RLock()
         self._last_call_time = 0
         if per_second <= 0:
@@ -254,7 +258,7 @@ class RateLimit:
         else:
             self._minimum_wait = 1.0 / per_second
 
-    def wait(self):
+    def wait(self) -> None:
         if self._minimum_wait == 0:
             return
 
@@ -266,10 +270,10 @@ class RateLimit:
 
             self._last_call_time = time.time()
 
-    def __enter__(self):
+    def __enter__(self) -> None:
         self.wait()
 
-    def __exit__(self, type, value, traceback):
+    def __exit__(self, type, value, traceback) -> None:
         pass
 
     @classmethod
