@@ -75,7 +75,7 @@ test = [
 "Issues" = "https://github.com/edgi-govdata-archiving/wayback/issues"
 
 [build-system]
-requires = ["hatchling", "hatch-vcs"]
+requires = ["hatchling ~=1.19.1", "hatch-vcs ~=0.4.0"]
 build-backend = "hatchling.build"
 
 [tool.hatch]
