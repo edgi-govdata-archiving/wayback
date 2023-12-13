@@ -1,0 +1,96 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.4.0.post7.dev0+gb117aea (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: https://web.archive.org/web/timemap/cdx?url=https%3A%2F%2Fnationalpost.com%2Fhealth&from=20191001000000&to=20191002000000&pageSize=5&showNumPages=true
+  response:
+    body:
+      string: '1
+
+        '
+    headers:
+      Connection:
+      - keep-alive
+      Content-Type:
+      - text/plain
+      Date:
+      - Wed, 21 Dec 2022 20:13:42 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Server:
+      - nginx/1.19.5
+      Transfer-Encoding:
+      - chunked
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
+      X-Page-Cache:
+      - MISS
+      X-RL:
+      - '0'
+      X-location:
+      - cdx-p
+      x-app-server:
+      - wwwb-app207
+      x-tr:
+      - '3'
+      x-ts:
+      - '200'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.4.0.post7.dev0+gb117aea (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: https://web.archive.org/web/timemap/json?url=https%3A%2F%2Fnationalpost.com%2Fhealth&from=20191001000000&to=20191002000000&pageSize=5&page=0
+  response:
+    body:
+      string: ''
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Wed, 21 Dec 2022 20:13:42 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Server:
+      - nginx/1.19.5
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
+      X-Page-Cache:
+      - MISS
+      X-RL:
+      - '0'
+      x-app-server:
+      - wwwb-app207
+      x-archive-wayback-runtime-error:
+      - 'AdministrativeAccessControlException: Blocked Site Error'
+      x-tr:
+      - '2'
+      x-ts:
+      - '403'
+    status:
+      code: 403
+      message: FORBIDDEN
+version: 1

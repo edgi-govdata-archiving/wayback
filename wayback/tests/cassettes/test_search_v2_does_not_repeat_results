@@ -1,0 +1,131 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.4.0.post7.dev0+gb117aea (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: https://web.archive.org/web/timemap/cdx?url=energystar.gov%2F&from=20200612000000&to=20200613000000&pageSize=5&showNumPages=true
+  response:
+    body:
+      string: '1
+
+        '
+    headers:
+      Connection:
+      - keep-alive
+      Content-Type:
+      - text/plain
+      Date:
+      - Wed, 21 Dec 2022 20:13:41 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Server:
+      - nginx/1.19.5
+      Transfer-Encoding:
+      - chunked
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
+      X-Page-Cache:
+      - MISS
+      X-RL:
+      - '0'
+      X-location:
+      - cdx-p
+      x-app-server:
+      - wwwb-app207
+      x-tr:
+      - '3'
+      x-ts:
+      - '200'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.4.0.post7.dev0+gb117aea (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: https://web.archive.org/web/timemap/json?url=energystar.gov%2F&from=20200612000000&to=20200613000000&pageSize=5&page=0
+  response:
+    body:
+      string: '[["urlkey","timestamp","original","mimetype","statuscode","digest","redirect","robotflags","length","offset","filename"],
+
+        ["gov,energystar)/","20200612014007","http://energystar.gov/","text/html","301","HLNR6AWVWYCU3YAENY3HYHLIPNWN66X7","S","-","432","380639","yosemite.epa.gov-20170802-195647/IA-FOC-yosemite.epa.gov-20200612013844-00000.warc.gz"],
+
+        ["gov,energystar)/","20200612014014","https://www.energystar.gov/","warc/revisit","-","DBA3N454ZRZ42QEBER5QRT332DJTTLR5","-","-","606","542042","yosemite.epa.gov-20170802-195647/IA-FOC-yosemite.epa.gov-20200612013844-00000.warc.gz"],
+
+        ["gov,energystar)/","20200612061543","http://energystar.gov/","text/html","301","HLNR6AWVWYCU3YAENY3HYHLIPNWN66X7","S","-","433","1833283","ofmpub.epa.gov-20190408-211622/IA-FOC-ofmpub.epa.gov-20200612060930-00000.warc.gz"],
+
+        ["gov,energystar)/","20200612061552","https://www.energystar.gov/","warc/revisit","-","DBA3N454ZRZ42QEBER5QRT332DJTTLR5","-","-","605","1935619","ofmpub.epa.gov-20190408-211622/IA-FOC-ofmpub.epa.gov-20200612060930-00000.warc.gz"],
+
+        ["gov,energystar)/","20200612101416","http://energystar.gov/","text/html","301","HLNR6AWVWYCU3YAENY3HYHLIPNWN66X7","S","-","432","5935142","edg.epa.gov-20191229-053548/IA-FOC-edg.epa.gov-20200612095111-00000.warc.gz"],
+
+        ["gov,energystar)/","20200612101422","https://www.energystar.gov/","warc/revisit","-","DBA3N454ZRZ42QEBER5QRT332DJTTLR5","-","-","607","6162232","edg.epa.gov-20191229-053548/IA-FOC-edg.epa.gov-20200612095111-00000.warc.gz"],
+
+        ["gov,energystar)/","20200612113656","https://www.energystar.gov/","text/html","200","DBA3N454ZRZ42QEBER5QRT332DJTTLR5","-","-","5267","526414604","ARCHIVEIT-5778-WEEKLY-JOB1187518-SEED888005-20200612-00000/ARCHIVEIT-5778-WEEKLY-JOB1187518-SEED888005-20200612055502284-00001-h3.warc.gz"],
+
+        ["gov,energystar)/","20200612125807","http://energystar.gov/","text/html","301","HLNR6AWVWYCU3YAENY3HYHLIPNWN66X7","S","-","432","21138315","epa.gov2-20200522-064904/IA-FOC-epa.gov2-20200612122210-00000.warc.gz"],
+
+        ["gov,energystar)/","20200612125814","https://www.energystar.gov/","warc/revisit","-","DBA3N454ZRZ42QEBER5QRT332DJTTLR5","-","-","605","21346043","epa.gov2-20200522-064904/IA-FOC-epa.gov2-20200612122210-00000.warc.gz"],
+
+        ["gov,energystar)/","20200612154726","http://energystar.gov/","text/html","301","HLNR6AWVWYCU3YAENY3HYHLIPNWN66X7","S","-","433","2139437","epa.gov3-20190924-190603/IA-FOC-epa.gov3-20200612154459-00000.warc.gz"],
+
+        ["gov,energystar)/","20200612154733","https://www.energystar.gov/","warc/revisit","-","DBA3N454ZRZ42QEBER5QRT332DJTTLR5","-","-","607","2444037","epa.gov3-20190924-190603/IA-FOC-epa.gov3-20200612154459-00000.warc.gz"],
+
+        ["gov,energystar)/","20200612210149","https://www.energystar.gov/","text/html","200","DBA3N454ZRZ42QEBER5QRT332DJTTLR5","-","-","5475","325754082","archiveteam_archivebot_go_20200613010002/hayscoolingandheating.com-inf-20200612-204652-4l696-00000.warc.gz"],
+
+        ["gov,energystar)/","20200612210839","https://www.energystar.gov/","text/html","200","DBA3N454ZRZ42QEBER5QRT332DJTTLR5","-","-","5471","346256040","archiveteam_archivebot_go_20200613010002/hayscoolingandheating.com-inf-20200612-204652-4l696-00000.warc.gz"],
+
+        ["gov,energystar)/","20200612232310","https://www.energystar.gov/","warc/revisit","-","DBA3N454ZRZ42QEBER5QRT332DJTTLR5","-","-","605","291438","epa.gov2-20200522-064904/IA-FOC-epa.gov-20200612232302-00000.warc.gz"],
+
+        ["gov,energystar)/","20200612232323","http://energystar.gov/","text/html","301","HLNR6AWVWYCU3YAENY3HYHLIPNWN66X7","S","-","430","843521","epa.gov2-20200522-064904/IA-FOC-epa.gov-20200612232302-00000.warc.gz"]]
+
+        '
+    headers:
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 21 Dec 2022 20:13:42 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Server:
+      - nginx/1.19.5
+      Transfer-Encoding:
+      - chunked
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
+      X-Page-Cache:
+      - MISS
+      X-RL:
+      - '0'
+      X-location:
+      - cdx-p
+      server-timing:
+      - exclusion.robots;dur=0.114746, exclusion.robots.policy;dur=0.106953, cdx.remote;dur=0.042297,
+        esindex;dur=0.006232
+      x-app-server:
+      - wwwb-app208
+      x-tr:
+      - '488'
+      x-ts:
+      - '200'
+    status:
+      code: 200
+      message: OK
+version: 1

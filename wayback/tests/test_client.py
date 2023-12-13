@@ -294,6 +294,189 @@ def test_search_handles_bad_timestamp_cdx_records(requests_mock):
         assert record_list[4].timestamp.day == 24
 
 
+# SEARCH V2 ------------------------------------------------------------------
+
+@ia_vcr.use_cassette()
+def test_search_v2():
+    with WaybackClient() as client:
+        versions = client.search_v2('nasa.gov',
+                                    from_date=datetime(1996, 10, 1),
+                                    to_date=datetime(1997, 2, 1))
+        for v in versions:
+            assert v.timestamp >= datetime(1996, 10, 1, tzinfo=timezone.utc)
+            assert v.timestamp <= datetime(1997, 2, 1, tzinfo=timezone.utc)
+
+
+@ia_vcr.use_cassette()
+def test_search_v2_with_date():
+    with WaybackClient() as client:
+        versions = client.search_v2('dw.com',
+                                    from_date=date(2019, 10, 1),
+                                    to_date=date(2020, 3, 1))
+        for v in versions:
+            assert v.timestamp >= datetime(2019, 10, 1, tzinfo=timezone.utc)
+            assert v.timestamp <= datetime(2020, 3, 1, tzinfo=timezone.utc)
+
+
+@ia_vcr.use_cassette()
+def test_search_v2_with_timezone():
+    with WaybackClient() as client:
+        # Search using UTC, equivalent to the test above where we provide a
+        # datetime with no timezone.
+        tzinfo = timezone(timedelta(hours=0))
+        t0 = datetime(1996, 12, 31, 23, 58, 47, tzinfo=tzinfo)
+        versions = client.search_v2('nasa.gov',
+                                    from_date=t0)
+        version = next(versions)
+        assert version.timestamp == datetime(1996, 12, 31, 23, 58, 47,
+                                             tzinfo=timezone.utc)
+
+        # Search using UTC - 5, equivalent to (1997, 1, 1, 4, ...) in UTC
+        # so that we miss the result above and expect a different, later one.
+        tzinfo = timezone(timedelta(hours=-5))
+        t0 = datetime(1996, 12, 31, 23, 58, 47, tzinfo=tzinfo)
+        versions = client.search_v2('nasa.gov',
+                                    from_date=t0)
+        version = next(versions)
+        assert version.timestamp == datetime(1997, 6, 5, 23, 5, 59,
+                                             tzinfo=timezone.utc)
+
+
+@ia_vcr.use_cassette()
+def test_search_v2_multipage():
+    # Set page size limits low enough to guarantee multiple pages
+    with WaybackClient() as client:
+        versions = client.search_v2('cnn.com',
+                                    from_date=datetime(2001, 4, 10),
+                                    to_date=datetime(2001, 5, 10))
+
+        # Exhaust the generator and make sure no entries trigger errors.
+        list(versions)
+
+
+@ia_vcr.use_cassette()
+def test_search_v2_cannot_iterate_after_session_closing():
+    with pytest.raises(SessionClosedError):
+        with WaybackClient() as client:
+            versions = client.search_v2('nasa.gov',
+                                        from_date=datetime(1996, 10, 1),
+                                        to_date=datetime(1997, 2, 1))
+
+        next(versions)
+
+
+@ia_vcr.use_cassette()
+def test_search_v2_does_not_repeat_results():
+    with WaybackClient() as client:
+        versions = client.search_v2('energystar.gov/',
+                                    from_date=datetime(2020, 6, 12),
+                                    to_date=datetime(2020, 6, 13))
+        previous = None
+        for version in versions:
+            assert version != previous
+            previous = version
+
+
+@ia_vcr.use_cassette()
+def test_search_v2_raises_for_blocked_urls():
+    with pytest.raises(BlockedSiteError):
+        with WaybackClient() as client:
+            versions = client.search_v2('https://nationalpost.com/health',
+                                        from_date=datetime(2019, 10, 1),
+                                        to_date=datetime(2019, 10, 2))
+            next(versions)
+
+# XXX: need to finish these tests!
+
+# def test_search_removes_malformed_entries(requests_mock):
+#     """
+#     The CDX index contains many lines for things that can't actually be
+#     archived and will have no corresponding memento, like `mailto:` and `data:`
+#     URLs. We should be stripping these out.
+
+#     Because these are rare and hard to get all in a single CDX query that isn't
+#     *huge*, we use a made-up mock for this one instead of a VCR recording. All
+#     the lines in the mock file are lines from real CDX queries (we lost track
+#     of the specific cases that triggered that one, and it was *very* rare).
+#     """
+#     with open(Path(__file__).parent / 'test_files' / 'malformed_cdx.txt') as f:
+#         bad_cdx_data = f.read()
+
+#     with WaybackClient() as client:
+#         requests_mock.get('https://web.archive.org/cdx/search/cdx'
+#                           '?url=https%3A%2F%2Fepa.gov%2F%2A'
+#                           '&from=20200418000000&to=20200419000000'
+#                           '&showResumeKey=true&resolveRevisits=true',
+#                           [{'status_code': 200, 'text': bad_cdx_data}])
+#         records = client.search('https://epa.gov/*',
+#                                 from_date=datetime(2020, 4, 18),
+#                                 to_date=datetime(2020, 4, 19))
+
+#         assert 2 == len(list(records))
+
+
+# def test_search_handles_no_length_cdx_records(requests_mock):
+#     """
+#     The CDX index can contain a "-" in lieu of an actual length, which can't be
+#     parsed into an int. We should handle this.
+
+#     Because these are rare and hard to get all in a single CDX query that isn't
+#     *huge*, we use a made-up mock for this one instead of a VCR recording.
+#     """
+#     with open(Path(__file__).parent / 'test_files' / 'zero_length_cdx.txt') as f:
+#         bad_cdx_data = f.read()
+
+#     with WaybackClient() as client:
+#         requests_mock.get('https://web.archive.org/cdx/search/cdx'
+#                           '?url=www.cnn.com%2F%2A'
+#                           '&matchType=domain&filter=statuscode%3A200'
+#                           '&showResumeKey=true&resolveRevisits=true',
+#                           [{'status_code': 200, 'text': bad_cdx_data}])
+#         records = client.search('www.cnn.com/*',
+#                                 match_type="domain",
+#                                 filter_field="statuscode:200")
+
+#         record_list = list(records)
+#         assert 5 == len(record_list)
+#         for record in record_list[:4]:
+#             assert isinstance(record.length, int)
+#         assert record_list[-1].length is None
+
+
+# def test_search_handles_bad_timestamp_cdx_records(requests_mock):
+#     """
+#     The CDX index can contain a timestamp with an invalid day "00", which can't be
+#     parsed into an timestamp. We should handle this.
+
+#     Because these are rare and hard to get all in a single CDX query that isn't
+#     *huge*, we use a made-up mock for this one instead of a VCR recording.
+#     """
+#     with open(Path(__file__).parent / 'test_files' / 'bad_timestamp_cdx.txt') as f:
+#         bad_cdx_data = f.read()
+
+#     with WaybackClient() as client:
+#         requests_mock.get('https://web.archive.org/cdx/search/cdx'
+#                           '?url=www.usatoday.com%2F%2A'
+#                           '&matchType=domain&filter=statuscode%3A200'
+#                           '&showResumeKey=true&resolveRevisits=true',
+#                           [{'status_code': 200, 'text': bad_cdx_data}])
+#         records = client.search('www.usatoday.com/*',
+#                                 match_type="domain",
+#                                 filter_field="statuscode:200")
+
+#         record_list = list(records)
+#         assert 5 == len(record_list)
+
+#         # 00 month in 20000012170449 gets rewritten to 20001217044900
+#         assert record_list[3].timestamp.month == 12
+
+#         # 00 day in 20000800241623 gets rewritten to 20000824162300
+#         assert record_list[4].timestamp.day == 24
+
+
+# GET MEMENTO ----------------------------------------------------------------
+
+
 @ia_vcr.use_cassette()
 def test_get_memento():
     with WaybackClient() as client:

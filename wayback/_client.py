@@ -17,6 +17,7 @@ from base64 import b32encode
 from datetime import date
 from enum import Enum
 import hashlib
+from json import JSONDecodeError
 import logging
 import re
 import requests
@@ -55,7 +56,7 @@ CDX_SEARCH_URL = 'https://web.archive.org/cdx/search/cdx'
 # https://github.com/internetarchive/wayback/blob/bd205b9b26664a6e2ea3c0c2a8948f0dc6ff4519/wayback-cdx-server/src/main/java/org/archive/cdxserver/format/CDX11Format.java#L13-L17  # noqa
 # NOTE: the `length` and `robotflags` fields appear to always be empty
 # TODO: support new/upcoming CDX API
-# CDX_SEARCH_URL = 'https://web.archive.org/web/timemap/cdx'
+CDX_SEARCH_2_URL = 'https://web.archive.org/web/timemap'
 
 REDUNDANT_HTTP_PORT = re.compile(r'^(http://[^:/]+):80(.*)$')
 REDUNDANT_HTTPS_PORT = re.compile(r'^(https://[^:/]+):443(.*)$')
@@ -861,6 +862,278 @@ class WaybackClient(_utils.DepthCountedContext):
                 yield data
 
         return count
+
+    # TODO: should we support limit (maybe only negative?) and fast_latest?
+    def search_v2(self, url, *, match_type=None, from_date=None, to_date=None,
+                  filter_field=None, collapse=None, resolve_revisits=True,
+                  skip_malformed_results=True, page_size=5):
+        """
+        Search archive.org's *new* CDX API for all captures of a given URL. This
+        returns an iterator of :class:`CdxRecord` objects.
+
+        This is similar to :meth:`WaybackClient.search`, but uses a new, beta
+        search API that is eventually intended to replace the main search API.
+        It offers more predictable results without the complex issues around
+        ``limit`` and pagination involved the current search API.
+
+        Results include captures with similar, but not exactly matching URLs.
+        They are matched by a SURT-formatted, canonicalized URL that:
+
+        * Does not differentiate between HTTP and HTTPS,
+        * Is not case-sensitive, and
+        * Treats ``www.`` and ``www*.`` subdomains the same as no subdomain at
+          all.
+
+        This will automatically page through all results for a given search. If
+        you want fewer results, you can stop iterating early:
+
+        .. code-block:: python
+
+          from itertools import islice
+          first10 = list(islice(client.search(...), 10))
+
+        Parameters
+        ----------
+        url : str
+            The URL to search for captures of.
+
+            Special patterns in ``url`` imply a value for the ``match_type``
+            parameter and match multiple URLs:
+
+            * If the URL starts with `*.` (e.g. ``*.epa.gov``) OR
+              ``match_type='domain'``, the search will include all URLs at the
+              given domain and its subdomains.
+            * If the URL ends with `/*` (e.g. ``https://epa.gov/*``) OR
+              ``match_type='prefix'``, the search will include all URLs that
+              start with the text up to the ``*``.
+            * Otherwise, this returns matches just for the requeted URL.
+
+            **NOTE:** if the URL includes wildcards or ``match_type`` is set to
+            something other than ``None`` or ``'exact'``, results will not
+            include recent captures (generally, captures from the last 3 days).
+        match_type : str, optional
+            Determines how to interpret the ``url`` parameter. It must be one of
+            the following:
+
+            * ``exact`` (default) returns results matching the requested URL
+              (see notes about SURT above; this is not an exact string match of
+              the URL you pass in).
+            * ``prefix`` returns results that start with the requested URL.
+            * ``host`` returns results from all URLs at the host in the
+              requested URL.
+            * ``domain`` returns results from all URLs at the domain or any
+              subdomain of the requested URL.
+
+            The default value is calculated based on the format of ``url``.
+
+            **NOTE:** if the URL includes wildcards or ``match_type`` is set to
+            something other than ``None`` or ``'exact'``, results will not
+            include recent captures (generally, captures from the last 3 days).
+        from_date : datetime or date, optional
+            Only include captures after this date. Equivalent to the
+            `from` argument in the CDX API. If it does not have a time zone, it
+            is assumed to be in UTC.
+        to_date : datetime or date, optional
+            Only include captures before this date. Equivalent to the `to`
+            argument in the CDX API. If it does not have a time zone, it is
+            assumed to be in UTC.
+        filter_field : str, optional
+            A filter for any field in the results. Equivalent to the ``filter``
+            argument in the CDX API. (format: ``[!]field:regex``)
+        collapse : str, optional
+            Collapse consecutive results that match on a given field. (format:
+            `fieldname` or `fieldname:N` -- N is the number of chars to match.)
+        resolve_revisits : bool, default: True
+            Attempt to resolve ``warc/revisit`` records to their actual content
+            type and response code. Not supported on all CDX servers.
+        skip_malformed_results : bool, default: True
+            If true, don't yield records that look like they have no actual
+            memento associated with them. Some crawlers will erroneously
+            attempt to capture bad URLs like
+            ``http://mailto:someone@domain.com`` or
+            ``http://data:image/jpeg;base64,AF34...`` and so on. This is a
+            filter performed client side and is not a CDX API argument.
+        page_size : int, default: 5
+            How many *index blocks* (not results!) to search in each request.
+            Regardless of the value set here, this function will yield results
+            from every page. If you want to stop early, then stop iterating
+            over the results of this method.
+
+        Raises
+        ------
+        UnexpectedResponseFormat
+            If the CDX response was not parseable.
+
+        Yields
+        ------
+        version: CdxRecord
+            A :class:`CdxRecord` encapsulating one capture or revisit
+
+        References
+        ----------
+        * HTTP API Docs: https://github.com/internetarchive/wayback/tree/master/wayback-cdx-server
+        * SURT formatting: http://crawler.archive.org/articles/user_manual/glossary.html#surt
+        * SURT implementation: https://github.com/internetarchive/surt
+
+        Notes
+        -----
+        Several CDX API parameters are not relevant or handled automatically
+        by this function. This does not support: `page`, `offset`, `limit`,
+        `output`, `fl`, `showDupeCount`, `showSkipCount`, `lastSkipTimestamp`,
+        `showNumPages`, `showPagedIndex`.
+        """
+        if (not isinstance(page_size, int)) or page_size <= 0:
+            raise TypeError(f'`page_size` must be a positive integer, not {page_size!r}')
+
+        # TODO: support args that can be set multiple times: filter, collapse
+        # Should take input as a sequence and convert to repeat query args
+        # TODO: Check types
+        # XXX: resolveRevisits is currently broken and poisons the query.
+        #      Waiting to hear back about whether it's just not going to be
+        #      supported here or if it's just a bug or not done yet.
+        query_args = {'url': url, 'matchType': match_type, 'from': from_date,
+                      'to': to_date, 'filter': filter_field,
+                      'collapse': collapse,
+                      # 'resolveRevisits': resolve_revisits,
+                      'pageSize': page_size}
+
+        query = {}
+        for key, value in query_args.items():
+            if value is not None:
+                if isinstance(value, str):
+                    query[key] = value
+                elif isinstance(value, date):
+                    query[key] = _utils.format_timestamp(value)
+                else:
+                    query[key] = str(value).lower()
+
+        # Since pages are a number of *blocks searched* and not results, a page
+        # in the middle of the result set may have nothing in it. The only way
+        # to know when to stop iterating is to check how many pages there are.
+        page_count = int(self.session.request('GET', f'{CDX_SEARCH_2_URL}/cdx', params={
+            **query,
+            'showNumPages': 'true'
+        }).text)
+
+        # FIXME: surface error messages from x-archive-wayback-runtime-error header
+
+        page = 0
+        previous_result = None
+        while page < page_count:
+            # Get the actual data as JSON rather than CDX because the fields
+            # are not yet stable. The JSON format includes field headers, so we
+            # can parse responses in a way that is robust to changes in order
+            # or what fields are included.
+            response = self.session.request('GET', f'{CDX_SEARCH_2_URL}/json', params={
+                **query,
+                'page': page
+            })
+            page += 1
+
+            try:
+                # Read/cache the response and close straightaway. If we need to
+                # raise for status, we want to pre-emptively close the response
+                # so a user handling the error doesn't need to worry about it. If
+                # we don't raise here, we still want to close the connection so it
+                # doesn't leak when we move onto the next of results or when this
+                # iterator ends.
+                read_and_close(response)
+                # FIXME: surface error messages from x-archive-wayback-runtime-error header
+                response.raise_for_status()
+            except requests.exceptions.HTTPError as error:
+                # XXX: it looks like these messages will be in the
+                # x-archive-wayback-runtime-error header now instead of the
+                # body; we should check both.
+                if 'AdministrativeAccessControlException' in response.text:
+                    raise BlockedSiteError(query['url'])
+                elif 'RobotAccessControlException' in response.text:
+                    raise BlockedByRobotsError(query['url'])
+                elif 'x-archive-wayback-runtime-error' in response.headers:
+                    raise WaybackException(response.headers['x-archive-wayback-runtime-error'])
+                else:
+                    raise WaybackException(str(error))
+
+            try:
+                rows = response.json()
+            except JSONDecodeError as error:
+                # XXX: do not include the whole response text here! Maybe just the first 100 chars or so.
+                raise UnexpectedResponseFormat(f'Did not receive JSON. Error: {error} Raw response: "{response.text}"')
+
+            if not isinstance(rows, (tuple, list)) or not isinstance(rows[0], (tuple, list)):
+                raise UnexpectedResponseFormat('JSON response from Wayback is not an array of arrays')
+
+            field_indexes = {
+                field: index
+                for index, field in enumerate(rows[0])
+            }
+            missing_fields = set((
+                'urlkey',
+                'timestamp',
+                'original',
+                'mimetype',
+                'statuscode',
+                'digest',
+                'length',
+            )).difference(rows[0])
+            if missing_fields:
+                raise UnexpectedResponseFormat(f'JSON response is missing fields: {missing_fields}')
+
+            for row in rows[1:]:
+                # v2 currently has some additional fields (redirect, robotflags,
+                # offset, filename), but the internet archive plans to remove
+                # them, so we skip them here.
+                data = CdxRecord(
+                    key=row[field_indexes['urlkey']],
+                    timestamp=row[field_indexes['timestamp']],
+                    url=row[field_indexes['original']],
+                    mime_type=row[field_indexes['mimetype']],
+                    status_code=row[field_indexes['statuscode']],
+                    digest=row[field_indexes['digest']],
+                    length=row[field_indexes['length']],
+                    raw_url=None,
+                    view_url=None,
+                )
+                row_key = f'{data.timestamp}|{data.key}|{data.digest}'
+                if row_key == previous_result:
+                    # This result line is a repeat. Skip it.
+                    continue
+                else:
+                    previous_result = row_key
+
+                if data.status_code == '-':
+                    # the status code given for a revisit record
+                    status_code = None
+                else:
+                    status_code = int(data.status_code)
+                length = None if data.length == '-' else int(data.length)
+                capture_time = _utils.parse_timestamp(data.timestamp)
+
+                clean_url = REDUNDANT_HTTPS_PORT.sub(
+                    r'\1\2', REDUNDANT_HTTP_PORT.sub(
+                        r'\1\2', data.url))
+                if skip_malformed_results and is_malformed_url(clean_url):
+                    continue
+                if clean_url != data.url:
+                    data = data._replace(url=clean_url)
+
+                # TODO: repeat captures have a status code of `-` and a mime type
+                # of `warc/revisit`. These can only be resolved by requesting the
+                # content and following redirects. Maybe nice to do so
+                # automatically here.
+                data = data._replace(
+                    status_code=status_code,
+                    length=length,
+                    timestamp=capture_time,
+                    raw_url=ARCHIVE_URL_TEMPLATE.format(
+                        url=data.url,
+                        timestamp=data.timestamp,
+                        mode=Mode.original.value),
+                    view_url=ARCHIVE_URL_TEMPLATE.format(
+                        url=data.url,
+                        timestamp=data.timestamp,
+                        mode=Mode.view.value)
+                )
+                yield data
 
     def get_memento(self, url, timestamp=None, mode=Mode.original, *,
                     exact=True, exact_redirects=None,
