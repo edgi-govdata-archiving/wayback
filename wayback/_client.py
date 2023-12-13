@@ -27,7 +27,7 @@ from requests.exceptions import (ChunkedEncodingError,
                                  RetryError,
                                  Timeout)
 import time
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 from urllib3.connectionpool import HTTPConnectionPool
 from urllib3.exceptions import (ConnectTimeoutError,
                                 MaxRetryError,
@@ -69,6 +69,12 @@ DATA_URL_START = re.compile(r'data:[\w]+/[\w]+;base64')
 EMAILISH_URL = re.compile(r'^https?://(<*)((mailto:)|([^/@:]*@))')
 # Make sure it roughly starts with a valid protocol + domain + port?
 URL_ISH = re.compile(r'^[\w+\-]+://[^/?=&]+\.\w\w+(:\d+)?(/|$)')
+
+# Global default rate limits for various endpoints. Internet Archive folks have
+# asked us to set the defaults at 80% of the hard limits.
+DEFAULT_CDX_RATE_LIMIT = _utils.RateLimit(0.8 * 60 / 60)
+DEFAULT_TIMEMAP_RATE_LIMIT = _utils.RateLimit(0.8 * 100 / 60)
+DEFAULT_MEMENTO_RATE_LIMIT = _utils.RateLimit(0.8 * 600 / 60)
 
 # If a rate limit response (i.e. a response with status == 429) does not
 # include a `Retry-After` header, recommend pausing for this long.
@@ -140,6 +146,10 @@ def is_malformed_url(url):
         return True
 
     return False
+
+
+def is_memento_response(response):
+    return 'Memento-Datetime' in response.headers
 
 
 def cdx_hash(content):
@@ -351,12 +361,34 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
     user_agent : str, optional
         A custom user-agent string to use in all requests. Defaults to:
         `wayback/{version} (+https://github.com/edgi-govdata-archiving/wayback)`
-    search_calls_per_second : int or float, default: 1
-        The maximum number of calls made to the search API per second.
+    search_calls_per_second : wayback.RateLimit or int or float, default: 0.8
+        The maximum number of calls per second made to the CDX search API.
         To disable the rate limit, set this to 0.
-    memento_calls_per_second : int or float, default: 30
-        The maximum number of calls made to the memento API per second.
+
+        To have multiple sessions share a rate limit (so requests made by one
+        session count towards the limit of the other session), use a
+        single :class:`wayback.RateLimit` instance and pass it to each
+        ``WaybackSession`` instance. If you do not set a limit, the default
+        limit is shared globally across all sessions.
+    memento_calls_per_second : wayback.RateLimit or int or float, default: 8
+        The maximum number of calls per second made to the memento API.
         To disable the rate limit, set this to 0.
+
+        To have multiple sessions share a rate limit (so requests made by one
+        session count towards the limit of the other session), use a
+        single :class:`wayback.RateLimit` instance and pass it to each
+        ``WaybackSession`` instance. If you do not set a limit, the default
+        limit is shared globally across all sessions.
+    timemap_calls_per_second : wayback.RateLimit or int or float, default: 1.33
+        The maximum number of calls per second made to the timemap API (the
+        Wayback Machine's new, beta CDX search is part of the timemap API).
+        To disable the rate limit, set this to 0.
+
+        To have multiple sessions share a rate limit (so requests made by one
+        session count towards the limit of the other session), use a
+        single :class:`wayback.RateLimit` instance and pass it to each
+        ``WaybackSession`` instance. If you do not set a limit, the default
+        limit is shared globally across all sessions.
     """
 
     # It seems Wayback sometimes produces 500 errors for transient issues, so
@@ -370,7 +402,9 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
     handleable_errors = (ConnectionError,) + retryable_errors
 
     def __init__(self, retries=6, backoff=2, timeout=60, user_agent=None,
-                 search_calls_per_second=1, memento_calls_per_second=30):
+                 search_calls_per_second=DEFAULT_CDX_RATE_LIMIT,
+                 memento_calls_per_second=DEFAULT_MEMENTO_RATE_LIMIT,
+                 timemap_calls_per_second=DEFAULT_TIMEMAP_RATE_LIMIT):
         super().__init__()
         self.retries = retries
         self.backoff = backoff
@@ -380,8 +414,12 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
                            f'wayback/{__version__} (+https://github.com/edgi-govdata-archiving/wayback)'),
             'Accept-Encoding': 'gzip, deflate'
         }
-        self.search_calls_per_second = search_calls_per_second
-        self.memento_calls_per_second = memento_calls_per_second
+        self.rate_limts = {
+            '/web/timemap': _utils.RateLimit.make_limit(timemap_calls_per_second),
+            '/cdx': _utils.RateLimit.make_limit(search_calls_per_second),
+            # The memento limit is actually a generic Wayback limit.
+            '/': _utils.RateLimit.make_limit(memento_calls_per_second),
+        }
         # NOTE: the nice way to accomplish retry/backoff is with a urllib3:
         #     adapter = requests.adapters.HTTPAdapter(
         #         max_retries=Retry(total=5, backoff_factor=2,
@@ -395,18 +433,26 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
         # with Wayback's APIs, but urllib3 logs a warning on every retry:
         # https://github.com/urllib3/urllib3/blob/5b047b645f5f93900d5e2fc31230848c25eb1f5f/src/urllib3/connectionpool.py#L730-L737
 
-    # Customize the built-in `send` functionality with retryability.
-    # NOTE: worth considering whether we should push this logic to a custom
-    # requests.adapters.HTTPAdapter
-    def send(self, *args, **kwargs):
+    # Customize the built-in `send()` with retryability and rate limiting.
+    def send(self, request: requests.PreparedRequest, **kwargs):
         start_time = time.time()
         maximum = self.retries
         retries = 0
+
+        url = urlparse(request.url)
+        for path, limit in self.rate_limts.items():
+            if url.path.startswith(path):
+                rate_limit = limit
+                break
+        else:
+            rate_limit = DEFAULT_MEMENTO_RATE_LIMIT
+
         while True:
             retry_delay = 0
             try:
-                logger.debug('sending HTTP request %s "%s", %s', args[0].method, args[0].url, kwargs)
-                response = super().send(*args, **kwargs)
+                logger.debug('sending HTTP request %s "%s", %s', request.method, request.url, kwargs)
+                rate_limit.wait()
+                response = super().send(request, **kwargs)
                 retry_delay = self.get_retry_delay(retries, response)
 
                 if retries >= maximum or not self.should_retry(response):
@@ -453,7 +499,7 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
 
     def should_retry(self, response):
         # A memento may actually be a capture of an error, so don't retry it :P
-        if 'Memento-Datetime' in response.headers:
+        if is_memento_response(response):
             return False
 
         return response.status_code in self.retryable_statuses
@@ -737,26 +783,24 @@ class WaybackClient(_utils.DepthCountedContext):
         previous_result = None
         while next_query:
             sent_query, next_query = next_query, None
-            with _utils.rate_limited(self.session.search_calls_per_second,
-                                     group='search'):
-                response = self.session.request('GET', CDX_SEARCH_URL,
-                                                params=sent_query)
-                try:
-                    # Read/cache the response and close straightaway. If we need
-                    # to raise for status, we want to pre-emptively close the
-                    # response so a user handling the error doesn't need to
-                    # worry about it. If we don't raise here, we still want to
-                    # close the connection so it doesn't leak when we move onto
-                    # the next of results or when this iterator ends.
-                    read_and_close(response)
-                    response.raise_for_status()
-                except requests.exceptions.HTTPError as error:
-                    if 'AdministrativeAccessControlException' in response.text:
-                        raise BlockedSiteError(query['url'])
-                    elif 'RobotAccessControlException' in response.text:
-                        raise BlockedByRobotsError(query['url'])
-                    else:
-                        raise WaybackException(str(error))
+            response = self.session.request('GET', CDX_SEARCH_URL,
+                                            params=sent_query)
+            try:
+                # Read/cache the response and close straightaway. If we need
+                # to raise for status, we want to pre-emptively close the
+                # response so a user handling the error doesn't need to
+                # worry about it. If we don't raise here, we still want to
+                # close the connection so it doesn't leak when we move onto
+                # the next of results or when this iterator ends.
+                read_and_close(response)
+                response.raise_for_status()
+            except requests.exceptions.HTTPError as error:
+                if 'AdministrativeAccessControlException' in response.text:
+                    raise BlockedSiteError(query['url'])
+                elif 'RobotAccessControlException' in response.text:
+                    raise BlockedByRobotsError(query['url'])
+                else:
+                    raise WaybackException(str(error))
 
             lines = iter(response.content.splitlines())
 
@@ -937,166 +981,165 @@ class WaybackClient(_utils.DepthCountedContext):
                                         timestamp=original_date_wayback,
                                         mode=mode)
 
-        with _utils.rate_limited(calls_per_second=self.session.memento_calls_per_second,
-                                 group='get_memento'):
-            # Correctly following redirects is actually pretty complicated. In
-            # the simplest case, a memento is a simple web page, and that's
-            # no problem. However...
-            #   1.  If the response was a >= 400 status, we have to determine
-            #       whether that status is coming from the memento or from the
-            #       the Wayback Machine itself.
-            #   2.  If the response was a 3xx status (a redirect) we have to
-            #       determine the same thing, but it's a little more complex...
-            #       a) If the redirect *is* the memento, its target may be an
-            #          actual memento (see #1) or it may be a redirect (#2).
-            #          The targeted URL is frequently captured anywhere from
-            #          the same second to a few hours later, so it is likely
-            #          the target will result in case 2b (below).
-            #       b) If there is no memento for the requested time, but there
-            #          are mementos for the same URL at another time, Wayback
-            #          *may* redirect to that memento.
-            #          - If this was on the original request, that's *not* ok
-            #            because it means we're getting a different memento
-            #            than we asked for.
-            #          - If the redirect came from a URL that was the target of
-            #            of a memento redirect (2a), then this is expected.
-            #            Before following the redirect, though, we first sanity
-            #            check it to make sure the memento we are redirecting
-            #            to actually came from nearby in time (sometimes
-            #            Wayback will redirect to captures *months* away).
-            history = []
-            debug_history = []
-            urls = set()
-            previous_was_memento = False
+        # Correctly following redirects is actually pretty complicated. In
+        # the simplest case, a memento is a simple web page, and that's
+        # no problem. However...
+        #   1.  If the response was a >= 400 status, we have to determine
+        #       whether that status is coming from the memento or from the
+        #       the Wayback Machine itself.
+        #   2.  If the response was a 3xx status (a redirect) we have to
+        #       determine the same thing, but it's a little more complex...
+        #       a) If the redirect *is* the memento, its target may be an
+        #          actual memento (see #1) or it may be a redirect (#2).
+        #          The targeted URL is frequently captured anywhere from
+        #          the same second to a few hours later, so it is likely
+        #          the target will result in case 2b (below).
+        #       b) If there is no memento for the requested time, but there
+        #          are mementos for the same URL at another time, Wayback
+        #          *may* redirect to that memento.
+        #          - If this was on the original request, that's *not* ok
+        #            because it means we're getting a different memento
+        #            than we asked for.
+        #          - If the redirect came from a URL that was the target of
+        #            of a memento redirect (2a), then this is expected.
+        #            Before following the redirect, though, we first sanity
+        #            check it to make sure the memento we are redirecting
+        #            to actually came from nearby in time (sometimes
+        #            Wayback will redirect to captures *months* away).
+        history = []
+        debug_history = []
+        urls = set()
+        previous_was_memento = False
 
-            response = self.session.request('GET', url, allow_redirects=False)
-            protocol_and_www = re.compile(r'^https?://(www\d?\.)?')
-            memento = None
-            while True:
-                current_url, current_date, current_mode = _utils.memento_url_data(response.url)
+        response = self.session.request('GET', url, allow_redirects=False)
+        protocol_and_www = re.compile(r'^https?://(www\d?\.)?')
+        memento = None
+        while True:
+            current_url, current_date, current_mode = _utils.memento_url_data(response.url)
 
-                # In view mode, redirects need special handling.
-                if current_mode == Mode.view.value:
-                    redirect_url = detect_view_mode_redirect(response, current_date)
-                    if redirect_url:
-                        # Fix up response properties to be like other modes.
-                        redirect = requests.Request('GET', redirect_url)
-                        response._next = self.session.prepare_request(redirect)
-                        response.headers['Memento-Datetime'] = current_date.strftime(
-                            '%a, %d %b %Y %H:%M:%S %Z'
-                        )
+            # In view mode, redirects need special handling.
+            if current_mode == Mode.view.value:
+                redirect_url = detect_view_mode_redirect(response, current_date)
+                if redirect_url:
+                    # Fix up response properties to be like other modes.
+                    redirect = requests.Request('GET', redirect_url)
+                    response._next = self.session.prepare_request(redirect)
+                    response.headers['Memento-Datetime'] = current_date.strftime(
+                        '%a, %d %b %Y %H:%M:%S %Z'
+                    )
 
-                is_memento = 'Memento-Datetime' in response.headers
+            is_memento = is_memento_response(response)
 
-                # A memento URL will match possible captures based on its SURT
-                # form, which means we might be getting back a memento captured
-                # from a different URL than the one specified in the request.
-                # If present, the `original` link will be the *captured* URL.
-                if response.links and ('original' in response.links):
-                    current_url = response.links['original']['url']
+            # A memento URL will match possible captures based on its SURT
+            # form, which means we might be getting back a memento captured
+            # from a different URL than the one specified in the request.
+            # If present, the `original` link will be the *captured* URL.
+            if response.links and ('original' in response.links):
+                current_url = response.links['original']['url']
 
-                if is_memento:
-                    links = clean_memento_links(response.links, mode)
-                    memento = Memento(url=current_url,
-                                      timestamp=current_date,
-                                      mode=current_mode,
-                                      memento_url=response.url,
-                                      status_code=response.status_code,
-                                      headers=Memento.parse_memento_headers(response.headers, response.url),
-                                      encoding=response.encoding,
-                                      raw=response,
-                                      raw_headers=response.headers,
-                                      links=links,
-                                      history=history,
-                                      debug_history=debug_history)
-                    if not follow_redirects:
-                        break
-                else:
-                    memento = None
-                    # The exactness requirements for redirects from memento
-                    # playbacks and non-playbacks is different -- even with
-                    # strict matching, a memento that redirects to a non-
-                    # memento is normal and ok; the target of a redirect will
-                    # rarely have been captured at the same time as the
-                    # redirect itself. (See 2b)
-                    playable = False
-                    if response.next and (
-                       (len(history) == 0 and not exact) or
-                       (len(history) > 0 and (previous_was_memento or not exact_redirects))):
-                        target_url, target_date, _ = _utils.memento_url_data(response.next.url)
-                        # A non-memento redirect is generally taking us to the
-                        # closest-in-time capture of the same URL. Note that is
-                        # NOT the next capture -- i.e. the one that would have
-                        # been produced by an earlier memento redirect -- it's
-                        # just the *closest* one. The first job here is to make
-                        # sure it fits within our target window.
-                        if abs(target_date - original_date).total_seconds() <= target_window:
-                            # The redirect will point to the closest-in-time
-                            # SURT URL, which will often not be an exact URL
-                            # match. If we aren't looking for exact matches,
-                            # then just assume wherever we're redirecting to is
-                            # ok. Otherwise, try to sanity-check the URL.
-                            if exact_redirects:
-                                # FIXME: what should *really* happen here, if
-                                # we want exactness, is a CDX search for the
-                                # next-int-time capture of the exact URL we
-                                # redirected to. I'm not totally sure how
-                                # great that is (also it seems high overhead to
-                                # do a search in the middle of this series of
-                                # memento lookups), so just do a loose URL
-                                # check for now.
-                                current_nice_url = protocol_and_www.sub('', current_url).casefold()
-                                target_nice_url = protocol_and_www.sub('', target_url).casefold()
-                                playable = current_nice_url == target_nice_url
-                            else:
-                                playable = True
-
-                    if not playable:
-                        read_and_close(response)
-                        message = response.headers.get('X-Archive-Wayback-Runtime-Error', '')
-                        if (
-                            ('AdministrativeAccessControlException' in message) or
-                            ('URL has been excluded' in response.text)
-                        ):
-                            raise BlockedSiteError(f'{url} is blocked from access')
-                        elif (
-                            ('RobotAccessControlException' in message) or
-                            ('robots.txt' in response.text)
-                        ):
-                            raise BlockedByRobotsError(f'{url} is blocked by robots.txt')
-                        elif message:
-                            raise MementoPlaybackError(f'Memento at {url} could not be played: {message}')
-                        elif response.ok:
-                            # TODO: Raise more specific errors for the possible
-                            # cases here. We *should* only arrive here when
-                            # there's a redirect and:
-                            # - `exact` is true.
-                            # - `exact_redirects` is true and the redirect was
-                            #   not exact.
-                            # - The target URL is outside `target_window`.
-                            raise MementoPlaybackError(f'Memento at {url} could not be played')
-                        elif response.status_code == 404:
-                            raise NoMementoError(f'The URL {url} has no mementos and was never archived')
-                        else:
-                            raise MementoPlaybackError(f'{response.status_code} error while loading '
-                                                       f'memento at {url}')
-
-                if response.next:
-                    previous_was_memento = is_memento
-                    read_and_close(response)
-
-                    # Wayback sometimes has circular memento redirects ¯\_(ツ)_/¯
-                    urls.add(response.url)
-                    if response.next.url in urls:
-                        raise MementoPlaybackError(f'Memento at {url} is circular')
-
-                    # All requests are included in `debug_history`, but
-                    # `history` only shows redirects that were mementos.
-                    debug_history.append(response.url)
-                    if is_memento:
-                        history.append(memento)
-                    response = self.session.send(response.next, allow_redirects=False)
-                else:
+            if is_memento:
+                links = clean_memento_links(response.links, mode)
+                memento = Memento(url=current_url,
+                                  timestamp=current_date,
+                                  mode=current_mode,
+                                  memento_url=response.url,
+                                  status_code=response.status_code,
+                                  headers=Memento.parse_memento_headers(response.headers, response.url),
+                                  encoding=response.encoding,
+                                  raw=response,
+                                  raw_headers=response.headers,
+                                  links=links,
+                                  history=history,
+                                  debug_history=debug_history)
+                if not follow_redirects:
                     break
+            else:
+                memento = None
+                # The exactness requirements for redirects from memento
+                # playbacks and non-playbacks is different -- even with
+                # strict matching, a memento that redirects to a non-
+                # memento is normal and ok; the target of a redirect will
+                # rarely have been captured at the same time as the
+                # redirect itself. (See 2b)
+                playable = False
+                if response.next and (
+                    (len(history) == 0 and not exact) or
+                    (len(history) > 0 and (previous_was_memento or not exact_redirects))
+                ):
+                    target_url, target_date, _ = _utils.memento_url_data(response.next.url)
+                    # A non-memento redirect is generally taking us to the
+                    # closest-in-time capture of the same URL. Note that is
+                    # NOT the next capture -- i.e. the one that would have
+                    # been produced by an earlier memento redirect -- it's
+                    # just the *closest* one. The first job here is to make
+                    # sure it fits within our target window.
+                    if abs(target_date - original_date).total_seconds() <= target_window:
+                        # The redirect will point to the closest-in-time
+                        # SURT URL, which will often not be an exact URL
+                        # match. If we aren't looking for exact matches,
+                        # then just assume wherever we're redirecting to is
+                        # ok. Otherwise, try to sanity-check the URL.
+                        if exact_redirects:
+                            # FIXME: what should *really* happen here, if
+                            # we want exactness, is a CDX search for the
+                            # next-int-time capture of the exact URL we
+                            # redirected to. I'm not totally sure how
+                            # great that is (also it seems high overhead to
+                            # do a search in the middle of this series of
+                            # memento lookups), so just do a loose URL
+                            # check for now.
+                            current_nice_url = protocol_and_www.sub('', current_url).casefold()
+                            target_nice_url = protocol_and_www.sub('', target_url).casefold()
+                            playable = current_nice_url == target_nice_url
+                        else:
+                            playable = True
 
-            return memento
+                if not playable:
+                    read_and_close(response)
+                    message = response.headers.get('X-Archive-Wayback-Runtime-Error', '')
+                    if (
+                        ('AdministrativeAccessControlException' in message) or
+                        ('URL has been excluded' in response.text)
+                    ):
+                        raise BlockedSiteError(f'{url} is blocked from access')
+                    elif (
+                        ('RobotAccessControlException' in message) or
+                        ('robots.txt' in response.text)
+                    ):
+                        raise BlockedByRobotsError(f'{url} is blocked by robots.txt')
+                    elif message:
+                        raise MementoPlaybackError(f'Memento at {url} could not be played: {message}')
+                    elif response.ok:
+                        # TODO: Raise more specific errors for the possible
+                        # cases here. We *should* only arrive here when
+                        # there's a redirect and:
+                        # - `exact` is true.
+                        # - `exact_redirects` is true and the redirect was
+                        #   not exact.
+                        # - The target URL is outside `target_window`.
+                        raise MementoPlaybackError(f'Memento at {url} could not be played')
+                    elif response.status_code == 404:
+                        raise NoMementoError(f'The URL {url} has no mementos and was never archived')
+                    else:
+                        raise MementoPlaybackError(f'{response.status_code} error while loading '
+                                                   f'memento at {url}')
+
+            if response.next:
+                previous_was_memento = is_memento
+                read_and_close(response)
+
+                # Wayback sometimes has circular memento redirects ¯\_(ツ)_/¯
+                urls.add(response.url)
+                if response.next.url in urls:
+                    raise MementoPlaybackError(f'Memento at {url} is circular')
+
+                # All requests are included in `debug_history`, but
+                # `history` only shows redirects that were mementos.
+                debug_history.append(response.url)
+                if is_memento:
+                    history.append(memento)
+                response = self.session.send(response.next, allow_redirects=False)
+            else:
+                break
+
+        return memento

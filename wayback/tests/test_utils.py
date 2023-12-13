@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 import email.utils
 import pytest
 import time
-from .._utils import memento_url_data, rate_limited, parse_retry_after
+from .._utils import memento_url_data, RateLimit, parse_retry_after
 
 
 class TestMementoUrlData:
@@ -42,38 +42,46 @@ class TestMementoUrlData:
             memento_url_data(None)
 
 
-class TestRateLimited:
+class TestRateLimit:
 
     def test_call_per_seconds(self):
-        """Test that the rate limit is accurately applied.
-        It also checks that two rate limits applied sequentially do not interfere with another."""
+        """
+        Test that the rate limit is accurately applied. It also checks that two
+        rate limits applied sequentially do not interfere with another.
+        """
+        limit3 = RateLimit(per_second=3)
+        limit1 = RateLimit(per_second=1)
+        limit0 = RateLimit(per_second=0)
+
         start_time = time.time()
         for i in range(4):
-            with rate_limited(calls_per_second=3, group='cps1'):
+            with limit3:
                 pass
         assert 1.0 <= time.time() - start_time <= 1.1
 
         start_time = time.time()
         for i in range(3):
-            with rate_limited(calls_per_second=1, group='cps2'):
+            with limit1:
                 pass
         assert 2.0 <= time.time() - start_time <= 2.1
 
         start_time = time.time()
         for i in range(3):
-            with rate_limited(calls_per_second=0, group='cps3'):
+            with limit0:
                 pass
         assert 0 <= time.time() - start_time <= 0.1
 
     def test_simultaneous_ratelimits(self):
         """Check that multiple rate limits do not interfere with another."""
+        limit1 = RateLimit(per_second=1)
+        limit3 = RateLimit(per_second=3)
         start_time = time.time()
         # The first loop should take 1 second, as it waits on the sim1 lock,
         # the second loop 0.66 seconds, since it waits twice on sim2.
         for i in range(2):
-            with rate_limited(calls_per_second=1, group='sim1'):
+            with limit1:
                 for j in range(3):
-                    with rate_limited(calls_per_second=3, group='sim2'):
+                    with limit3:
                         pass
         assert 1.66 <= time.time() - start_time <= 1.7
 

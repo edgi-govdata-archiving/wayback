@@ -16,13 +16,33 @@ Breaking Changes
 Features
 ^^^^^^^^
 
-- N/A
+- Rate limiting has been significantly updated under the hood. Separate sessions or clients with customized limits now operate completely independently (their limits previously overlapped in a hard-to-predict way).
+
+  If you need to make multiple :class:`wayback.WaybackSession` instances that share limits, you can create an instance of :class:`wayback.RateLimit` and pass it to each session via the ``*_calls_per_second`` arguments instead of passing an integer or float. For example:
+
+  .. code-block:: python
+
+    # Each of these sessions will be limited to 1 search request every 2
+    # seconds. During a period where only one of these sessions is in use, it
+    # will continue to operate at 1 request every 2 seconds:
+    session1 = WaybackSession(search_calls_per_second=0.5)
+    session2 = WaybackSession(search_calls_per_second=0.5)
+
+    # These sessions will be limited to 1 search request each second as a
+    # combined total. During a period where only one of these sessions is in
+    # use, it will make 1 request per second, but if both are actively in use,
+    # each will make 1 request every 2 seconds:
+    rate = RateLimit(per_second=1)
+    session1 = WaybackSession(search_calls_per_second=rate)
+    session2 = WaybackSession(search_calls_per_second=rate)
+
+  Sessions using the default limits share them via this same mechanism.
 
 
 Fixes & Maintenance
 ^^^^^^^^^^^^^^^^^^^
 
-- N/A
+- The default rate limits have been further tweaked since v0.4.4 based on closer collaboration with Internet Archive staff. Rate limits are also now more accurately applied to each individual request (they were previously applied more roughly, without respect to retries and redirects).
 
 
 v0.4.4 (2023-11-27)
