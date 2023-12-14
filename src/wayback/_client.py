@@ -19,19 +19,22 @@ from enum import Enum
 import hashlib
 import logging
 import re
-import requests
-from requests.exceptions import (ChunkedEncodingError,
-                                 ConnectionError,
-                                 ContentDecodingError,
-                                 ProxyError,
-                                 RetryError,
-                                 Timeout)
+# import requests
+# from requests.exceptions import (ChunkedEncodingError,
+#                                  ConnectionError,
+#                                  ContentDecodingError,
+#                                  ProxyError,
+#                                  RetryError,
+#                                  Timeout)
 import time
 from urllib.parse import urljoin, urlparse
 from urllib3.connectionpool import HTTPConnectionPool
 from urllib3.exceptions import (ConnectTimeoutError,
                                 MaxRetryError,
-                                ReadTimeoutError)
+                                ReadTimeoutError,
+                                ProxyError,
+                                TimeoutError,
+                                ProtocolError)
 from warnings import warn
 from . import _utils, __version__
 from ._models import CdxRecord, Memento
@@ -158,6 +161,8 @@ def cdx_hash(content):
     return b32encode(hashlib.sha1(content).digest()).decode()
 
 
+# XXX: see how requests reads the body:
+# https://github.com/psf/requests/blob/a25fde6989f8df5c3d823bc9f2e2fc24aa71f375/src/requests/models.py#L794-L839
 def read_and_close(response):
     # Read content so it gets cached and close the response so
     # we can release the connection for reuse. See:
@@ -336,10 +341,10 @@ else:
 #####################################################################
 
 
-class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
+class WaybackSession(_utils.DisableAfterCloseSession):
     """
-    A custom session object that pools network connections and resources for
-    requests to the Wayback Machine.
+    Manages HTTP requests to Wayback Machine servers, handling things like
+    retries, rate limiting, connection pooling, timeouts, etc.
 
     Parameters
     ----------
@@ -395,11 +400,22 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
     # they make sense to retry here. Usually not in other contexts, though.
     retryable_statuses = frozenset((413, 421, 500, 502, 503, 504, 599))
 
+    # XXX: TimeoutError should be a base class for both ConnectTimeoutError
+    # and ReadTimeoutError, so we don't need them here...?
     retryable_errors = (ConnectTimeoutError, MaxRetryError, ReadTimeoutError,
-                        ProxyError, RetryError, Timeout)
+                        ProxyError, TimeoutError,
+                        # XXX: These used to be wrapped with
+                        # requests.ConnectionError, which we would then have to
+                        # inspect to see if it needed retrying. Need to make
+                        # sure/think through whether these should be retried.
+                        ProtocolError, OSError)
     # Handleable errors *may* be retryable, but need additional logic beyond
     # just the error type. See `should_retry_error()`.
-    handleable_errors = (ConnectionError,) + retryable_errors
+    #
+    # XXX: see notes above about what should get retried; which things need to
+    # be caught but then more deeply inspected, blah blah blah:
+    # handleable_errors = (ConnectionError,) + retryable_errors
+    handleable_errors = () + retryable_errors
 
     def __init__(self, retries=6, backoff=2, timeout=60, user_agent=None,
                  search_calls_per_second=DEFAULT_CDX_RATE_LIMIT,
@@ -463,6 +479,17 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
                 else:
                     logger.debug('Received error response (status: %s), will retry', response.status_code)
                     read_and_close(response)
+            # XXX: urllib3's MaxRetryError can wrap all the other errors, so
+            # we should probably be checking `error.reason` on it. See how
+            # requests handles this: https://github.com/psf/requests/blob/a25fde6989f8df5c3d823bc9f2e2fc24aa71f375/src/requests/adapters.py#L502-L537
+            #
+            # XXX: requests.RetryError used to be in our list of handleable
+            # errors; it gets raised when urllib3 raises a MaxRetryError with a
+            # ResponseError for its `reason` attribute. Need to test the
+            # situation here...
+            #
+            # XXX: Consider how read-related exceptions need to be handled (or
+            # not). In requests: https://github.com/psf/requests/blob/a25fde6989f8df5c3d823bc9f2e2fc24aa71f375/src/requests/models.py#L794-L839
             except WaybackSession.handleable_errors as error:
                 response = getattr(error, 'response', None)
                 if response is not None:
@@ -507,17 +534,23 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
     def should_retry_error(self, error):
         if isinstance(error, WaybackSession.retryable_errors):
             return True
-        elif isinstance(error, ConnectionError):
-            # ConnectionErrors from requests actually wrap a whole family of
-            # more detailed errors from urllib3, so we need to do some string
-            # checking to determine whether the error is retryable.
-            text = str(error)
-            # NOTE: we have also seen this, which may warrant retrying:
-            # `requests.exceptions.ConnectionError: ('Connection aborted.',
-            # RemoteDisconnected('Remote end closed connection without
-            # response'))`
-            if 'NewConnectionError' in text or 'Max retries' in text:
-                return True
+        # XXX: ConnectionError was a broad wrapper from requests; there are more
+        # narrow errors in urllib3 we can catch, so this is probably (???) no
+        # longer relevant. But urllib3 has some other wrapper exceptions that we
+        # might need to dig into more, see:
+        # https://github.com/psf/requests/blob/a25fde6989f8df5c3d823bc9f2e2fc24aa71f375/src/requests/adapters.py#L502-L537
+        #
+        # elif isinstance(error, ConnectionError):
+        #     # ConnectionErrors from requests actually wrap a whole family of
+        #     # more detailed errors from urllib3, so we need to do some string
+        #     # checking to determine whether the error is retryable.
+        #     text = str(error)
+        #     # NOTE: we have also seen this, which may warrant retrying:
+        #     # `requests.exceptions.ConnectionError: ('Connection aborted.',
+        #     # RemoteDisconnected('Remote end closed connection without
+        #     # response'))`
+        #     if 'NewConnectionError' in text or 'Max retries' in text:
+        #         return True
 
         return False
 
@@ -537,6 +570,11 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
 
         return delay
 
+    # XXX: Needs to do the right thing. Requests sessions closed all their
+    # adapters, which does:
+    #     self.poolmanager.clear()
+    #     for proxy in self.proxy_manager.values():
+    #         proxy.clear()
     def reset(self):
         "Reset any network connections the session is using."
         # Close really just closes all the adapters in `self.adapters`. We
@@ -785,22 +823,22 @@ class WaybackClient(_utils.DepthCountedContext):
             sent_query, next_query = next_query, None
             response = self.session.request('GET', CDX_SEARCH_URL,
                                             params=sent_query)
-            try:
-                # Read/cache the response and close straightaway. If we need
-                # to raise for status, we want to pre-emptively close the
-                # response so a user handling the error doesn't need to
-                # worry about it. If we don't raise here, we still want to
-                # close the connection so it doesn't leak when we move onto
-                # the next of results or when this iterator ends.
-                read_and_close(response)
-                response.raise_for_status()
-            except requests.exceptions.HTTPError as error:
+
+            # Read/cache the response and close straightaway. If we need
+            # to raise an exception based on the response, we want to
+            # pre-emptively close it so a user handling the error doesn't need
+            # to worry about it. If we don't raise here, we still want to
+            # close the connection so it doesn't leak when we move onto
+            # the next page of results or when this iterator ends.
+            read_and_close(response)
+
+            if response.status >= 400:
                 if 'AdministrativeAccessControlException' in response.text:
                     raise BlockedSiteError(query['url'])
                 elif 'RobotAccessControlException' in response.text:
                     raise BlockedByRobotsError(query['url'])
                 else:
-                    raise WaybackException(str(error))
+                    raise WaybackException(f'HTTP {response.status} error for CDX search: "{query}"')
 
             lines = iter(response.content.splitlines())
 

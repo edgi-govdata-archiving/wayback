@@ -4,8 +4,6 @@ from datetime import date, datetime, timezone
 import email.utils
 import logging
 import re
-import requests
-import requests.adapters
 import threading
 import time
 from typing import Union
@@ -322,20 +320,22 @@ class DepthCountedContext:
         pass
 
 
-class DisableAfterCloseSession(requests.Session):
+class DisableAfterCloseSession:
     """
     A custom session object raises a :class:`SessionClosedError` if you try to
     use it after closing it, to help identify and avoid potentially dangerous
     code patterns. (Standard session objects continue to be usable after
     closing, even if they may not work exactly as expected.)
     """
-    _closed = False
+    _closed: bool = False
 
-    def close(self, disable=True):
+    def close(self, disable: bool = True) -> None:
         super().close()
         if disable:
             self._closed = True
 
+    # XXX: this no longer works correctly, we probably need some sort of
+    # decorator or something
     def send(self, *args, **kwargs):
         if self._closed:
             raise SessionClosedError('This session has already been closed '
