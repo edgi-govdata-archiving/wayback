@@ -28,18 +28,16 @@ import re
 #                                  Timeout)
 import time
 from typing import Generator, Optional
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urlencode, urljoin, urlparse
 from urllib3 import PoolManager, HTTPResponse, Timeout as Urllib3Timeout
 from urllib3.connectionpool import HTTPConnectionPool
-from urllib3.exceptions import (ClosedPoolError,
-                                ConnectTimeoutError,
+from urllib3.exceptions import (ConnectTimeoutError,
                                 DecodeError,
                                 MaxRetryError,
                                 ProtocolError,
                                 ReadTimeoutError,
                                 ProxyError,
-                                TimeoutError,
-                                ProtocolError)
+                                TimeoutError)
 from warnings import warn
 from . import _utils, __version__
 from ._models import CdxRecord, Memento
@@ -350,7 +348,8 @@ def iter_byte_slices(data: bytes, size: int) -> Generator[bytes, None, None]:
 def parse_header_links(value):
     """Return a list of parsed link headers proxies.
 
-    i.e. Link: <http:/.../front.jpeg>; rel=front; type="image/jpeg",<http://.../back.jpeg>; rel=back;type="image/jpeg"
+    i.e. Link: <http:/.../front.jpeg>; rel=front; type="image/jpeg",
+               <http://.../back.jpeg>; rel=back;type="image/jpeg"
 
     :rtype: list
     """
@@ -384,7 +383,6 @@ def parse_header_links(value):
     return links
 
 
-from urllib.parse import urlencode
 # XXX: pretty much wholesale taken from requests. May need adjustment.
 # https://github.com/psf/requests/blob/147c8511ddbfa5e8f71bbf5c18ede0c4ceb3bba4/requests/models.py#L107-L134
 def serialize_querystring(data):
@@ -441,7 +439,7 @@ def _parse_content_type_header(header):
             index_of_equals = param.find("=")
             if index_of_equals != -1:
                 key = param[:index_of_equals].strip(items_to_strip)
-                value = param[index_of_equals + 1 :].strip(items_to_strip)
+                value = param[index_of_equals + 1:].strip(items_to_strip)
             params_dict[key.lower()] = value
     return content_type, params_dict
 
@@ -503,7 +501,7 @@ class InternalHttpResponse:
         self.raw = raw
         self.status_code = raw.status
         self.headers = raw.headers
-        self.url = getattr(raw, 'url', request_url)
+        self.url = urljoin(request_url, getattr(raw, 'url', ''))
         self.encoding = get_encoding_from_headers(self.headers)
 
     # XXX: shortcut to essentially what requests does in `iter_content()`.
@@ -539,9 +537,7 @@ class InternalHttpResponse:
     @property
     def content(self) -> bytes:
         if self._content is None:
-            logger.warning(f'Getting content!!!')
             self._content = b"".join(self.stream()) or b""
-            logger.warning(f'Getting content DONE: "{self._content}"')
 
         return self._content
 
@@ -612,7 +608,7 @@ class InternalHttpResponse:
         if self.raw:
             try:
                 if cache:
-                    # Inspired by requests: https://github.com/psf/requests/blob/eedd67462819f8dbf8c1c32e77f9070606605231/requests/sessions.py#L160-L163
+                    # Inspired by requests: https://github.com/psf/requests/blob/eedd67462819f8dbf8c1c32e77f9070606605231/requests/sessions.py#L160-L163  # noqa
                     try:
                         self.content
                     except (DecodeError, ProtocolError, RuntimeError):
@@ -838,7 +834,8 @@ class WaybackSession:
                     response.close(cache=False)
             # XXX: urllib3's MaxRetryError can wrap all the other errors, so
             # we should probably be checking `error.reason` on it. See how
-            # requests handles this: https://github.com/psf/requests/blob/a25fde6989f8df5c3d823bc9f2e2fc24aa71f375/src/requests/adapters.py#L502-L537
+            # requests handles this:
+            #   https://github.com/psf/requests/blob/a25fde6989f8df5c3d823bc9f2e2fc24aa71f375/src/requests/adapters.py#L502-L537
             #
             # XXX: requests.RetryError used to be in our list of handleable
             # errors; it gets raised when urllib3 raises a MaxRetryError with a
@@ -846,7 +843,8 @@ class WaybackSession:
             # situation here...
             #
             # XXX: Consider how read-related exceptions need to be handled (or
-            # not). In requests: https://github.com/psf/requests/blob/a25fde6989f8df5c3d823bc9f2e2fc24aa71f375/src/requests/models.py#L794-L839
+            # not). In requests:
+            #   https://github.com/psf/requests/blob/a25fde6989f8df5c3d823bc9f2e2fc24aa71f375/src/requests/models.py#L794-L839
             except WaybackSession.handleable_errors as error:
                 response = getattr(error, 'response', None)
                 if response is not None:

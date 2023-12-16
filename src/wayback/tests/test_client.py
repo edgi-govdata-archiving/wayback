@@ -1,9 +1,15 @@
 from datetime import date, datetime, timezone, timedelta
+from io import BytesIO
 from itertools import islice
 from pathlib import Path
 import time
 import pytest
 from unittest import mock
+from urllib.parse import urlparse, ParseResult, parse_qs
+from urllib3 import (HTTPConnectionPool,
+                     HTTPResponse,
+                     HTTPHeaderDict,
+                     Timeout as Urllib3Timeout)
 from .support import create_vcr
 from .._client import (CdxRecord,
                        Mode,
@@ -217,10 +223,6 @@ def test_search_with_filter_tuple():
         assert all(('feature' in v.url for v in versions))
 
 
-from io import BytesIO
-from urllib.parse import urlparse, ParseResult, parse_qs
-from urllib3 import HTTPConnectionPool, HTTPResponse, HTTPHeaderDict
-import logging
 class Urllib3MockManager:
     def __init__(self) -> None:
         self.responses = []
@@ -769,16 +771,12 @@ def return_timeout(self, *args, **kwargs) -> HTTPResponse:
     >>> def test_timeout(self, mock_class):
     >>>    assert urllib3.get('http://test.com', timeout=5).data == b'5'
     """
-    logging.warning(f'Called with args={args}, kwargs={kwargs}')
     res = HTTPResponse(
         body=str(kwargs.get('timeout', None)).encode(),
         headers=HTTPHeaderDict(),
         status=200
     )
     return res
-
-
-from urllib3 import Timeout as Urllib3Timeout
 
 
 class TestWaybackSession:
