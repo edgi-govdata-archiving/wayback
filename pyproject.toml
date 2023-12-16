@@ -8,10 +8,8 @@ maintainers = [
   { name = "Rob Brackett", email = "rob@robbrackett.com" },
   { name="Environmental Data Governance Initiative", email="EnviroDGI@protonmail.com" },
 ]
-# TODO: put contributors in `authors` field:
-# authors = [
-#   { name="XYZ" },
-# ]
+# TODO: put contributors in `authors` field?
+#   authors = [ { name="XYZ" }, ... ]
 license = {text = "BSD (3-clause)"}
 requires-python = ">=3.8"
 classifiers = [
