@@ -38,6 +38,13 @@ from urllib3.exceptions import (ConnectTimeoutError,
                                 ReadTimeoutError,
                                 ProxyError,
                                 TimeoutError)
+# The Header dict lives in a different place for urllib3 v2:
+try:
+    from urllib3 import HTTPHeaderDict as Urllib3HTTPHeaderDict
+# vs. urllib3 v1:
+except ImportError:
+    from urllib3.response import HTTPHeaderDict as Urllib3HTTPHeaderDict
+
 from warnings import warn
 from . import _utils, __version__
 from ._models import CdxRecord, Memento
@@ -307,7 +314,6 @@ else:
     # Unfortunately, we can't wrap the `HTTPConnection.getresponse` method in
     # urllib3 v2, since it may have read the response body before returning. So
     # we patch the HTTPHeaderDict class instead.
-    from urllib3._collections import HTTPHeaderDict as Urllib3HTTPHeaderDict
     _urllib3_header_init = Urllib3HTTPHeaderDict.__init__
 
     def _new_header_init(self, headers=None, **kwargs):

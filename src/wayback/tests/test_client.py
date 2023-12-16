@@ -8,8 +8,14 @@ from unittest import mock
 from urllib.parse import urlparse, ParseResult, parse_qs
 from urllib3 import (HTTPConnectionPool,
                      HTTPResponse,
-                     HTTPHeaderDict,
                      Timeout as Urllib3Timeout)
+# The Header dict lives in a different place for urllib3 v2:
+try:
+    from urllib3 import HTTPHeaderDict
+# vs. urllib3 v1:
+except ImportError:
+    from urllib3.response import HTTPHeaderDict
+
 from .support import create_vcr
 from .._client import (CdxRecord,
                        Mode,
