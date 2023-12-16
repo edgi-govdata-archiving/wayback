@@ -3,10 +3,6 @@ name = "wayback"
 # version = "0.0.1"
 dynamic=["version"]
 description = "Python API to Internet Archive Wayback Machine"
-# FIXME: validate this is the correct replacement for long_description and
-# long_description_content_type!
-# It seems this can also be:
-# readme = {content-type = "text/x-rst", file = "README.rst"}
 readme = "README.rst"
 maintainers = [
   { name = "Rob Brackett", email = "rob@robbrackett.com" },
@@ -16,12 +12,7 @@ maintainers = [
 # authors = [
 #   { name="XYZ" },
 # ]
-# FIXME: how does this show up in PyPI? In setup.py we had:
-#   license="BSD (3-clause)"
-# But that's not the right format here. And there's no trove classifier for it.
-# Maybe this should be:
-#   license = {text = "BSD (3-clause)"}
-license = {file = "LICENSE"}
+license = {text = "BSD (3-clause)"}
 requires-python = ">=3.8"
 classifiers = [
     "Development Status :: 3 - Alpha",
