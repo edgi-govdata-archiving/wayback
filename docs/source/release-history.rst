@@ -8,6 +8,8 @@ In Development
 Breaking Changes
 ^^^^^^^^^^^^^^^^
 
+- Wayback now requires Python 3.8 or newer. Going forward, we intend to drop support for older Python releases once they hit end-of-life (i.e. they no longer receive any security updates or support from the Core Python team). These updates will always be noted as breaking changes.
+
 - Wayback will no longer automatically pause and retry when the server returns rate-limit errors. Instead, it will raise a :class:`wayback.exceptions.WaybackRetryError` exception (which includes information how long you should probably pause for in the ``time`` attribute).
 
   The previous behavior helped solve some issues with the way rate limits were implemented on the client side that have since been fixed. It was also designed around users who had custom limits on Internet Archive servers, which is an unusual situation. The new approach is safer and can help prevent your IP address from getting blocked. If you need to retry after rate limit errors, make sure your code handles the exception and pauses all requests on all client instances for an appropriate amount of time.
