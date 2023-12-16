@@ -86,6 +86,7 @@ build.hooks.vcs.version-file = "wayback/_version.py"
 exclude = [".git_archival.txt"]
 
 [tool.hatch.build.targets.wheel]
+packages = ["wayback"]
 exclude = ["wayback/tests/*"]
 
 [tool.check-wheel-contents]
