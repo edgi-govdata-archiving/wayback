@@ -589,7 +589,7 @@ class InternalHttpResponse:
         return self._redirect_url
 
     @property
-    def ok(self) -> bool:
+    def is_success(self) -> bool:
         return self.status_code >= 200 and self.status_code < 300
 
     # XXX: This and _release_conn probably need wrapping with RLock!
@@ -1496,7 +1496,7 @@ class WaybackClient(_utils.DepthCountedContext):
                         raise BlockedByRobotsError(f'{url} is blocked by robots.txt')
                     elif message:
                         raise MementoPlaybackError(f'Memento at {url} could not be played: {message}')
-                    elif response.ok:
+                    elif response.is_success:
                         # TODO: Raise more specific errors for the possible
                         # cases here. We *should* only arrive here when
                         # there's a redirect and:
