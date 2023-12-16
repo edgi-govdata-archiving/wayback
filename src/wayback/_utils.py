@@ -8,7 +8,6 @@ import threading
 import time
 from typing import Union
 import urllib.parse
-from .exceptions import SessionClosedError
 
 logger = logging.getLogger(__name__)
 
@@ -268,6 +267,10 @@ class RateLimit:
 
             self._last_call_time = time.time()
 
+    def reset(self) -> None:
+        with self._lock:
+            self._last_call_time = 0
+
     def __enter__(self) -> None:
         self.wait()
 
@@ -318,30 +321,6 @@ class DepthCountedContext:
         overridden in your class.
         """
         pass
-
-
-class DisableAfterCloseSession:
-    """
-    A custom session object raises a :class:`SessionClosedError` if you try to
-    use it after closing it, to help identify and avoid potentially dangerous
-    code patterns. (Standard session objects continue to be usable after
-    closing, even if they may not work exactly as expected.)
-    """
-    _closed: bool = False
-
-    def close(self, disable: bool = True) -> None:
-        super().close()
-        if disable:
-            self._closed = True
-
-    # XXX: this no longer works correctly, we probably need some sort of
-    # decorator or something
-    def send(self, *args, **kwargs):
-        if self._closed:
-            raise SessionClosedError('This session has already been closed '
-                                     'and cannot send new HTTP requests.')
-
-        return super().send(*args, **kwargs)
 
 
 class CaseInsensitiveDict(MutableMapping):

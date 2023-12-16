@@ -3,18 +3,20 @@ from itertools import islice
 from pathlib import Path
 import time
 import pytest
-import requests
 from unittest import mock
 from .support import create_vcr
-from .._utils import SessionClosedError
 from .._client import (CdxRecord,
                        Mode,
                        WaybackSession,
-                       WaybackClient)
+                       WaybackClient,
+                       DEFAULT_CDX_RATE_LIMIT,
+                       DEFAULT_MEMENTO_RATE_LIMIT,
+                       DEFAULT_TIMEMAP_RATE_LIMIT)
 from ..exceptions import (BlockedSiteError,
                           MementoPlaybackError,
                           NoMementoError,
-                          RateLimitError)
+                          RateLimitError,
+                          SessionClosedError)
 
 
 ia_vcr = create_vcr()
@@ -49,6 +51,13 @@ def get_file(filepath):
     full_path = Path(__file__).parent / 'test_files' / filepath
     with open(full_path, 'rb') as file:
         return file.read()
+
+
+@pytest.fixture(autouse=True)
+def reset_default_rate_limits():
+    DEFAULT_CDX_RATE_LIMIT.reset()
+    DEFAULT_MEMENTO_RATE_LIMIT.reset()
+    DEFAULT_TIMEMAP_RATE_LIMIT.reset()
 
 
 @ia_vcr.use_cassette()
@@ -208,7 +217,84 @@ def test_search_with_filter_tuple():
         assert all(('feature' in v.url for v in versions))
 
 
-def test_search_removes_malformed_entries(requests_mock):
+from io import BytesIO
+from urllib.parse import urlparse, ParseResult, parse_qs
+from urllib3 import HTTPConnectionPool, HTTPResponse, HTTPHeaderDict
+import logging
+class Urllib3MockManager:
+    def __init__(self) -> None:
+        self.responses = []
+
+    def get(self, url, responses) -> None:
+        url_info = urlparse(url)
+        if url_info.path == '':
+            url_info = url_info._replace(path='/')
+        for index, response in enumerate(responses):
+            repeat = True if index == len(responses) - 1 else False
+            self.responses.append(('GET', url_info, response, repeat))
+
+    def _compare_querystrings(self, actual, candidate):
+        for k, v in candidate.items():
+            if k not in actual or actual[k] != v:
+                return False
+        return True
+
+    def urlopen(self, pool: HTTPConnectionPool, method, url, *args, preload_content: bool = True, **kwargs):
+        opened_url = urlparse(url)
+        opened_path = opened_url.path or '/'
+        opened_query = parse_qs(opened_url.query)
+        for index, candidate in enumerate(self.responses):
+            candidate_url: ParseResult = candidate[1]
+            if (
+                method == candidate[0]
+                and (not candidate_url.scheme or candidate_url.scheme == pool.scheme)
+                and (not candidate_url.hostname or candidate_url.hostname == pool.host)
+                and (not candidate_url.port or candidate_url.port == pool.port)
+                and candidate_url.path == opened_path
+                # This is cheap, ideally we'd parse the querystrings.
+                # and parse_qs(candidate_url.query) == opened_query
+                and self._compare_querystrings(opened_query, parse_qs(candidate_url.query))
+            ):
+                if not candidate[3]:
+                    self.responses.pop(index)
+
+                data = candidate[2]
+                if data.get('exc'):
+                    raise data['exc']()
+
+                content = data.get('content')
+                if content is None:
+                    content = data.get('text', '').encode()
+
+                return HTTPResponse(
+                    body=BytesIO(content),
+                    headers=HTTPHeaderDict(data.get('headers', {})),
+                    status=data.get('status_code', 200),
+                    decode_content=False,
+                    preload_content=preload_content,
+                )
+
+        # No matches!
+        raise RuntimeError(
+            f"No HTTP mocks matched {method} {pool.scheme}://{pool.host}{url}"
+        )
+
+
+@pytest.fixture
+def urllib3_mock(monkeypatch):
+    manager = Urllib3MockManager()
+
+    def urlopen_mock(self, method, url, *args, preload_content: bool = True, **kwargs):
+        return manager.urlopen(self, method, url, *args, preload_content=preload_content, **kwargs)
+
+    monkeypatch.setattr(
+        "urllib3.connectionpool.HTTPConnectionPool.urlopen", urlopen_mock
+    )
+
+    return manager
+
+
+def test_search_removes_malformed_entries(urllib3_mock):
     """
     The CDX index contains many lines for things that can't actually be
     archived and will have no corresponding memento, like `mailto:` and `data:`
@@ -223,11 +309,12 @@ def test_search_removes_malformed_entries(requests_mock):
         bad_cdx_data = f.read()
 
     with WaybackClient() as client:
-        requests_mock.get('https://web.archive.org/cdx/search/cdx'
-                          '?url=https%3A%2F%2Fepa.gov%2F%2A'
-                          '&from=20200418000000&to=20200419000000'
-                          '&showResumeKey=true&resolveRevisits=true',
-                          [{'status_code': 200, 'text': bad_cdx_data}])
+        urllib3_mock.get('https://web.archive.org/cdx/search/cdx'
+                         '?url=https%3A%2F%2Fepa.gov%2F%2A'
+                         '&limit=1000'
+                         '&from=20200418000000&to=20200419000000'
+                         '&showResumeKey=true&resolveRevisits=true',
+                         [{'status_code': 200, 'text': bad_cdx_data}])
         records = client.search('https://epa.gov/*',
                                 from_date=datetime(2020, 4, 18),
                                 to_date=datetime(2020, 4, 19))
@@ -235,7 +322,7 @@ def test_search_removes_malformed_entries(requests_mock):
         assert 2 == len(list(records))
 
 
-def test_search_handles_no_length_cdx_records(requests_mock):
+def test_search_handles_no_length_cdx_records(urllib3_mock):
     """
     The CDX index can contain a "-" in lieu of an actual length, which can't be
     parsed into an int. We should handle this.
@@ -247,11 +334,11 @@ def test_search_handles_no_length_cdx_records(requests_mock):
         bad_cdx_data = f.read()
 
     with WaybackClient() as client:
-        requests_mock.get('https://web.archive.org/cdx/search/cdx'
-                          '?url=www.cnn.com%2F%2A'
-                          '&matchType=domain&filter=statuscode%3A200'
-                          '&showResumeKey=true&resolveRevisits=true',
-                          [{'status_code': 200, 'text': bad_cdx_data}])
+        urllib3_mock.get('https://web.archive.org/cdx/search/cdx'
+                         '?url=www.cnn.com%2F%2A'
+                         '&matchType=domain&filter=statuscode%3A200'
+                         '&showResumeKey=true&resolveRevisits=true',
+                         [{'status_code': 200, 'text': bad_cdx_data}])
         records = client.search('www.cnn.com/*',
                                 match_type="domain",
                                 filter_field="statuscode:200")
@@ -263,7 +350,7 @@ def test_search_handles_no_length_cdx_records(requests_mock):
         assert record_list[-1].length is None
 
 
-def test_search_handles_bad_timestamp_cdx_records(requests_mock):
+def test_search_handles_bad_timestamp_cdx_records(urllib3_mock):
     """
     The CDX index can contain a timestamp with an invalid day "00", which can't be
     parsed into an timestamp. We should handle this.
@@ -275,11 +362,12 @@ def test_search_handles_bad_timestamp_cdx_records(requests_mock):
         bad_cdx_data = f.read()
 
     with WaybackClient() as client:
-        requests_mock.get('https://web.archive.org/cdx/search/cdx'
-                          '?url=www.usatoday.com%2F%2A'
-                          '&matchType=domain&filter=statuscode%3A200'
-                          '&showResumeKey=true&resolveRevisits=true',
-                          [{'status_code': 200, 'text': bad_cdx_data}])
+        urllib3_mock.get('https://web.archive.org/cdx/search/cdx'
+                         '?url=www.usatoday.com%2F%2A'
+                         '&limit=1000'
+                         '&matchType=domain&filter=statuscode%3A200'
+                         '&showResumeKey=true&resolveRevisits=true',
+                         [{'status_code': 200, 'text': bad_cdx_data}])
         records = client.search('www.usatoday.com/*',
                                 match_type="domain",
                                 filter_field="statuscode:200")
@@ -671,96 +759,105 @@ def test_get_memento_returns_memento_with_accurate_url():
         assert memento.url == 'https://www.fws.gov/'
 
 
-def return_timeout(self, *args, **kwargs) -> requests.Response:
+def return_timeout(self, *args, **kwargs) -> HTTPResponse:
     """
-    Patch requests.Session.send with this in order to return a response with
-    the provided timeout value as the response body.
+    Patch urllib3.HTTPConnectionPool.urlopen with this in order to return a
+    response with the provided timeout value as the response body.
 
     Usage:
-    >>> @mock.patch('requests.Session.send', side_effect=return_timeout)
+    >>> @mock.patch('urllib3.HTTPConnectionPool.urlopen', side_effect=return_timeout)
     >>> def test_timeout(self, mock_class):
-    >>>    assert requests.get('http://test.com', timeout=5).text == '5'
+    >>>    assert urllib3.get('http://test.com', timeout=5).data == b'5'
     """
-    res = requests.Response()
-    res.status_code = 200
-    res._content = str(kwargs.get('timeout', None)).encode()
+    logging.warning(f'Called with args={args}, kwargs={kwargs}')
+    res = HTTPResponse(
+        body=str(kwargs.get('timeout', None)).encode(),
+        headers=HTTPHeaderDict(),
+        status=200
+    )
     return res
 
 
+from urllib3 import Timeout as Urllib3Timeout
+
+
 class TestWaybackSession:
-    def test_request_retries(self, requests_mock):
-        requests_mock.get('http://test.com', [{'text': 'bad1', 'status_code': 503},
-                                              {'text': 'bad2', 'status_code': 503},
-                                              {'text': 'good', 'status_code': 200}])
+    def test_request_retries(self, urllib3_mock):
+        urllib3_mock.get('http://test.com', [{'text': 'bad1', 'status_code': 503},
+                                             {'text': 'bad2', 'status_code': 503},
+                                             {'text': 'good', 'status_code': 200}])
         session = WaybackSession(retries=2, backoff=0.1)
         response = session.request('GET', 'http://test.com')
         assert response.ok
 
         session.close()
 
-    def test_stops_after_given_retries(self, requests_mock):
-        requests_mock.get('http://test.com', [{'text': 'bad1', 'status_code': 503},
-                                              {'text': 'bad2', 'status_code': 503},
-                                              {'text': 'good', 'status_code': 200}])
+    def test_stops_after_given_retries(self, urllib3_mock):
+        urllib3_mock.get('http://test.com', [{'text': 'bad1', 'status_code': 503},
+                                             {'text': 'bad2', 'status_code': 503},
+                                             {'text': 'good', 'status_code': 200}])
         session = WaybackSession(retries=1, backoff=0.1)
         response = session.request('GET', 'http://test.com')
         assert response.status_code == 503
         assert response.text == 'bad2'
 
-    def test_only_retries_some_errors(self, requests_mock):
-        requests_mock.get('http://test.com', [{'text': 'bad1', 'status_code': 400},
-                                              {'text': 'good', 'status_code': 200}])
+    def test_only_retries_some_errors(self, urllib3_mock):
+        urllib3_mock.get('http://test.com', [{'text': 'bad1', 'status_code': 400},
+                                             {'text': 'good', 'status_code': 200}])
         session = WaybackSession(retries=1, backoff=0.1)
         response = session.request('GET', 'http://test.com')
         assert response.status_code == 400
 
-    def test_raises_rate_limit_error(self, requests_mock):
-        requests_mock.get('http://test.com', [WAYBACK_RATE_LIMIT_ERROR])
+    def test_raises_rate_limit_error(self, urllib3_mock):
+        urllib3_mock.get('http://test.com', [WAYBACK_RATE_LIMIT_ERROR])
         with pytest.raises(RateLimitError):
             session = WaybackSession(retries=0)
             session.request('GET', 'http://test.com')
 
-    def test_rate_limit_error_includes_retry_after(self, requests_mock):
-        requests_mock.get('http://test.com', [WAYBACK_RATE_LIMIT_ERROR])
+    def test_rate_limit_error_includes_retry_after(self, urllib3_mock):
+        urllib3_mock.get('http://test.com', [WAYBACK_RATE_LIMIT_ERROR])
         with pytest.raises(RateLimitError) as excinfo:
             session = WaybackSession(retries=0)
             session.request('GET', 'http://test.com')
 
         assert excinfo.value.retry_after == 10
 
-    @mock.patch('requests.Session.send', side_effect=return_timeout)
+    @mock.patch('urllib3.HTTPConnectionPool.urlopen', side_effect=return_timeout)
     def test_timeout_applied_session(self, mock_class):
         # Is the timeout applied through the WaybackSession
         session = WaybackSession(timeout=1)
         res = session.request('GET', 'http://test.com')
-        assert res.text == '1'
+        assert res.text == str(Urllib3Timeout(connect=1, read=1))
         # Overwriting the default in the requests method
         res = session.request('GET', 'http://test.com', timeout=None)
-        assert res.text == 'None'
+        assert res.text == str(Urllib3Timeout(connect=None, read=None))
         res = session.request('GET', 'http://test.com', timeout=2)
-        assert res.text == '2'
+        assert res.text == str(Urllib3Timeout(connect=2, read=2))
 
-    @mock.patch('requests.Session.send', side_effect=return_timeout)
+    # XXX: We should probably change this test. What we really want to test is
+    # that the default when unspecified in both the session and the request
+    # is not None.
+    @mock.patch('urllib3.HTTPConnectionPool.urlopen', side_effect=return_timeout)
     def test_timeout_applied_request(self, mock_class):
         # Using the default value
         session = WaybackSession()
         res = session.request('GET', 'http://test.com')
-        assert res.text == '60'
+        assert res.text == str(Urllib3Timeout(connect=60, read=60))
         # Overwriting the default
         res = session.request('GET', 'http://test.com', timeout=None)
-        assert res.text == 'None'
+        assert res.text == str(Urllib3Timeout(connect=None, read=None))
         res = session.request('GET', 'http://test.com', timeout=2)
-        assert res.text == '2'
+        assert res.text == str(Urllib3Timeout(connect=2, read=2))
 
-    @mock.patch('requests.Session.send', side_effect=return_timeout)
+    @mock.patch('urllib3.HTTPConnectionPool.urlopen', side_effect=return_timeout)
     def test_timeout_empty(self, mock_class):
         # Disabling default timeout
         session = WaybackSession(timeout=None)
         res = session.request('GET', 'http://test.com')
-        assert res.text == 'None'
+        assert res.text == str(Urllib3Timeout(connect=None, read=None))
         # Overwriting the default
         res = session.request('GET', 'http://test.com', timeout=1)
-        assert res.text == '1'
+        assert res.text == str(Urllib3Timeout(connect=1, read=1))
 
     @ia_vcr.use_cassette()
     def test_search_rate_limits(self):
