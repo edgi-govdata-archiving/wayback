@@ -14,7 +14,6 @@ except ImportError:
     from urllib3.response import HTTPHeaderDict
 
 from .support import create_vcr
-from .urllib3_mock import urllib3_mock  # noqa
 from .._client import (CdxRecord,
                        Mode,
                        WaybackSession,
