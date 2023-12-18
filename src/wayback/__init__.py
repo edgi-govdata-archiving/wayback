@@ -12,5 +12,6 @@ from ._models import (  # noqa
 
 from ._client import (  # noqa
     Mode,
-    WaybackClient,
-    WaybackSession)
+    WaybackClient)
+
+from ._http import WaybackSession  # noqa

@@ -2,19 +2,44 @@
 HTTP tooling used by Wayback when making requests and handling responses.
 """
 
+import logging
 import re
+import time
 from typing import Generator, Optional
-from urllib.parse import urlencode, urljoin
-from urllib3 import HTTPResponse
+from urllib.parse import urlencode, urljoin, urlparse
+from urllib3 import HTTPResponse, PoolManager, Timeout as Urllib3Timeout
 from urllib3.connectionpool import HTTPConnectionPool
-from urllib3.exceptions import (DecodeError,
-                                ProtocolError)
+from urllib3.exceptions import (ConnectTimeoutError,
+                                DecodeError,
+                                MaxRetryError,
+                                ProtocolError,
+                                ReadTimeoutError,
+                                ProxyError,
+                                TimeoutError)
 # The Header dict lives in a different place for urllib3 v2:
 try:
     from urllib3 import HTTPHeaderDict as Urllib3HTTPHeaderDict
 # vs. urllib3 v1:
 except ImportError:
     from urllib3.response import HTTPHeaderDict as Urllib3HTTPHeaderDict
+
+from . import _utils, __version__
+from .exceptions import (WaybackRetryError,
+                         RateLimitError,
+                         SessionClosedError)
+
+
+logger = logging.getLogger(__name__)
+
+# Global default rate limits for various endpoints. Internet Archive folks have
+# asked us to set the defaults at 80% of the hard limits.
+DEFAULT_CDX_RATE_LIMIT = _utils.RateLimit(0.8 * 60 / 60)
+DEFAULT_TIMEMAP_RATE_LIMIT = _utils.RateLimit(0.8 * 100 / 60)
+DEFAULT_MEMENTO_RATE_LIMIT = _utils.RateLimit(0.8 * 600 / 60)
+
+# If a rate limit response (i.e. a response with status == 429) does not
+# include a `Retry-After` header, recommend pausing for this long.
+DEFAULT_RATE_LIMIT_DELAY = 60
 
 
 #####################################################################
@@ -79,6 +104,10 @@ else:
     Urllib3HTTPHeaderDict.__init__ = _new_header_init
 # END HACK
 #####################################################################
+
+
+def is_memento_response(response: 'InternalHttpResponse'):
+    return 'Memento-Datetime' in response.headers
 
 
 def iter_byte_slices(data: bytes, size: int) -> Generator[bytes, None, None]:
@@ -381,3 +410,293 @@ class InternalHttpResponse:
             # Let go of the raw urllib3 response so we can't accidentally read
             # it later when its connection might be re-used.
             self.raw = None
+
+
+class WaybackSession:
+    """
+    Manages HTTP requests to Wayback Machine servers, handling things like
+    retries, rate limiting, connection pooling, timeouts, etc.
+
+    Parameters
+    ----------
+    retries : int, default: 6
+        The maximum number of retries for requests.
+    backoff : int or float, default: 2
+        Number of seconds from which to calculate how long to back off and wait
+        when retrying requests. The first retry is always immediate, but
+        subsequent retries increase by powers of 2:
+
+            seconds = backoff * 2 ^ (retry number - 1)
+
+        So if this was `4`, retries would happen after the following delays:
+        0 seconds, 4 seconds, 8 seconds, 16 seconds, ...
+    timeout : int or float or tuple of (int or float, int or float), default: 60
+        A timeout to use for all requests.
+        See the Requests docs for more:
+        https://docs.python-requests.org/en/master/user/advanced/#timeouts
+    user_agent : str, optional
+        A custom user-agent string to use in all requests. Defaults to:
+        `wayback/{version} (+https://github.com/edgi-govdata-archiving/wayback)`
+    search_calls_per_second : wayback.RateLimit or int or float, default: 0.8
+        The maximum number of calls per second made to the CDX search API.
+        To disable the rate limit, set this to 0.
+
+        To have multiple sessions share a rate limit (so requests made by one
+        session count towards the limit of the other session), use a
+        single :class:`wayback.RateLimit` instance and pass it to each
+        ``WaybackSession`` instance. If you do not set a limit, the default
+        limit is shared globally across all sessions.
+    memento_calls_per_second : wayback.RateLimit or int or float, default: 8
+        The maximum number of calls per second made to the memento API.
+        To disable the rate limit, set this to 0.
+
+        To have multiple sessions share a rate limit (so requests made by one
+        session count towards the limit of the other session), use a
+        single :class:`wayback.RateLimit` instance and pass it to each
+        ``WaybackSession`` instance. If you do not set a limit, the default
+        limit is shared globally across all sessions.
+    timemap_calls_per_second : wayback.RateLimit or int or float, default: 1.33
+        The maximum number of calls per second made to the timemap API (the
+        Wayback Machine's new, beta CDX search is part of the timemap API).
+        To disable the rate limit, set this to 0.
+
+        To have multiple sessions share a rate limit (so requests made by one
+        session count towards the limit of the other session), use a
+        single :class:`wayback.RateLimit` instance and pass it to each
+        ``WaybackSession`` instance. If you do not set a limit, the default
+        limit is shared globally across all sessions.
+    """
+
+    # It seems Wayback sometimes produces 500 errors for transient issues, so
+    # they make sense to retry here. Usually not in other contexts, though.
+    retryable_statuses = frozenset((413, 421, 500, 502, 503, 504, 599))
+
+    # XXX: TimeoutError should be a base class for both ConnectTimeoutError
+    # and ReadTimeoutError, so we don't need them here...?
+    retryable_errors = (ConnectTimeoutError, MaxRetryError, ReadTimeoutError,
+                        ProxyError, TimeoutError,
+                        # XXX: These used to be wrapped with
+                        # requests.ConnectionError, which we would then have to
+                        # inspect to see if it needed retrying. Need to make
+                        # sure/think through whether these should be retried.
+                        ProtocolError, OSError)
+    # Handleable errors *may* be retryable, but need additional logic beyond
+    # just the error type. See `should_retry_error()`.
+    #
+    # XXX: see notes above about what should get retried; which things need to
+    # be caught but then more deeply inspected, blah blah blah:
+    # handleable_errors = (ConnectionError,) + retryable_errors
+    handleable_errors = () + retryable_errors
+
+    def __init__(self, retries=6, backoff=2, timeout=60, user_agent=None,
+                 search_calls_per_second=DEFAULT_CDX_RATE_LIMIT,
+                 memento_calls_per_second=DEFAULT_MEMENTO_RATE_LIMIT,
+                 timemap_calls_per_second=DEFAULT_TIMEMAP_RATE_LIMIT):
+        super().__init__()
+        self.retries = retries
+        self.backoff = backoff
+        self.timeout = timeout
+        self.headers = {
+            'User-Agent': (user_agent or
+                           f'wayback/{__version__} (+https://github.com/edgi-govdata-archiving/wayback)'),
+            'Accept-Encoding': 'gzip, deflate'
+        }
+        self.rate_limts = {
+            '/web/timemap': _utils.RateLimit.make_limit(timemap_calls_per_second),
+            '/cdx': _utils.RateLimit.make_limit(search_calls_per_second),
+            # The memento limit is actually a generic Wayback limit.
+            '/': _utils.RateLimit.make_limit(memento_calls_per_second),
+        }
+        # XXX: These parameters are the same as requests, but we have had at
+        # least one user reach in and change the adapters we used with requests
+        # to modify these. We should consider whether different values are
+        # appropriate (e.g. block=True) or if these need to be exposed somehow.
+        #
+        # XXX: Consider using a HTTPSConnectionPool instead of a PoolManager.
+        # We can make some code simpler if we are always assuming the same host.
+        # (At current, we only use one host, so this is feasible.)
+        #
+        # XXX: Do we need a cookie jar? urllib3 doesn't do any cookie management
+        # for us, and the Wayback Machine may set some cookies we should retain
+        # in subsequent requests. (In practice, it doesn't appear the CDX,
+        # Memento, or Timemap APIs do by default, but not sure what happens if
+        # you send S3-style credentials or use other endpoints.)
+        self._pool_manager = PoolManager(
+            num_pools=10,
+            maxsize=10,
+            block=False,
+        )
+        # NOTE: the nice way to accomplish retry/backoff is with a urllib3:
+        #     adapter = requests.adapters.HTTPAdapter(
+        #         max_retries=Retry(total=5, backoff_factor=2,
+        #                           status_forcelist=(503, 504)))
+        #     self.mount('http://', adapter)
+        # But Wayback mementos can have errors, which complicates things. See:
+        # https://github.com/urllib3/urllib3/issues/1445#issuecomment-422950868
+        #
+        # Also note that, if we are ever able to switch to that, we may need to
+        # get more fancy with log filtering, since we *expect* lots of retries
+        # with Wayback's APIs, but urllib3 logs a warning on every retry:
+        # https://github.com/urllib3/urllib3/blob/5b047b645f5f93900d5e2fc31230848c25eb1f5f/src/urllib3/connectionpool.py#L730-L737
+
+    def request(self, method, url, *, params=None, allow_redirects=True, timeout=-1) -> InternalHttpResponse:
+        if not self._pool_manager:
+            raise SessionClosedError('This session has already been closed '
+                                     'and cannot send new HTTP requests.')
+
+        start_time = time.time()
+        maximum = self.retries
+        retries = 0
+
+        timeout = self.timeout if timeout is -1 else timeout
+        # XXX: grabbed from requests. Clean up for our use case.
+        if isinstance(timeout, tuple):
+            try:
+                connect, read = timeout
+                timeout = Urllib3Timeout(connect=connect, read=read)
+            except ValueError:
+                raise ValueError(
+                    f"Invalid timeout {timeout}. Pass a (connect, read) timeout tuple, "
+                    f"or a single float to set both timeouts to the same value."
+                )
+        elif isinstance(timeout, Urllib3Timeout):
+            pass
+        else:
+            timeout = Urllib3Timeout(connect=timeout, read=timeout)
+
+        parsed = urlparse(url)
+        for path, limit in self.rate_limts.items():
+            if parsed.path.startswith(path):
+                rate_limit = limit
+                break
+        else:
+            rate_limit = DEFAULT_MEMENTO_RATE_LIMIT
+
+        # Do our own querystring work since urllib3 serializes lists poorly.
+        if params:
+            serialized = serialize_querystring(params)
+            if parsed.query:
+                url += f'&{serialized}'
+            else:
+                url += f'?{serialized}'
+
+        while True:
+            retry_delay = 0
+            try:
+                # XXX: should be `debug()`. Set to warning to testing.
+                logger.warning('sending HTTP request %s "%s", %s', method, url, params)
+                rate_limit.wait()
+                response = InternalHttpResponse(self._pool_manager.request(
+                    method=method,
+                    url=url,
+                    # fields=serialize_querystring(params),
+                    headers=self.headers,
+                    # XXX: is allow_redirects safe for preload_content == False?
+                    # XXX: it is, BUT THAT SKIPS OUR RATE LIMITING, which also
+                    # is obviously already a problem today, but we ought to get
+                    # it fixed now. Leaving this on for the moment, but it
+                    # must be addressed before merging.
+                    redirect=allow_redirects,
+                    preload_content=False,
+                    timeout=timeout
+                ), url)
+
+                retry_delay = self.get_retry_delay(retries, response)
+
+                if retries >= maximum or not self.should_retry(response):
+                    if response.status_code == 429:
+                        response.close()
+                        raise RateLimitError(response, retry_delay)
+                    return response
+                else:
+                    logger.debug('Received error response (status: %s), will retry', response.status_code)
+                    response.close(cache=False)
+            # XXX: urllib3's MaxRetryError can wrap all the other errors, so
+            # we should probably be checking `error.reason` on it. See how
+            # requests handles this:
+            #   https://github.com/psf/requests/blob/a25fde6989f8df5c3d823bc9f2e2fc24aa71f375/src/requests/adapters.py#L502-L537
+            #
+            # XXX: requests.RetryError used to be in our list of handleable
+            # errors; it gets raised when urllib3 raises a MaxRetryError with a
+            # ResponseError for its `reason` attribute. Need to test the
+            # situation here...
+            #
+            # XXX: Consider how read-related exceptions need to be handled (or
+            # not). In requests:
+            #   https://github.com/psf/requests/blob/a25fde6989f8df5c3d823bc9f2e2fc24aa71f375/src/requests/models.py#L794-L839
+            except WaybackSession.handleable_errors as error:
+                response = getattr(error, 'response', None)
+                if response is not None:
+                    response.close()
+
+                if retries >= maximum:
+                    raise WaybackRetryError(retries, time.time() - start_time, error) from error
+                elif self.should_retry_error(error):
+                    retry_delay = self.get_retry_delay(retries, response)
+                    logger.info('Caught exception during request, will retry: %s', error)
+                else:
+                    raise
+
+            logger.debug('Will retry after sleeping for %s seconds...', retry_delay)
+            time.sleep(retry_delay)
+            retries += 1
+
+    def should_retry(self, response: InternalHttpResponse):
+        # A memento may actually be a capture of an error, so don't retry it :P
+        if is_memento_response(response):
+            return False
+
+        return response.status_code in self.retryable_statuses
+
+    def should_retry_error(self, error):
+        if isinstance(error, WaybackSession.retryable_errors):
+            return True
+        # XXX: ConnectionError was a broad wrapper from requests; there are more
+        # narrow errors in urllib3 we can catch, so this is probably (???) no
+        # longer relevant. But urllib3 has some other wrapper exceptions that we
+        # might need to dig into more, see:
+        # https://github.com/psf/requests/blob/a25fde6989f8df5c3d823bc9f2e2fc24aa71f375/src/requests/adapters.py#L502-L537
+        #
+        # elif isinstance(error, ConnectionError):
+        #     # ConnectionErrors from requests actually wrap a whole family of
+        #     # more detailed errors from urllib3, so we need to do some string
+        #     # checking to determine whether the error is retryable.
+        #     text = str(error)
+        #     # NOTE: we have also seen this, which may warrant retrying:
+        #     # `requests.exceptions.ConnectionError: ('Connection aborted.',
+        #     # RemoteDisconnected('Remote end closed connection without
+        #     # response'))`
+        #     if 'NewConnectionError' in text or 'Max retries' in text:
+        #         return True
+
+        return False
+
+    def get_retry_delay(self, retries, response: InternalHttpResponse = None):
+        delay = 0
+
+        # As of 2023-11-27, the Wayback Machine does not set a `Retry-After`
+        # header, so this parsing is just future-proofing.
+        if response is not None:
+            delay = _utils.parse_retry_after(response.headers.get('Retry-After')) or delay
+            if response.status_code == 429 and delay == 0:
+                delay = DEFAULT_RATE_LIMIT_DELAY
+
+        # No default backoff on the first retry.
+        if retries > 0:
+            delay = max(self.backoff * 2 ** (retries - 1), delay)
+
+        return delay
+
+    # XXX: Needs to do the right thing. Requests sessions closed all their
+    # adapters, which does:
+    #     self.poolmanager.clear()
+    #     for proxy in self.proxy_manager.values():
+    #         proxy.clear()
+    def reset(self):
+        "Reset any network connections the session is using."
+        self._pool_manager.clear()
+
+    def close(self) -> None:
+        if self._pool_manager:
+            self._pool_manager.clear()
+            self._pool_manager = None

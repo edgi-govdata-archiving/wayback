@@ -17,10 +17,10 @@ from .support import create_vcr
 from .._client import (CdxRecord,
                        Mode,
                        WaybackSession,
-                       WaybackClient,
-                       DEFAULT_CDX_RATE_LIMIT,
-                       DEFAULT_MEMENTO_RATE_LIMIT,
-                       DEFAULT_TIMEMAP_RATE_LIMIT)
+                       WaybackClient)
+from .._http import (DEFAULT_CDX_RATE_LIMIT,
+                     DEFAULT_MEMENTO_RATE_LIMIT,
+                     DEFAULT_TIMEMAP_RATE_LIMIT)
 from ..exceptions import (BlockedSiteError,
                           MementoPlaybackError,
                           NoMementoError,
