@@ -702,7 +702,7 @@ class WaybackSession:
         # with Wayback's APIs, but urllib3 logs a warning on every retry:
         # https://github.com/urllib3/urllib3/blob/5b047b645f5f93900d5e2fc31230848c25eb1f5f/src/urllib3/connectionpool.py#L730-L737
 
-    def send(self, method, url, *, params=None, allow_redirects=True, timeout=-1) -> InternalHttpResponse:
+    def request(self, method, url, *, params=None, allow_redirects=True, timeout=-1) -> InternalHttpResponse:
         if not self._pool_manager:
             raise SessionClosedError('This session has already been closed '
                                      'and cannot send new HTTP requests.')
@@ -803,16 +803,6 @@ class WaybackSession:
             logger.debug('Will retry after sleeping for %s seconds...', retry_delay)
             time.sleep(retry_delay)
             retries += 1
-
-    # Customize `request` in order to set a default timeout from the session.
-    # We can't do this in `send` because `request` always passes a `timeout`
-    # keyword to `send`. Inside `send`, we can't tell the difference between a
-    # user explicitly requesting no timeout and not setting one at all.
-    def request(self, method, url, *, params=None, allow_redirects=True, timeout=-1) -> InternalHttpResponse:
-        """
-        Perform an HTTP request using this session.
-        """
-        return self.send(method, url, params=params, allow_redirects=allow_redirects, timeout=timeout)
 
     def should_retry(self, response: InternalHttpResponse):
         # A memento may actually be a capture of an error, so don't retry it :P
