@@ -101,27 +101,6 @@ jobs:
             . ~/venv/bin/activate
             flake8 .
 
-  build:
-    working_directory: ~/wayback
-    docker:
-      - image: cimg/python:3.12
-    steps:
-      - checkout
-      - setup_pip:
-          python-version: "3.12"
-          install-dev: true
-      - run:
-          name: Build Distribution
-          command: |
-            . ~/venv/bin/activate
-            python -m build .
-      - run:
-          name: Check Distribution
-          command: |
-            . ~/venv/bin/activate
-            twine check dist/*
-            check-wheel-contents dist
-
   # NOTE: The docs are mainly built and published directly by readthedocs.com.
   # This job is meant to verify there are no issues with the docs and it is NOT
   # responsible for building what actually gets published. (Readthedocs.com
@@ -151,5 +130,4 @@ workflows:
               python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
               urllib3-version: ["1.20", "2.0"]
       - lint
-      - build
       - docs
