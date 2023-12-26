@@ -3,7 +3,11 @@ HTTP tooling used by Wayback when making requests to and handling responses
 from Wayback Machine servers.
 """
 
+import logging
+import requests
 from urllib3.connectionpool import HTTPConnectionPool
+
+logger = logging.getLogger(__name__)
 
 #####################################################################
 # HACK: handle malformed Content-Encoding headers from Wayback.
@@ -68,3 +72,34 @@ else:
     Urllib3HTTPHeaderDict.__init__ = _new_header_init
 # END HACK
 #####################################################################
+
+
+class WaybackHttpAdapter:
+    """
+    TODO
+    """
+
+    def __init__(self) -> None:
+        self._session = requests.Session()
+
+    def request(
+        self,
+        method,
+        url,
+        *,
+        params=None,
+        headers=None,
+        allow_redirects=True,
+        timeout=None
+    ) -> requests.Response:
+        return self._session.request(
+            method=method,
+            url=url,
+            params=params,
+            headers=headers,
+            allow_redirects=allow_redirects,
+            timeout=timeout
+        )
+
+    def close(self):
+        self._session.close()

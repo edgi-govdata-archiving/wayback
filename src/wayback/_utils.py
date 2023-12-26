@@ -322,7 +322,7 @@ class DepthCountedContext:
         pass
 
 
-class DisableAfterCloseSession(requests.Session):
+class DisableAfterCloseSession:
     """
     A custom session object raises a :class:`SessionClosedError` if you try to
     use it after closing it, to help identify and avoid potentially dangerous
@@ -332,16 +332,13 @@ class DisableAfterCloseSession(requests.Session):
     _closed = False
 
     def close(self, disable=True):
-        super().close()
         if disable:
             self._closed = True
 
-    def send(self, *args, **kwargs):
+    def request(self, *args, **kwargs):
         if self._closed:
             raise SessionClosedError('This session has already been closed '
                                      'and cannot send new HTTP requests.')
-
-        return super().send(*args, **kwargs)
 
 
 class CaseInsensitiveDict(MutableMapping):
