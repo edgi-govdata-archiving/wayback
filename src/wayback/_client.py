@@ -31,7 +31,7 @@ from urllib3.exceptions import (ConnectTimeoutError,
 from warnings import warn
 from . import _utils, __version__
 from ._models import CdxRecord, Memento
-from ._http import InternalHttpResponse, WaybackHttpAdapter
+from ._http import WaybackHttpResponse, WaybackHttpAdapter
 from .exceptions import (WaybackException,
                          UnexpectedResponseFormat,
                          BlockedByRobotsError,
@@ -145,7 +145,7 @@ def is_malformed_url(url):
     return False
 
 
-def is_memento_response(response: InternalHttpResponse) -> bool:
+def is_memento_response(response: WaybackHttpResponse) -> bool:
     return 'Memento-Datetime' in response.headers
 
 
@@ -354,7 +354,7 @@ class WaybackSession(_utils.DisableAfterCloseSession):
         # with Wayback's APIs, but urllib3 logs a warning on every retry:
         # https://github.com/urllib3/urllib3/blob/5b047b645f5f93900d5e2fc31230848c25eb1f5f/src/urllib3/connectionpool.py#L730-L737
 
-    def request(self, method, url, timeout=-1, **kwargs) -> InternalHttpResponse:
+    def request(self, method, url, timeout=-1, **kwargs) -> WaybackHttpResponse:
         super().request()
         start_time = time.time()
         timeout = self.timeout if timeout is -1 else timeout

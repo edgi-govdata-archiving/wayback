@@ -79,36 +79,26 @@ else:
 #####################################################################
 
 
-# FIXME: This implementation is tied to requests. It should probably be an
-# abstract base class and we should have a requests-specific implementation,
-# which would make `WaybackHttpAdapter` customizable/pluggable.
-class InternalHttpResponse:
+class WaybackHttpResponse:
     """
-    Internal wrapper class for HTTP responses. _This should never be exposed to
-    user code_; it's job is to insulate the rest of the Wayback package from
-    the particulars of the underlying HTTP tooling (e.g. requests, httpx, etc).
-    This is *similar* to response objects from httpx and requests, although it
-    lacks facilities from those libraries that we don't need or use, and takes
-    shortcuts that are specific to our use cases.
+    Represents an HTTP response from a server. This might be included as an
+    attribute of an exception, but should otherwise not be exposed to user
+    code in normal circumstances. It's meant to wrap to provide a standard,
+    thread-safe interface to response objects from whatever underlying HTTP
+    tool is being used (e.g. requests, httpx, etc.).
     """
     status_code: int
     headers: dict
     encoding: Optional[str] = None
     url: str
     links: dict
-    _read_lock: threading.RLock
-    _raw: requests.Response
-    _content: Optional[bytes] = None
-    _redirect_url: Optional[str] = None
 
-    def __init__(self, raw: requests.Response, request_url: str) -> None:
-        self._read_lock = threading.RLock()
-        self._raw = raw
-        self.status_code = raw.status_code
-        self.headers = raw.headers
-        self.url = urljoin(request_url, getattr(raw, 'url', ''))
-        self.encoding = raw.encoding
-        self.links = raw.links
+    def __init__(self, url: str, status_code: int, headers: dict, links: dict = None, encoding: str = None):
+        self.url = url
+        self.status_code = status_code
+        self.headers = headers
+        self.links = links or {}
+        self.encoding = encoding
 
     @property
     def redirect_url(self) -> str:
@@ -125,31 +115,36 @@ class InternalHttpResponse:
 
     @property
     def is_success(self) -> bool:
+        """Whether the status code indicated success (2xx) or an error."""
         return self.status_code >= 200 and self.status_code < 300
 
     @property
     def content(self) -> bytes:
-        with self._read_lock:
-            if self._content is None:
-                # TODO: This is designed around the requests library and is not
-                # generic enough. A better version would either:
-                # 1. Leave this for subclasses to implement.
-                # 2. Read iteratively from a `raw` object with a `read(n)` method.
-                self._content = self._raw.content
-
-            return self._content
+        """
+        The response body as bytes. This is the *decompressed* bytes, so
+        responses with `Content-Encoding: gzip` will be unzipped here.
+        """
+        raise NotImplementedError()
 
     @property
     def text(self) -> str:
+        """
+        Gets the response body as a text string. it will try to decode the raw
+        bytes of the response based on response's declared encoding (i.e. from
+        the ``Content-Type`` header), falling back to sniffing the encoding or
+        using UTF-8.
+        """
         encoding = self.encoding or self.sniff_encoding() or 'utf-8'
         try:
             return str(self.content, encoding, errors="replace")
         except (LookupError, TypeError):
             return str(self.content, errors="replace")
 
-    def sniff_encoding(self) -> None:
-        self.content
-        return self._raw.apparent_encoding
+    def sniff_encoding(self) -> Optional[str]:
+        """
+        Sniff the text encoding from the raw bytes of the content, if possible.
+        """
+        return None
 
     def close(self, cache: bool = True) -> None:
         """
@@ -163,6 +158,45 @@ class InternalHttpResponse:
             Whether to cache the response body so it can still be used via the
             ``content`` and ``text`` properties.
         """
+        raise NotImplementedError()
+
+
+class WaybackRequestsResponse(WaybackHttpResponse):
+    """
+    Wraps an HTTP response from the requests library.
+    """
+    _read_lock: threading.RLock
+    _raw: requests.Response
+    _content: Optional[bytes] = None
+
+    def __init__(self, raw: requests.Response, request_url: str) -> None:
+        # NOTE: if we drop down to urllib3, we need the requested URL to be
+        # passed in so we can join it with the response's URL (in urllib3,
+        # `response.url` does not include the scheme/host/etc data that belongs
+        # to the connection pool).
+        super().__init__(
+            url=urljoin(request_url, getattr(raw, 'url', '')),
+            status_code=raw.status_code,
+            headers=raw.headers,
+            links=raw.links,
+            encoding=raw.encoding
+        )
+        self._read_lock = threading.RLock()
+        self._raw = raw
+
+    @property
+    def content(self) -> bytes:
+        with self._read_lock:
+            if self._content is None:
+                self._content = self._raw.content
+
+            return self._content
+
+    def sniff_encoding(self) -> None:
+        self.content
+        return self._raw.apparent_encoding
+
+    def close(self, cache: bool = True) -> None:
         with self._read_lock:
             # Reading bytes potentially involves decoding data from compressed
             # gzip/brotli/etc. responses, so we need to handle those errors by
@@ -177,9 +211,9 @@ class InternalHttpResponse:
                     try:
                         self.content
                     except (ChunkedEncodingError, ContentDecodingError, RuntimeError):
-                        self._raw.read(decode_content=False)
+                        self._raw.raw.read(decode_content=False)
                 else:
-                    self._raw.read(decode_content=False)
+                    self._raw.raw.read(decode_content=False)
             finally:
                 self._raw.close()
 
@@ -201,7 +235,7 @@ class WaybackHttpAdapter:
         headers=None,
         allow_redirects=True,
         timeout=None
-    ) -> InternalHttpResponse:
+    ) -> WaybackHttpResponse:
         response = self._session.request(
             method=method,
             url=url,
@@ -210,7 +244,7 @@ class WaybackHttpAdapter:
             allow_redirects=allow_redirects,
             timeout=timeout
         )
-        return InternalHttpResponse(response, url)
+        return WaybackRequestsResponse(response, url)
 
     def close(self):
         self._session.close()
