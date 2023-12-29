@@ -97,7 +97,7 @@ class InternalHttpResponse:
     url: str
     links: dict
     _read_lock: threading.Lock
-    _raw: object
+    _raw: requests.Response
     _content: Optional[bytes] = None
     _redirect_url: Optional[str] = None
 
@@ -109,6 +109,23 @@ class InternalHttpResponse:
         self.url = urljoin(request_url, getattr(raw, 'url', ''))
         self.encoding = raw.encoding
         self.links = raw.links
+
+    @property
+    def redirect_url(self) -> str:
+        """
+        The URL this response redirects to. If the response is not a redirect,
+        this returns an empty string.
+        """
+        if self.status_code >= 300 and self.status_code < 400:
+            location = self.headers.get('location')
+            if location:
+                return urljoin(self.url, location)
+
+        return ''
+
+    @property
+    def is_success(self) -> bool:
+        return self.status_code >= 200 and self.status_code < 300
 
     @property
     def content(self) -> bytes:
@@ -131,25 +148,8 @@ class InternalHttpResponse:
             return str(self.content, errors="replace")
 
     def sniff_encoding(self) -> None:
-        # XXX: requests uses chardet here. Consider what we want to use.
-        ...
-
-    @property
-    def redirect_url(self) -> str:
-        """
-        The URL this response redirects to. If the response is not a redirect,
-        this returns an empty string.
-        """
-        if self.status_code >= 300 and self.status_code < 400:
-            location = self.headers.get('location')
-            if location:
-                return urljoin(self.url, location)
-
-        return ''
-
-    @property
-    def is_success(self) -> bool:
-        return self.status_code >= 200 and self.status_code < 300
+        self.content
+        return self._raw.apparent_encoding
 
     # XXX: This needs wrapping with a lock! (Maybe `_read_lock` should be an
     # RLock so it can be used both here and in `content`).
@@ -178,7 +178,6 @@ class InternalHttpResponse:
             finally:
                 with self._read_lock:
                     self._raw.close()
-                    self._raw = None
 
 
 class WaybackHttpAdapter:
