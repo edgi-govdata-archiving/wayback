@@ -4,8 +4,6 @@ from datetime import date, datetime, timezone
 import email.utils
 import logging
 import re
-import requests
-import requests.adapters
 import threading
 import time
 from typing import Union

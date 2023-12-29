@@ -694,7 +694,7 @@ class TestWaybackSession:
                                               {'text': 'good', 'status_code': 200}])
         session = WaybackSession(retries=2, backoff=0.1)
         response = session.request('GET', 'http://test.com')
-        assert response.ok
+        assert response.is_success
 
         session.close()
 

@@ -19,9 +19,7 @@ from enum import Enum
 import hashlib
 import logging
 import re
-from requests.exceptions import (ChunkedEncodingError,
-                                 ConnectionError,
-                                 ContentDecodingError,
+from requests.exceptions import (ConnectionError,
                                  ProxyError,
                                  RetryError,
                                  Timeout)
@@ -33,7 +31,7 @@ from urllib3.exceptions import (ConnectTimeoutError,
 from warnings import warn
 from . import _utils, __version__
 from ._models import CdxRecord, Memento
-from ._http import WaybackHttpAdapter
+from ._http import InternalHttpResponse, WaybackHttpAdapter
 from .exceptions import (WaybackException,
                          UnexpectedResponseFormat,
                          BlockedByRobotsError,
@@ -147,7 +145,7 @@ def is_malformed_url(url):
     return False
 
 
-def is_memento_response(response):
+def is_memento_response(response: InternalHttpResponse) -> bool:
     return 'Memento-Datetime' in response.headers
 
 
@@ -155,18 +153,6 @@ def cdx_hash(content):
     if isinstance(content, str):
         content = content.encode()
     return b32encode(hashlib.sha1(content).digest()).decode()
-
-
-def read_and_close(response):
-    # Read content so it gets cached and close the response so
-    # we can release the connection for reuse. See:
-    # https://github.com/psf/requests/blob/eedd67462819f8dbf8c1c32e77f9070606605231/requests/sessions.py#L160-L163
-    try:
-        response.content
-    except (ChunkedEncodingError, ContentDecodingError, RuntimeError):
-        response.raw.read(decode_content=False)
-    finally:
-        response.close()
 
 
 REDIRECT_PAGE_PATTERN = re.compile(r'Got an? HTTP 3\d\d response at crawl time', re.IGNORECASE)
@@ -368,7 +354,7 @@ class WaybackSession(_utils.DisableAfterCloseSession):
         # with Wayback's APIs, but urllib3 logs a warning on every retry:
         # https://github.com/urllib3/urllib3/blob/5b047b645f5f93900d5e2fc31230848c25eb1f5f/src/urllib3/connectionpool.py#L730-L737
 
-    def request(self, method, url, timeout=-1, **kwargs):
+    def request(self, method, url, timeout=-1, **kwargs) -> InternalHttpResponse:
         super().request()
         start_time = time.time()
         timeout = self.timeout if timeout is -1 else timeout
@@ -393,16 +379,16 @@ class WaybackSession(_utils.DisableAfterCloseSession):
 
                 if retries >= maximum or not self.should_retry(response):
                     if response.status_code == 429:
-                        read_and_close(response)
+                        response.close()
                         raise RateLimitError(response, retry_delay)
                     return response
                 else:
                     logger.debug('Received error response (status: %s), will retry', response.status_code)
-                    read_and_close(response)
+                    response.close(cache=False)
             except WaybackSession.handleable_errors as error:
                 response = getattr(error, 'response', None)
                 if response is not None:
-                    read_and_close(response)
+                    response.close()
 
                 if retries >= maximum:
                     raise WaybackRetryError(retries, time.time() - start_time, error) from error
@@ -477,6 +463,8 @@ class WaybackClient(_utils.DepthCountedContext):
     ----------
     session : WaybackSession, optional
     """
+    session: WaybackSession
+
     def __init__(self, session=None):
         self.session = session or WaybackSession()
 
@@ -705,7 +693,7 @@ class WaybackClient(_utils.DepthCountedContext):
             # worry about it. If we don't raise here, we still want to
             # close the connection so it doesn't leak when we move onto
             # the next of results or when this iterator ends.
-            read_and_close(response)
+            response.close()
             if response.status_code >= 400:
                 if 'AdministrativeAccessControlException' in response.text:
                     raise BlockedSiteError(query['url'])
@@ -930,7 +918,7 @@ class WaybackClient(_utils.DepthCountedContext):
             current_url, current_date, current_mode = _utils.memento_url_data(response.url)
 
             # In view mode, redirects need special handling.
-            redirect_url = response.next and response.next.url
+            redirect_url = response.redirect_url
             if current_mode == Mode.view.value and not redirect_url:
                 redirect_url = detect_view_mode_redirect(response, current_date)
                 if redirect_url:
@@ -1006,7 +994,7 @@ class WaybackClient(_utils.DepthCountedContext):
                             playable = True
 
                 if not playable:
-                    read_and_close(response)
+                    response.close()
                     message = response.headers.get('X-Archive-Wayback-Runtime-Error', '')
                     if (
                         ('AdministrativeAccessControlException' in message) or
@@ -1020,7 +1008,7 @@ class WaybackClient(_utils.DepthCountedContext):
                         raise BlockedByRobotsError(f'{url} is blocked by robots.txt')
                     elif message:
                         raise MementoPlaybackError(f'Memento at {url} could not be played: {message}')
-                    elif response.ok:
+                    elif response.is_success:
                         # TODO: Raise more specific errors for the possible
                         # cases here. We *should* only arrive here when
                         # there's a redirect and:
@@ -1037,7 +1025,7 @@ class WaybackClient(_utils.DepthCountedContext):
 
             if redirect_url:
                 previous_was_memento = is_memento
-                read_and_close(response)
+                response.close()
 
                 # Wayback sometimes has circular memento redirects ¯\_(ツ)_/¯
                 urls.add(response.url)
