@@ -96,13 +96,13 @@ class InternalHttpResponse:
     encoding: Optional[str] = None
     url: str
     links: dict
-    _read_lock: threading.Lock
+    _read_lock: threading.RLock
     _raw: requests.Response
     _content: Optional[bytes] = None
     _redirect_url: Optional[str] = None
 
     def __init__(self, raw: requests.Response, request_url: str) -> None:
-        self._read_lock = threading.Lock()
+        self._read_lock = threading.RLock()
         self._raw = raw
         self.status_code = raw.status_code
         self.headers = raw.headers
@@ -151,13 +151,11 @@ class InternalHttpResponse:
         self.content
         return self._raw.apparent_encoding
 
-    # XXX: This needs wrapping with a lock! (Maybe `_read_lock` should be an
-    # RLock so it can be used both here and in `content`).
     def close(self, cache: bool = True) -> None:
         """
         Read the rest of the response off the wire and release the connection.
-        If the full response is not read, the connection can hang and programs
-        will leak memory (and cause a bad time for the server as well).
+        If the full response is not read, the connection can hang and waste
+        both local and server resources.
 
         Parameters
         ----------
@@ -165,19 +163,25 @@ class InternalHttpResponse:
             Whether to cache the response body so it can still be used via the
             ``content`` and ``text`` properties.
         """
-        if self._raw:
+        with self._read_lock:
+            # Reading bytes potentially involves decoding data from compressed
+            # gzip/brotli/etc. responses, so we need to handle those errors by
+            # continuing to just read the raw data off the socket instead.
+            #
+            # This fallback behavior is inspired by requests:
+            #   https://github.com/psf/requests/blob/eedd67462819f8dbf8c1c32e77f9070606605231/requests/sessions.py#L160-L163
+            # For urllib3, the appropriate errors to handle would be:
+            #   `(DecodeError, ProtocolError, RuntimeError)`
             try:
-                # TODO: if cache is false, it would be better not to try and
-                # read content at all.
-                self.content
-                if not cache:
-                    self._content = ''
-            except (ChunkedEncodingError, ContentDecodingError, RuntimeError):
-                with self._read_lock:
+                if cache:
+                    try:
+                        self.content
+                    except (ChunkedEncodingError, ContentDecodingError, RuntimeError):
+                        self._raw.read(decode_content=False)
+                else:
                     self._raw.read(decode_content=False)
             finally:
-                with self._read_lock:
-                    self._raw.close()
+                self._raw.close()
 
 
 class WaybackHttpAdapter:
