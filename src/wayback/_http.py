@@ -5,7 +5,7 @@ from Wayback Machine servers.
 
 import logging
 import threading
-from typing import Optional
+from typing import Optional, Tuple, Union
 from urllib.parse import urljoin
 import requests
 from requests.exceptions import (ChunkedEncodingError,
@@ -169,13 +169,13 @@ class WaybackRequestsResponse(WaybackHttpResponse):
     _raw: requests.Response
     _content: Optional[bytes] = None
 
-    def __init__(self, raw: requests.Response, request_url: str) -> None:
+    def __init__(self, raw: requests.Response) -> None:
         # NOTE: if we drop down to urllib3, we need the requested URL to be
         # passed in so we can join it with the response's URL (in urllib3,
         # `response.url` does not include the scheme/host/etc data that belongs
         # to the connection pool).
         super().__init__(
-            url=urljoin(request_url, getattr(raw, 'url', '')),
+            url=raw.url,
             status_code=raw.status_code,
             headers=raw.headers,
             links=raw.links,
@@ -220,22 +220,54 @@ class WaybackRequestsResponse(WaybackHttpResponse):
 
 class WaybackHttpAdapter:
     """
-    TODO
+    Handles making actual HTTP requests over the network. For now, this is an
+    implementation detail, but it may be a way for users to customize behavior
+    in the future.
     """
 
     def __init__(self) -> None:
         self._session = requests.Session()
 
+    # FIXME: remove `allow_redirects`! Redirection needs to be handled by
+    # whatever does throttling, which is currently not here.
     def request(
         self,
-        method,
-        url,
+        method: str,
+        url: str,
         *,
-        params=None,
-        headers=None,
-        allow_redirects=True,
-        timeout=None
+        params: dict = None,
+        headers: dict = None,
+        allow_redirects: bool = True,
+        timeout: Union[int, Tuple[int, int]] = None
     ) -> WaybackHttpResponse:
+        """
+        Send an HTTP request and return a :class:`WaybackHttpResponse` object
+        representing the response.
+
+        Parameters
+        ----------
+        method : str
+            Method to use for the request, e.g. ``'GET'``, ``'POST'``.
+        url : str
+            The URL to reqeust.
+        params : dict, optional
+            For POST/PUT requests, data to be encoded in the response body. For
+            other methods, this should be encoded as the querystring.
+        headers : dict, optional
+            The HTTP headers to send with the request.
+        allow_redirects : bool, default: True
+            Whether to follow redirects before returning a response.
+        timeout : int or float or tuple of (int or float, int or float), optional
+            How long to wait, in seconds, before timing out. If this is a single
+            number, it will be used as both a connect timeout (how long to wait
+            for the first bit of response data) and a read timeout (how long
+            to wait between bits of response data). If a tuple, the values will
+            be used as the connect and read timeouts, respectively.
+
+        Returns
+        -------
+        WaybackHttpResponse
+        """
         response = self._session.request(
             method=method,
             url=url,
@@ -244,7 +276,7 @@ class WaybackHttpAdapter:
             allow_redirects=allow_redirects,
             timeout=timeout
         )
-        return WaybackRequestsResponse(response, url)
+        return WaybackRequestsResponse(response)
 
     def close(self):
         self._session.close()
