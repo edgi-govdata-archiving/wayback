@@ -272,8 +272,8 @@ def clean_memento_links(links, mode):
 
 class WaybackSession(_utils.DisableAfterCloseSession):
     """
-    A custom session object that pools network connections and resources for
-    requests to the Wayback Machine.
+    Sessions manage HTTP requests and network traffic to web servers, adding
+    functionality like retries and rate limiting.
 
     Parameters
     ----------
@@ -463,7 +463,7 @@ class WaybackSession(_utils.DisableAfterCloseSession):
 
 
 # TODO: add retry, backoff, cross_thread_backoff, and rate_limit options that
-# create a custom instance of urllib3.utils.Retry
+# create a custom instance of urllib3.utils.Retry?
 class WaybackClient(_utils.DepthCountedContext):
     """
     A client for retrieving data from the Internet Archive's Wayback Machine.
