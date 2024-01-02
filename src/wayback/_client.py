@@ -936,7 +936,7 @@ class WaybackClient(_utils.DepthCountedContext):
         urls = set()
         previous_was_memento = False
 
-        response = self.session.request('GET', url, allow_redirects=False)
+        response = self.session.request('GET', url, follow_redirects=False)
         protocol_and_www = re.compile(r'^https?://(www\d?\.)?')
         memento = None
         while True:
@@ -1062,7 +1062,7 @@ class WaybackClient(_utils.DepthCountedContext):
                 debug_history.append(response.url)
                 if is_memento:
                     history.append(memento)
-                response = self.session.request('GET', redirect_url, allow_redirects=False)
+                response = self.session.request('GET', redirect_url, follow_redirects=False)
             else:
                 break
 

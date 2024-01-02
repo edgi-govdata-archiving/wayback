@@ -238,7 +238,7 @@ class WaybackHttpAdapter:
         *,
         params: dict = None,
         headers: dict = None,
-        allow_redirects: bool = True,
+        follow_redirects: bool = True,
         timeout: Union[int, Tuple[int, int]] = None
     ) -> WaybackHttpResponse:
         """
@@ -256,7 +256,7 @@ class WaybackHttpAdapter:
             other methods, this should be encoded as the querystring.
         headers : dict, optional
             The HTTP headers to send with the request.
-        allow_redirects : bool, default: True
+        follow_redirects : bool, default: True
             Whether to follow redirects before returning a response.
         timeout : int or float or tuple of (int or float, int or float), optional
             How long to wait, in seconds, before timing out. If this is a single
@@ -274,7 +274,7 @@ class WaybackHttpAdapter:
             url=url,
             params=params,
             headers=headers,
-            allow_redirects=allow_redirects,
+            allow_redirects=follow_redirects,
             timeout=timeout
         )
         return WaybackRequestsResponse(response)
