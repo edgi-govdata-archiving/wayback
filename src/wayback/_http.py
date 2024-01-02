@@ -103,7 +103,8 @@ class WaybackHttpResponse:
     @property
     def redirect_url(self) -> str:
         """
-        The URL this response redirects to. If the response is not a redirect,
+        The absolute URL this response redirects to. It will always be a
+        complete URL with a scheme and host. If the response is not a redirect,
         this returns an empty string.
         """
         if self.status_code >= 300 and self.status_code < 400:
