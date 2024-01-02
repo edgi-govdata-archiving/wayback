@@ -341,40 +341,43 @@ class WaybackSession(_utils.DisableAfterCloseSession):
             '/': _utils.RateLimit.make_limit(memento_calls_per_second),
         }
         self.adapter = WaybackHttpAdapter()
-        # NOTE: the nice way to accomplish retry/backoff is with a urllib3:
-        #     adapter = requests.adapters.HTTPAdapter(
-        #         max_retries=Retry(total=5, backoff_factor=2,
-        #                           status_forcelist=(503, 504)))
-        #     self.mount('http://', adapter)
-        # But Wayback mementos can have errors, which complicates things. See:
-        # https://github.com/urllib3/urllib3/issues/1445#issuecomment-422950868
-        #
-        # Also note that, if we are ever able to switch to that, we may need to
-        # get more fancy with log filtering, since we *expect* lots of retries
-        # with Wayback's APIs, but urllib3 logs a warning on every retry:
-        # https://github.com/urllib3/urllib3/blob/5b047b645f5f93900d5e2fc31230848c25eb1f5f/src/urllib3/connectionpool.py#L730-L737
 
     def request(self, method, url, timeout=-1, **kwargs) -> WaybackHttpResponse:
         super().request()
-        start_time = time.time()
         timeout = self.timeout if timeout is -1 else timeout
+
+        # We add a lot of customization around rate limits, retries, etc, so
+        # we need to call down through that stack of tooling:
+        #
+        #   _request_redirectable       (handles redirects)
+        #   └> _request_retryable       (handles retries for errors)
+        #      └> _request_rate_limited (handles rate limiting/throttling)
+        #         └> _request_send      (handles actual HTTP)
+        #
+        return self._request_redirectable(method, url, timeout=timeout, **kwargs)
+
+    def _request_redirectable(self, method, url, timeout, **kwargs) -> WaybackHttpResponse:
+        # FIXME: this method should implement redirect following (if
+        # `kwargs['allow_redirects']` is true), rather than passing it to the
+        # underlying implementation, since redirects need to be rate limited.
+        return self._request_retryable(method, url, timeout=timeout, **kwargs)
+
+    # NOTE: the nice way to accomplish retry/backoff is with a urllib3:
+    #     adapter = requests.adapters.HTTPAdapter(
+    #         max_retries=Retry(total=5, backoff_factor=2,
+    #                           status_forcelist=(503, 504)))
+    #     self.mount('http://', adapter)
+    # But Wayback mementos (which shouldn't be retries) can be errors, which
+    # complicates things. See: https://github.com/urllib3/urllib3/issues/1445
+    def _request_retryable(self, method, url, timeout, **kwargs) -> WaybackHttpResponse:
+        start_time = time.time()
         maximum = self.retries
         retries = 0
-
-        parsed_url = urlparse(url)
-        for path, limit in self.rate_limts.items():
-            if parsed_url.path.startswith(path):
-                rate_limit = limit
-                break
-        else:
-            rate_limit = DEFAULT_MEMENTO_RATE_LIMIT
 
         while True:
             retry_delay = 0
             try:
-                logger.debug('sending HTTP request %s "%s", %s', method, url, kwargs)
-                rate_limit.wait()
-                response = self.adapter.request(method, url, timeout=timeout, **kwargs)
+                response = self._request_rate_limited(method, url, timeout=timeout, **kwargs)
                 retry_delay = self.get_retry_delay(retries, response)
 
                 if retries >= maximum or not self.should_retry(response):
@@ -401,6 +404,28 @@ class WaybackSession(_utils.DisableAfterCloseSession):
             logger.debug('Will retry after sleeping for %s seconds...', retry_delay)
             time.sleep(retry_delay)
             retries += 1
+
+    # Ideally, this would be implemented as a custom `requests.HTTPAdapter` so
+    # we could take advantage of requests/urllib3 built-in functionality for
+    # redirects, retries, etc. However, retries can't be implemented correctly
+    # using the built-in tools (https://github.com/urllib3/urllib3/issues/1445).
+    # If we have to implement retries at this level, it's easier to also
+    # implement rate limiting here, too.
+    def _request_rate_limited(self, method, url, timeout, **kwargs) -> WaybackHttpResponse:
+        parsed_url = urlparse(url)
+        for path, limit in self.rate_limts.items():
+            if parsed_url.path.startswith(path):
+                rate_limit = limit
+                break
+        else:
+            rate_limit = DEFAULT_MEMENTO_RATE_LIMIT
+
+        rate_limit.wait()
+        return self._request_send(method, url, timeout=timeout, **kwargs)
+
+    def _request_send(self, method, url, timeout, **kwargs) -> WaybackHttpResponse:
+        logger.debug('sending HTTP request %s "%s", %s', method, url, kwargs)
+        return self.adapter.request(method, url, timeout=timeout, **kwargs)
 
     def should_retry(self, response):
         # A memento may actually be a capture of an error, so don't retry it :P
