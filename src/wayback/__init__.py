@@ -8,5 +8,6 @@ from ._models import (  # noqa: F401
 
 from ._client import (  # noqa: F401
     Mode,
-    WaybackClient,
-    WaybackSession)
+    WaybackClient)
+
+from ._http import WaybackHttpAdapter  # noqa: F401

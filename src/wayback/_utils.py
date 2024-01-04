@@ -8,7 +8,7 @@ import threading
 import time
 from typing import Union
 import urllib.parse
-from .exceptions import SessionClosedError
+from .exceptions import AlreadyClosedError
 
 logger = logging.getLogger(__name__)
 
@@ -320,9 +320,9 @@ class DepthCountedContext:
         pass
 
 
-class DisableAfterCloseSession:
+class DisableAfterCloseAdapter:
     """
-    A custom session object raises a :class:`SessionClosedError` if you try to
+    A custom session object raises a :class:`AlreadyClosedError` if you try to
     use it after closing it, to help identify and avoid potentially dangerous
     code patterns. (Standard session objects continue to be usable after
     closing, even if they may not work exactly as expected.)
@@ -335,8 +335,10 @@ class DisableAfterCloseSession:
 
     def request(self, *args, **kwargs):
         if self._closed:
-            raise SessionClosedError('This session has already been closed '
+            raise AlreadyClosedError('This session has already been closed '
                                      'and cannot send new HTTP requests.')
+        else:
+            return super().request(*args, **kwargs)
 
 
 class CaseInsensitiveDict(MutableMapping):

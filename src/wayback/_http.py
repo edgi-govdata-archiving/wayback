@@ -4,15 +4,38 @@ from Wayback Machine servers.
 """
 
 import logging
+from numbers import Real
 import threading
-from typing import Optional, Tuple, Union
-from urllib.parse import urljoin
+import time
+from typing import Dict, Optional, Tuple, Union
+from urllib.parse import urljoin, urlparse
 import requests
 from requests.exceptions import (ChunkedEncodingError,
-                                 ContentDecodingError)
+                                 ConnectionError,
+                                 ContentDecodingError,
+                                 ProxyError,
+                                 RetryError,
+                                 Timeout)
 from urllib3.connectionpool import HTTPConnectionPool
+from urllib3.exceptions import (ConnectTimeoutError,
+                                MaxRetryError,
+                                ReadTimeoutError)
+from . import __version__
+from ._utils import DisableAfterCloseAdapter, RateLimit, parse_retry_after
+from .exceptions import RateLimitError, WaybackRetryError
 
 logger = logging.getLogger(__name__)
+
+# Global default rate limits for various endpoints. Internet Archive folks have
+# asked us to set the defaults at 80% of the hard limits.
+DEFAULT_CDX_RATE_LIMIT = RateLimit(0.8 * 60 / 60)
+DEFAULT_TIMEMAP_RATE_LIMIT = RateLimit(0.8 * 100 / 60)
+DEFAULT_MEMENTO_RATE_LIMIT = RateLimit(0.8 * 600 / 60)
+
+# If a rate limit response (i.e. a response with status == 429) does not
+# include a `Retry-After` header, recommend pausing for this long.
+DEFAULT_RATE_LIMIT_DELAY = 60
+
 
 #####################################################################
 # HACK: handle malformed Content-Encoding headers from Wayback.
@@ -120,6 +143,10 @@ class WaybackHttpResponse:
         return self.status_code >= 200 and self.status_code < 300
 
     @property
+    def is_memento(self) -> bool:
+        return 'Memento-Datetime' in self.headers
+
+    @property
     def content(self) -> bytes:
         """
         The response body as bytes. This is the *decompressed* bytes, so
@@ -221,16 +248,10 @@ class WaybackRequestsResponse(WaybackHttpResponse):
 
 class WaybackHttpAdapter:
     """
-    Handles making actual HTTP requests over the network. For now, this is an
-    implementation detail, but it may be a way for users to customize behavior
-    in the future.
+    Handles making actual HTTP requests over the network. This is an abstract
+    base class that defines the API an adapter must implement.
     """
 
-    def __init__(self) -> None:
-        self._session = requests.Session()
-
-    # FIXME: remove `allow_redirects`! Redirection needs to be handled by
-    # whatever does throttling, which is currently not here.
     def request(
         self,
         method: str,
@@ -269,6 +290,35 @@ class WaybackHttpAdapter:
         -------
         WaybackHttpResponse
         """
+        raise NotImplementedError()
+
+    def close(self) -> None:
+        """
+        Close the adapter and release any long-lived resources, like pooled
+        HTTP connections.
+        """
+        ...
+
+
+class RequestsAdapter(WaybackHttpAdapter):
+    """
+    Wrap the requests library for making HTTP requests.
+    """
+
+    def __init__(self) -> None:
+        self._session = requests.Session()
+
+    def request(
+        self,
+        method: str,
+        url: str,
+        *,
+        params: dict = None,
+        headers: dict = None,
+        follow_redirects: bool = True,
+        timeout: Union[int, Tuple[int, int]] = None
+    ) -> WaybackHttpResponse:
+        logger.debug('Sending HTTP request <%s "%s">', method, url)
         response = self._session.request(
             method=method,
             url=url,
@@ -279,5 +329,263 @@ class WaybackHttpAdapter:
         )
         return WaybackRequestsResponse(response)
 
-    def close(self):
+    def close(self) -> None:
         self._session.close()
+
+
+class RetryAndRateLimitAdapter(WaybackHttpAdapter):
+    """
+    Adds rate limiting and retry functionality to an HTTP adapter. This class
+    can't actually make HTTP requests and should usually be used in a
+    multiple-inheritance situation. Alternatively, you can override the
+    ``request_raw()`` method.
+
+    Parameters
+    ----------
+    retries : int, default: 6
+        The maximum number of retries for failed HTTP requests.
+    backoff : int or float, default: 2
+        Number of seconds from which to calculate how long to back off and wait
+        when retrying requests. The first retry is always immediate, but
+        subsequent retries increase by powers of 2:
+
+            seconds = backoff * 2 ^ (retry number - 1)
+
+        So if this was `4`, retries would happen after the following delays:
+        0 seconds, 4 seconds, 8 seconds, 16 seconds, ...
+    timeout : int or float or tuple of (int or float, int or float), default: 60
+        A timeout to use for all requests.
+        See the Requests docs for more:
+        https://docs.python-requests.org/en/master/user/advanced/#timeouts
+    rate_limits : dict of (str, RateLimit)
+        The rate limits that should be applied to different URL paths. The keys
+        are URL path prefixes, e.g. ``"/cdx/search/"``, and the values are
+        :class:`wayback.RateLimit` objects. When requests are made, the rate
+        limit from the most specific matching path is used and execution will
+        pause to ensure the rate limit is not exceeded.
+
+
+    Examples
+    --------
+
+    Usage via multiple inheritance:
+
+    >>> class CombinedAdapter(RetryAndRateLimitAdapter, SomeActualHttpAdapterWithoutRateLimits):
+    >>>     ...
+
+    Usage via override:
+
+    >>> class MyHttpAdapter(RetryAndRateLimitAdapter):
+    >>>     def request_raw(
+    >>>         self,
+    >>>         method: str,
+    >>>         url: str,
+    >>>         *,
+    >>>         params: dict = None,
+    >>>         headers: dict = None,
+    >>>         follow_redirects: bool = True,
+    >>>         timeout: Union[int, Tuple[int, int]] = None
+    >>>     ) -> WaybackHttpResponse:
+    >>>         response = urllib.urlopen(...)
+    >>>         return make_response_from_urllib(response)
+    """
+
+    rate_limits: Dict[str, RateLimit]
+
+    # It seems Wayback sometimes produces 500 errors for transient issues, so
+    # they make sense to retry here. Usually not in other contexts, though.
+    retryable_statuses = frozenset((413, 421, 500, 502, 503, 504, 599))
+
+    # XXX: Some of these are requests-specific and should move WaybackRequestsAdapter.
+    retryable_errors = (ConnectTimeoutError, MaxRetryError, ReadTimeoutError,
+                        ProxyError, RetryError, Timeout)
+    # Handleable errors *may* be retryable, but need additional logic beyond
+    # just the error type. See `should_retry_error()`.
+    handleable_errors = (ConnectionError,) + retryable_errors
+
+    def __init__(
+        self,
+        retries: int = 6,
+        backoff: Real = 2,
+        rate_limits: Dict[str, RateLimit] = {}
+    ) -> None:
+        super().__init__()
+        self.retries = retries
+        self.backoff = backoff
+        # Sort rate limits by longest path first, so we always match the most
+        # specific path when looking for the right rate limit on any given URL.
+        self.rate_limits = {path: rate_limits[path]
+                            for path in sorted(rate_limits.keys(),
+                                               key=lambda k: len(k),
+                                               reverse=True)}
+
+    # The implementation of different features is split up by method here, so
+    # `request()` calls down through a stack of overrides:
+    #
+    #   request                        (ensure valid types/values/etc.)
+    #   └> _request_redirectable       (handle redirects)
+    #      └> _request_retryable       (handle retries for errors)
+    #         └> _request_rate_limited (handle rate limiting/throttling)
+    #            └> request_raw        (handle actual HTTP)
+    def request(
+        self,
+        method: str,
+        url: str,
+        *,
+        params: dict = None,
+        headers: dict = None,
+        follow_redirects: bool = True,
+        timeout: Union[int, Tuple[int, int]] = None
+    ) -> WaybackHttpResponse:
+        return self._request_redirectable(method,
+                                          url,
+                                          params=params,
+                                          headers=headers,
+                                          follow_redirects=follow_redirects,
+                                          timeout=timeout)
+
+    def _request_redirectable(self, *args, follow_redirects: bool = True, **kwargs) -> WaybackHttpResponse:
+        # FIXME: this method should implement redirect following (if
+        # `follow_redirects` is true), rather than passing it to the underlying
+        # implementation, since redirects need to be rate limited.
+        return self._request_retryable(*args, follow_redirects=follow_redirects, **kwargs)
+
+    def _request_retryable(self, method: str, url: str, **kwargs) -> WaybackHttpResponse:
+        start_time = time.time()
+        maximum = self.retries
+        retries = 0
+
+        while True:
+            retry_delay = 0
+            try:
+                response = self._request_rate_limited(method, url, **kwargs)
+                retry_delay = self.get_retry_delay(retries, response)
+
+                if retries >= maximum or not self.should_retry(response):
+                    if response.status_code == 429:
+                        response.close()
+                        raise RateLimitError(response, retry_delay)
+                    return response
+                else:
+                    logger.debug('Received error response (status: %s), will retry', response.status_code)
+                    response.close(cache=False)
+            except self.handleable_errors as error:
+                response = getattr(error, 'response', None)
+                if response is not None:
+                    response.close()
+
+                if retries >= maximum:
+                    raise WaybackRetryError(retries, time.time() - start_time, error) from error
+                elif self.should_retry_error(error):
+                    retry_delay = self.get_retry_delay(retries, response)
+                    logger.info('Caught exception during request, will retry: %s', error)
+                else:
+                    raise
+
+            logger.debug('Will retry after sleeping for %s seconds...', retry_delay)
+            time.sleep(retry_delay)
+            retries += 1
+
+    def _request_rate_limited(self, method: str, url: str, **kwargs) -> WaybackHttpResponse:
+        parsed_url = urlparse(url)
+        for path, limit in self.rate_limits.items():
+            if parsed_url.path.startswith(path):
+                rate_limit = limit
+                break
+        else:
+            rate_limit = DEFAULT_MEMENTO_RATE_LIMIT
+
+        rate_limit.wait()
+        return self.request_raw(method, url, **kwargs)
+
+    def request_raw(self, *args, **kwargs) -> WaybackHttpResponse:
+        return super().request(*args, **kwargs)
+
+    def should_retry(self, response: WaybackHttpResponse):
+        # A memento may actually be a capture of an error, so don't retry it :P
+        if response.is_memento:
+            return False
+
+        return response.status_code in self.retryable_statuses
+
+    def should_retry_error(self, error):
+        if isinstance(error, self.retryable_errors):
+            return True
+        elif isinstance(error, ConnectionError):
+            # ConnectionErrors from requests actually wrap a whole family of
+            # more detailed errors from urllib3, so we need to do some string
+            # checking to determine whether the error is retryable.
+            text = str(error)
+            # NOTE: we have also seen this, which may warrant retrying:
+            # `requests.exceptions.ConnectionError: ('Connection aborted.',
+            # RemoteDisconnected('Remote end closed connection without
+            # response'))`
+            if 'NewConnectionError' in text or 'Max retries' in text:
+                return True
+
+        return False
+
+    def get_retry_delay(self, retries, response=None):
+        delay = 0
+
+        # As of 2023-11-27, the Wayback Machine does not set a `Retry-After`
+        # header, so this parsing is really just future-proofing.
+        if response is not None:
+            delay = parse_retry_after(response.headers.get('Retry-After')) or delay
+            if response.status_code == 429 and delay == 0:
+                delay = DEFAULT_RATE_LIMIT_DELAY
+
+        # No default backoff on the first retry.
+        if retries > 0:
+            delay = max(self.backoff * 2 ** (retries - 1), delay)
+
+        return delay
+
+
+class WaybackRequestsAdapter(RetryAndRateLimitAdapter, DisableAfterCloseAdapter, RequestsAdapter):
+    def __init__(
+        self,
+        retries: int = 6,
+        backoff: Real = 2,
+        timeout: Union[Real, Tuple[Real, Real]] = 60,
+        user_agent: str = None,
+        memento_rate_limit: Union[RateLimit, Real] = DEFAULT_MEMENTO_RATE_LIMIT,
+        search_rate_limit: Union[RateLimit, Real] = DEFAULT_CDX_RATE_LIMIT,
+        timemap_rate_limit: Union[RateLimit, Real] = DEFAULT_TIMEMAP_RATE_LIMIT,
+    ) -> None:
+        super().__init__(
+            retries=retries,
+            backoff=backoff,
+            rate_limits={
+                '/web/timemap': RateLimit.make_limit(timemap_rate_limit),
+                '/cdx': RateLimit.make_limit(search_rate_limit),
+                # The memento limit is actually a generic Wayback limit.
+                '/': RateLimit.make_limit(memento_rate_limit),
+            }
+        )
+        self.timeout = timeout
+        self.headers = {
+            'User-Agent': (user_agent or
+                           f'wayback/{__version__} (+https://github.com/edgi-govdata-archiving/wayback)'),
+            'Accept-Encoding': 'gzip, deflate'
+        }
+
+    def request(
+        self,
+        method: str,
+        url: str,
+        *,
+        params: dict = None,
+        headers: dict = None,
+        follow_redirects: bool = True,
+        timeout: Union[int, Tuple[int, int]] = -1
+    ) -> WaybackHttpResponse:
+        timeout = self.timeout if timeout is -1 else timeout
+        headers = (headers or {}) | self.headers
+
+        return super().request(method,
+                               url,
+                               params=params,
+                               headers=headers,
+                               follow_redirects=follow_redirects,
+                               timeout=timeout)

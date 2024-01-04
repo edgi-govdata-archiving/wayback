@@ -118,9 +118,10 @@ Memento API. We implement a Python client that can speak both.
     .. automethod:: close
     .. automethod:: parse_memento_headers
 
-.. autoclass:: wayback.WaybackSession
+.. autoclass:: wayback.WaybackHttpAdapter
 
-    .. automethod:: reset
+    .. automethod:: request
+    .. automethod:: close
 
 Utilities
 ---------
@@ -150,4 +151,4 @@ Exception Classes
 
 .. autoclass:: wayback.exceptions.WaybackRetryError
 
-.. autoclass:: wayback.exceptions.SessionClosedError
+.. autoclass:: wayback.exceptions.AlreadyClosedError
