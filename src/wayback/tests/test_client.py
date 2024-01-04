@@ -671,7 +671,7 @@ def test_get_memento_returns_memento_with_accurate_url():
         assert memento.url == 'https://www.fws.gov/'
 
 
-def return_timeout(self, *args, **kwargs) -> requests.Response:
+def return_timeout(request, **kwargs) -> requests.Response:
     """
     Patch requests.Session.send with this in order to return a response with
     the provided timeout value as the response body.
@@ -685,6 +685,23 @@ def return_timeout(self, *args, **kwargs) -> requests.Response:
     res.status_code = 200
     res._content = str(kwargs.get('timeout', None)).encode()
     return res
+
+
+def return_user_agent(request, **kwargs) -> requests.Response:
+    """
+    Patch requests.Session.send with this in order to return a response with
+    the provided ``User-Agent`` header value as the response body.
+
+    Usage:
+    >>> @mock.patch('requests.Session.send', side_effect=return_user_agent)
+    >>> def test_timeout(self, mock_class):
+    >>>    assert requests.get('http://test.com',
+    >>>                        headers={'User-Agent': 'x'}).text == 'x'
+    """
+    response = requests.Response()
+    response.status_code = 200
+    response._content = str(request.headers.get('User-Agent', None)).encode()
+    return response
 
 
 class TestWaybackSession:
@@ -761,6 +778,12 @@ class TestWaybackSession:
         # Overwriting the default
         res = session.request('GET', 'http://test.com', timeout=1)
         assert res.text == '1'
+
+    @mock.patch('requests.Session.send', side_effect=return_user_agent)
+    def test_user_agent(self, mock_class):
+        adapter = WaybackSession()
+        agent = adapter.request('GET', 'http://test.com').text
+        assert agent.startswith('wayback/')
 
     @ia_vcr.use_cassette()
     def test_search_rate_limits(self):
