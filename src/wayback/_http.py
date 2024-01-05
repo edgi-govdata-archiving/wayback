@@ -581,7 +581,7 @@ class WaybackRequestsAdapter(RetryAndRateLimitAdapter, DisableAfterCloseAdapter,
         timeout: Union[int, Tuple[int, int]] = -1
     ) -> WaybackHttpResponse:
         timeout = self.timeout if timeout is -1 else timeout
-        headers = (headers or {}) | self.headers
+        headers = dict(headers or {}, **self.headers)
 
         return super().request(method,
                                url,
