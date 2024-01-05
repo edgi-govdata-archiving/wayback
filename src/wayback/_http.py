@@ -325,7 +325,8 @@ class RequestsAdapter(WaybackHttpAdapter):
             params=params,
             headers=headers,
             allow_redirects=follow_redirects,
-            timeout=timeout
+            timeout=timeout,
+            stream=True
         )
         return WaybackRequestsResponse(response)
 
