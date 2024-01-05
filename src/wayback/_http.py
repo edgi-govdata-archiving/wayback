@@ -564,7 +564,7 @@ class WaybackRequestsAdapter(RetryAndRateLimitAdapter, DisableAfterCloseAdapter,
             }
         )
         self.timeout = timeout
-        self.headers = {
+        self._session.headers = {
             'User-Agent': (user_agent or
                            f'wayback/{__version__} (+https://github.com/edgi-govdata-archiving/wayback)'),
             'Accept-Encoding': 'gzip, deflate'
@@ -580,8 +580,7 @@ class WaybackRequestsAdapter(RetryAndRateLimitAdapter, DisableAfterCloseAdapter,
         follow_redirects: bool = True,
         timeout: Union[int, Tuple[int, int]] = -1
     ) -> WaybackHttpResponse:
-        timeout = self.timeout if timeout is -1 else timeout
-        headers = dict(headers or {}, **self.headers)
+        timeout = self.timeout if timeout == -1 else timeout
 
         return super().request(method,
                                url,
