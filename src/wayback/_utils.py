@@ -4,13 +4,11 @@ from datetime import date, datetime, timezone
 import email.utils
 import logging
 import re
-import requests
-import requests.adapters
 import threading
 import time
 from typing import Union
 import urllib.parse
-from .exceptions import SessionClosedError
+from .exceptions import AlreadyClosedError
 
 logger = logging.getLogger(__name__)
 
@@ -322,9 +320,9 @@ class DepthCountedContext:
         pass
 
 
-class DisableAfterCloseSession(requests.Session):
+class DisableAfterCloseAdapter:
     """
-    A custom session object raises a :class:`SessionClosedError` if you try to
+    A custom session object raises a :class:`AlreadyClosedError` if you try to
     use it after closing it, to help identify and avoid potentially dangerous
     code patterns. (Standard session objects continue to be usable after
     closing, even if they may not work exactly as expected.)
@@ -332,16 +330,15 @@ class DisableAfterCloseSession(requests.Session):
     _closed = False
 
     def close(self, disable=True):
-        super().close()
         if disable:
             self._closed = True
 
-    def send(self, *args, **kwargs):
+    def request(self, *args, **kwargs):
         if self._closed:
-            raise SessionClosedError('This session has already been closed '
+            raise AlreadyClosedError('This session has already been closed '
                                      'and cannot send new HTTP requests.')
-
-        return super().send(*args, **kwargs)
+        else:
+            return super().request(*args, **kwargs)
 
 
 class CaseInsensitiveDict(MutableMapping):

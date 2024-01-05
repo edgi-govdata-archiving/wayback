@@ -19,30 +19,18 @@ from enum import Enum
 import hashlib
 import logging
 import re
-import requests
-from requests.exceptions import (ChunkedEncodingError,
-                                 ConnectionError,
-                                 ContentDecodingError,
-                                 ProxyError,
-                                 RetryError,
-                                 Timeout)
-import time
-from urllib.parse import urljoin, urlparse
-from urllib3.connectionpool import HTTPConnectionPool
-from urllib3.exceptions import (ConnectTimeoutError,
-                                MaxRetryError,
-                                ReadTimeoutError)
+from urllib.parse import urljoin
 from warnings import warn
-from . import _utils, __version__
+from . import _utils
 from ._models import CdxRecord, Memento
+from ._http import (WaybackRequestsAdapter,
+                    WaybackHttpAdapter)
 from .exceptions import (WaybackException,
                          UnexpectedResponseFormat,
                          BlockedByRobotsError,
                          BlockedSiteError,
                          MementoPlaybackError,
-                         NoMementoError,
-                         WaybackRetryError,
-                         RateLimitError)
+                         NoMementoError)
 
 
 logger = logging.getLogger(__name__)
@@ -69,16 +57,6 @@ DATA_URL_START = re.compile(r'data:[\w]+/[\w]+;base64')
 EMAILISH_URL = re.compile(r'^https?://(<*)((mailto:)|([^/@:]*@))')
 # Make sure it roughly starts with a valid protocol + domain + port?
 URL_ISH = re.compile(r'^[\w+\-]+://[^/?=&]+\.\w\w+(:\d+)?(/|$)')
-
-# Global default rate limits for various endpoints. Internet Archive folks have
-# asked us to set the defaults at 80% of the hard limits.
-DEFAULT_CDX_RATE_LIMIT = _utils.RateLimit(0.8 * 60 / 60)
-DEFAULT_TIMEMAP_RATE_LIMIT = _utils.RateLimit(0.8 * 100 / 60)
-DEFAULT_MEMENTO_RATE_LIMIT = _utils.RateLimit(0.8 * 600 / 60)
-
-# If a rate limit response (i.e. a response with status == 429) does not
-# include a `Retry-After` header, recommend pausing for this long.
-DEFAULT_RATE_LIMIT_DELAY = 60
 
 
 class Mode(Enum):
@@ -148,26 +126,10 @@ def is_malformed_url(url):
     return False
 
 
-def is_memento_response(response):
-    return 'Memento-Datetime' in response.headers
-
-
 def cdx_hash(content):
     if isinstance(content, str):
         content = content.encode()
     return b32encode(hashlib.sha1(content).digest()).decode()
-
-
-def read_and_close(response):
-    # Read content so it gets cached and close the response so
-    # we can release the connection for reuse. See:
-    # https://github.com/psf/requests/blob/eedd67462819f8dbf8c1c32e77f9070606605231/requests/sessions.py#L160-L163
-    try:
-        response.content
-    except (ChunkedEncodingError, ContentDecodingError, RuntimeError):
-        response.raw.read(decode_content=False)
-    finally:
-        response.close()
 
 
 REDIRECT_PAGE_PATTERN = re.compile(r'Got an? HTTP 3\d\d response at crawl time', re.IGNORECASE)
@@ -271,308 +233,30 @@ def clean_memento_links(links, mode):
     return result
 
 
-#####################################################################
-# HACK: handle malformed Content-Encoding headers from Wayback.
-# When you send `Accept-Encoding: gzip` on a request for a memento, Wayback
-# will faithfully gzip the response body. However, if the original response
-# from the web server that was snapshotted was gzipped, Wayback screws up the
-# `Content-Encoding` header on the memento response, leading any HTTP client to
-# *not* decompress the gzipped body. Wayback folks have no clear timeline for
-# a fix, hence the workaround here.
-#
-# More info in this issue:
-# https://github.com/edgi-govdata-archiving/web-monitoring-processing/issues/309
-#
-# Example broken Wayback URL:
-# http://web.archive.org/web/20181023233237id_/http://cwcgom.aoml.noaa.gov/erddap/griddap/miamiacidification.graph
-#
-if hasattr(HTTPConnectionPool, 'ResponseCls'):
-    # urllib3 v1.x:
-    #
-    # This subclass of urllib3's response class identifies the malformed headers
-    # and repairs them before instantiating the actual response object, so when
-    # it reads the body, it knows to decode it correctly.
-    #
-    # See what we're overriding from urllib3:
-    # https://github.com/urllib3/urllib3/blob/a6ec68a5c5c5743c59fe5c62c635c929586c429b/src/urllib3/response.py#L499-L526
-    class WaybackResponse(HTTPConnectionPool.ResponseCls):
-        @classmethod
-        def from_httplib(cls, httplib_response, **response_kwargs):
-            headers = httplib_response.msg
-            pairs = headers.items()
-            if ('content-encoding', '') in pairs and ('Content-Encoding', 'gzip') in pairs:
-                del headers['content-encoding']
-                headers['Content-Encoding'] = 'gzip'
-            return super().from_httplib(httplib_response, **response_kwargs)
-
-    HTTPConnectionPool.ResponseCls = WaybackResponse
-else:
-    # urllib3 v2.x:
-    #
-    # Unfortunately, we can't wrap the `HTTPConnection.getresponse` method in
-    # urllib3 v2, since it may have read the response body before returning. So
-    # we patch the HTTPHeaderDict class instead.
-    from urllib3._collections import HTTPHeaderDict as Urllib3HTTPHeaderDict
-    _urllib3_header_init = Urllib3HTTPHeaderDict.__init__
-
-    def _new_header_init(self, headers=None, **kwargs):
-        if headers:
-            if isinstance(headers, (Urllib3HTTPHeaderDict, dict)):
-                pairs = list(headers.items())
-            else:
-                pairs = list(headers)
-            if (
-                ('content-encoding', '') in pairs and
-                ('Content-Encoding', 'gzip') in pairs
-            ):
-                headers = [pair for pair in pairs
-                           if pair[0].lower() != 'content-encoding']
-                headers.append(('Content-Encoding', 'gzip'))
-
-        return _urllib3_header_init(self, headers, **kwargs)
-
-    Urllib3HTTPHeaderDict.__init__ = _new_header_init
-# END HACK
-#####################################################################
-
-
-class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
-    """
-    A custom session object that pools network connections and resources for
-    requests to the Wayback Machine.
-
-    Parameters
-    ----------
-    retries : int, default: 6
-        The maximum number of retries for requests.
-    backoff : int or float, default: 2
-        Number of seconds from which to calculate how long to back off and wait
-        when retrying requests. The first retry is always immediate, but
-        subsequent retries increase by powers of 2:
-
-            seconds = backoff * 2 ^ (retry number - 1)
-
-        So if this was `4`, retries would happen after the following delays:
-        0 seconds, 4 seconds, 8 seconds, 16 seconds, ...
-    timeout : int or float or tuple of (int or float, int or float), default: 60
-        A timeout to use for all requests.
-        See the Requests docs for more:
-        https://docs.python-requests.org/en/master/user/advanced/#timeouts
-    user_agent : str, optional
-        A custom user-agent string to use in all requests. Defaults to:
-        `wayback/{version} (+https://github.com/edgi-govdata-archiving/wayback)`
-    search_calls_per_second : wayback.RateLimit or int or float, default: 0.8
-        The maximum number of calls per second made to the CDX search API.
-        To disable the rate limit, set this to 0.
-
-        To have multiple sessions share a rate limit (so requests made by one
-        session count towards the limit of the other session), use a
-        single :class:`wayback.RateLimit` instance and pass it to each
-        ``WaybackSession`` instance. If you do not set a limit, the default
-        limit is shared globally across all sessions.
-    memento_calls_per_second : wayback.RateLimit or int or float, default: 8
-        The maximum number of calls per second made to the memento API.
-        To disable the rate limit, set this to 0.
-
-        To have multiple sessions share a rate limit (so requests made by one
-        session count towards the limit of the other session), use a
-        single :class:`wayback.RateLimit` instance and pass it to each
-        ``WaybackSession`` instance. If you do not set a limit, the default
-        limit is shared globally across all sessions.
-    timemap_calls_per_second : wayback.RateLimit or int or float, default: 1.33
-        The maximum number of calls per second made to the timemap API (the
-        Wayback Machine's new, beta CDX search is part of the timemap API).
-        To disable the rate limit, set this to 0.
-
-        To have multiple sessions share a rate limit (so requests made by one
-        session count towards the limit of the other session), use a
-        single :class:`wayback.RateLimit` instance and pass it to each
-        ``WaybackSession`` instance. If you do not set a limit, the default
-        limit is shared globally across all sessions.
-    """
-
-    # It seems Wayback sometimes produces 500 errors for transient issues, so
-    # they make sense to retry here. Usually not in other contexts, though.
-    retryable_statuses = frozenset((413, 421, 500, 502, 503, 504, 599))
-
-    retryable_errors = (ConnectTimeoutError, MaxRetryError, ReadTimeoutError,
-                        ProxyError, RetryError, Timeout)
-    # Handleable errors *may* be retryable, but need additional logic beyond
-    # just the error type. See `should_retry_error()`.
-    handleable_errors = (ConnectionError,) + retryable_errors
-
-    def __init__(self, retries=6, backoff=2, timeout=60, user_agent=None,
-                 search_calls_per_second=DEFAULT_CDX_RATE_LIMIT,
-                 memento_calls_per_second=DEFAULT_MEMENTO_RATE_LIMIT,
-                 timemap_calls_per_second=DEFAULT_TIMEMAP_RATE_LIMIT):
-        super().__init__()
-        self.retries = retries
-        self.backoff = backoff
-        self.timeout = timeout
-        self.headers = {
-            'User-Agent': (user_agent or
-                           f'wayback/{__version__} (+https://github.com/edgi-govdata-archiving/wayback)'),
-            'Accept-Encoding': 'gzip, deflate'
-        }
-        self.rate_limts = {
-            '/web/timemap': _utils.RateLimit.make_limit(timemap_calls_per_second),
-            '/cdx': _utils.RateLimit.make_limit(search_calls_per_second),
-            # The memento limit is actually a generic Wayback limit.
-            '/': _utils.RateLimit.make_limit(memento_calls_per_second),
-        }
-        # NOTE: the nice way to accomplish retry/backoff is with a urllib3:
-        #     adapter = requests.adapters.HTTPAdapter(
-        #         max_retries=Retry(total=5, backoff_factor=2,
-        #                           status_forcelist=(503, 504)))
-        #     self.mount('http://', adapter)
-        # But Wayback mementos can have errors, which complicates things. See:
-        # https://github.com/urllib3/urllib3/issues/1445#issuecomment-422950868
-        #
-        # Also note that, if we are ever able to switch to that, we may need to
-        # get more fancy with log filtering, since we *expect* lots of retries
-        # with Wayback's APIs, but urllib3 logs a warning on every retry:
-        # https://github.com/urllib3/urllib3/blob/5b047b645f5f93900d5e2fc31230848c25eb1f5f/src/urllib3/connectionpool.py#L730-L737
-
-    # Customize the built-in `send()` with retryability and rate limiting.
-    def send(self, request: requests.PreparedRequest, **kwargs):
-        start_time = time.time()
-        maximum = self.retries
-        retries = 0
-
-        url = urlparse(request.url)
-        for path, limit in self.rate_limts.items():
-            if url.path.startswith(path):
-                rate_limit = limit
-                break
-        else:
-            rate_limit = DEFAULT_MEMENTO_RATE_LIMIT
-
-        while True:
-            retry_delay = 0
-            try:
-                logger.debug('sending HTTP request %s "%s", %s', request.method, request.url, kwargs)
-                rate_limit.wait()
-                response = super().send(request, **kwargs)
-                retry_delay = self.get_retry_delay(retries, response)
-
-                if retries >= maximum or not self.should_retry(response):
-                    if response.status_code == 429:
-                        read_and_close(response)
-                        raise RateLimitError(response, retry_delay)
-                    return response
-                else:
-                    logger.debug('Received error response (status: %s), will retry', response.status_code)
-                    read_and_close(response)
-            except WaybackSession.handleable_errors as error:
-                response = getattr(error, 'response', None)
-                if response is not None:
-                    read_and_close(response)
-
-                if retries >= maximum:
-                    raise WaybackRetryError(retries, time.time() - start_time, error) from error
-                elif self.should_retry_error(error):
-                    retry_delay = self.get_retry_delay(retries, response)
-                    logger.info('Caught exception during request, will retry: %s', error)
-                else:
-                    raise
-
-            logger.debug('Will retry after sleeping for %s seconds...', retry_delay)
-            time.sleep(retry_delay)
-            retries += 1
-
-    # Customize `request` in order to set a default timeout from the session.
-    # We can't do this in `send` because `request` always passes a `timeout`
-    # keyword to `send`. Inside `send`, we can't tell the difference between a
-    # user explicitly requesting no timeout and not setting one at all.
-    def request(self, method, url, **kwargs):
-        """
-        Perform an HTTP request using this session. For arguments and return
-        values, see:
-        https://requests.readthedocs.io/en/latest/api/#requests.Session.request
-
-        If the ``timeout`` keyword argument is not set, it will default to the
-        session's ``timeout`` attribute.
-        """
-        if 'timeout' not in kwargs:
-            kwargs['timeout'] = self.timeout
-        return super().request(method, url, **kwargs)
-
-    def should_retry(self, response):
-        # A memento may actually be a capture of an error, so don't retry it :P
-        if is_memento_response(response):
-            return False
-
-        return response.status_code in self.retryable_statuses
-
-    def should_retry_error(self, error):
-        if isinstance(error, WaybackSession.retryable_errors):
-            return True
-        elif isinstance(error, ConnectionError):
-            # ConnectionErrors from requests actually wrap a whole family of
-            # more detailed errors from urllib3, so we need to do some string
-            # checking to determine whether the error is retryable.
-            text = str(error)
-            # NOTE: we have also seen this, which may warrant retrying:
-            # `requests.exceptions.ConnectionError: ('Connection aborted.',
-            # RemoteDisconnected('Remote end closed connection without
-            # response'))`
-            if 'NewConnectionError' in text or 'Max retries' in text:
-                return True
-
-        return False
-
-    def get_retry_delay(self, retries, response=None):
-        delay = 0
-
-        # As of 2023-11-27, the Wayback Machine does not set a `Retry-After`
-        # header, so this parsing is just future-proofing.
-        if response is not None:
-            delay = _utils.parse_retry_after(response.headers.get('Retry-After')) or delay
-            if response.status_code == 429 and delay == 0:
-                delay = DEFAULT_RATE_LIMIT_DELAY
-
-        # No default backoff on the first retry.
-        if retries > 0:
-            delay = max(self.backoff * 2 ** (retries - 1), delay)
-
-        return delay
-
-    def reset(self):
-        "Reset any network connections the session is using."
-        # Close really just closes all the adapters in `self.adapters`. We
-        # could do that directly, but `self.adapters` is not documented/public,
-        # so might be somewhat risky.
-        self.close(disable=False)
-        # Re-build the standard adapters. See:
-        # https://github.com/kennethreitz/requests/blob/v2.22.0/requests/sessions.py#L415-L418
-        self.mount('https://', requests.adapters.HTTPAdapter())
-        self.mount('http://', requests.adapters.HTTPAdapter())
-
-
-# TODO: add retry, backoff, cross_thread_backoff, and rate_limit options that
-# create a custom instance of urllib3.utils.Retry
 class WaybackClient(_utils.DepthCountedContext):
     """
     A client for retrieving data from the Internet Archive's Wayback Machine.
 
     You can use a WaybackClient as a context manager. When exiting, it will
-    close the session it's using (if you've passed in a custom session, make
+    close the adapter it's using (if you've passed in a custom adapter, make
     sure not to use the context manager functionality unless you want to live
     dangerously).
 
     Parameters
     ----------
-    session : WaybackSession, optional
+    adapter : WaybackHttpAdapter, optional
     """
-    def __init__(self, session=None):
-        self.session = session or WaybackSession()
+    adapter: WaybackHttpAdapter
+
+    def __init__(self, adapter=None):
+        self.adapter = adapter or WaybackRequestsAdapter()
 
     def __exit_all__(self, type, value, traceback):
         self.close()
 
     def close(self):
-        "Close the client's session."
-        self.session.close()
+        "Close the client's adapter."
+        self.adapter.close()
 
     def search(self, url, *, match_type=None, limit=1000, offset=None,
                fast_latest=None, from_date=None, to_date=None,
@@ -783,24 +467,23 @@ class WaybackClient(_utils.DepthCountedContext):
         previous_result = None
         while next_query:
             sent_query, next_query = next_query, None
-            response = self.session.request('GET', CDX_SEARCH_URL,
+            response = self.adapter.request('GET', CDX_SEARCH_URL,
                                             params=sent_query)
-            try:
-                # Read/cache the response and close straightaway. If we need
-                # to raise for status, we want to pre-emptively close the
-                # response so a user handling the error doesn't need to
-                # worry about it. If we don't raise here, we still want to
-                # close the connection so it doesn't leak when we move onto
-                # the next of results or when this iterator ends.
-                read_and_close(response)
-                response.raise_for_status()
-            except requests.exceptions.HTTPError as error:
+
+            # Read/cache the response and close straightaway. If we need
+            # to raise for status, we want to pre-emptively close the
+            # response so a user handling the error doesn't need to
+            # worry about it. If we don't raise here, we still want to
+            # close the connection so it doesn't leak when we move onto
+            # the next of results or when this iterator ends.
+            response.close()
+            if response.status_code >= 400:
                 if 'AdministrativeAccessControlException' in response.text:
                     raise BlockedSiteError(query['url'])
                 elif 'RobotAccessControlException' in response.text:
                     raise BlockedByRobotsError(query['url'])
                 else:
-                    raise WaybackException(str(error))
+                    raise WaybackException(f'HTTP {response.status_code} error for CDX search: "{query}"')
 
             lines = iter(response.content.splitlines())
 
@@ -1011,24 +694,21 @@ class WaybackClient(_utils.DepthCountedContext):
         urls = set()
         previous_was_memento = False
 
-        response = self.session.request('GET', url, allow_redirects=False)
+        response = self.adapter.request('GET', url, follow_redirects=False)
         protocol_and_www = re.compile(r'^https?://(www\d?\.)?')
         memento = None
         while True:
             current_url, current_date, current_mode = _utils.memento_url_data(response.url)
 
             # In view mode, redirects need special handling.
-            if current_mode == Mode.view.value:
+            redirect_url = response.redirect_url
+            if current_mode == Mode.view.value and not redirect_url:
                 redirect_url = detect_view_mode_redirect(response, current_date)
                 if redirect_url:
                     # Fix up response properties to be like other modes.
-                    redirect = requests.Request('GET', redirect_url)
-                    response._next = self.session.prepare_request(redirect)
                     response.headers['Memento-Datetime'] = current_date.strftime(
                         '%a, %d %b %Y %H:%M:%S %Z'
                     )
-
-            is_memento = is_memento_response(response)
 
             # A memento URL will match possible captures based on its SURT
             # form, which means we might be getting back a memento captured
@@ -1037,7 +717,7 @@ class WaybackClient(_utils.DepthCountedContext):
             if response.links and ('original' in response.links):
                 current_url = response.links['original']['url']
 
-            if is_memento:
+            if response.is_memento:
                 links = clean_memento_links(response.links, mode)
                 memento = Memento(url=current_url,
                                   timestamp=current_date,
@@ -1062,11 +742,11 @@ class WaybackClient(_utils.DepthCountedContext):
                 # rarely have been captured at the same time as the
                 # redirect itself. (See 2b)
                 playable = False
-                if response.next and (
+                if redirect_url and (
                     (len(history) == 0 and not exact) or
                     (len(history) > 0 and (previous_was_memento or not exact_redirects))
                 ):
-                    target_url, target_date, _ = _utils.memento_url_data(response.next.url)
+                    target_url, target_date, _ = _utils.memento_url_data(redirect_url)
                     # A non-memento redirect is generally taking us to the
                     # closest-in-time capture of the same URL. Note that is
                     # NOT the next capture -- i.e. the one that would have
@@ -1095,7 +775,7 @@ class WaybackClient(_utils.DepthCountedContext):
                             playable = True
 
                 if not playable:
-                    read_and_close(response)
+                    response.close()
                     message = response.headers.get('X-Archive-Wayback-Runtime-Error', '')
                     if (
                         ('AdministrativeAccessControlException' in message) or
@@ -1109,7 +789,7 @@ class WaybackClient(_utils.DepthCountedContext):
                         raise BlockedByRobotsError(f'{url} is blocked by robots.txt')
                     elif message:
                         raise MementoPlaybackError(f'Memento at {url} could not be played: {message}')
-                    elif response.ok:
+                    elif response.is_success:
                         # TODO: Raise more specific errors for the possible
                         # cases here. We *should* only arrive here when
                         # there's a redirect and:
@@ -1124,21 +804,21 @@ class WaybackClient(_utils.DepthCountedContext):
                         raise MementoPlaybackError(f'{response.status_code} error while loading '
                                                    f'memento at {url}')
 
-            if response.next:
-                previous_was_memento = is_memento
-                read_and_close(response)
+            if redirect_url:
+                previous_was_memento = response.is_memento
+                response.close()
 
                 # Wayback sometimes has circular memento redirects ¯\_(ツ)_/¯
                 urls.add(response.url)
-                if response.next.url in urls:
+                if redirect_url in urls:
                     raise MementoPlaybackError(f'Memento at {url} is circular')
 
                 # All requests are included in `debug_history`, but
                 # `history` only shows redirects that were mementos.
                 debug_history.append(response.url)
-                if is_memento:
+                if response.is_memento:
                     history.append(memento)
-                response = self.session.send(response.next, allow_redirects=False)
+                response = self.adapter.request('GET', redirect_url, follow_redirects=False)
             else:
                 break
 

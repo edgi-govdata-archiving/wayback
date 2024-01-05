@@ -6,11 +6,11 @@ import pytest
 import requests
 from unittest import mock
 from .support import create_vcr
-from .._utils import SessionClosedError
+from .._utils import AlreadyClosedError
 from .._client import (CdxRecord,
                        Mode,
-                       WaybackSession,
                        WaybackClient)
+from .._http import WaybackRequestsAdapter
 from ..exceptions import (BlockedSiteError,
                           MementoPlaybackError,
                           NoMementoError,
@@ -112,7 +112,7 @@ def test_search_multipage():
 
 @ia_vcr.use_cassette()
 def test_search_cannot_iterate_after_session_closing():
-    with pytest.raises(SessionClosedError):
+    with pytest.raises(AlreadyClosedError):
         with WaybackClient() as client:
             versions = client.search('nasa.gov',
                                      from_date=datetime(1996, 10, 1),
@@ -671,7 +671,7 @@ def test_get_memento_returns_memento_with_accurate_url():
         assert memento.url == 'https://www.fws.gov/'
 
 
-def return_timeout(self, *args, **kwargs) -> requests.Response:
+def return_timeout(request, **kwargs) -> requests.Response:
     """
     Patch requests.Session.send with this in order to return a response with
     the provided timeout value as the response body.
@@ -687,14 +687,31 @@ def return_timeout(self, *args, **kwargs) -> requests.Response:
     return res
 
 
-class TestWaybackSession:
+def return_user_agent(request, **kwargs) -> requests.Response:
+    """
+    Patch requests.Session.send with this in order to return a response with
+    the provided ``User-Agent`` header value as the response body.
+
+    Usage:
+    >>> @mock.patch('requests.Session.send', side_effect=return_user_agent)
+    >>> def test_timeout(self, mock_class):
+    >>>    assert requests.get('http://test.com',
+    >>>                        headers={'User-Agent': 'x'}).text == 'x'
+    """
+    response = requests.Response()
+    response.status_code = 200
+    response._content = str(request.headers.get('User-Agent', None)).encode()
+    return response
+
+
+class TestWaybackRequestsAdapter:
     def test_request_retries(self, requests_mock):
         requests_mock.get('http://test.com', [{'text': 'bad1', 'status_code': 503},
                                               {'text': 'bad2', 'status_code': 503},
                                               {'text': 'good', 'status_code': 200}])
-        session = WaybackSession(retries=2, backoff=0.1)
+        session = WaybackRequestsAdapter(retries=2, backoff=0.1)
         response = session.request('GET', 'http://test.com')
-        assert response.ok
+        assert response.is_success
 
         session.close()
 
@@ -702,7 +719,7 @@ class TestWaybackSession:
         requests_mock.get('http://test.com', [{'text': 'bad1', 'status_code': 503},
                                               {'text': 'bad2', 'status_code': 503},
                                               {'text': 'good', 'status_code': 200}])
-        session = WaybackSession(retries=1, backoff=0.1)
+        session = WaybackRequestsAdapter(retries=1, backoff=0.1)
         response = session.request('GET', 'http://test.com')
         assert response.status_code == 503
         assert response.text == 'bad2'
@@ -710,28 +727,28 @@ class TestWaybackSession:
     def test_only_retries_some_errors(self, requests_mock):
         requests_mock.get('http://test.com', [{'text': 'bad1', 'status_code': 400},
                                               {'text': 'good', 'status_code': 200}])
-        session = WaybackSession(retries=1, backoff=0.1)
+        session = WaybackRequestsAdapter(retries=1, backoff=0.1)
         response = session.request('GET', 'http://test.com')
         assert response.status_code == 400
 
     def test_raises_rate_limit_error(self, requests_mock):
         requests_mock.get('http://test.com', [WAYBACK_RATE_LIMIT_ERROR])
         with pytest.raises(RateLimitError):
-            session = WaybackSession(retries=0)
+            session = WaybackRequestsAdapter(retries=0)
             session.request('GET', 'http://test.com')
 
     def test_rate_limit_error_includes_retry_after(self, requests_mock):
         requests_mock.get('http://test.com', [WAYBACK_RATE_LIMIT_ERROR])
         with pytest.raises(RateLimitError) as excinfo:
-            session = WaybackSession(retries=0)
+            session = WaybackRequestsAdapter(retries=0)
             session.request('GET', 'http://test.com')
 
         assert excinfo.value.retry_after == 10
 
     @mock.patch('requests.Session.send', side_effect=return_timeout)
     def test_timeout_applied_session(self, mock_class):
-        # Is the timeout applied through the WaybackSession
-        session = WaybackSession(timeout=1)
+        # Is the timeout applied through the adapter
+        session = WaybackRequestsAdapter(timeout=1)
         res = session.request('GET', 'http://test.com')
         assert res.text == '1'
         # Overwriting the default in the requests method
@@ -743,7 +760,7 @@ class TestWaybackSession:
     @mock.patch('requests.Session.send', side_effect=return_timeout)
     def test_timeout_applied_request(self, mock_class):
         # Using the default value
-        session = WaybackSession()
+        session = WaybackRequestsAdapter()
         res = session.request('GET', 'http://test.com')
         assert res.text == '60'
         # Overwriting the default
@@ -755,12 +772,18 @@ class TestWaybackSession:
     @mock.patch('requests.Session.send', side_effect=return_timeout)
     def test_timeout_empty(self, mock_class):
         # Disabling default timeout
-        session = WaybackSession(timeout=None)
+        session = WaybackRequestsAdapter(timeout=None)
         res = session.request('GET', 'http://test.com')
         assert res.text == 'None'
         # Overwriting the default
         res = session.request('GET', 'http://test.com', timeout=1)
         assert res.text == '1'
+
+    @mock.patch('requests.Session.send', side_effect=return_user_agent)
+    def test_user_agent(self, mock_class):
+        adapter = WaybackRequestsAdapter()
+        agent = adapter.request('GET', 'http://test.com').text
+        assert agent.startswith('wayback/')
 
     @ia_vcr.use_cassette()
     def test_search_rate_limits(self):
@@ -778,7 +801,7 @@ class TestWaybackSession:
 
         # Check that disabling the rate limits through the search API works.
         start_time = time.time()
-        with WaybackClient(WaybackSession(search_calls_per_second=0)) as client:
+        with WaybackClient(WaybackRequestsAdapter(search_rate_limit=0)) as client:
             for i in range(3):
                 next(client.search('zew.de'))
         duration_without_limits = time.time() - start_time
@@ -787,7 +810,7 @@ class TestWaybackSession:
         # I need to sleep one half second in order to reset the rate limit.
         time.sleep(0.5)
         start_time = time.time()
-        with WaybackClient(WaybackSession(search_calls_per_second=2)) as client:
+        with WaybackClient(WaybackRequestsAdapter(search_rate_limit=2)) as client:
             for i in range(3):
                 next(client.search('zew.de'))
         duration_with_limits_custom = time.time() - start_time
@@ -798,11 +821,14 @@ class TestWaybackSession:
 
     @ia_vcr.use_cassette()
     def test_memento_rate_limits(self):
-        # The timing relies on the cassettes being present,
-        # therefore the first run might fail.
-        # Since another test might run before this one,
-        # I have to wait one call before starting.
+        # NOTE: The timing relies on VCR cassettes being present (so HTTP
+        # responses come immediately). The first time you run this test, it
+        # might fail because it is recording real requests that take a while.
+
+        # Since another test might run before this one, wait a bit before
+        # starting to get past rate limits from previous tests.
         time.sleep(1/30)
+
         with WaybackClient() as client:
             cdx = next(client.search('zew.de'))
         # First test that the default rate limits are correctly applied.
@@ -813,17 +839,15 @@ class TestWaybackSession:
         duration_with_limits = time.time() - start_time
 
         # Check that disabling the rate limits through the get_memento API works.
-        time.sleep(1)  # Wait to exceed any previous rate limits.
         start_time = time.time()
-        with WaybackClient(WaybackSession(memento_calls_per_second=0)) as client:
+        with WaybackClient(WaybackRequestsAdapter(memento_rate_limit=0)) as client:
             for i in range(3):
                 client.get_memento(cdx)
         duration_without_limits = time.time() - start_time
 
         # Check that a different rate limit set through the session is applied correctly.
-        time.sleep(1)  # Wait to exceed any previous rate limits.
         start_time = time.time()
-        with WaybackClient(WaybackSession(memento_calls_per_second=10)) as client:
+        with WaybackClient(WaybackRequestsAdapter(memento_rate_limit=10)) as client:
             for i in range(6):
                 client.get_memento(cdx)
         duration_with_limits_custom = time.time() - start_time

@@ -101,8 +101,8 @@ class RateLimitError(WaybackException):
         super().__init__(message)
 
 
-class SessionClosedError(Exception):
+class AlreadyClosedError(Exception):
     """
-    Raised when a Wayback session is used to make a request after it has been
+    Raised when a Wayback client is used to make a request after it has been
     closed and disabled.
     """
