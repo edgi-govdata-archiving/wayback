@@ -2,8 +2,8 @@
 Release History
 ===============
 
-In Development
---------------
+(In Development)
+----------------
 
 Breaking Changes
 ^^^^^^^^^^^^^^^^
@@ -45,6 +45,12 @@ Fixes & Maintenance
 ^^^^^^^^^^^^^^^^^^^
 
 - The default rate limits have been further tweaked since v0.4.4 based on closer collaboration with Internet Archive staff. Rate limits are also now more accurately applied to each individual request (they were previously applied more roughly, without respect to retries and redirects).
+
+
+v0.4.5 (2024-02-01)
+-------------------
+
+In v0.4.4, we broke *archived mementos* of rate limit errors — they started raising exceptions instead of returning the actual memento. We now correctly return mementos of rate limit errors while still raising exceptions for actual live rate limit errors from the Wayback Machine itself. (:issue:`158`)
 
 
 v0.4.4 (2023-11-27)
