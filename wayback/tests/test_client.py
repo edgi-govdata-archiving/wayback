@@ -610,6 +610,16 @@ def test_get_memento_raises_no_memento_error():
 
 
 @ia_vcr.use_cassette()
+def test_get_memento_works_on_archived_rate_limit_responses():
+    with WaybackClient() as client:
+        memento = client.get_memento('http://www.reddit.com/r/PokemonGiveaway',
+                                     timestamp=datetime(2015, 1, 29, 3, 49, 4),
+                                     exact=True)
+        assert 'http://www.reddit.com/r/PokemonGiveaway' == memento.url
+        assert 429 == memento.status_code
+
+
+@ia_vcr.use_cassette()
 def test_get_memento_follows_historical_redirects():
     with WaybackClient() as client:
         # In February 2020, https://www.epa.gov/climatechange redirected to:

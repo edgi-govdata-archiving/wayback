@@ -1,0 +1,113 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - wayback/0.4.5.dev10+gb7a16cd.d20231218 (+https://github.com/edgi-govdata-archiving/wayback)
+    method: GET
+    uri: https://web.archive.org/web/20150129034904id_/http://www.reddit.com/r/PokemonGiveaway
+  response:
+    body:
+      string: "\n<!doctype html>\n<html>\n  <head>\n    <title>Too Many Requests</title>\n
+        \   <style>\n      body {\n          font: small verdana, arial, helvetica,
+        sans-serif;\n          width: 600px;\n          margin: 0 auto;\n      }\n\n
+        \     h1 {\n          height: 40px;\n          background: transparent url(//www.redditstatic.com/reddit.com.header.png)
+        no-repeat scroll top right;\n      }\n    </style>\n  </head>\n  <body>\n
+        \   <h1>whoa there, pardner!</h1>\n    \n\n\n<p>we're sorry, but you appear
+        to be a bot and we've seen too many requests\nfrom you lately. we enforce
+        a hard speed limit on requests that appear to come\nfrom bots to prevent abuse.</p>\n\n<p>if
+        you are not a bot but are spoofing one via your browser's user agent\nstring:
+        please change your user agent string to avoid seeing this message\nagain.</p>\n\n<p>please
+        wait 6 second(s) and try again.</p>\n\n    <p>as a reminder to developers,
+        we recommend that clients make no\n    more than <a href=\"http://github.com/reddit/reddit/wiki/API\">one\n
+        \   request every two seconds</a> to avoid seeing this message.</p>\n  </body>\n</html>\n"
+    headers:
+      Connection:
+      - keep-alive
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Thu, 01 Feb 2024 18:20:31 GMT
+      Permissions-Policy:
+      - interest-cohort=()
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Server:
+      - nginx
+      Transfer-Encoding:
+      - chunked
+      X-NA:
+      - '0'
+      X-NID:
+      - '-'
+      X-Page-Cache:
+      - MISS
+      X-RL:
+      - '1'
+      X-location:
+      - All
+      cache-control:
+      - max-age=1800
+      content-security-policy:
+      - 'default-src ''self'' ''unsafe-eval'' ''unsafe-inline'' data: blob: archive.org
+        web.archive.org web-static.archive.org wayback-api.archive.org analytics.archive.org
+        pragma.archivelab.org'
+      link:
+      - <http://www.reddit.com/r/PokemonGiveaway>; rel="original", <https://web.archive.org/web/timemap/link/http://www.reddit.com/r/PokemonGiveaway>;
+        rel="timemap"; type="application/link-format", <https://web.archive.org/web/http://www.reddit.com/r/PokemonGiveaway>;
+        rel="timegate", <https://web.archive.org/web/20120626000027/http://www.reddit.com:80/r/Pokemongiveaway>;
+        rel="first memento"; datetime="Tue, 26 Jun 2012 00:00:27 GMT", <https://web.archive.org/web/20141209120144/http://www.reddit.com:80/r/Pokemongiveaway/>;
+        rel="prev memento"; datetime="Tue, 09 Dec 2014 12:01:44 GMT", <https://web.archive.org/web/20150129034904/http://www.reddit.com/r/PokemonGiveaway>;
+        rel="memento"; datetime="Thu, 29 Jan 2015 03:49:04 GMT", <https://web.archive.org/web/20150208032710/http://www.reddit.com:80/r/Pokemongiveaway>;
+        rel="next memento"; datetime="Sun, 08 Feb 2015 03:27:10 GMT", <https://web.archive.org/web/20231020104350/https://www.reddit.com/r/Pokemongiveaway/>;
+        rel="last memento"; datetime="Fri, 20 Oct 2023 10:43:50 GMT"
+      memento-datetime:
+      - Thu, 29 Jan 2015 03:49:04 GMT
+      server-timing:
+      - exclusion.robots;dur=1.346979, exclusion.robots.policy;dur=1.258865, cdx.remote;dur=0.566878,
+        esindex;dur=0.070942, LoadShardBlock;dur=668.835646, PetaboxLoader3.datanode;dur=362.949615,
+        PetaboxLoader3.resolve;dur=109.386489, load_resource;dur=78.884440
+      x-app-server:
+      - wwwb-app220
+      x-archive-orig-cache-control:
+      - no-cache
+      x-archive-orig-cf-cache-status:
+      - EXPIRED
+      x-archive-orig-cf-ray:
+      - 1b02752d98b0012c-SJC
+      x-archive-orig-connection:
+      - close
+      x-archive-orig-content-length:
+      - '-1'
+      x-archive-orig-date:
+      - Thu, 29 Jan 2015 03:49:04 GMT
+      x-archive-orig-edge-control:
+      - bypass-cache
+      x-archive-orig-retry-after:
+      - '6'
+      x-archive-orig-server:
+      - cloudflare-nginx
+      x-archive-orig-vary:
+      - accept-encoding
+      x-archive-orig-x-content-type-options:
+      - nosniff
+      x-archive-orig-x-frame-options:
+      - SAMEORIGIN
+      x-archive-orig-x-moose:
+      - majestic
+      x-archive-orig-x-ua-compatible:
+      - IE=edge
+      x-archive-orig-x-xss-protection:
+      - 1; mode=block
+      x-archive-src:
+      - liveweb-20150129011011/live-20150129000440-wwwb-app16.us.archive.org.warc.gz
+      x-tr:
+      - '1820'
+      x-ts:
+      - '429'
+    status:
+      code: 429
+      message: Too Many Requests
+version: 1

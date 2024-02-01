@@ -409,7 +409,11 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
                 response = super().send(*args, **kwargs)
                 retry_delay = self.get_retry_delay(retries, response)
 
-                if retries >= maximum or not self.should_retry(response):
+                if 'Memento-Datetime' in response.headers:
+                    # Mementos are necessarily successful responses, so just
+                    # return them without any other checks.
+                    return response
+                elif retries >= maximum or not self.should_retry(response):
                     if response.status_code == 429:
                         read_and_close(response)
                         raise RateLimitError(response, retry_delay)
@@ -452,10 +456,6 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
         return super().request(method, url, **kwargs)
 
     def should_retry(self, response):
-        # A memento may actually be a capture of an error, so don't retry it :P
-        if 'Memento-Datetime' in response.headers:
-            return False
-
         return response.status_code in self.retryable_statuses
 
     def should_retry_error(self, error):
