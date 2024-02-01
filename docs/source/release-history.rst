@@ -2,25 +2,10 @@
 Release History
 ===============
 
-In Development
---------------
+v0.4.5 (2024-02-01)
+-------------------
 
-Breaking Changes
-^^^^^^^^^^^^^^^^
-
-- N/A
-
-
-Features
-^^^^^^^^
-
-- N/A
-
-
-Fixes & Maintenance
-^^^^^^^^^^^^^^^^^^^
-
-- N/A
+In v0.4.4, we broke *archived mementos* of rate limit errors — they started raising exceptions instead of returning the actual memento. We now correctly return mementos of rate limit errors while still raising exceptions for actual live rate limit errors from the Wayback Machine itself. (:issue:`158`)
 
 
 v0.4.4 (2023-11-27)
