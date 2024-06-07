@@ -61,6 +61,9 @@ commands:
 jobs:
   test:
     parameters:
+      base-image:
+        type: string
+        default: cimg/python
       python-version:
         type: string
       urllib3-version:
@@ -68,7 +71,7 @@ jobs:
 
     working_directory: ~/wayback
     docker:
-      - image: cimg/python:<< parameters.python-version >>
+      - image: << parameters.base-image >>:<< parameters.python-version >>
     steps:
       - checkout
       - setup_pip:
@@ -128,6 +131,12 @@ workflows:
           matrix:
             parameters:
               python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+              urllib3-version: ["1.20", "2.0"]
+      - test:
+          matrix:
+            parameters:
+              base-image: "mr0grog/circle-python-pre"
+              python-version: ["3.13.0b2"]
               urllib3-version: ["1.20", "2.0"]
       - lint
       - docs
