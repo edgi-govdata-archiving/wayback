@@ -41,11 +41,11 @@ dev = [
 # versions < 3.10 (which we support), so you have to install them in a separate
 # environment from the other dev dependencies.
 docs = [
-    "sphinx ~=7.2.6",
+    "sphinx ~=8.0.2",
     "ipython ~=8.16.1",
     "numpydoc ~=1.6.0",
     "sphinx-copybutton ~=0.5.2",
-    "sphinx_rtd_theme ~=1.3.0",
+    "sphinx_rtd_theme @ git+https://github.com/readthedocs/sphinx_rtd_theme.git@humitos/plan-3.0",
 ]
 # For running tests.
 test = [
@@ -77,6 +77,9 @@ exclude = [".git_archival.txt"]
 [tool.hatch.build.targets.wheel]
 packages = ["src/wayback"]
 exclude = ["src/wayback/tests/*"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
 
 [tool.check-wheel-contents]
 toplevel = "wayback"
