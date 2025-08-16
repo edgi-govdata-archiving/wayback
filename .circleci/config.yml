@@ -130,13 +130,13 @@ workflows:
       - test:
           matrix:
             parameters:
-              python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+              python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
               urllib3-version: ["1.20", "2.0"]
       - test:
           matrix:
             parameters:
               base-image: ["mr0grog/circle-python-pre"]
-              python-version: ["3.13.0rc1", "3.13.0rc1t"]
+              python-version: ["3.14.0rc2", "3.14.0rc2t"]
               urllib3-version: ["1.20", "2.0"]
       - lint
       - docs
