@@ -20,8 +20,8 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - cache_v10-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "pyproject.toml" }}
-            - cache_v10-wayback-<< parameters.python-version >>-{{ arch }}-
+            - cache_v11-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "pyproject.toml" }}
+            - cache_v11-wayback-<< parameters.python-version >>-{{ arch }}-
 
       - run:
           name: Install Dependencies
@@ -54,7 +54,7 @@ commands:
                   pip install .[docs]
 
       - save_cache:
-          key: cache_v10-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "pyproject.toml" }}
+          key: cache_v11-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "pyproject.toml" }}
           paths:
             - ~/venv
 
