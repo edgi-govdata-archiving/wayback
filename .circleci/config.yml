@@ -20,8 +20,8 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - cache_v10-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "pyproject.toml" }}
-            - cache_v10-wayback-<< parameters.python-version >>-{{ arch }}-
+            - cache_v11-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "pyproject.toml" }}
+            - cache_v11-wayback-<< parameters.python-version >>-{{ arch }}-
 
       - run:
           name: Install Dependencies
@@ -54,7 +54,7 @@ commands:
                   pip install .[docs]
 
       - save_cache:
-          key: cache_v10-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "pyproject.toml" }}
+          key: cache_v11-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "pyproject.toml" }}
           paths:
             - ~/venv
 
@@ -92,11 +92,11 @@ jobs:
   lint:
     working_directory: ~/wayback
     docker:
-      - image: cimg/python:3.12
+      - image: cimg/python:3.14
     steps:
       - checkout
       - setup_pip:
-          python-version: "3.12"
+          python-version: "3.14"
           install-dev: true
       - run:
           name: Code linting
@@ -112,11 +112,11 @@ jobs:
   docs:
     working_directory: ~/wayback
     docker:
-      - image: cimg/python:3.12
+      - image: cimg/python:3.13
     steps:
       - checkout
       - setup_pip:
-          python-version: "3.12"
+          python-version: "3.13"
           install-docs: true
       - run:
           name: Build docs
@@ -130,13 +130,13 @@ workflows:
       - test:
           matrix:
             parameters:
-              python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+              python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
               urllib3-version: ["1.20", "2.0"]
       - test:
           matrix:
             parameters:
               base-image: ["mr0grog/circle-python-pre"]
-              python-version: ["3.14.0", "3.14.0t"]
+              python-version: ["3.15.0a1", "3.15.0a1t"]
               urllib3-version: ["1.20", "2.0"]
       - lint
       - docs
