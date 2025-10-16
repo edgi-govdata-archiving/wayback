@@ -96,7 +96,7 @@ jobs:
     steps:
       - checkout
       - setup_pip:
-          python-version: "3.12"
+          python-version: "3.14"
           install-dev: true
       - run:
           name: Code linting
@@ -112,11 +112,11 @@ jobs:
   docs:
     working_directory: ~/wayback
     docker:
-      - image: cimg/python:3.14
+      - image: cimg/python:3.13
     steps:
       - checkout
       - setup_pip:
-          python-version: "3.12"
+          python-version: "3.13"
           install-docs: true
       - run:
           name: Build docs
