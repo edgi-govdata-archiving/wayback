@@ -92,7 +92,7 @@ jobs:
   lint:
     working_directory: ~/wayback
     docker:
-      - image: cimg/python:3.12
+      - image: cimg/python:3.14
     steps:
       - checkout
       - setup_pip:
@@ -112,7 +112,7 @@ jobs:
   docs:
     working_directory: ~/wayback
     docker:
-      - image: cimg/python:3.12
+      - image: cimg/python:3.14
     steps:
       - checkout
       - setup_pip:
@@ -130,13 +130,13 @@ workflows:
       - test:
           matrix:
             parameters:
-              python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+              python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
               urllib3-version: ["1.20", "2.0"]
       - test:
           matrix:
             parameters:
               base-image: ["mr0grog/circle-python-pre"]
-              python-version: ["3.14.0", "3.14.0t"]
+              python-version: ["3.15.0a1", "3.15.0a1t"]
               urllib3-version: ["1.20", "2.0"]
       - lint
       - docs
