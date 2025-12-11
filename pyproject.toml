@@ -30,7 +30,7 @@ dependencies = [
 # itself (>=3.8). This depends on the `test` extra, which _does_ work on the
 # same Python versions as the main package source.
 dev = [
-    "build >=1.0.3,<1.4.0",
+    "build ~=1.3.0",
     "check-wheel-contents ~=0.6.0",
     "flake8 ~=6.1.0",
     "twine ~=4.0.2",
