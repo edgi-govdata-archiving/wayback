@@ -32,7 +32,7 @@ dependencies = [
 dev = [
     "build ~=1.0.3",
     "check-wheel-contents ~=0.6.0",
-    "flake8 >=6.1,<7.4",
+    "flake8 ~=7.3.0",
     "twine ~=4.0.2",
     "wayback[test]"
 ]
