@@ -112,11 +112,11 @@ jobs:
   docs:
     working_directory: ~/wayback
     docker:
-      - image: cimg/python:3.13
+      - image: cimg/python:3.14
     steps:
       - checkout
       - setup_pip:
-          python-version: "3.13"
+          python-version: "3.14"
           install-docs: true
       - run:
           name: Build docs
