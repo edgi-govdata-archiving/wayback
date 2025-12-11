@@ -40,11 +40,11 @@ dev = [
 # versions < 3.10 (which we support), so you have to install them in a separate
 # environment from the other dev dependencies.
 docs = [
-    "sphinx ~=7.2.6",
+    "sphinx ~=8.2",
     "ipython ~=8.37.0",
     "numpydoc ~=1.10.0",
     "sphinx-copybutton ~=0.5.2",
-    "sphinx_rtd_theme >=1.3,<3.1",
+    "sphinx_rtd_theme ~=3.0.2",
 ]
 # For running tests.
 test = [
