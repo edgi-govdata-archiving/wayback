@@ -136,7 +136,7 @@ workflows:
           matrix:
             parameters:
               base-image: ["mr0grog/circle-python-pre"]
-              python-version: ["3.15.0a1", "3.15.0a1t"]
+              python-version: ["3.15.0a4", "3.15.0a4t"]
               urllib3-version: ["1.20", "2.0"]
       - lint
       - docs
