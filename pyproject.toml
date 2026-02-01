@@ -44,7 +44,7 @@ docs = [
     "ipython ~=8.37.0",
     "numpydoc ~=1.10.0",
     "sphinx-copybutton ~=0.5.2",
-    "sphinx_rtd_theme ~=3.0.2",
+    "sphinx_rtd_theme >=3.0.2,<3.2.0",
 ]
 # For running tests.
 test = [
