@@ -102,7 +102,37 @@ jobs:
           name: Code linting
           command: |
             . ~/venv/bin/activate
-            flake8 .
+            make lint
+
+  format:
+    working_directory: ~/wayback
+    docker:
+      - image: cimg/python:3.14
+    steps:
+      - checkout
+      - setup_pip:
+          python-version: "3.14"
+          install-dev: true
+      - run:
+          name: Code formatting
+          command: |
+            . ~/venv/bin/activate
+            ruff format --check src/wayback
+
+  typecheck:
+    working_directory: ~/wayback
+    docker:
+      - image: cimg/python:3.14
+    steps:
+      - checkout
+      - setup_pip:
+          python-version: "3.14"
+          install-dev: true
+      - run:
+          name: Type checking
+          command: |
+            . ~/venv/bin/activate
+            make typecheck
 
   # NOTE: The docs are mainly built and published directly by readthedocs.com.
   # This job is meant to verify there are no issues with the docs and it is NOT
@@ -139,4 +169,6 @@ workflows:
               python-version: ["3.15.0a4", "3.15.0a4t"]
               urllib3-version: ["1.20", "2.0"]
       - lint
+      - format
+      - typecheck
       - docs
