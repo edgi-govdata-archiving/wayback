@@ -152,7 +152,7 @@ jobs:
           name: Build docs
           command: |
             . ~/venv/bin/activate
-            make -C docs html
+            make docs
 
 workflows:
   ci:

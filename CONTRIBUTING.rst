@@ -85,7 +85,8 @@ Ready to contribute? Here's how to set up `wayback` for local development.
     $ make format
     $ make typecheck
     $ make test
-    $ make help # to see all the developer commands
+    $ make docs 
+    $ make help  # to see all the developer commands
 
 6. Commit your changes and push your branch to GitHub::
 

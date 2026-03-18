@@ -1,4 +1,4 @@
-.PHONY: lint format typecheck test clean help
+.PHONY: lint format typecheck test docs clean help
 
 help: ## Show this help message
 	@grep -E '^[a-zA-Z_-]+:.*##' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*##"}; {printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2}'
@@ -14,6 +14,9 @@ typecheck: ## Run mypy type checker
 
 test: ## Run tests with verbose output
 	pytest -v src/wayback/tests
+
+docs: ## Build HTML documentation
+	make -C docs html
 
 clean: ## Remove build artifacts, caches, and compiled files
 	find . -type d -name __pycache__ -exec rm -rf {} +
