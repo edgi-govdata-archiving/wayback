@@ -79,10 +79,13 @@ Ready to contribute? Here's how to set up `wayback` for local development.
 
    Now you can make your changes locally.
 
-5. When you're done making changes, check that your changes pass flake8 and the tests::
+5. When you're done making changes, check that your changes pass linting, formmating, typechecking and testing::
 
-    $ flake8 wayback tests
-    $ pytest -v .
+    $ make lint
+    $ make format
+    $ make typecheck
+    $ make test
+    $ make help # to see all the developer commands
 
 6. Commit your changes and push your branch to GitHub::
 
