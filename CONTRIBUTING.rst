@@ -64,14 +64,23 @@ Ready to contribute? Here's how to set up `wayback` for local development.
 
     $ git clone git@github.com:your_name_here/wayback.git
 
-3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development::
+3. Set up your local development environment::
 
     $ cd wayback/
-    $ python -m venv .venv
-    $ source .venv/bin/activate
-    $ pip install -e '.[dev,docs]'
+    $ make setup
 
-   The last step may fail if you are on Python versions earlier than 3.10 (the dev and docs tools are not compatible with each other in older Pythons). In that case, you'll need to have separate virtualenvs for working on the docs vs. working on the code.
+   This creates a ``.venv`` virtualenv, installs all dev and docs dependencies, and installs the pre-commit git hook. Then activate the environment::
+
+    $ source .venv/bin/activate
+
+   .. note::
+      If you prefer to set up manually instead of using ``make setup``, you can run::
+
+          $ python -m venv .venv
+          $ source .venv/bin/activate
+          $ pip install -e '.[dev,docs]'
+
+      Note that the dev and docs dependencies are not compatible with each other on Python versions earlier than 3.10. In that case, you'll need separate virtualenvs for working on docs vs. code. Manual setup also skips installing the pre-commit hook (see step 5).
 
 4. Create a branch for local development::
 
@@ -79,14 +88,7 @@ Ready to contribute? Here's how to set up `wayback` for local development.
 
    Now you can make your changes locally.
 
-5. When you're done making changes, check that your changes pass linting, formmating, typechecking and testing::
-
-    $ make lint
-    $ make format
-    $ make typecheck
-    $ make test
-    $ make docs 
-    $ make help  # to see all the developer commands
+5. If you used ``make setup``, a pre-commit hook is installed that automatically runs CI checks (linting, formatting, typechecking, and tests) before each commit, so you can be confident your changes are clean. If you skipped ``make setup`` or need to run checks manually, use ``make help`` to see all available developer commands.
 
 6. Commit your changes and push your branch to GitHub::
 
