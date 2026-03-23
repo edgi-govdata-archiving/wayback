@@ -95,6 +95,9 @@ exclude = [
     "scratch.*",
 ]
 
+[tool.ruff.format]
+quote-style = "single"
+
 [tool.ruff.lint]
 select = ["E", "F", "W"]
 
