@@ -7,7 +7,7 @@ commands:
       - run:
           name: Install just
           command: |
-            curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to /usr/local/bin
+            curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | sudo bash -s -- --to /usr/local/bin
 
   setup_pip:
     description: "Set Up Dependencies"
