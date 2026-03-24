@@ -5,18 +5,18 @@ STAGED=$(git diff --cached --name-only)
 
 if echo "$STAGED" | grep -q "^src/wayback/"; then
     echo "Source files staged: running lint, format, and typecheck..."
-    make lint
-    ruff format --check src/wayback
-    make typecheck
+    just lint
+    just format-check
+    just typecheck
 
     if echo "$STAGED" | grep -q "^src/wayback/tests/"; then
         echo "Test files staged: running tests..."
-        make test
+        just test
     fi
 fi
 
 if echo "$STAGED" | grep -q "^docs/"; then
     echo "Documentation files staged: building docs..."
-    make docs
+    just docs
 fi
 

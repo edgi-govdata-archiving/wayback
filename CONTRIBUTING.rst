@@ -62,41 +62,52 @@ Ready to contribute? Here's how to set up `wayback` for local development.
 1. Fork the `wayback` repo on GitHub.
 2. Clone your fork locally::
 
-    $ git clone git@github.com:your_name_here/wayback.git
+    $ git clone git@github.com:your_username_here/wayback.git
 
-3. Set up your local development environment::
+3. Install `just <https://just.systems>`_, a task runner used to manage common development commands:
+
+   - **macOS:** ``brew install just``
+   - **Windows:** ``winget install --id Casey.Just``
+   - **Linux:** ``curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to ~/.local/bin``
+
+   See the `just installation docs <https://just.systems/man/en/packages.html>`_ for more options.
+
+4. Set up your local development environment::
 
     $ cd wayback/
-    $ make setup
+    $ just setup
 
-   This creates a ``.venv`` virtualenv, installs all dev and docs dependencies, and installs the pre-commit git hook. Then activate the environment::
+   This creates a ``.venv``, installs dev and docs dependencies, and installs the pre-commit hook. Alternatively, you can set up manually::
 
+    $ cd wayback/
+    $ python -m venv .venv
     $ source .venv/bin/activate
+    $ pip install -e ".[dev,docs]"
+    $ just install-hooks
 
    .. note::
-      If you prefer to set up manually instead of using ``make setup``, you can run::
+      The dev and docs dependencies are not compatible with each other on Python versions earlier than 3.10. In that case, you'll need separate virtualenvs for working on docs vs. code.
 
-          $ python -m venv .venv
-          $ source .venv/bin/activate
-          $ pip install -e '.[dev,docs]'
-
-      Note that the dev and docs dependencies are not compatible with each other on Python versions earlier than 3.10. In that case, you'll need separate virtualenvs for working on docs vs. code. Manual setup also skips installing the pre-commit hook (see step 5).
-
-4. Create a branch for local development::
+5. Create a branch for local development::
 
     $ git checkout -b name-of-your-bugfix-or-feature
 
    Now you can make your changes locally.
 
-5. If you used ``make setup``, a pre-commit hook is installed that automatically runs CI checks (linting, formatting, typechecking, and tests) before each commit, so you can be confident your changes are clean. If you skipped ``make setup`` or need to run checks manually, use ``make help`` to see all available developer commands.
+6. Make sure to pass CI checks before submitting your pull request. You can run the checks locally with::
 
-6. Commit your changes and push your branch to GitHub::
+    $ just lint
+    $ just format
+    $ just typecheck
+    $ just test
+
+7. Commit your changes and push your branch to GitHub::
 
     $ git add .
     $ git commit -m "Your detailed description of your changes."
     $ git push origin name-of-your-bugfix-or-feature
 
-7. Submit a pull request through the GitHub website.
+8. Submit a pull request through the GitHub website.
 
 Pull Request Guidelines
 -----------------------
