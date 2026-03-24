@@ -4,9 +4,11 @@ from ._utils import memento_url_data, RateLimit  # noqa
 
 from ._models import (  # noqa
     CdxRecord,
-    Memento)
+    Memento,
+)
 
 from ._client import (  # noqa
     Mode,
     WaybackClient,
-    WaybackSession)
+    WaybackSession,
+)
