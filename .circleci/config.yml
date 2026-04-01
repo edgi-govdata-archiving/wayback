@@ -1,14 +1,6 @@
 version: 2.1
 
 commands:
-  setup_just:
-    description: "Install just task runner"
-    steps:
-      - run:
-          name: Install just
-          command: |
-            curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | sudo bash -s -- --to /usr/local/bin
-
   setup_pip:
     description: "Set Up Dependencies"
     parameters:
@@ -103,7 +95,6 @@ jobs:
       - image: cimg/python:3.14
     steps:
       - checkout
-      - setup_just
       - setup_pip:
           python-version: "3.14"
           install-dev: true
@@ -111,7 +102,7 @@ jobs:
           name: Code linting
           command: |
             . ~/venv/bin/activate
-            just lint
+            ruff check
 
   format:
     working_directory: ~/wayback
@@ -119,7 +110,6 @@ jobs:
       - image: cimg/python:3.14
     steps:
       - checkout
-      - setup_just
       - setup_pip:
           python-version: "3.14"
           install-dev: true
@@ -127,7 +117,7 @@ jobs:
           name: Code formatting
           command: |
             . ~/venv/bin/activate
-            just format-check
+            ruff format --check
 
   typecheck:
     working_directory: ~/wayback
@@ -135,7 +125,6 @@ jobs:
       - image: cimg/python:3.14
     steps:
       - checkout
-      - setup_just
       - setup_pip:
           python-version: "3.14"
           install-dev: true
@@ -143,7 +132,7 @@ jobs:
           name: Type checking
           command: |
             . ~/venv/bin/activate
-            just typecheck
+            mypy
 
   # NOTE: The docs are mainly built and published directly by readthedocs.com.
   # This job is meant to verify there are no issues with the docs and it is NOT
@@ -156,7 +145,6 @@ jobs:
       - image: cimg/python:3.14
     steps:
       - checkout
-      - setup_just
       - setup_pip:
           python-version: "3.14"
           install-docs: true
@@ -164,7 +152,7 @@ jobs:
           name: Build docs
           command: |
             . ~/venv/bin/activate
-            just docs
+            sphinx-build -M html docs/source docs/build "-W"
 
 workflows:
   ci:

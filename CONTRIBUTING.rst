@@ -64,50 +64,38 @@ Ready to contribute? Here's how to set up `wayback` for local development.
 
     $ git clone git@github.com:your_username_here/wayback.git
 
-3. Install `just <https://just.systems>`_, a task runner used to manage common development commands:
-
-   - **macOS:** ``brew install just``
-   - **Windows:** ``winget install --id Casey.Just``
-   - **Linux:** ``curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to ~/.local/bin``
-
-   See the `just installation docs <https://just.systems/man/en/packages.html>`_ for more options.
-
-4. Set up your local development environment::
-
-    $ cd wayback/
-    $ just setup
-
-   This creates a ``.venv``, installs dev and docs dependencies, and installs the pre-commit hook. Alternatively, you can set up manually::
+3. Set up your local development environment::
 
     $ cd wayback/
     $ python -m venv .venv
     $ source .venv/bin/activate
     $ pip install -e ".[dev,docs]"
-    $ just install-hooks
+    $ cp hooks/pre-commit .git/hooks/pre-commit
+    $ chmod +x .git/hooks/pre-commit
 
    .. note::
       The dev and docs dependencies are not compatible with each other on Python versions earlier than 3.10. In that case, you'll need separate virtualenvs for working on docs vs. code.
 
-5. Create a branch for local development::
+4. Create a branch for local development::
 
     $ git checkout -b name-of-your-bugfix-or-feature
 
    Now you can make your changes locally.
 
-6. Make sure to pass CI checks before submitting your pull request. You can run the checks locally with::
+5. Make sure to pass CI checks before submitting your pull request. You can run the checks locally with::
 
-    $ just lint
-    $ just format
-    $ just typecheck
-    $ just test
+    $ ruff check
+    $ ruff format
+    $ mypy
+    $ pytest -v
 
-7. Commit your changes and push your branch to GitHub::
+6. Commit your changes and push your branch to GitHub::
 
     $ git add .
     $ git commit -m "Your detailed description of your changes."
     $ git push origin name-of-your-bugfix-or-feature
 
-8. Submit a pull request through the GitHub website.
+7. Submit a pull request through the GitHub website.
 
 Pull Request Guidelines
 -----------------------
