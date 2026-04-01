@@ -86,16 +86,7 @@ toplevel = "wayback"
 src = ["src"]
 include = ["src/wayback/**/*.py"]
 line-length = 115
-exclude = [
-    ".git",
-    "__pycache__",
-    "build",
-    "dist",
-    "versioneer.py",
-    "wayback/_version.py",
-    "docs/source/conf.py",
-    "scratch.*",
-]
+exclude = ["wayback/_version.py"]
 
 [tool.ruff.format]
 quote-style = "single"
