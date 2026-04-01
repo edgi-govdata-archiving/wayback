@@ -103,6 +103,10 @@ quote-style = "single"
 [tool.ruff.lint]
 select = ["E", "F", "W"]
 
+[tool.pytest.ini_options]
+testpaths = ["src/wayback/tests"]
+python_files = ["test*.py"]
+
 [tool.mypy]
 files = ["src/wayback"]
 ignore_missing_imports = true
