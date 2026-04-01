@@ -70,8 +70,7 @@ Ready to contribute? Here's how to set up `wayback` for local development.
     $ python -m venv .venv
     $ source .venv/bin/activate
     $ pip install -e ".[dev,docs]"
-    $ cp hooks/pre-commit .git/hooks/pre-commit
-    $ chmod +x .git/hooks/pre-commit
+    $ pre-commit install
 
    .. note::
       The dev and docs dependencies are not compatible with each other on Python versions earlier than 3.10. In that case, you'll need separate virtualenvs for working on docs vs. code.
