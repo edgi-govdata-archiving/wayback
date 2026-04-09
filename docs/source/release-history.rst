@@ -5,6 +5,9 @@ Release History
 (In Development)
 ----------------
 
+- Updated license identifier to follow PEP 639 style. This should make sure the license is surfaced better and more clearly on PyPI. (:issue:`186`)
+
+
 Breaking Changes
 ^^^^^^^^^^^^^^^^
 
