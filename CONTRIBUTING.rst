@@ -62,16 +62,18 @@ Ready to contribute? Here's how to set up `wayback` for local development.
 1. Fork the `wayback` repo on GitHub.
 2. Clone your fork locally::
 
-    $ git clone git@github.com:your_name_here/wayback.git
+    $ git clone git@github.com:your_username_here/wayback.git
 
-3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development::
+3. Set up your local development environment::
 
     $ cd wayback/
     $ python -m venv .venv
     $ source .venv/bin/activate
-    $ pip install -e '.[dev,docs]'
+    $ pip install -e ".[dev,docs]"
+    $ pre-commit install
 
-   The last step may fail if you are on Python versions earlier than 3.10 (the dev and docs tools are not compatible with each other in older Pythons). In that case, you'll need to have separate virtualenvs for working on the docs vs. working on the code.
+   .. note::
+      The dev and docs dependencies are not compatible with each other on Python versions earlier than 3.10. In that case, you'll need separate virtualenvs for working on docs vs. code.
 
 4. Create a branch for local development::
 
@@ -79,10 +81,12 @@ Ready to contribute? Here's how to set up `wayback` for local development.
 
    Now you can make your changes locally.
 
-5. When you're done making changes, check that your changes pass flake8 and the tests::
+5. Make sure to pass CI checks before submitting your pull request. You can run the checks locally with::
 
-    $ flake8 wayback tests
-    $ pytest -v .
+    $ ruff check
+    $ ruff format
+    $ mypy
+    $ pytest -v
 
 6. Commit your changes and push your branch to GitHub::
 
