@@ -10,14 +10,12 @@ maintainers = [
 ]
 # TODO: put contributors in `authors` field?
 #   authors = [ { name="XYZ" }, ... ]
-license = {text = "BSD (3-clause)"}
+license = "BSD-3-Clause"
 requires-python = ">=3.8"
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
-    # It would be nice to have a license classifier here, but there isn't one:
-    # https://github.com/pypa/trove-classifiers/issues/70
 ]
 dependencies = [
   "requests",
