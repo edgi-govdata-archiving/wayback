@@ -449,9 +449,7 @@ def test_get_memento_with_cdx_record():
                            '-',
                            200,
                            'abc',
-                           100,
-                           'https://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/',
-                           'https://web.archive.org/web/20171124151315/https://www.fws.gov/birds/')
+                           100)
         memento = client.get_memento(record)
         assert 'https://www.fws.gov/birds/' == memento.url
         assert datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc) == memento.timestamp

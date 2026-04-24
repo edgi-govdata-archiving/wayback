@@ -1,77 +1,108 @@
-from collections import namedtuple
+from datetime import datetime
+from typing import NamedTuple, Optional
 from urllib.parse import urljoin
-from ._utils import CaseInsensitiveDict, memento_url_data
+from warnings import warn
+from ._utils import CaseInsensitiveDict, memento_url_data, format_memento_url
 
 
-CdxRecord = namedtuple('CdxRecord', (
-    # Raw CDX values
-    'key',
-    'timestamp',
-    'url',
-    'mime_type',
-    'status_code',
-    'digest',
-    'length',
-    # Synthesized values
-    'raw_url',
-    'view_url'
-))
-"""
-Item from iterable of results returned by :meth:`WaybackClient.search`
+class CdxRecord(NamedTuple):
+    """
+    Item from iterable of results returned by :meth:`WaybackClient.search`
 
-These attributes contain information provided directly by CDX.
+    These attributes contain information provided directly by CDX.
 
-.. py:attribute:: digest
+    .. py:attribute:: digest
 
-   Content hashed as a base 32 encoded SHA-1.
+       Content hashed as a base 32 encoded SHA-1.
 
-.. py:attribute:: key
+    .. py:attribute:: urlkey
 
-   SURT-formatted URL
+       SURT-formatted URL
 
-.. py:attribute:: length
+    .. py:attribute:: length
 
-   Size of captured content in bytes, such as :data:`2767`. This may be
-   inaccurate, and may even be :data:`None` instead of an integer. If the record is a
-   "revisit record", indicated by MIME type :data:`'warc/revisit'`, the length
-   seems to be the length of the reference, not the length of the content
-   itself. In other cases, the record has no length information at all, and
-   this attribute will be :data:`None` instead of a number.
+       Size of captured content in bytes, such as :data:`2767`. This may be
+       inaccurate, and may even be :data:`None` instead of an integer. If the record is a
+       "revisit record", indicated by MIME type :data:`'warc/revisit'`, the length
+       seems to be the length of the reference, not the length of the content
+       itself. In other cases, the record has no length information at all, and
+       this attribute will be :data:`None` instead of a number.
 
-.. py:attribute:: mime_type
+    .. py:attribute:: mimetype
 
-   MIME type of record, such as :data:`'text/html'`, :data:`'warc/revisit'` or
-   :data:`'unk'` ("unknown") if this information was not captured.
+       MIME type of record, such as :data:`'text/html'`, :data:`'warc/revisit'` or
+       :data:`'unk'` ("unknown") if this information was not captured.
 
-.. py:attribute:: status_code
+    .. py:attribute:: statuscode
 
-   Status code returned by the server when the record was captured, such as
-   :data:`200`. This is may be :data:`None` if the record is a revisit record.
+       Status code returned by the server when the record was captured, such as
+       :data:`200`. This is may be :data:`None` if the record is a revisit record.
 
-.. py:attribute:: timestamp
+    .. py:attribute:: timestamp
 
-   The capture time represented as a :class:`datetime.datetime`, such as
-   :data:`datetime.datetime(1996, 12, 31, 23, 58, 47, tzinfo=timezone.utc)`.
+       The capture time represented as a :class:`datetime.datetime`, such as
+       :data:`datetime.datetime(1996, 12, 31, 23, 58, 47, tzinfo=timezone.utc)`.
 
-.. py:attribute:: url
+    .. py:attribute:: original
 
-   The URL that was captured by this record, such as
-   :data:`'http://www.nasa.gov/'`.
+       The URL that was captured by this record, such as
+       :data:`'http://www.nasa.gov/'`.
 
-And these attributes are synthesized from the information provided by CDX.
+    And these attributes are synthesized from the information provided by CDX.
 
-.. py:attribute:: raw_url
+    .. py:attribute:: raw_url
 
-   The URL to the raw captured content, such as
-   :data:`'https://web.archive.org/web/19961231235847id_/http://www.nasa.gov/'`.
+       The URL to the raw captured content, such as
+       :data:`'https://web.archive.org/web/19961231235847id_/http://www.nasa.gov/'`.
 
-.. py:attribute:: view_url
+    .. py:attribute:: view_url
 
-   The URL to the public view on Wayback Machine. In this view, the links and
-   some subresources in the document are rewritten to point to Wayback URLs.
-   There is also a navigation panel around the content. Example URL:
-   :data:`'https://web.archive.org/web/19961231235847/http://www.nasa.gov/'`.
-"""
+       The URL to the public view on Wayback Machine. In this view, the links and
+       some subresources in the document are rewritten to point to Wayback URLs.
+       There is also a navigation panel around the content. Example URL:
+       :data:`'https://web.archive.org/web/19961231235847/http://www.nasa.gov/'`.
+    """
+    urlkey: str
+    timestamp: datetime
+    original: str
+    mimetype: str
+    statuscode: Optional[int]
+    digest: str
+    length: Optional[int]
+
+    @property
+    def key(self) -> str:
+        warn('The `key` attribute on `CdxRecord` was renamed to `urlkey`.',
+             DeprecationWarning, stacklevel=2)
+        return self.urlkey
+
+    @property
+    def url(self) -> str:
+        warn('The `url` attribute on `CdxRecord` was renamed to `original`.',
+             DeprecationWarning, stacklevel=2)
+        return self.original
+
+    @property
+    def mime_type(self) -> str:
+        warn('The `mime_type` attribute on `CdxRecord` was renamed to `mimetype`.',
+             DeprecationWarning, stacklevel=2)
+        return self.mimetype
+
+    @property
+    def status_code(self) -> Optional[int]:
+        warn('The `status_code` attribute on `CdxRecord` was renamed to `statuscode`.',
+             DeprecationWarning, stacklevel=2)
+        return self.statuscode
+
+    @property
+    def raw_url(self) -> str:
+        # 'id_' = Mode.original.value (hardcoded to avoid circular import with _client.py)
+        return format_memento_url(self.original, self.timestamp, mode='id_')
+
+    @property
+    def view_url(self) -> str:
+        # '' = Mode.view.value
+        return format_memento_url(self.original, self.timestamp, mode='')
 
 
 # NOTE: We use `py:attribute::` listings instead of the standard Numpy
