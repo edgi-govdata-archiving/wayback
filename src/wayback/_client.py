@@ -821,7 +821,7 @@ class WaybackClient(_utils.DepthCountedContext):
                     # The CDX server returns 7 fields:
                     # urlkey, timestamp, original, mimetype, statuscode, digest, length
                     (urlkey, raw_timestamp, original, mimetype,
-                     raw_status, digest, raw_length) = text.split(' ')
+                     raw_status, digest, raw_length, *_) = text.split(' ')
 
                     statuscode = None if raw_status == '-' else int(raw_status)
                     length = None if raw_length == '-' else int(raw_length)
