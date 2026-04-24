@@ -20,29 +20,31 @@ import hashlib
 import logging
 import re
 import requests
-from requests.exceptions import (ChunkedEncodingError,
-                                 ConnectionError,
-                                 ContentDecodingError,
-                                 ProxyError,
-                                 RetryError,
-                                 Timeout)
+from requests.exceptions import (
+    ChunkedEncodingError,
+    ConnectionError,
+    ContentDecodingError,
+    ProxyError,
+    RetryError,
+    Timeout,
+)
 import time
 from urllib.parse import urljoin, urlparse
 from urllib3.connectionpool import HTTPConnectionPool
-from urllib3.exceptions import (ConnectTimeoutError,
-                                MaxRetryError,
-                                ReadTimeoutError)
+from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, ReadTimeoutError
 from warnings import warn
 from . import _utils, __version__
 from ._models import CdxRecord, Memento
-from .exceptions import (WaybackException,
-                         UnexpectedResponseFormat,
-                         BlockedByRobotsError,
-                         BlockedSiteError,
-                         MementoPlaybackError,
-                         NoMementoError,
-                         WaybackRetryError,
-                         RateLimitError)
+from .exceptions import (
+    WaybackException,
+    UnexpectedResponseFormat,
+    BlockedByRobotsError,
+    BlockedSiteError,
+    MementoPlaybackError,
+    NoMementoError,
+    WaybackRetryError,
+    RateLimitError,
+)
 
 
 logger = logging.getLogger(__name__)
@@ -127,6 +129,7 @@ class Mode(Enum):
         formats the response body similar to ``Mode.view``, but
         designed for image files instead of HTML.
     """
+
     original = 'id_'
     view = ''
     javascript = 'js_'
@@ -197,7 +200,8 @@ def detect_view_mode_redirect(response, current_date):
         # using the same timestamp to reduce the chance of picking up some other
         # link that isn't about the redirect.
         current_timestamp = _utils.format_timestamp(current_date)
-        redirect_match = re.search(fr'''
+        redirect_match = re.search(
+            rf"""
             <a\s                              # <a> element
             (?:[^>\s]+\s)*                    # Possible other attributes
             href=(["\'])                      # href attribute and quote
@@ -207,7 +211,10 @@ def detect_view_mode_redirect(response, current_date):
             )
             \1                                # End quote
             [\s|>]                            # Space before another attribute or end of element
-        ''', response.text, re.VERBOSE | re.IGNORECASE)
+        """,
+            response.text,
+            re.VERBOSE | re.IGNORECASE,
+        )
 
         if redirect_match:
             redirect_url = redirect_match.group(2)
@@ -255,10 +262,7 @@ def clean_memento_links(links, mode):
     for key, value in links.items():
         if 'memento' in key:
             try:
-                result[key] = {
-                    **value,
-                    'url': _utils.set_memento_url_mode(value['url'], mode)
-                }
+                result[key] = {**value, 'url': _utils.set_memento_url_mode(value['url'], mode)}
             except Exception:
                 logger.warn(
                     f'The link "{key}" should have had a memento URL in the '
@@ -295,7 +299,7 @@ if hasattr(HTTPConnectionPool, 'ResponseCls'):
     #
     # See what we're overriding from urllib3:
     # https://github.com/urllib3/urllib3/blob/a6ec68a5c5c5743c59fe5c62c635c929586c429b/src/urllib3/response.py#L499-L526
-    class WaybackResponse(HTTPConnectionPool.ResponseCls):
+    class WaybackResponse(HTTPConnectionPool.ResponseCls):  # type: ignore[name-defined]
         @classmethod
         def from_httplib(cls, httplib_response, **response_kwargs):
             headers = httplib_response.msg
@@ -313,6 +317,7 @@ else:
     # urllib3 v2, since it may have read the response body before returning. So
     # we patch the HTTPHeaderDict class instead.
     from urllib3._collections import HTTPHeaderDict as Urllib3HTTPHeaderDict
+
     _urllib3_header_init = Urllib3HTTPHeaderDict.__init__
 
     def _new_header_init(self, headers=None, **kwargs):
@@ -321,17 +326,13 @@ else:
                 pairs = list(headers.items())
             else:
                 pairs = list(headers)
-            if (
-                ('content-encoding', '') in pairs and
-                ('Content-Encoding', 'gzip') in pairs
-            ):
-                headers = [pair for pair in pairs
-                           if pair[0].lower() != 'content-encoding']
+            if ('content-encoding', '') in pairs and ('Content-Encoding', 'gzip') in pairs:
+                headers = [pair for pair in pairs if pair[0].lower() != 'content-encoding']
                 headers.append(('Content-Encoding', 'gzip'))
 
         return _urllib3_header_init(self, headers, **kwargs)
 
-    Urllib3HTTPHeaderDict.__init__ = _new_header_init
+    Urllib3HTTPHeaderDict.__init__ = _new_header_init  # type: ignore[method-assign]
 # END HACK
 #####################################################################
 
@@ -395,24 +396,30 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
     # they make sense to retry here. Usually not in other contexts, though.
     retryable_statuses = frozenset((413, 421, 500, 502, 503, 504, 599))
 
-    retryable_errors = (ConnectTimeoutError, MaxRetryError, ReadTimeoutError,
-                        ProxyError, RetryError, Timeout)
+    retryable_errors = (ConnectTimeoutError, MaxRetryError, ReadTimeoutError, ProxyError, RetryError, Timeout)
     # Handleable errors *may* be retryable, but need additional logic beyond
     # just the error type. See `should_retry_error()`.
     handleable_errors = (ConnectionError,) + retryable_errors
 
-    def __init__(self, retries=6, backoff=2, timeout=60, user_agent=None,
-                 search_calls_per_second=DEFAULT_CDX_RATE_LIMIT,
-                 memento_calls_per_second=DEFAULT_MEMENTO_RATE_LIMIT,
-                 timemap_calls_per_second=DEFAULT_TIMEMAP_RATE_LIMIT):
+    def __init__(
+        self,
+        retries=6,
+        backoff=2,
+        timeout=60,
+        user_agent=None,
+        search_calls_per_second=DEFAULT_CDX_RATE_LIMIT,
+        memento_calls_per_second=DEFAULT_MEMENTO_RATE_LIMIT,
+        timemap_calls_per_second=DEFAULT_TIMEMAP_RATE_LIMIT,
+    ):
         super().__init__()
         self.retries = retries
         self.backoff = backoff
         self.timeout = timeout
         self.headers = {
-            'User-Agent': (user_agent or
-                           f'wayback/{__version__} (+https://github.com/edgi-govdata-archiving/wayback)'),
-            'Accept-Encoding': 'gzip, deflate'
+            'User-Agent': (
+                user_agent or f'wayback/{__version__} (+https://github.com/edgi-govdata-archiving/wayback)'
+            ),
+            'Accept-Encoding': 'gzip, deflate',
         }
         self.rate_limts = {
             '/web/timemap': _utils.RateLimit.make_limit(timemap_calls_per_second),
@@ -564,6 +571,7 @@ class WaybackClient(_utils.DepthCountedContext):
     ----------
     session : WaybackSession, optional
     """
+
     def __init__(self, session=None):
         self.session = session or WaybackSession()
 
@@ -574,12 +582,25 @@ class WaybackClient(_utils.DepthCountedContext):
         "Close the client's session."
         self.session.close()
 
-    def search(self, url, *, match_type=None, limit=1000, offset=None,
-               fast_latest=None, from_date=None, to_date=None,
-               filter_field=None, collapse=None, resolve_revisits=True,
-               skip_malformed_results=True,
-               # Deprecated Parameters
-               matchType=None, fastLatest=None, resolveRevisits=None):
+    def search(
+        self,
+        url,
+        *,
+        match_type=None,
+        limit=1000,
+        offset=None,
+        fast_latest=None,
+        from_date=None,
+        to_date=None,
+        filter_field=None,
+        collapse=None,
+        resolve_revisits=True,
+        skip_malformed_results=True,
+        # Deprecated Parameters
+        matchType=None,
+        fastLatest=None,
+        resolveRevisits=None,
+    ):
         """
         Search archive.org's CDX API for all captures of a given URL. This
         returns an iterator of :class:`CdxRecord` objects. The `StopIteration`
@@ -737,34 +758,47 @@ class WaybackClient(_utils.DepthCountedContext):
         this uses, and results do not include recent captures when using them.
         """
         if matchType is not None:
-            warn('The `matchType` parameter for search() was renamed to '
-                 '`match_type`. Support for the old name will be removed in '
-                 'wayback v0.5.0; please update your code.',
-                 DeprecationWarning,
-                 stacklevel=2)
+            warn(
+                'The `matchType` parameter for search() was renamed to '
+                '`match_type`. Support for the old name will be removed in '
+                'wayback v0.5.0; please update your code.',
+                DeprecationWarning,
+                stacklevel=2,
+            )
             match_type = match_type or matchType
         if fastLatest is not None:
-            warn('The `fastLatest` parameter for search() was renamed to '
-                 '`fast_latest`. Support for the old name will be removed in '
-                 'wayback v0.5.0; please update your code.',
-                 DeprecationWarning,
-                 stacklevel=2)
+            warn(
+                'The `fastLatest` parameter for search() was renamed to '
+                '`fast_latest`. Support for the old name will be removed in '
+                'wayback v0.5.0; please update your code.',
+                DeprecationWarning,
+                stacklevel=2,
+            )
             fast_latest = fast_latest or fastLatest
         if resolveRevisits is not None:
-            warn('The `resolveRevisits` parameter for search() was renamed to '
-                 '`resolve_revisits`. Support for the old name will be removed '
-                 'in wayback v0.5.0; please update your code.',
-                 DeprecationWarning,
-                 stacklevel=2)
+            warn(
+                'The `resolveRevisits` parameter for search() was renamed to '
+                '`resolve_revisits`. Support for the old name will be removed '
+                'in wayback v0.5.0; please update your code.',
+                DeprecationWarning,
+                stacklevel=2,
+            )
             resolve_revisits = resolve_revisits or resolveRevisits
 
         # TODO: Check types (requires major update)
-        query_args = {'url': url, 'matchType': match_type, 'limit': limit,
-                      'offset': offset, 'from': from_date,
-                      'to': to_date, 'filter': filter_field,
-                      'fastLatest': fast_latest, 'collapse': collapse,
-                      'showResumeKey': True,
-                      'resolveRevisits': resolve_revisits}
+        query_args = {
+            'url': url,
+            'matchType': match_type,
+            'limit': limit,
+            'offset': offset,
+            'from': from_date,
+            'to': to_date,
+            'filter': filter_field,
+            'fastLatest': fast_latest,
+            'collapse': collapse,
+            'showResumeKey': True,
+            'resolveRevisits': resolve_revisits,
+        }
 
         query = {}
         for key, value in query_args.items():
@@ -783,8 +817,7 @@ class WaybackClient(_utils.DepthCountedContext):
         previous_result = None
         while next_query:
             sent_query, next_query = next_query, None
-            response = self.session.request('GET', CDX_SEARCH_URL,
-                                            params=sent_query)
+            response = self.session.request('GET', CDX_SEARCH_URL, params=sent_query)
             try:
                 # Read/cache the response and close straightaway. If we need
                 # to raise for status, we want to pre-emptively close the
@@ -828,13 +861,12 @@ class WaybackClient(_utils.DepthCountedContext):
                     capture_time = _utils.parse_timestamp(data.timestamp)
                 except Exception as err:
                     if 'RobotAccessControlException' in text:
-                        raise BlockedByRobotsError(query["url"])
+                        raise BlockedByRobotsError(query['url'])
                     raise UnexpectedResponseFormat(
-                        f'Could not parse CDX output: "{text}" (query: {sent_query})') from err
+                        f'Could not parse CDX output: "{text}" (query: {sent_query})'
+                    ) from err
 
-                clean_url = REDUNDANT_HTTPS_PORT.sub(
-                    r'\1\2', REDUNDANT_HTTP_PORT.sub(
-                        r'\1\2', data.url))
+                clean_url = REDUNDANT_HTTPS_PORT.sub(r'\1\2', REDUNDANT_HTTP_PORT.sub(r'\1\2', data.url))
                 if skip_malformed_results and is_malformed_url(clean_url):
                     continue
                 if clean_url != data.url:
@@ -849,24 +881,30 @@ class WaybackClient(_utils.DepthCountedContext):
                     length=length,
                     timestamp=capture_time,
                     raw_url=_utils.format_memento_url(
-                        url=data.url,
-                        timestamp=data.timestamp,
-                        mode=Mode.original.value),
+                        url=data.url, timestamp=data.timestamp, mode=Mode.original.value
+                    ),
                     view_url=_utils.format_memento_url(
-                        url=data.url,
-                        timestamp=data.timestamp,
-                        mode=Mode.view.value)
+                        url=data.url, timestamp=data.timestamp, mode=Mode.view.value
+                    ),
                 )
                 count += 1
                 yield data
 
         return count
 
-    def get_memento(self, url, timestamp=None, mode=Mode.original, *,
-                    exact=True, exact_redirects=None,
-                    target_window=24 * 60 * 60, follow_redirects=True,
-                    # Deprecated Parameters
-                    datetime=None):
+    def get_memento(
+        self,
+        url,
+        timestamp=None,
+        mode=Mode.original,
+        *,
+        exact=True,
+        exact_redirects=None,
+        target_window=24 * 60 * 60,
+        follow_redirects=True,
+        # Deprecated Parameters
+        datetime=None,
+    ):
         """
         Fetch a memento (an archived HTTP response) from the Wayback Machine.
 
@@ -938,11 +976,13 @@ class WaybackClient(_utils.DepthCountedContext):
             response.
         """
         if datetime:
-            warn('The `datetime` parameter for get_memento() was renamed to '
-                 '`timestamp`. Support for the old name will be removed '
-                 'in wayback v0.5.0; please update your code.',
-                 DeprecationWarning,
-                 stacklevel=2)
+            warn(
+                'The `datetime` parameter for get_memento() was renamed to '
+                '`timestamp`. Support for the old name will be removed '
+                'in wayback v0.5.0; please update your code.',
+                DeprecationWarning,
+                stacklevel=2,
+            )
             timestamp = timestamp or datetime
 
         if exact_redirects is None:
@@ -959,8 +999,7 @@ class WaybackClient(_utils.DepthCountedContext):
         if isinstance(mode, Mode):
             mode = mode.value
         elif not isinstance(mode, str):
-            raise TypeError('`mode` must be a wayback.Mode or string '
-                            f'(received {mode!r})')
+            raise TypeError(f'`mode` must be a wayback.Mode or string (received {mode!r})')
 
         if isinstance(url, CdxRecord):
             original_date = url.timestamp
@@ -971,15 +1010,12 @@ class WaybackClient(_utils.DepthCountedContext):
             except ValueError:
                 original_url = url
                 if not timestamp:
-                    raise TypeError('You must specify `timestamp` when using a '
-                                    'normal URL for get_memento()')
+                    raise TypeError('You must specify `timestamp` when using a normal URL for get_memento()')
                 else:
                     original_date = _utils.ensure_utc_datetime(timestamp)
 
         original_date_wayback = _utils.format_timestamp(original_date)
-        url = _utils.format_memento_url(url=original_url,
-                                        timestamp=original_date_wayback,
-                                        mode=mode)
+        url = _utils.format_memento_url(url=original_url, timestamp=original_date_wayback, mode=mode)
 
         # Correctly following redirects is actually pretty complicated. In
         # the simplest case, a memento is a simple web page, and that's
@@ -1024,9 +1060,7 @@ class WaybackClient(_utils.DepthCountedContext):
                     # Fix up response properties to be like other modes.
                     redirect = requests.Request('GET', redirect_url)
                     response._next = self.session.prepare_request(redirect)
-                    response.headers['Memento-Datetime'] = current_date.strftime(
-                        '%a, %d %b %Y %H:%M:%S %Z'
-                    )
+                    response.headers['Memento-Datetime'] = current_date.strftime('%a, %d %b %Y %H:%M:%S %Z')
 
             is_memento = is_memento_response(response)
 
@@ -1039,18 +1073,20 @@ class WaybackClient(_utils.DepthCountedContext):
 
             if is_memento:
                 links = clean_memento_links(response.links, mode)
-                memento = Memento(url=current_url,
-                                  timestamp=current_date,
-                                  mode=current_mode,
-                                  memento_url=response.url,
-                                  status_code=response.status_code,
-                                  headers=Memento.parse_memento_headers(response.headers, response.url),
-                                  encoding=response.encoding,
-                                  raw=response,
-                                  raw_headers=response.headers,
-                                  links=links,
-                                  history=history,
-                                  debug_history=debug_history)
+                memento = Memento(
+                    url=current_url,
+                    timestamp=current_date,
+                    mode=current_mode,
+                    memento_url=response.url,
+                    status_code=response.status_code,
+                    headers=Memento.parse_memento_headers(response.headers, response.url),
+                    encoding=response.encoding,
+                    raw=response,
+                    raw_headers=response.headers,
+                    links=links,
+                    history=history,
+                    debug_history=debug_history,
+                )
                 if not follow_redirects:
                     break
             else:
@@ -1063,8 +1099,8 @@ class WaybackClient(_utils.DepthCountedContext):
                 # redirect itself. (See 2b)
                 playable = False
                 if response.next and (
-                    (len(history) == 0 and not exact) or
-                    (len(history) > 0 and (previous_was_memento or not exact_redirects))
+                    (len(history) == 0 and not exact)
+                    or (len(history) > 0 and (previous_was_memento or not exact_redirects))
                 ):
                     target_url, target_date, _ = _utils.memento_url_data(response.next.url)
                     # A non-memento redirect is generally taking us to the
@@ -1097,15 +1133,11 @@ class WaybackClient(_utils.DepthCountedContext):
                 if not playable:
                     read_and_close(response)
                     message = response.headers.get('X-Archive-Wayback-Runtime-Error', '')
-                    if (
-                        ('AdministrativeAccessControlException' in message) or
-                        ('URL has been excluded' in response.text)
+                    if ('AdministrativeAccessControlException' in message) or (
+                        'URL has been excluded' in response.text
                     ):
                         raise BlockedSiteError(f'{url} is blocked from access')
-                    elif (
-                        ('RobotAccessControlException' in message) or
-                        ('robots.txt' in response.text)
-                    ):
+                    elif ('RobotAccessControlException' in message) or ('robots.txt' in response.text):
                         raise BlockedByRobotsError(f'{url} is blocked by robots.txt')
                     elif message:
                         raise MementoPlaybackError(f'Memento at {url} could not be played: {message}')
@@ -1121,8 +1153,7 @@ class WaybackClient(_utils.DepthCountedContext):
                     elif response.status_code == 404:
                         raise NoMementoError(f'The URL {url} has no mementos and was never archived')
                     else:
-                        raise MementoPlaybackError(f'{response.status_code} error while loading '
-                                                   f'memento at {url}')
+                        raise MementoPlaybackError(f'{response.status_code} error while loading memento at {url}')
 
             if response.next:
                 previous_was_memento = is_memento

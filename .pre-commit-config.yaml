@@ -1,0 +1,31 @@
+repos:
+  - repo: local
+    hooks:
+      - id: ruff-check
+        name: ruff check
+        entry: ruff check
+        language: system
+        types: [python]
+        pass_filenames: false
+
+      - id: ruff-format
+        name: ruff format
+        entry: ruff format --check
+        language: system
+        types: [python]
+        pass_filenames: false
+
+      - id: mypy
+        name: mypy
+        entry: mypy
+        language: system
+        types: [python]
+        files: ^src/wayback/
+        pass_filenames: false
+
+      - id: sphinx-build
+        name: sphinx-build
+        entry: sphinx-build -M html docs/source docs/build -W
+        language: system
+        files: ^docs/
+        pass_filenames: false

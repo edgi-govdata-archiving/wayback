@@ -3,19 +3,22 @@ from urllib.parse import urljoin
 from ._utils import CaseInsensitiveDict, memento_url_data
 
 
-CdxRecord = namedtuple('CdxRecord', (
-    # Raw CDX values
-    'key',
-    'timestamp',
-    'url',
-    'mime_type',
-    'status_code',
-    'digest',
-    'length',
-    # Synthesized values
-    'raw_url',
-    'view_url'
-))
+CdxRecord = namedtuple(
+    'CdxRecord',
+    (
+        # Raw CDX values
+        'key',
+        'timestamp',
+        'url',
+        'mime_type',
+        'status_code',
+        'digest',
+        'length',
+        # Synthesized values
+        'raw_url',
+        'view_url',
+    ),
+)
 """
 Item from iterable of results returned by :meth:`WaybackClient.search`
 
@@ -233,9 +236,22 @@ class Memento:
           # Nothing after the timestamp for "view" mode -----------------------------------------^
     """  # noqa: E501
 
-    def __init__(self, *, url, timestamp, mode, memento_url, status_code,
-                 headers, encoding, raw, raw_headers, links, history,
-                 debug_history):
+    def __init__(
+        self,
+        *,
+        url,
+        timestamp,
+        mode,
+        memento_url,
+        status_code,
+        headers,
+        encoding,
+        raw,
+        raw_headers,
+        links,
+        history,
+        debug_history,
+    ):
         self.url = url
         self.timestamp = timestamp
         self.mode = mode
@@ -330,10 +346,9 @@ class Memento:
         # Archived, historical headers are all reproduced as headers in the
         # memento response, but start with "x-archive-orig-".
         prefix = 'x-archive-orig-'
-        headers = CaseInsensitiveDict({
-            key[len(prefix):]: value for key, value in raw_headers.items()
-            if key.lower().startswith(prefix)
-        })
+        headers = CaseInsensitiveDict(
+            {key[len(prefix) :]: value for key, value in raw_headers.items() if key.lower().startswith(prefix)}
+        )
 
         # Headers that are also needed for a browser to handle the played-back
         # memento are *not* prefixed, so we need to copy over each of those.
