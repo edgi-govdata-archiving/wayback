@@ -99,11 +99,11 @@ class CdxRecord(NamedTuple):
 
     And these attributes are synthesized from the information provided by CDX.
 
-    raw_url
+    raw_url : str
        The URL to the raw captured content, such as
        :data:`'https://web.archive.org/web/19961231235847id_/http://www.nasa.gov/'`.
 
-    view_url
+    view_url : str
        The URL to the public view on Wayback Machine. In this view, the links and
        some subresources in the document are rewritten to point to Wayback URLs.
        There is also a navigation panel around the content. Example URL:
