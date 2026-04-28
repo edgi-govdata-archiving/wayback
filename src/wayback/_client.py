@@ -15,7 +15,6 @@ Other potentially useful links:
 
 from base64 import b32encode
 from datetime import date
-from enum import Enum
 import hashlib
 import logging
 import re
@@ -34,7 +33,7 @@ from urllib3.exceptions import (ConnectTimeoutError,
                                 ReadTimeoutError)
 from warnings import warn
 from . import _utils, __version__
-from ._models import CdxRecord, Memento
+from ._models import CdxRecord, Memento, Mode
 from .exceptions import (WaybackException,
                          UnexpectedResponseFormat,
                          BlockedByRobotsError,
@@ -79,59 +78,6 @@ DEFAULT_MEMENTO_RATE_LIMIT = _utils.RateLimit(0.8 * 600 / 60)
 # If a rate limit response (i.e. a response with status == 429) does not
 # include a `Retry-After` header, recommend pausing for this long.
 DEFAULT_RATE_LIMIT_DELAY = 60
-
-
-class Mode(Enum):
-    """
-    An enum describing the playback mode of a memento. When requesting a
-    memento (e.g. with :meth:`wayback.WaybackClient.get_memento`), you can use
-    these values to determine how the response body should be formatted.
-
-    For more details, see:
-    https://archive-access.sourceforge.net/projects/wayback/administrator_manual.html#Archival_URL_Replay_Mode
-
-    Examples
-    --------
-    >>> waybackClient.get_memento('https://noaa.gov/',
-    >>>                           timestamp=datetime.datetime(2018, 1, 2),
-    >>>                           mode=wayback.Mode.view)
-
-    **Values**
-
-    .. py:attribute:: original
-
-        Returns the HTTP response body as originally captured.
-
-    .. py:attribute:: view
-
-        Formats the response body so it can be viewed with a web
-        browser. URLs for links and subresources like scripts, stylesheets,
-        images, etc. will be modified to point to the equivalent memento in the
-        Wayback Machine so that the resulting page looks as similar as possible
-        to how it would have appeared when originally captured. It's mainly meant
-        for use with HTML pages. This is the playback mode you typically use when
-        browsing the Wayback Machine with a web browser.
-
-    .. py:attribute:: javascript
-
-        Formats the response body by updating URLs, similar
-        to ``Mode.view``, but designed for JavaScript instead of HTML.
-
-    .. py:attribute:: css
-
-        Formats the response body by updating URLs, similar to
-        ``Mode.view``, but designed for CSS instead of HTML.
-
-    .. py:attribute:: image
-
-        formats the response body similar to ``Mode.view``, but
-        designed for image files instead of HTML.
-    """
-    original = 'id_'
-    view = ''
-    javascript = 'js_'
-    css = 'cs_'
-    image = 'im_'
 
 
 def is_malformed_url(url):

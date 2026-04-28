@@ -7,9 +7,9 @@ import requests
 from unittest import mock
 from .support import create_vcr
 from .._utils import SessionClosedError
-from .._client import (CdxRecord,
-                       Mode,
-                       WaybackSession,
+from .._models import (CdxRecord,
+                       Mode)
+from .._client import (WaybackSession,
                        WaybackClient)
 from ..exceptions import (BlockedSiteError,
                           MementoPlaybackError,
