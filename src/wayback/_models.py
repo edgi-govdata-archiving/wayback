@@ -143,13 +143,11 @@ class CdxRecord(NamedTuple):
 
     @property
     def raw_url(self) -> str:
-        # 'id_' = Mode.original.value (hardcoded to avoid circular import with _client.py)
-        return format_memento_url(self.original, self.timestamp, mode='id_')
+        return format_memento_url(self.original, self.timestamp, mode=Mode.original.value)
 
     @property
     def view_url(self) -> str:
-        # '' = Mode.view.value
-        return format_memento_url(self.original, self.timestamp, mode='')
+        return format_memento_url(self.original, self.timestamp, mode=Mode.view.value)
 
 
 # NOTE: We use `py:attribute::` listings instead of the standard Numpy
