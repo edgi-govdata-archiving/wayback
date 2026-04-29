@@ -43,6 +43,15 @@ Features
 
   Sessions using the default limits share them via this same mechanism.
 
+- Several attributes of :class:`wayback.CdxRecord` have been renamed to match their names in Wayback's actual CDX API. The old names still work for now, but using them will log a deprecation warning. We plan to remove them entirely in a future release. (:issue:`187`)
+
+  The renamed attributes are:
+
+  - ``key`` (now ``urlkey``).
+  - ``url`` (now ``original``).
+  - ``mime_type`` (now ``mimetype``).
+  - ``status_code`` (now ``statuscode``).
+
 
 Fixes & Maintenance
 ^^^^^^^^^^^^^^^^^^^

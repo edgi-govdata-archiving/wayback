@@ -15,7 +15,6 @@ Other potentially useful links:
 
 from base64 import b32encode
 from datetime import date
-from enum import Enum
 import hashlib
 import logging
 import re
@@ -34,7 +33,7 @@ from urllib3.exceptions import (ConnectTimeoutError,
                                 ReadTimeoutError)
 from warnings import warn
 from . import _utils, __version__
-from ._models import CdxRecord, Memento
+from ._models import CdxRecord, Memento, Mode
 from .exceptions import (WaybackException,
                          UnexpectedResponseFormat,
                          BlockedByRobotsError,
@@ -79,59 +78,6 @@ DEFAULT_MEMENTO_RATE_LIMIT = _utils.RateLimit(0.8 * 600 / 60)
 # If a rate limit response (i.e. a response with status == 429) does not
 # include a `Retry-After` header, recommend pausing for this long.
 DEFAULT_RATE_LIMIT_DELAY = 60
-
-
-class Mode(Enum):
-    """
-    An enum describing the playback mode of a memento. When requesting a
-    memento (e.g. with :meth:`wayback.WaybackClient.get_memento`), you can use
-    these values to determine how the response body should be formatted.
-
-    For more details, see:
-    https://archive-access.sourceforge.net/projects/wayback/administrator_manual.html#Archival_URL_Replay_Mode
-
-    Examples
-    --------
-    >>> waybackClient.get_memento('https://noaa.gov/',
-    >>>                           timestamp=datetime.datetime(2018, 1, 2),
-    >>>                           mode=wayback.Mode.view)
-
-    **Values**
-
-    .. py:attribute:: original
-
-        Returns the HTTP response body as originally captured.
-
-    .. py:attribute:: view
-
-        Formats the response body so it can be viewed with a web
-        browser. URLs for links and subresources like scripts, stylesheets,
-        images, etc. will be modified to point to the equivalent memento in the
-        Wayback Machine so that the resulting page looks as similar as possible
-        to how it would have appeared when originally captured. It's mainly meant
-        for use with HTML pages. This is the playback mode you typically use when
-        browsing the Wayback Machine with a web browser.
-
-    .. py:attribute:: javascript
-
-        Formats the response body by updating URLs, similar
-        to ``Mode.view``, but designed for JavaScript instead of HTML.
-
-    .. py:attribute:: css
-
-        Formats the response body by updating URLs, similar to
-        ``Mode.view``, but designed for CSS instead of HTML.
-
-    .. py:attribute:: image
-
-        formats the response body similar to ``Mode.view``, but
-        designed for image files instead of HTML.
-    """
-    original = 'id_'
-    view = ''
-    javascript = 'js_'
-    css = 'cs_'
-    image = 'im_'
 
 
 def is_malformed_url(url):
@@ -818,44 +764,38 @@ class WaybackClient(_utils.DepthCountedContext):
                     previous_result = text
 
                 try:
-                    data = CdxRecord(*text.split(' '), '', '')
-                    if data.status_code == '-':
-                        # the status code given for a revisit record
-                        status_code = None
-                    else:
-                        status_code = int(data.status_code)
-                    length = None if data.length == '-' else int(data.length)
-                    capture_time = _utils.parse_timestamp(data.timestamp)
+                    # The CDX server returns 7 fields:
+                    # urlkey, timestamp, original, mimetype, statuscode, digest, length
+                    (urlkey, raw_timestamp, original, mimetype,
+                     raw_status, digest, raw_length, *_) = text.split(' ')
+
+                    statuscode = None if raw_status == '-' else int(raw_status)
+                    length = None if raw_length == '-' else int(raw_length)
+                    timestamp = _utils.parse_timestamp(raw_timestamp)
                 except Exception as err:
                     if 'RobotAccessControlException' in text:
                         raise BlockedByRobotsError(query["url"])
                     raise UnexpectedResponseFormat(
                         f'Could not parse CDX output: "{text}" (query: {sent_query})') from err
 
-                clean_url = REDUNDANT_HTTPS_PORT.sub(
+                original = REDUNDANT_HTTPS_PORT.sub(
                     r'\1\2', REDUNDANT_HTTP_PORT.sub(
-                        r'\1\2', data.url))
-                if skip_malformed_results and is_malformed_url(clean_url):
+                        r'\1\2', original))
+                if skip_malformed_results and is_malformed_url(original):
                     continue
-                if clean_url != data.url:
-                    data = data._replace(url=clean_url)
 
                 # TODO: repeat captures have a status code of `-` and a mime type
                 # of `warc/revisit`. These can only be resolved by requesting the
                 # content and following redirects. Maybe nice to do so
                 # automatically here.
-                data = data._replace(
-                    status_code=status_code,
-                    length=length,
-                    timestamp=capture_time,
-                    raw_url=_utils.format_memento_url(
-                        url=data.url,
-                        timestamp=data.timestamp,
-                        mode=Mode.original.value),
-                    view_url=_utils.format_memento_url(
-                        url=data.url,
-                        timestamp=data.timestamp,
-                        mode=Mode.view.value)
+                data = CdxRecord(
+                    urlkey=urlkey,
+                    timestamp=timestamp,
+                    original=original,
+                    mimetype=mimetype,
+                    statuscode=statuscode,
+                    digest=digest,
+                    length=length
                 )
                 count += 1
                 yield data
@@ -964,7 +904,7 @@ class WaybackClient(_utils.DepthCountedContext):
 
         if isinstance(url, CdxRecord):
             original_date = url.timestamp
-            original_url = url.url
+            original_url = url.original
         else:
             try:
                 original_url, original_date, mode = _utils.memento_url_data(url)

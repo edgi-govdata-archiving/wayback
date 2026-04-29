@@ -65,7 +65,7 @@ Thanks to the following people for their contributions and help on this package!
 
 - `Dan Allan <https://github.com/danielballan>`_ (Code, Tests, Documentation, Reviews)
 - `Rob Brackett <https://github.com/Mr0grog>`_ (Code, Tests, Documentation, Reviews)
-- `Derzan Chiang <https://github.com/MiTo0o>`_ (Documentation)
+- `Derzan Chiang <https://github.com/MiTo0o>`_ (Code, Tests, Documentation)
 - `David Gilman <https://github.com/dgilman>`_ (Documentation)
 - `Will Sackfield <https://github.com/8W9aG>`_ (Code, Tests)
 - `Ed Summers <https://github.com/edsu>`_ (Code, Tests)
