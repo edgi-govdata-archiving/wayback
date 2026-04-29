@@ -295,11 +295,18 @@ def test_search_handles_bad_timestamp_cdx_records(requests_mock):
 
 
 def test_search_parses_all_fields(requests_mock):
-    cdx_data = (
-        "com,cnn)/ 20100215131836 http://www.cnn.com/ "
-        "text/html 200 T6CDCO73TS77BY67HLKYFLHKT2APUM5Y 24186 "
-        "extra ignored fields"
-    )
+    cdx_data = ' '.join([
+        'com,cnn)/',
+        '20100215131836',
+        'http://www.cnn.com/',
+        'text/html',
+        '200',
+        'T6CDCO73TS77BY67HLKYFLHKT2APUM5Y',
+        '24186',
+        'extra',
+        'ignored',
+        'fields',
+    ])
     with WaybackClient() as client:
         requests_mock.get('https://web.archive.org/cdx/search/cdx'
                           '?url=http%3A%2F%2Fcnn.com'

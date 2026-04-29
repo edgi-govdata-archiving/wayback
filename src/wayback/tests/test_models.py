@@ -14,13 +14,8 @@ def test_cdx_record_urls():
         length=100
     )
 
-    # raw_url should have 'id_' mode
-    expected_raw = 'https://web.archive.org/web/19961231235847id_/http://www.nasa.gov/'
-    assert record.raw_url == expected_raw
-
-    # view_url should have no mode suffix
-    expected_view = 'https://web.archive.org/web/19961231235847/http://www.nasa.gov/'
-    assert record.view_url == expected_view
+    assert record.raw_url == 'https://web.archive.org/web/19961231235847id_/http://www.nasa.gov/'
+    assert record.view_url == 'https://web.archive.org/web/19961231235847/http://www.nasa.gov/'
 
 
 def test_cdx_record_deprecated_fields():
