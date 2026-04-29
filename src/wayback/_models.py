@@ -103,17 +103,33 @@ class CdxRecord(NamedTuple):
     .. py:attribute:: digest
        :type: str
 
-       Content hashed as a base 32 encoded SHA-1.
+       The base 32-encoded SHA-1 hash of the archived HTTP response body. This
+       can be useful for comparing to other ``CdxRecord`` instances or avoiding
+       duplicate requests for mementos.
+
+       Please keep in mind that this digest is generally computed based on the
+       response body *as stored on disk* (usually the exact bytes originally
+       received when saving the response), so is not useful for validation
+       or fixity checks against a memento loaded with
+       :meth:`WaybackClient.get_memento`. For example, if the response body was
+       stored in brotli-compressed form but *transferred to you* in
+       gzip-compressed form, your bytes will not match this digest.
+
+       For revisit records, this is the digest of the originally received HTTP
+       response body as it *would have been stored*, so you can use it to match
+       a non-revisit record containing the same response body. (But keep in
+       mind this is just the body. It does not include HTTP headers, which may
+       have been different for two records with the same digest.)
 
     .. py:attribute:: length
        :type: Optional[int]
 
-       Size of captured content in bytes, such as :data:`2767`. This may be
-       inaccurate, and may even be :data:`None` instead of an integer. If the record is a
-       "revisit record", indicated by MIME type :data:`'warc/revisit'`, the length
-       seems to be the length of the reference, not the length of the content
-       itself. In other cases, the record has no length information at all, and
-       this attribute will be :data:`None` instead of a number.
+       Size (in bytes) of the archived data *as stored on disk*. Like
+       :attr:`digest`, this usually will not be useful for external users,
+       since it does not reflect the actual archived HTTP response body size.
+       For example, revisit records will generally be small because the
+       archived data on disk is just a pointer to a different record that was
+       saved previously.
 
     .. py:attribute:: raw_url
        :type: str
