@@ -39,7 +39,7 @@ dev = [
 # environment from the other dev dependencies.
 docs = [
     "sphinx ~=8.2",
-    "ipython ~=8.37.0",
+    "ipython >=8.37,<8.19",
     "numpydoc ~=1.10.0",
     "sphinx-copybutton ~=0.5.2",
     "sphinx_rtd_theme >=3.0.2,<3.2.0",
