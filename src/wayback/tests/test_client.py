@@ -153,7 +153,7 @@ def test_search_with_filter():
                                  from_date=date(2022, 1, 1),
                                  to_date=date(2022, 2, 1))
         versions = list(islice(versions, 10))
-        assert any((v.status_code == 200 for v in versions))
+        assert any((v.statuscode == 200 for v in versions))
 
         # Then an actually filtered request.
         versions = client.search('nasa.gov/',
@@ -163,7 +163,7 @@ def test_search_with_filter():
                                  to_date=date(2022, 2, 1),
                                  filter_field='statuscode:404')
         versions = list(islice(versions, 10))
-        assert all((v.status_code == 404 for v in versions))
+        assert all((v.statuscode == 404 for v in versions))
 
 
 @ia_vcr.use_cassette()
@@ -176,8 +176,8 @@ def test_search_with_filter_list():
                                  from_date=date(2022, 1, 1),
                                  to_date=date(2022, 2, 1))
         versions = list(islice(versions, 10))
-        assert any((v.status_code == 200 for v in versions))
-        assert any(('feature' not in v.url for v in versions))
+        assert any((v.statuscode == 200 for v in versions))
+        assert any(('feature' not in v.original for v in versions))
 
         # Then an actually filtered request.
         versions = client.search('nasa.gov/',
@@ -188,8 +188,8 @@ def test_search_with_filter_list():
                                  filter_field=['statuscode:404',
                                                'urlkey:.*feature.*'])
         versions = list(islice(versions, 10))
-        assert all((v.status_code == 404 for v in versions))
-        assert all(('feature' in v.url for v in versions))
+        assert all((v.statuscode == 404 for v in versions))
+        assert all(('feature' in v.original for v in versions))
 
 
 @ia_vcr.use_cassette()
@@ -204,8 +204,8 @@ def test_search_with_filter_tuple():
                                  filter_field=('statuscode:404',
                                                'urlkey:.*feature.*'))
         versions = list(islice(versions, 10))
-        assert all((v.status_code == 404 for v in versions))
-        assert all(('feature' in v.url for v in versions))
+        assert all((v.statuscode == 404 for v in versions))
+        assert all(('feature' in v.original for v in versions))
 
 
 def test_search_removes_malformed_entries(requests_mock):

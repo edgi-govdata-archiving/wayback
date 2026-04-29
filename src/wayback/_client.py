@@ -904,7 +904,7 @@ class WaybackClient(_utils.DepthCountedContext):
 
         if isinstance(url, CdxRecord):
             original_date = url.timestamp
-            original_url = url.url
+            original_url = url.original
         else:
             try:
                 original_url, original_date, mode = _utils.memento_url_data(url)
