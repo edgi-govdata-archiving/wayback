@@ -61,35 +61,53 @@ class Mode(Enum):
 
 class CdxRecord(NamedTuple):
     """
-    Item from iterable of results returned by :meth:`WaybackClient.search`
+    Represents an entry from Wayback's "CDX" index of mementos (archived HTTP
+    responses). These entries contain some metadata about the memento. You can
+    also pass a ``CdxRecord`` to :meth:`WaybackClient.get_memento` to
+    retrieve the corresponding memento.
 
-    These attributes contain information provided directly by CDX.
+    In general, you should not create new instances of ``CdxRecord`` yourself,
+    but should get them by calling :meth:`WaybackClient.search`.
 
-    Attributes
-    ----------
-    urlkey : str
-       SURT-formatted URL
+    **Attributes**
 
-    timestamp : datetime
+    .. py:attribute:: urlkey
+       :type: str
+
+       SURT-formatted URL.
+
+    .. py:attribute:: timestamp
+       :type: datetime
+
        The capture time represented as a :class:`datetime.datetime`, such as
        :data:`datetime.datetime(1996, 12, 31, 23, 58, 47, tzinfo=timezone.utc)`.
 
-    original : str
+    .. py:attribute:: original
+       :type: str
+
        The URL that was captured by this record, such as
        :data:`'http://www.nasa.gov/'`.
 
-    mimetype : str
+    .. py:attribute:: mimetype
+       :type: str
+
        MIME type of record, such as :data:`'text/html'`, :data:`'warc/revisit'` or
        :data:`'unk'` ("unknown") if this information was not captured.
 
-    statuscode : Optional[int]
+    .. py:attribute:: statuscode
+       :type: Optional[int]
+
        Status code returned by the server when the record was captured, such as
        :data:`200`. This is may be :data:`None` if the record is a revisit record.
 
-    digest : str
+    .. py:attribute:: digest
+       :type: str
+
        Content hashed as a base 32 encoded SHA-1.
 
-    length : Optional[int]
+    .. py:attribute:: length
+       :type: Optional[int]
+
        Size of captured content in bytes, such as :data:`2767`. This may be
        inaccurate, and may even be :data:`None` instead of an integer. If the record is a
        "revisit record", indicated by MIME type :data:`'warc/revisit'`, the length
@@ -97,17 +115,47 @@ class CdxRecord(NamedTuple):
        itself. In other cases, the record has no length information at all, and
        this attribute will be :data:`None` instead of a number.
 
-    And these attributes are synthesized from the information provided by CDX.
+    .. py:attribute:: raw_url
+       :type: str
 
-    raw_url : str
        The URL to the raw captured content, such as
        :data:`'https://web.archive.org/web/19961231235847id_/http://www.nasa.gov/'`.
 
-    view_url : str
+    .. py:attribute:: view_url
+       :type: str
+
        The URL to the public view on Wayback Machine. In this view, the links and
        some subresources in the document are rewritten to point to Wayback URLs.
        There is also a navigation panel around the content. Example URL:
        :data:`'https://web.archive.org/web/19961231235847/http://www.nasa.gov/'`.
+
+    .. py:attribute:: key
+       :type: str
+
+       .. deprecated:: 0.5.0
+          This attribute was renamed to :attr:`urlkey`. This name will be
+          removed in a future release.
+
+    .. py:attribute:: url
+       :type: str
+
+       .. deprecated:: 0.5.0
+          This attribute was renamed to :attr:`original`. This name will be
+          removed in a future release.
+
+    .. py:attribute:: mime_type
+       :type: str
+
+       .. deprecated:: 0.5.0
+          This attribute was renamed to :attr:`mimetype`. This name will be
+          removed in a future release.
+
+    .. py:attribute:: status_code
+       :type: str
+
+       .. deprecated:: 0.5.0
+          This attribute was renamed to :attr:`statuscode`. This name will be
+          removed in a future release.
     """
     urlkey: str
     timestamp: datetime
