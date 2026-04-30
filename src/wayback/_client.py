@@ -804,7 +804,7 @@ class WaybackClient(_utils.DepthCountedContext):
 
     def get_memento(self, url, timestamp=None, mode=Mode.original, *,
                     exact=True, exact_redirects=None,
-                    target_window=24 * 60 * 60, follow_redirects=True,
+                    target_window=timedelta(days=1), follow_redirects=True,
                     # Deprecated Parameters
                     datetime=None):
         """
