@@ -450,6 +450,11 @@ class Memento:
     def __exit__(self, *_args):
         self.close()
 
+    def __repr__(self):
+        return (f'<{type(self).__module__.split("._", 1)[0]}'
+                f'.{type(self).__name__} url="{self.url}" '
+                f'timestamp="{self.timestamp.isoformat()}">')
+
     @classmethod
     def parse_memento_headers(cls, raw_headers, url='https://web.archive.org/'):
         """
