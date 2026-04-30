@@ -14,7 +14,7 @@ Other potentially useful links:
 """
 
 from base64 import b32encode
-from datetime import date
+from datetime import date, timedelta
 import hashlib
 import logging
 import re
@@ -854,7 +854,7 @@ class WaybackClient(_utils.DepthCountedContext):
             closest-in-time memento to the intended target, so long as it is
             within ``target_window``. If unset, this will be the same as
             ``exact``.
-        target_window : int, default: 86400
+        target_window : int or datetime.timedelta, default: 86400
             If the memento is of a redirect, allow up to this many seconds
             between the capture of the redirect and the capture of the
             redirect's target URL. This window also applies to the first
@@ -884,6 +884,9 @@ class WaybackClient(_utils.DepthCountedContext):
                  DeprecationWarning,
                  stacklevel=2)
             timestamp = timestamp or datetime
+
+        if isinstance(target_window, timedelta):
+            target_window = target_window.total_seconds()
 
         if exact_redirects is None:
             exact_redirects = exact
