@@ -855,10 +855,10 @@ class WaybackClient(_utils.DepthCountedContext):
             within ``target_window``. If unset, this will be the same as
             ``exact``.
         target_window : int or datetime.timedelta, default: 86400
-            If the memento is of a redirect, allow up to this many seconds
-            between the capture of the redirect and the capture of the
-            redirect's target URL. This window also applies to the first
-            memento if ``exact=False`` and the originally
+            If the memento is of a redirect, allow up to this amount of time
+            (in seconds if an integer) between the capture of the redirect
+            and the capture of the redirect's target URL. This window also 
+            applies to the first memento if ``exact=False`` and the originally
             requested memento was not available.
             Defaults to 86,400 (24 hours).
         follow_redirects : boolean, default: True
