@@ -539,6 +539,16 @@ def test_get_memento_target_window():
         assert memento.timestamp == datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc)
 
 
+@ia_vcr.use_cassette('test_get_memento_target_window.yaml')
+def test_get_memento_timedelta_target_window():
+    with WaybackClient() as client:
+        memento = client.get_memento('https://www.fws.gov/birds/',
+                                     date(2017, 11, 1),
+                                     exact=False,
+                                     target_window=timedelta(days=25))
+        assert memento.timestamp == datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc)
+
+
 @ia_vcr.use_cassette()
 def test_get_memento_raises_when_memento_is_outside_target_window():
     with pytest.raises(MementoPlaybackError):
