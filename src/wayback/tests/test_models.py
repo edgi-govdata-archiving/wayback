@@ -54,5 +54,4 @@ def test_memento_repr():
         history=[],
         debug_history=[]
     )
-    print(repr(memento))
     assert repr(memento) == '<wayback.Memento url="https://www3.epa.gov/" timestamp="2022-10-01T00:00:00+00:00">'
