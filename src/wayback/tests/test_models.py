@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from .._models import CdxRecord
+from .._models import CdxRecord, Memento
 import pytest
 
 
@@ -37,3 +37,21 @@ def test_cdx_record_deprecated_fields():
         assert record.mime_type == 'text/html'
     with pytest.warns(DeprecationWarning, match='status_code'):
         assert record.status_code == 200
+
+
+def test_memento_repr():
+    memento = Memento(
+        url='https://www3.epa.gov/',
+        timestamp=datetime(2022, 10, 1, 0, 0, 0, tzinfo=timezone.utc),
+        mode='id_',
+        memento_url='https://web.archive.org/web/20221001000000id_/https://www3.epa.gov/',
+        status_code=200,
+        headers={},
+        encoding='utf-8',
+        raw=None,
+        raw_headers={},
+        links={},
+        history=[],
+        debug_history=[]
+    )
+    assert repr(memento) == '<wayback.Memento url="https://www3.epa.gov/" timestamp="2022-10-01T00:00:00Z">'
