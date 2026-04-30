@@ -435,7 +435,7 @@ class Memento:
         self.close()
 
     def __repr__(self):
-        return (f'<{type(self).__module__.rsplit(".", 1)[0]}'
+        return (f'<{type(self).__module__.split("._", 1)[0]}'
                 f'.{type(self).__name__} url="{self.url}" '
                 f'timestamp="{self.timestamp.isoformat()}">')
 
