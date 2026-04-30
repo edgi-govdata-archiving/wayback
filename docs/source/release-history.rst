@@ -58,6 +58,8 @@ Fixes & Maintenance
 
 - The default rate limits have been further tweaked since v0.4.4 based on closer collaboration with Internet Archive staff. Rate limits are also now more accurately applied to each individual request (they were previously applied more roughly, without respect to retries and redirects).
 
+- :class:`wayback.Memento` now has a nicer, more informative ``repr`` when you are using a notebook or Python REPL. (:issue:`192`)
+
 
 v0.4.5 (2024-02-01)
 -------------------
