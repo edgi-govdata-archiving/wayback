@@ -2,6 +2,7 @@ import pytest
 from wayback import WaybackClient, WaybackSession
 from wayback._utils import RateLimit
 
+
 @pytest.fixture
 def test_client():
     session = WaybackSession(
