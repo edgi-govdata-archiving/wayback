@@ -25,7 +25,9 @@ commands:
       - run:
           name: Get Python Version
           command: |
-            python --version | cut -d ' ' -f2 > /home/circleci/.tmp-python-version
+            python \
+              -c 'import sys;print(sys.version.split(" ")[0] + ("t" if "free-threading" in sys.version else ""))' \
+              > /home/circleci/.tmp-python-version
 
       - restore_cache:
           keys:
