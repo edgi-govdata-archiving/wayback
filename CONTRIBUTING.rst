@@ -79,9 +79,10 @@ Ready to contribute? Here's how to set up `wayback` for local development.
 
    Now you can make your changes locally.
 
-5. When you're done making changes, check that your changes pass flake8 and the tests::
+5. Make sure to pass CI checks before submitting your pull request. You can run the checks locally with::
 
     $ flake8 wayback tests
+    $ mypy
     $ pytest -v .
 
 6. Commit your changes and push your branch to GitHub::
