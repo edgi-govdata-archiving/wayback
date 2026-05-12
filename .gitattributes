@@ -1,2 +1,5 @@
 .git_archival.txt  export-subst
 *.py diff=python
+
+# Treat test data as binary so git does not change line endings or other bytes.
+test_files/* binary
