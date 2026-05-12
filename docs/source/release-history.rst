@@ -61,12 +61,15 @@ Fixes & Maintenance
 
 - :class:`wayback.Memento` now has a nicer, more informative ``repr`` when you are using a notebook or Python REPL. (:issue:`192`)
 
+- Tests where rate limits don’t matter now run faster. (:issue:`194`)
+
 
 New Contributors
 ^^^^^^^^^^^^^^^^
 
-- `Derzan Chiang <https://github.com/MiTo0o>`_ (Code, Tests, Documentation)
-- `Beckett Frey <https://github.com/BeckettFrey>`_ (Code, Tests, Documentation)
+- `Derzan Chiang <https://github.com/MiTo0o>`_
+- `Beckett Frey <https://github.com/BeckettFrey>`_
+- `@Adeelp1 <https://github.com/Adeelp1>`_
 
 
 v0.4.5 (2024-02-01)
