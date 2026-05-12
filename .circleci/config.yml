@@ -1,5 +1,11 @@
 version: 2.1
 
+parameters:
+  # Use this Python version for basic, non-matrix jobs.
+  primary-python-version:
+    type: string
+    default: "3.14"
+
 commands:
   setup_pip:
     description: "Set Up Dependencies"
@@ -92,11 +98,11 @@ jobs:
   lint:
     working_directory: ~/wayback
     docker:
-      - image: cimg/python:3.14
+      - image: cimg/python:<< pipeline.parameters.primary-python-version >>
     steps:
       - checkout
       - setup_pip:
-          python-version: "3.14"
+          python-version: "<< pipeline.parameters.primary-python-version >>"
           install-dev: true
       - run:
           name: Code linting
@@ -107,11 +113,11 @@ jobs:
   typecheck:
     working_directory: ~/wayback
     docker:
-      - image: cimg/python:3.14
+      - image: cimg/python:<< pipeline.parameters.primary-python-version >>
     steps:
       - checkout
       - setup_pip:
-          python-version: "3.14"
+          python-version: "<< pipeline.parameters.primary-python-version >>"
           install-dev: true
       - run:
           name: Type checking
@@ -127,11 +133,11 @@ jobs:
   docs:
     working_directory: ~/wayback
     docker:
-      - image: cimg/python:3.14
+      - image: cimg/python:<< pipeline.parameters.primary-python-version >>
     steps:
       - checkout
       - setup_pip:
-          python-version: "3.14"
+          python-version: "<< pipeline.parameters.primary-python-version >>"
           install-docs: true
       - run:
           name: Build docs
