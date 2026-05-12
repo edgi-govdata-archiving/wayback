@@ -5,9 +5,6 @@ Release History
 (In Development)
 ----------------
 
-- Updated license identifier to follow PEP 639 style. This should make sure the license is surfaced better and more clearly on PyPI. (:issue:`186`)
-
-
 Breaking Changes
 ^^^^^^^^^^^^^^^^
 
@@ -52,11 +49,22 @@ Features
   - ``mime_type`` (now ``mimetype``).
   - ``status_code`` (now ``statuscode``).
 
+- You can now use a :class:`datetime.timedelta` instance for the ``target_window`` argument to :meth:`wayback.WaybackClient.get_memento` (an integer indicating a number of seconds still works, too). (:issue:`193`)
+
 
 Fixes & Maintenance
 ^^^^^^^^^^^^^^^^^^^
 
 - The default rate limits have been further tweaked since v0.4.4 based on closer collaboration with Internet Archive staff. Rate limits are also now more accurately applied to each individual request (they were previously applied more roughly, without respect to retries and redirects).
+
+- Updated license identifier to follow PEP 639 style. This should make sure the license is surfaced better and more clearly on PyPI. (:issue:`186`)
+
+
+New Contributors
+^^^^^^^^^^^^^^^^
+
+- `Derzan Chiang <https://github.com/MiTo0o>`_ (Code, Tests, Documentation)
+- `Beckett Frey <https://github.com/BeckettFrey>`_ (Code, Tests, Documentation)
 
 
 v0.4.5 (2024-02-01)
