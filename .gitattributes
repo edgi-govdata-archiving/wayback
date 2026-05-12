@@ -1,2 +1,6 @@
 .git_archival.txt  export-subst
 *.py diff=python
+
+# Test fixtures must be checked out byte-for-byte (no line ending conversion)
+# so that byte-equality assertions against memento responses pass on Windows.
+src/wayback/tests/test_files/** binary
