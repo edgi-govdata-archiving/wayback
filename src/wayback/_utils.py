@@ -252,9 +252,9 @@ class RateLimit:
                             f'or float, not {type(per_second).__name__}')
 
         self._lock = threading.RLock()
-        self._last_call_time = 0
+        self._last_call_time = 0.0
         if per_second <= 0:
-            self._minimum_wait = 0
+            self._minimum_wait = 0.0
         else:
             self._minimum_wait = 1.0 / per_second
 
@@ -282,7 +282,7 @@ class RateLimit:
         If the given rate is a ``RateLimit`` object, return it unchanged.
         Otherwise, create a new ``RateLimit`` with the given rate.
         """
-        if isinstance(per_second, cls):
+        if isinstance(per_second, RateLimit):
             return per_second
         else:
             return cls(per_second)

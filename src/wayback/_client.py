@@ -241,7 +241,7 @@ if hasattr(HTTPConnectionPool, 'ResponseCls'):
     #
     # See what we're overriding from urllib3:
     # https://github.com/urllib3/urllib3/blob/a6ec68a5c5c5743c59fe5c62c635c929586c429b/src/urllib3/response.py#L499-L526
-    class WaybackResponse(HTTPConnectionPool.ResponseCls):
+    class WaybackResponse(HTTPConnectionPool.ResponseCls):  # type: ignore[name-defined]
         @classmethod
         def from_httplib(cls, httplib_response, **response_kwargs):
             headers = httplib_response.msg
@@ -251,7 +251,7 @@ if hasattr(HTTPConnectionPool, 'ResponseCls'):
                 headers['Content-Encoding'] = 'gzip'
             return super().from_httplib(httplib_response, **response_kwargs)
 
-    HTTPConnectionPool.ResponseCls = WaybackResponse
+    HTTPConnectionPool.ResponseCls = WaybackResponse  # type: ignore[name-defined]
 else:
     # urllib3 v2.x:
     #
@@ -277,7 +277,7 @@ else:
 
         return _urllib3_header_init(self, headers, **kwargs)
 
-    Urllib3HTTPHeaderDict.__init__ = _new_header_init
+    Urllib3HTTPHeaderDict.__init__ = _new_header_init  # type: ignore[method-assign]
 # END HACK
 #####################################################################
 
