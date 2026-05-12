@@ -65,7 +65,7 @@ commands:
                   pip install .[docs]
 
       - save_cache:
-          key: cache_v11-wayback-{{ checksum "/home/circleci/.pyenv/version" }}-{{ arch }}-{{ checksum "pyproject.toml" }}
+          key: cache_v11-wayback-{{ checksum "/home/circleci/.tmp-python-version" }}-{{ arch }}-{{ checksum "pyproject.toml" }}
           paths:
             - ~/venv
 
