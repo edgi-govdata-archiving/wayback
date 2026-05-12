@@ -63,6 +63,7 @@ Contributors
 
 Thanks to the following people for their contributions and help on this package! See our `contributing guidelines <https://github.com/edgi-govdata-archiving/wayback/blob/main/CONTRIBUTING.rst>`_ to find out how you can help.
 
+- `@Adeelp1 <https://github.com/Adeelp1>`_ (Tests)
 - `Dan Allan <https://github.com/danielballan>`_ (Code, Tests, Documentation, Reviews)
 - `Rob Brackett <https://github.com/Mr0grog>`_ (Code, Tests, Documentation, Reviews)
 - `Derzan Chiang <https://github.com/MiTo0o>`_ (Code, Tests, Documentation)
