@@ -2,4 +2,4 @@
 *.py diff=python
 
 # Treat test data as binary so git does not change line endings or other bytes.
-src/wayback/tests/test_files/* binary
+src/wayback/tests/test_files/* -text
