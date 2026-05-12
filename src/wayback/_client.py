@@ -14,7 +14,7 @@ Other potentially useful links:
 """
 
 from base64 import b32encode
-from datetime import date
+from datetime import date, timedelta
 import hashlib
 import logging
 import re
@@ -804,7 +804,7 @@ class WaybackClient(_utils.DepthCountedContext):
 
     def get_memento(self, url, timestamp=None, mode=Mode.original, *,
                     exact=True, exact_redirects=None,
-                    target_window=24 * 60 * 60, follow_redirects=True,
+                    target_window=timedelta(hours=24), follow_redirects=True,
                     # Deprecated Parameters
                     datetime=None):
         """
@@ -854,11 +854,11 @@ class WaybackClient(_utils.DepthCountedContext):
             closest-in-time memento to the intended target, so long as it is
             within ``target_window``. If unset, this will be the same as
             ``exact``.
-        target_window : int, default: 86400
-            If the memento is of a redirect, allow up to this many seconds
-            between the capture of the redirect and the capture of the
-            redirect's target URL. This window also applies to the first
-            memento if ``exact=False`` and the originally
+        target_window : int or datetime.timedelta, default: 86400
+            If the memento is of a redirect, allow up to this amount of time
+            (in seconds if an integer) between the capture of the redirect
+            and the capture of the redirect's target URL. This window also
+            applies to the first memento if ``exact=False`` and the originally
             requested memento was not available.
             Defaults to 86,400 (24 hours).
         follow_redirects : boolean, default: True
@@ -884,6 +884,9 @@ class WaybackClient(_utils.DepthCountedContext):
                  DeprecationWarning,
                  stacklevel=2)
             timestamp = timestamp or datetime
+
+        if isinstance(target_window, timedelta):
+            target_window = target_window.total_seconds()
 
         if exact_redirects is None:
             exact_redirects = exact
