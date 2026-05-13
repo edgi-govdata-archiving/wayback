@@ -52,6 +52,7 @@ class Mode(Enum):
         formats the response body similar to ``Mode.view``, but
         designed for image files instead of HTML.
     """
+
     original = 'id_'
     view = ''
     javascript = 'js_'
@@ -173,6 +174,7 @@ class CdxRecord(NamedTuple):
           This attribute was renamed to :attr:`statuscode`. This name will be
           removed in a future release.
     """
+
     urlkey: str
     timestamp: datetime
     original: str
@@ -183,26 +185,28 @@ class CdxRecord(NamedTuple):
 
     @property
     def key(self) -> str:
-        warn('The `key` attribute on `CdxRecord` was renamed to `urlkey`.',
-             DeprecationWarning, stacklevel=2)
+        warn('The `key` attribute on `CdxRecord` was renamed to `urlkey`.', DeprecationWarning, stacklevel=2)
         return self.urlkey
 
     @property
     def url(self) -> str:
-        warn('The `url` attribute on `CdxRecord` was renamed to `original`.',
-             DeprecationWarning, stacklevel=2)
+        warn('The `url` attribute on `CdxRecord` was renamed to `original`.', DeprecationWarning, stacklevel=2)
         return self.original
 
     @property
     def mime_type(self) -> str:
-        warn('The `mime_type` attribute on `CdxRecord` was renamed to `mimetype`.',
-             DeprecationWarning, stacklevel=2)
+        warn(
+            'The `mime_type` attribute on `CdxRecord` was renamed to `mimetype`.', DeprecationWarning, stacklevel=2
+        )
         return self.mimetype
 
     @property
     def status_code(self) -> Optional[int]:
-        warn('The `status_code` attribute on `CdxRecord` was renamed to `statuscode`.',
-             DeprecationWarning, stacklevel=2)
+        warn(
+            'The `status_code` attribute on `CdxRecord` was renamed to `statuscode`.',
+            DeprecationWarning,
+            stacklevel=2,
+        )
         return self.statuscode
 
     @property
@@ -373,9 +377,22 @@ class Memento:
           # Nothing after the timestamp for "view" mode -----------------------------------------^
     """  # noqa: E501
 
-    def __init__(self, *, url, timestamp, mode, memento_url, status_code,
-                 headers, encoding, raw, raw_headers, links, history,
-                 debug_history):
+    def __init__(
+        self,
+        *,
+        url,
+        timestamp,
+        mode,
+        memento_url,
+        status_code,
+        headers,
+        encoding,
+        raw,
+        raw_headers,
+        links,
+        history,
+        debug_history,
+    ):
         self.url = url
         self.timestamp = timestamp
         self.mode = mode
@@ -451,9 +468,11 @@ class Memento:
         self.close()
 
     def __repr__(self):
-        return (f'<{type(self).__module__.split("._", 1)[0]}'
-                f'.{type(self).__name__} url="{self.url}" '
-                f'timestamp="{self.timestamp.isoformat()}">')
+        return (
+            f'<{type(self).__module__.split("._", 1)[0]}'
+            f'.{type(self).__name__} url="{self.url}" '
+            f'timestamp="{self.timestamp.isoformat()}">'
+        )
 
     @classmethod
     def parse_memento_headers(cls, raw_headers, url='https://web.archive.org/'):
@@ -476,9 +495,10 @@ class Memento:
         # memento response, but start with "x-archive-orig-".
         prefix = 'x-archive-orig-'
         headers = CaseInsensitiveDict({
-            key[len(prefix):]: value for key, value in raw_headers.items()
+            key[len(prefix) :]: value
+            for key, value in raw_headers.items()
             if key.lower().startswith(prefix)
-        })
+        })  # fmt: skip
 
         # Headers that are also needed for a browser to handle the played-back
         # memento are *not* prefixed, so we need to copy over each of those.

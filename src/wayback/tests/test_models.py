@@ -11,7 +11,7 @@ def test_cdx_record_urls():
         mimetype='text/html',
         statuscode=200,
         digest='ABC',
-        length=100
+        length=100,
     )
 
     assert record.raw_url == 'https://web.archive.org/web/19961231235847id_/http://www.nasa.gov/'
@@ -26,7 +26,7 @@ def test_cdx_record_deprecated_fields():
         mimetype='text/html',
         statuscode=200,
         digest='ABC',
-        length=100
+        length=100,
     )
 
     with pytest.warns(DeprecationWarning, match='key'):
@@ -52,6 +52,6 @@ def test_memento_repr():
         raw_headers={},
         links={},
         history=[],
-        debug_history=[]
+        debug_history=[],
     )
     assert repr(memento) == '<wayback.Memento url="https://www3.epa.gov/" timestamp="2022-10-01T00:00:00+00:00">'
