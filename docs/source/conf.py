@@ -21,6 +21,8 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
+from pathlib import Path
+
 
 # -- General configuration ------------------------------------------------
 
@@ -101,6 +103,20 @@ pygments_style = 'sphinx'
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = False
+
+# The docs use IPython to show the results of running various commands, but we
+# want to make sure the docs build deterministically (and quickly!) against
+# saved HTTP responses instead of hitting the Wayback Machine's real APIs. Like
+# our tests, we use VCR for that.
+#
+# It doesn't seem like the IPython directive gives us a way to set teardown
+# code, which VCR needs in order to write out the recorded HTTP responses. So
+# we just use the setup to tell code in the page where to save cassettes, and
+# then pages that need cached HTTP are responsible for using hidden ipython
+# directives (using the :suppress: option) to open and close a cassette.
+ipython_execlines = [
+    f'__cassette_path = "{Path(__file__).parent / "cassettes"}"',
+]
 
 
 # -- Options for HTML output ----------------------------------------------
