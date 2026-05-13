@@ -1,5 +1,9 @@
 .git_archival.txt  export-subst
 *.py diff=python
 
-# Don't treat test data text so git does not change line endings or other bytes.
+# Don't treat test data as text. Git will change some features of text files
+# when checking out and committing (e.g. line endings on Windows), but the test
+# data needs to always stay the same, byte for byte.
+# We specify these files as "not text" instead of binary so they show up in
+# `git diff` and similar commands.
 src/wayback/tests/test_files/* -text
