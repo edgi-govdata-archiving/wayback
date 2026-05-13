@@ -112,15 +112,6 @@ jobs:
           command: |
             . ~/venv/bin/activate
             ruff check
-
-  format:
-    working_directory: ~/wayback
-    docker:
-      - image: cimg/python:<< pipeline.parameters.primary-python-version >>
-    steps:
-      - checkout
-      - setup_pip:
-          install-dev: true
       - run:
           name: Code formatting
           command: |
@@ -175,6 +166,5 @@ workflows:
               python-version: ["3.15.0a4", "3.15.0a4t"]
               urllib3-version: ["1.20", "2.0"]
       - lint
-      - format
       - typecheck
       - docs
