@@ -74,6 +74,7 @@ author = 'Environmental Data & Governance Initiative'
 # built documents.
 #
 import wayback
+
 # The short X.Y version.
 version = wayback.__version__
 # The full version, including alpha/beta/rc tags.
@@ -150,15 +151,12 @@ latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
     #
     # 'papersize': 'letterpaper',
-
     # The font size ('10pt', '11pt' or '12pt').
     #
     # 'pointsize': '10pt',
-
     # Additional stuff for the LaTeX preamble.
     #
     # 'preamble': '',
-
     # Latex figure (float) alignment
     #
     # 'figure_align': 'htbp',
@@ -168,8 +166,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'wayback.tex', 'wayback Documentation',
-     'Contributors', 'manual'),
+    (master_doc, 'wayback.tex', 'wayback Documentation', 'Contributors', 'manual'),
 ]
 
 
@@ -177,10 +174,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    (master_doc, 'wayback', 'wayback Documentation',
-     [author], 1)
-]
+man_pages = [(master_doc, 'wayback', 'wayback Documentation', [author], 1)]
 
 
 # -- Options for Texinfo output -------------------------------------------
@@ -189,12 +183,16 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'wayback', 'wayback Documentation',
-     author, 'wayback', 'Python API to Internet Archive Wayback Machine',
-     'Miscellaneous'),
+    (
+        master_doc,
+        'wayback',
+        'wayback Documentation',
+        author,
+        'wayback',
+        'Python API to Internet Archive Wayback Machine',
+        'Miscellaneous',
+    ),
 ]
-
-
 
 
 # Example configuration for intersphinx: refer to the Python standard library.

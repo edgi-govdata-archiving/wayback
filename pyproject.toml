@@ -82,7 +82,10 @@ toplevel = "wayback"
 
 [tool.ruff]
 src = ["src"]
-include = ["src/wayback/**/*.py"]
+include = [
+    "src/wayback/**/*.py",
+    "docs/**/*.py",
+]
 line-length = 115
 exclude = ["wayback/_version.py"]
 
