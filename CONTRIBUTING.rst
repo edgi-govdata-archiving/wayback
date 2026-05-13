@@ -106,4 +106,3 @@ Before you submit a pull request, check that it meets these guidelines:
    your new functionality into a function with a docstring, and add the
    feature to the list in README.rst.
 3. The pull request should work for Python 3.8 and for PyPy. After you submit your pull request, CircleCI will automatically run tests against all supported Python runtimes, so in most cases, you won't need to exhaustively test each of these yourself.
-

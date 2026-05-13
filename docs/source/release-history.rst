@@ -40,11 +40,36 @@ Features
 
   Sessions using the default limits share them via this same mechanism.
 
+- Several attributes of :class:`wayback.CdxRecord` have been renamed to match their names in Wayback's actual CDX API. The old names still work for now, but using them will log a deprecation warning. We plan to remove them entirely in a future release. (:issue:`187`)
+
+  The renamed attributes are:
+
+  - ``key`` (now ``urlkey``).
+  - ``url`` (now ``original``).
+  - ``mime_type`` (now ``mimetype``).
+  - ``status_code`` (now ``statuscode``).
+
+- You can now use a :class:`datetime.timedelta` instance for the ``target_window`` argument to :meth:`wayback.WaybackClient.get_memento` (an integer indicating a number of seconds still works, too). (:issue:`193`)
+
 
 Fixes & Maintenance
 ^^^^^^^^^^^^^^^^^^^
 
 - The default rate limits have been further tweaked since v0.4.4 based on closer collaboration with Internet Archive staff. Rate limits are also now more accurately applied to each individual request (they were previously applied more roughly, without respect to retries and redirects).
+
+- Updated license identifier to follow PEP 639 style. This should make sure the license is surfaced better and more clearly on PyPI. (:issue:`186`)
+
+- :class:`wayback.Memento` now has a nicer, more informative ``repr`` when you are using a notebook or Python REPL. (:issue:`192`)
+
+- Tests where rate limits don’t matter now run faster. (:issue:`194`)
+
+
+New Contributors
+^^^^^^^^^^^^^^^^
+
+- `Derzan Chiang <https://github.com/MiTo0o>`_
+- `Beckett Frey <https://github.com/BeckettFrey>`_
+- `@Adeelp1 <https://github.com/Adeelp1>`_
 
 
 v0.4.5 (2024-02-01)

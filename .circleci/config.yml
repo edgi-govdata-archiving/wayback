@@ -1,11 +1,15 @@
 version: 2.1
 
+parameters:
+  # Use this Python version for basic, non-matrix jobs.
+  primary-python-version:
+    type: string
+    default: "3.14"
+
 commands:
   setup_pip:
     description: "Set Up Dependencies"
     parameters:
-      python-version:
-        type: string
       urllib3-version:
         type: string
         default: "2.0"
@@ -18,10 +22,17 @@ commands:
         type: boolean
         default: false
     steps:
+      - run:
+          name: Get Python Version
+          command: |
+            python \
+              -c 'import sys;print(sys.version.split(" ")[0] + ("t" if "free-threading" in sys.version else ""))' \
+              > /home/circleci/.tmp-python-version
+
       - restore_cache:
           keys:
-            - cache_v11-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "pyproject.toml" }}
-            - cache_v11-wayback-<< parameters.python-version >>-{{ arch }}-
+            - cache_v11-wayback-{{ checksum "/home/circleci/.tmp-python-version" }}-{{ arch }}-{{ checksum "pyproject.toml" }}
+            - cache_v11-wayback-{{ checksum "/home/circleci/.tmp-python-version" }}-{{ arch }}-
 
       - run:
           name: Install Dependencies
@@ -54,7 +65,7 @@ commands:
                   pip install .[docs]
 
       - save_cache:
-          key: cache_v11-wayback-<< parameters.python-version >>-{{ arch }}-{{ checksum "pyproject.toml" }}
+          key: cache_v11-wayback-{{ checksum "/home/circleci/.tmp-python-version" }}-{{ arch }}-{{ checksum "pyproject.toml" }}
           paths:
             - ~/venv
 
@@ -75,7 +86,6 @@ jobs:
     steps:
       - checkout
       - setup_pip:
-          python-version: << parameters.python-version >>
           urllib3-version: << parameters.urllib3-version >>
 
       - run:
@@ -92,11 +102,10 @@ jobs:
   lint:
     working_directory: ~/wayback
     docker:
-      - image: cimg/python:3.14
+      - image: cimg/python:<< pipeline.parameters.primary-python-version >>
     steps:
       - checkout
       - setup_pip:
-          python-version: "3.14"
           install-dev: true
       - run:
           name: Code linting
@@ -134,6 +143,20 @@ jobs:
             . ~/venv/bin/activate
             mypy
 
+  typecheck:
+    working_directory: ~/wayback
+    docker:
+      - image: cimg/python:<< pipeline.parameters.primary-python-version >>
+    steps:
+      - checkout
+      - setup_pip:
+          install-dev: true
+      - run:
+          name: Type checking
+          command: |
+            . ~/venv/bin/activate
+            mypy
+
   # NOTE: The docs are mainly built and published directly by readthedocs.com.
   # This job is meant to verify there are no issues with the docs and it is NOT
   # responsible for building what actually gets published. (Readthedocs.com
@@ -142,11 +165,10 @@ jobs:
   docs:
     working_directory: ~/wayback
     docker:
-      - image: cimg/python:3.14
+      - image: cimg/python:<< pipeline.parameters.primary-python-version >>
     steps:
       - checkout
       - setup_pip:
-          python-version: "3.14"
           install-docs: true
       - run:
           name: Build docs
