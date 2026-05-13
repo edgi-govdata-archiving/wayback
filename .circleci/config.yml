@@ -116,32 +116,16 @@ jobs:
   format:
     working_directory: ~/wayback
     docker:
-      - image: cimg/python:3.14
+      - image: cimg/python:<< pipeline.parameters.primary-python-version >>
     steps:
       - checkout
       - setup_pip:
-          python-version: "3.14"
           install-dev: true
       - run:
           name: Code formatting
           command: |
             . ~/venv/bin/activate
             ruff format --check
-
-  typecheck:
-    working_directory: ~/wayback
-    docker:
-      - image: cimg/python:3.14
-    steps:
-      - checkout
-      - setup_pip:
-          python-version: "3.14"
-          install-dev: true
-      - run:
-          name: Type checking
-          command: |
-            . ~/venv/bin/activate
-            mypy
 
   typecheck:
     working_directory: ~/wayback
