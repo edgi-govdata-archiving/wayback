@@ -12,7 +12,9 @@ HTML_CHARSET_PATTERN = re.compile(r'<meta charset=([^\s>]+)', re.I)
 
 def _get_header(response, key, default=None):
     """Get the values for a given header name on a VCR response dictionary."""
-    return response['headers'].get(key) or response['headers'].get(key.lower()) or default
+    return (response['headers'].get(key) or
+            response['headers'].get(key.lower()) or
+            default)
 
 
 def _has_gzip_header(response):
@@ -85,7 +87,10 @@ class Urllib3Serializer:
                 response = interaction['response']
                 raw_body = response['body'].get('string')
                 if _has_gzip_header(response) and _is_gzip_bytes(raw_body):
-                    response['body']['string'] = zlib.decompress(raw_body, wbits=zlib.MAX_WBITS | 16)
+                    response['body']['string'] = zlib.decompress(
+                        raw_body,
+                        wbits=zlib.MAX_WBITS | 16
+                    )
 
         return result
 
@@ -94,7 +99,11 @@ class Urllib3Serializer:
             for interaction in cassette_dict['interactions']:
                 response = interaction['response']
                 raw_body = response['body'].get('string')
-                if _has_gzip_header(response) and raw_body and (not _is_gzip_bytes(raw_body)):
+                if (
+                    _has_gzip_header(response) and
+                    raw_body and
+                    (not _is_gzip_bytes(raw_body))
+                ):
                     if isinstance(raw_body, str):
                         encoding = _guess_encoding(response)
                         try:
@@ -106,7 +115,11 @@ class Urllib3Serializer:
                             else:
                                 raise
 
-                    response['body']['string'] = zlib.compress(raw_body, level=9, wbits=zlib.MAX_WBITS | 16)
+                    response['body']['string'] = zlib.compress(
+                        raw_body,
+                        level=9,
+                        wbits=zlib.MAX_WBITS | 16
+                    )
 
         return self.base_serializer.serialize(cassette_dict)
 
@@ -119,5 +132,8 @@ def create_vcr():
         record_mode='once',
         match_on=['uri', 'method'],
     )
-    custom_vcr.register_serializer('yaml', Urllib3Serializer(vcr.serializers.yamlserializer))
+    custom_vcr.register_serializer(
+        'yaml',
+        Urllib3Serializer(vcr.serializers.yamlserializer)
+    )
     return custom_vcr

@@ -152,7 +152,7 @@ jobs:
           name: Build docs
           command: |
             . ~/venv/bin/activate
-            sphinx-build -M html docs/source docs/build "-W"
+            make -C docs html
 
 workflows:
   ci:

@@ -1,80 +1,217 @@
-from collections import namedtuple
+from datetime import datetime
+from enum import Enum
+from typing import NamedTuple, Optional
 from urllib.parse import urljoin
-from ._utils import CaseInsensitiveDict, memento_url_data
+from warnings import warn
+from ._utils import CaseInsensitiveDict, memento_url_data, format_memento_url
 
 
-CdxRecord = namedtuple(
-    'CdxRecord',
-    (
-        # Raw CDX values
-        'key',
-        'timestamp',
-        'url',
-        'mime_type',
-        'status_code',
-        'digest',
-        'length',
-        # Synthesized values
-        'raw_url',
-        'view_url',
-    ),
-)
-"""
-Item from iterable of results returned by :meth:`WaybackClient.search`
+class Mode(Enum):
+    """
+    An enum describing the playback mode of a memento. When requesting a
+    memento (e.g. with :meth:`wayback.WaybackClient.get_memento`), you can use
+    these values to determine how the response body should be formatted.
 
-These attributes contain information provided directly by CDX.
+    For more details, see:
+    https://archive-access.sourceforge.net/projects/wayback/administrator_manual.html#Archival_URL_Replay_Mode
 
-.. py:attribute:: digest
+    Examples
+    --------
+    >>> waybackClient.get_memento('https://noaa.gov/',
+    >>>                           timestamp=datetime.datetime(2018, 1, 2),
+    >>>                           mode=wayback.Mode.view)
 
-   Content hashed as a base 32 encoded SHA-1.
+    **Values**
 
-.. py:attribute:: key
+    .. py:attribute:: original
 
-   SURT-formatted URL
+        Returns the HTTP response body as originally captured.
 
-.. py:attribute:: length
+    .. py:attribute:: view
 
-   Size of captured content in bytes, such as :data:`2767`. This may be
-   inaccurate, and may even be :data:`None` instead of an integer. If the record is a
-   "revisit record", indicated by MIME type :data:`'warc/revisit'`, the length
-   seems to be the length of the reference, not the length of the content
-   itself. In other cases, the record has no length information at all, and
-   this attribute will be :data:`None` instead of a number.
+        Formats the response body so it can be viewed with a web
+        browser. URLs for links and subresources like scripts, stylesheets,
+        images, etc. will be modified to point to the equivalent memento in the
+        Wayback Machine so that the resulting page looks as similar as possible
+        to how it would have appeared when originally captured. It's mainly meant
+        for use with HTML pages. This is the playback mode you typically use when
+        browsing the Wayback Machine with a web browser.
 
-.. py:attribute:: mime_type
+    .. py:attribute:: javascript
 
-   MIME type of record, such as :data:`'text/html'`, :data:`'warc/revisit'` or
-   :data:`'unk'` ("unknown") if this information was not captured.
+        Formats the response body by updating URLs, similar
+        to ``Mode.view``, but designed for JavaScript instead of HTML.
 
-.. py:attribute:: status_code
+    .. py:attribute:: css
 
-   Status code returned by the server when the record was captured, such as
-   :data:`200`. This is may be :data:`None` if the record is a revisit record.
+        Formats the response body by updating URLs, similar to
+        ``Mode.view``, but designed for CSS instead of HTML.
 
-.. py:attribute:: timestamp
+    .. py:attribute:: image
 
-   The capture time represented as a :class:`datetime.datetime`, such as
-   :data:`datetime.datetime(1996, 12, 31, 23, 58, 47, tzinfo=timezone.utc)`.
+        formats the response body similar to ``Mode.view``, but
+        designed for image files instead of HTML.
+    """
+    original = 'id_'
+    view = ''
+    javascript = 'js_'
+    css = 'cs_'
+    image = 'im_'
 
-.. py:attribute:: url
 
-   The URL that was captured by this record, such as
-   :data:`'http://www.nasa.gov/'`.
+class CdxRecord(NamedTuple):
+    """
+    Represents an entry from Wayback's "CDX" index of mementos (archived HTTP
+    responses). These entries contain some metadata about the memento. You can
+    also pass a ``CdxRecord`` to :meth:`WaybackClient.get_memento` to
+    retrieve the corresponding memento.
 
-And these attributes are synthesized from the information provided by CDX.
+    In general, you should not create new instances of ``CdxRecord`` yourself,
+    but should get them by calling :meth:`WaybackClient.search`.
 
-.. py:attribute:: raw_url
+    **Attributes**
 
-   The URL to the raw captured content, such as
-   :data:`'https://web.archive.org/web/19961231235847id_/http://www.nasa.gov/'`.
+    .. py:attribute:: urlkey
+       :type: str
 
-.. py:attribute:: view_url
+       SURT-formatted URL.
 
-   The URL to the public view on Wayback Machine. In this view, the links and
-   some subresources in the document are rewritten to point to Wayback URLs.
-   There is also a navigation panel around the content. Example URL:
-   :data:`'https://web.archive.org/web/19961231235847/http://www.nasa.gov/'`.
-"""
+    .. py:attribute:: timestamp
+       :type: datetime
+
+       The capture time represented as a :class:`datetime.datetime`, such as
+       :data:`datetime.datetime(1996, 12, 31, 23, 58, 47, tzinfo=timezone.utc)`.
+
+    .. py:attribute:: original
+       :type: str
+
+       The URL that was captured by this record, such as
+       :data:`'http://www.nasa.gov/'`.
+
+    .. py:attribute:: mimetype
+       :type: str
+
+       MIME type of record, such as :data:`'text/html'`, :data:`'warc/revisit'` or
+       :data:`'unk'` ("unknown") if this information was not captured.
+
+    .. py:attribute:: statuscode
+       :type: Optional[int]
+
+       Status code returned by the server when the record was captured, such as
+       :data:`200`. This is may be :data:`None` if the record is a revisit record.
+
+    .. py:attribute:: digest
+       :type: str
+
+       The base 32-encoded SHA-1 hash of the archived HTTP response body. This
+       can be useful for comparing to other ``CdxRecord`` instances or avoiding
+       duplicate requests for mementos.
+
+       Please keep in mind that this digest is generally computed based on the
+       response body *as stored on disk* (usually the exact bytes originally
+       received when saving the response), so is not useful for validation
+       or fixity checks against a memento loaded with
+       :meth:`WaybackClient.get_memento`. For example, if the response body was
+       stored in brotli-compressed form but *transferred to you* in
+       gzip-compressed form, your bytes will not match this digest.
+
+       For revisit records, this is the digest of the originally received HTTP
+       response body as it *would have been stored*, so you can use it to match
+       a non-revisit record containing the same response body. (But keep in
+       mind this is just the body. It does not include HTTP headers, which may
+       have been different for two records with the same digest.)
+
+    .. py:attribute:: length
+       :type: Optional[int]
+
+       Size (in bytes) of the archived data *as stored on disk*. Like
+       :attr:`digest`, this usually will not be useful for external users,
+       since it does not reflect the actual archived HTTP response body size.
+       For example, revisit records will generally be small because the
+       archived data on disk is just a pointer to a different record that was
+       saved previously.
+
+    .. py:attribute:: raw_url
+       :type: str
+
+       The URL to the raw captured content, such as
+       :data:`'https://web.archive.org/web/19961231235847id_/http://www.nasa.gov/'`.
+
+    .. py:attribute:: view_url
+       :type: str
+
+       The URL to the public view on Wayback Machine. In this view, the links and
+       some subresources in the document are rewritten to point to Wayback URLs.
+       There is also a navigation panel around the content. Example URL:
+       :data:`'https://web.archive.org/web/19961231235847/http://www.nasa.gov/'`.
+
+    .. py:attribute:: key
+       :type: str
+
+       .. deprecated:: 0.5.0
+          This attribute was renamed to :attr:`urlkey`. This name will be
+          removed in a future release.
+
+    .. py:attribute:: url
+       :type: str
+
+       .. deprecated:: 0.5.0
+          This attribute was renamed to :attr:`original`. This name will be
+          removed in a future release.
+
+    .. py:attribute:: mime_type
+       :type: str
+
+       .. deprecated:: 0.5.0
+          This attribute was renamed to :attr:`mimetype`. This name will be
+          removed in a future release.
+
+    .. py:attribute:: status_code
+       :type: str
+
+       .. deprecated:: 0.5.0
+          This attribute was renamed to :attr:`statuscode`. This name will be
+          removed in a future release.
+    """
+    urlkey: str
+    timestamp: datetime
+    original: str
+    mimetype: str
+    statuscode: Optional[int]
+    digest: str
+    length: Optional[int]
+
+    @property
+    def key(self) -> str:
+        warn('The `key` attribute on `CdxRecord` was renamed to `urlkey`.',
+             DeprecationWarning, stacklevel=2)
+        return self.urlkey
+
+    @property
+    def url(self) -> str:
+        warn('The `url` attribute on `CdxRecord` was renamed to `original`.',
+             DeprecationWarning, stacklevel=2)
+        return self.original
+
+    @property
+    def mime_type(self) -> str:
+        warn('The `mime_type` attribute on `CdxRecord` was renamed to `mimetype`.',
+             DeprecationWarning, stacklevel=2)
+        return self.mimetype
+
+    @property
+    def status_code(self) -> Optional[int]:
+        warn('The `status_code` attribute on `CdxRecord` was renamed to `statuscode`.',
+             DeprecationWarning, stacklevel=2)
+        return self.statuscode
+
+    @property
+    def raw_url(self) -> str:
+        return format_memento_url(self.original, self.timestamp, mode=Mode.original.value)
+
+    @property
+    def view_url(self) -> str:
+        return format_memento_url(self.original, self.timestamp, mode=Mode.view.value)
 
 
 # NOTE: We use `py:attribute::` listings instead of the standard Numpy
@@ -236,22 +373,9 @@ class Memento:
           # Nothing after the timestamp for "view" mode -----------------------------------------^
     """  # noqa: E501
 
-    def __init__(
-        self,
-        *,
-        url,
-        timestamp,
-        mode,
-        memento_url,
-        status_code,
-        headers,
-        encoding,
-        raw,
-        raw_headers,
-        links,
-        history,
-        debug_history,
-    ):
+    def __init__(self, *, url, timestamp, mode, memento_url, status_code,
+                 headers, encoding, raw, raw_headers, links, history,
+                 debug_history):
         self.url = url
         self.timestamp = timestamp
         self.mode = mode
@@ -326,6 +450,11 @@ class Memento:
     def __exit__(self, *_args):
         self.close()
 
+    def __repr__(self):
+        return (f'<{type(self).__module__.split("._", 1)[0]}'
+                f'.{type(self).__name__} url="{self.url}" '
+                f'timestamp="{self.timestamp.isoformat()}">')
+
     @classmethod
     def parse_memento_headers(cls, raw_headers, url='https://web.archive.org/'):
         """
@@ -346,9 +475,10 @@ class Memento:
         # Archived, historical headers are all reproduced as headers in the
         # memento response, but start with "x-archive-orig-".
         prefix = 'x-archive-orig-'
-        headers = CaseInsensitiveDict(
-            {key[len(prefix) :]: value for key, value in raw_headers.items() if key.lower().startswith(prefix)}
-        )
+        headers = CaseInsensitiveDict({
+            key[len(prefix):]: value for key, value in raw_headers.items()
+            if key.lower().startswith(prefix)
+        })
 
         # Headers that are also needed for a browser to handle the played-back
         # memento are *not* prefixed, so we need to copy over each of those.

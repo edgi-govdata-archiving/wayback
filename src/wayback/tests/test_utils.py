@@ -8,15 +8,15 @@ from .._utils import memento_url_data, RateLimit, parse_retry_after
 class TestMementoUrlData:
     def test_extracts_url(self):
         url, timestamp, mode = memento_url_data(
-            'https://web.archive.org/web/20170813195036/https://arpa-e.energy.gov/?q=engage/events-workshops'
-        )
+            'https://web.archive.org/web/20170813195036/'
+            'https://arpa-e.energy.gov/?q=engage/events-workshops')
         assert url == 'https://arpa-e.energy.gov/?q=engage/events-workshops'
         assert timestamp == datetime(2017, 8, 13, 19, 50, 36, tzinfo=timezone.utc)
         assert mode == ''
 
         url, timestamp, mode = memento_url_data(
-            'https://web.archive.org/web/20170813195036id_/https://arpa-e.energy.gov/?q=engage/events-workshops'
-        )
+            'https://web.archive.org/web/20170813195036id_/'
+            'https://arpa-e.energy.gov/?q=engage/events-workshops')
         assert url == 'https://arpa-e.energy.gov/?q=engage/events-workshops'
         assert timestamp == datetime(2017, 8, 13, 19, 50, 36, tzinfo=timezone.utc)
         assert mode == 'id_'
@@ -24,14 +24,13 @@ class TestMementoUrlData:
     def test_decodes_url(self):
         url, _, _ = memento_url_data(
             'https://web.archive.org/web/20150930233055id_/'
-            'http%3A%2F%2Fwww.epa.gov%2Fenvironmentaljustice%2Fgrants%2Fej-smgrants.html%3Futm'
-        )
+            'http%3A%2F%2Fwww.epa.gov%2Fenvironmentaljustice%2Fgrants%2Fej-smgrants.html%3Futm')
         assert url == 'http://www.epa.gov/environmentaljustice/grants/ej-smgrants.html?utm'
 
     def test_does_not_decode_query(self):
         url, _, _ = memento_url_data(
-            'https://web.archive.org/web/20170813195036/https://arpa-e.energy.gov/?q=engage%2Fevents-workshops'
-        )
+            'https://web.archive.org/web/20170813195036/'
+            'https://arpa-e.energy.gov/?q=engage%2Fevents-workshops')
         assert url == 'https://arpa-e.energy.gov/?q=engage%2Fevents-workshops'
 
     def test_raises_for_non_memento_urls(self):
@@ -44,6 +43,7 @@ class TestMementoUrlData:
 
 
 class TestRateLimit:
+
     def test_call_per_seconds(self):
         """
         Test that the rate limit is accurately applied. It also checks that two

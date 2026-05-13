@@ -15,7 +15,8 @@ from .exceptions import SessionClosedError
 logger = logging.getLogger(__name__)
 
 URL_DATE_FORMAT = '%Y%m%d%H%M%S'
-MEMENTO_URL_PATTERN = re.compile(r'^http(?:s)?://web.archive.org/web/(\d+)(\w\w_)?/(.+)$')
+MEMENTO_URL_PATTERN = re.compile(
+    r'^http(?:s)?://web.archive.org/web/(\d+)(\w\w_)?/(.+)$')
 MEMENTO_URL_TEMPLATE = 'https://web.archive.org/web/{timestamp}{mode}/{url}'
 
 
@@ -74,14 +75,16 @@ def parse_timestamp(time_string):
     #
     # The issue seems to be limited to some crawls in the year 2000.
     if time_string[5] == '0' and time_string[4] == '0':
-        logger.warning('found invalid timestamp with month 00: %s', time_string)
+        logger.warning("found invalid timestamp with month 00: %s", time_string)
         time_string = f'{time_string[0:4]}{time_string[6:]}00'
     elif time_string[7] == '0' and time_string[6] == '0':
-        logger.warning('found invalid timestamp with day 00: %s', time_string)
+        logger.warning("found invalid timestamp with day 00: %s", time_string)
         time_string = f'{time_string[0:6]}{time_string[8:]}00'
 
     # Parse the cleaned-up result.
-    return datetime.strptime(time_string, URL_DATE_FORMAT).replace(tzinfo=timezone.utc)
+    return (datetime
+            .strptime(time_string, URL_DATE_FORMAT)
+            .replace(tzinfo=timezone.utc))
 
 
 def parse_retry_after(retry_after_header):
@@ -195,7 +198,9 @@ def format_memento_url(url, timestamp, mode=''):
     -------
     str
     """
-    return MEMENTO_URL_TEMPLATE.format(url=url, timestamp=format_timestamp(timestamp), mode=mode)
+    return MEMENTO_URL_TEMPLATE.format(url=url,
+                                       timestamp=format_timestamp(timestamp),
+                                       mode=mode)
 
 
 def set_memento_url_mode(url, mode):
@@ -241,12 +246,10 @@ class RateLimit:
     >>>     with limit:
     >>>         print(x)
     """
-
     def __init__(self, per_second: Union[int, float]):
         if not isinstance(per_second, (int, float)):
-            raise TypeError(
-                f'The RateLimit per_second argument must be an int or float, not {type(per_second).__name__}'
-            )
+            raise TypeError('The RateLimit per_second argument must be an int '
+                            f'or float, not {type(per_second).__name__}')
 
         self._lock = threading.RLock()
         self._last_call_time = 0.0
@@ -274,15 +277,15 @@ class RateLimit:
         pass
 
     @classmethod
-    def make_limit(cls, per_second: Union['RateLimit', int, float]) -> 'RateLimit':
+    def make_limit(cls, per_second: Union['RateLimit',  int, float]) -> 'RateLimit':
         """
         If the given rate is a ``RateLimit`` object, return it unchanged.
         Otherwise, create a new ``RateLimit`` with the given rate.
         """
-        if isinstance(per_second, cls):
+        if isinstance(per_second, RateLimit):
             return per_second
         else:
-            return cls(per_second)  # type: ignore
+            return cls(per_second)
 
 
 class DepthCountedContext:
@@ -298,7 +301,6 @@ class DepthCountedContext:
     common, so in many cases you don't need to author your own `__enter__` or
     `__exit__` methods.
     """
-
     _context_depth = 0
 
     def __enter__(self):
@@ -327,7 +329,6 @@ class DisableAfterCloseSession(requests.Session):
     code patterns. (Standard session objects continue to be usable after
     closing, even if they may not work exactly as expected.)
     """
-
     _closed = False
 
     def close(self, disable=True):
@@ -337,7 +338,8 @@ class DisableAfterCloseSession(requests.Session):
 
     def send(self, *args, **kwargs):
         if self._closed:
-            raise SessionClosedError('This session has already been closed and cannot send new HTTP requests.')
+            raise SessionClosedError('This session has already been closed '
+                                     'and cannot send new HTTP requests.')
 
         return super().send(*args, **kwargs)
 
