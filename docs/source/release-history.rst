@@ -63,6 +63,8 @@ Fixes & Maintenance
 
 - Tests where rate limits don’t matter now run faster. (:issue:`194`)
 
+- Source code is now autoformatted, type-checked, and more comprehensively covered by lint and style rules. (:issue:`185`)
+
 
 New Contributors
 ^^^^^^^^^^^^^^^^

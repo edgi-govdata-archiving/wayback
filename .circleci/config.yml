@@ -111,7 +111,12 @@ jobs:
           name: Code linting
           command: |
             . ~/venv/bin/activate
-            flake8 .
+            ruff check
+      - run:
+          name: Code formatting
+          command: |
+            . ~/venv/bin/activate
+            ruff format --check
 
   typecheck:
     working_directory: ~/wayback

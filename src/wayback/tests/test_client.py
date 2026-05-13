@@ -7,14 +7,9 @@ import requests
 from unittest import mock
 from .support import create_vcr
 from .._utils import SessionClosedError
-from .._models import (CdxRecord,
-                       Mode)
-from .._client import (WaybackSession,
-                       WaybackClient)
-from ..exceptions import (BlockedSiteError,
-                          MementoPlaybackError,
-                          NoMementoError,
-                          RateLimitError)
+from .._models import CdxRecord, Mode
+from .._client import WaybackSession, WaybackClient
+from ..exceptions import BlockedSiteError, MementoPlaybackError, NoMementoError, RateLimitError
 
 
 ia_vcr = create_vcr()
@@ -36,11 +31,11 @@ WAYBACK_RATE_LIMIT_ERROR = dict(
         # and is included here to test whether we will handle it nicely if the
         # Wayback Machine ever adds it.
         # https://tools.ietf.org/html/rfc6585#section-4
-        'Retry-After': '10'
+        'Retry-After': '10',
     },
-    text='''<html><body><h1>429 Too Many Requests</h1>
+    text="""<html><body><h1>429 Too Many Requests</h1>
 You have sent too many requests in a given amount of time.
-</body></html>'''
+</body></html>""",
 )
 
 
@@ -53,9 +48,7 @@ def get_file(filepath):
 
 @ia_vcr.use_cassette()
 def test_search(test_client):
-    versions = test_client.search('nasa.gov',
-                                  from_date=datetime(1996, 10, 1),
-                                  to_date=datetime(1997, 2, 1))
+    versions = test_client.search('nasa.gov', from_date=datetime(1996, 10, 1), to_date=datetime(1997, 2, 1))
     for v in versions:
         assert v.timestamp >= datetime(1996, 10, 1, tzinfo=timezone.utc)
         assert v.timestamp <= datetime(1997, 2, 1, tzinfo=timezone.utc)
@@ -63,9 +56,7 @@ def test_search(test_client):
 
 @ia_vcr.use_cassette()
 def test_search_with_date(test_client):
-    versions = test_client.search('dw.com',
-                                  from_date=date(2019, 10, 1),
-                                  to_date=date(2020, 3, 1))
+    versions = test_client.search('dw.com', from_date=date(2019, 10, 1), to_date=date(2020, 3, 1))
     for v in versions:
         assert v.timestamp >= datetime(2019, 10, 1, tzinfo=timezone.utc)
         assert v.timestamp <= datetime(2020, 3, 1, tzinfo=timezone.utc)
@@ -77,30 +68,25 @@ def test_search_with_timezone(test_client):
     # datetime with no timezone.
     tzinfo = timezone(timedelta(hours=0))
     t0 = datetime(1996, 12, 31, 23, 58, 47, tzinfo=tzinfo)
-    versions = test_client.search('nasa.gov',
-                                  from_date=t0)
+    versions = test_client.search('nasa.gov', from_date=t0)
     version = next(versions)
-    assert version.timestamp == datetime(1996, 12, 31, 23, 58, 47,
-                                         tzinfo=timezone.utc)
+    assert version.timestamp == datetime(1996, 12, 31, 23, 58, 47, tzinfo=timezone.utc)
 
     # Search using UTC - 5, equivalent to (1997, 1, 1, 4, ...) in UTC
     # so that we miss the result above and expect a different, later one.
     tzinfo = timezone(timedelta(hours=-5))
     t0 = datetime(1996, 12, 31, 23, 58, 47, tzinfo=tzinfo)
-    versions = test_client.search('nasa.gov',
-                                  from_date=t0)
+    versions = test_client.search('nasa.gov', from_date=t0)
     version = next(versions)
-    assert version.timestamp == datetime(1997, 6, 5, 23, 5, 59,
-                                         tzinfo=timezone.utc)
+    assert version.timestamp == datetime(1997, 6, 5, 23, 5, 59, tzinfo=timezone.utc)
 
 
 @ia_vcr.use_cassette()
 def test_search_multipage(test_client):
     # Set page size limits low enough to guarantee multiple pages
-    versions = test_client.search('cnn.com',
-                                  from_date=datetime(2001, 4, 10),
-                                  to_date=datetime(2001, 5, 10),
-                                  limit=25)
+    versions = test_client.search(
+        'cnn.com', from_date=datetime(2001, 4, 10), to_date=datetime(2001, 5, 10), limit=25
+    )
 
     # Exhaust the generator and make sure no entries trigger errors.
     list(versions)
@@ -110,18 +96,16 @@ def test_search_multipage(test_client):
 def test_search_cannot_iterate_after_session_closing():
     with pytest.raises(SessionClosedError):
         with WaybackClient() as client:
-            versions = client.search('nasa.gov',
-                                     from_date=datetime(1996, 10, 1),
-                                     to_date=datetime(1997, 2, 1))
+            versions = client.search('nasa.gov', from_date=datetime(1996, 10, 1), to_date=datetime(1997, 2, 1))
 
         next(versions)
 
 
 @ia_vcr.use_cassette()
 def test_search_does_not_repeat_results(test_client):
-    versions = test_client.search('energystar.gov/',
-                                  from_date=datetime(2020, 6, 12),
-                                  to_date=datetime(2020, 6, 13))
+    versions = test_client.search(
+        'energystar.gov/', from_date=datetime(2020, 6, 12), to_date=datetime(2020, 6, 13)
+    )
     previous = None
     for version in versions:
         assert version != previous
@@ -131,30 +115,30 @@ def test_search_does_not_repeat_results(test_client):
 @ia_vcr.use_cassette()
 def test_search_raises_for_blocked_urls(test_client):
     with pytest.raises(BlockedSiteError):
-        versions = test_client.search('https://nationalpost.com/health',
-                                      from_date=datetime(2019, 10, 1),
-                                      to_date=datetime(2019, 10, 2))
+        versions = test_client.search(
+            'https://nationalpost.com/health', from_date=datetime(2019, 10, 1), to_date=datetime(2019, 10, 2)
+        )
         next(versions)
 
 
 @ia_vcr.use_cassette()
 def test_search_with_filter(test_client):
     # Check an unfiltered request to cover false positives.
-    versions = test_client.search('nasa.gov/',
-                                  match_type='prefix',
-                                  limit=10,
-                                  from_date=date(2022, 1, 1),
-                                  to_date=date(2022, 2, 1))
+    versions = test_client.search(
+        'nasa.gov/', match_type='prefix', limit=10, from_date=date(2022, 1, 1), to_date=date(2022, 2, 1)
+    )
     versions = list(islice(versions, 10))
     assert any((v.statuscode == 200 for v in versions))
 
     # Then an actually filtered request.
-    versions = test_client.search('nasa.gov/',
-                                  match_type='prefix',
-                                  limit=10,
-                                  from_date=date(2022, 1, 1),
-                                  to_date=date(2022, 2, 1),
-                                  filter_field='statuscode:404')
+    versions = test_client.search(
+        'nasa.gov/',
+        match_type='prefix',
+        limit=10,
+        from_date=date(2022, 1, 1),
+        to_date=date(2022, 2, 1),
+        filter_field='statuscode:404',
+    )
     versions = list(islice(versions, 10))
     assert all((v.statuscode == 404 for v in versions))
 
@@ -162,23 +146,22 @@ def test_search_with_filter(test_client):
 @ia_vcr.use_cassette()
 def test_search_with_filter_list(test_client):
     # Check an unfiltered request to cover false positives.
-    versions = test_client.search('nasa.gov/',
-                                  match_type='prefix',
-                                  limit=10,
-                                  from_date=date(2022, 1, 1),
-                                  to_date=date(2022, 2, 1))
+    versions = test_client.search(
+        'nasa.gov/', match_type='prefix', limit=10, from_date=date(2022, 1, 1), to_date=date(2022, 2, 1)
+    )
     versions = list(islice(versions, 10))
     assert any((v.statuscode == 200 for v in versions))
     assert any(('feature' not in v.original for v in versions))
 
     # Then an actually filtered request.
-    versions = test_client.search('nasa.gov/',
-                                  match_type='prefix',
-                                  limit=10,
-                                  from_date=date(2022, 1, 1),
-                                  to_date=date(2022, 2, 1),
-                                  filter_field=['statuscode:404',
-                                                'urlkey:.*feature.*'])
+    versions = test_client.search(
+        'nasa.gov/',
+        match_type='prefix',
+        limit=10,
+        from_date=date(2022, 1, 1),
+        to_date=date(2022, 2, 1),
+        filter_field=['statuscode:404', 'urlkey:.*feature.*'],
+    )
     versions = list(islice(versions, 10))
     assert all((v.statuscode == 404 for v in versions))
     assert all(('feature' in v.original for v in versions))
@@ -187,13 +170,14 @@ def test_search_with_filter_list(test_client):
 @ia_vcr.use_cassette()
 def test_search_with_filter_tuple(test_client):
     # Then an actually filtered request.
-    versions = test_client.search('nasa.gov/',
-                                  match_type='prefix',
-                                  limit=10,
-                                  from_date=date(2022, 1, 1),
-                                  to_date=date(2022, 2, 1),
-                                  filter_field=('statuscode:404',
-                                                'urlkey:.*feature.*'))
+    versions = test_client.search(
+        'nasa.gov/',
+        match_type='prefix',
+        limit=10,
+        from_date=date(2022, 1, 1),
+        to_date=date(2022, 2, 1),
+        filter_field=('statuscode:404', 'urlkey:.*feature.*'),
+    )
     versions = list(islice(versions, 10))
     assert all((v.statuscode == 404 for v in versions))
     assert all(('feature' in v.original for v in versions))
@@ -213,14 +197,16 @@ def test_search_removes_malformed_entries(test_client, requests_mock):
     with open(Path(__file__).parent / 'test_files' / 'malformed_cdx.txt') as f:
         bad_cdx_data = f.read()
 
-    requests_mock.get('https://web.archive.org/cdx/search/cdx'
-                      '?url=https%3A%2F%2Fepa.gov%2F%2A'
-                      '&from=20200418000000&to=20200419000000'
-                      '&showResumeKey=true&resolveRevisits=true',
-                      [{'status_code': 200, 'text': bad_cdx_data}])
-    records = test_client.search('https://epa.gov/*',
-                                 from_date=datetime(2020, 4, 18),
-                                 to_date=datetime(2020, 4, 19))
+    requests_mock.get(
+        'https://web.archive.org/cdx/search/cdx'
+        '?url=https%3A%2F%2Fepa.gov%2F%2A'
+        '&from=20200418000000&to=20200419000000'
+        '&showResumeKey=true&resolveRevisits=true',
+        [{'status_code': 200, 'text': bad_cdx_data}],
+    )
+    records = test_client.search(
+        'https://epa.gov/*', from_date=datetime(2020, 4, 18), to_date=datetime(2020, 4, 19)
+    )
 
     assert 2 == len(list(records))
 
@@ -236,14 +222,14 @@ def test_search_handles_no_length_cdx_records(test_client, requests_mock):
     with open(Path(__file__).parent / 'test_files' / 'zero_length_cdx.txt') as f:
         bad_cdx_data = f.read()
 
-    requests_mock.get('https://web.archive.org/cdx/search/cdx'
-                      '?url=www.cnn.com%2F%2A'
-                      '&matchType=domain&filter=statuscode%3A200'
-                      '&showResumeKey=true&resolveRevisits=true',
-                      [{'status_code': 200, 'text': bad_cdx_data}])
-    records = test_client.search('www.cnn.com/*',
-                                 match_type="domain",
-                                 filter_field="statuscode:200")
+    requests_mock.get(
+        'https://web.archive.org/cdx/search/cdx'
+        '?url=www.cnn.com%2F%2A'
+        '&matchType=domain&filter=statuscode%3A200'
+        '&showResumeKey=true&resolveRevisits=true',
+        [{'status_code': 200, 'text': bad_cdx_data}],
+    )
+    records = test_client.search('www.cnn.com/*', match_type='domain', filter_field='statuscode:200')
 
     record_list = list(records)
     assert 5 == len(record_list)
@@ -263,14 +249,14 @@ def test_search_handles_bad_timestamp_cdx_records(test_client, requests_mock):
     with open(Path(__file__).parent / 'test_files' / 'bad_timestamp_cdx.txt') as f:
         bad_cdx_data = f.read()
 
-    requests_mock.get('https://web.archive.org/cdx/search/cdx'
-                      '?url=www.usatoday.com%2F%2A'
-                      '&matchType=domain&filter=statuscode%3A200'
-                      '&showResumeKey=true&resolveRevisits=true',
-                      [{'status_code': 200, 'text': bad_cdx_data}])
-    records = test_client.search('www.usatoday.com/*',
-                                 match_type="domain",
-                                 filter_field="statuscode:200")
+    requests_mock.get(
+        'https://web.archive.org/cdx/search/cdx'
+        '?url=www.usatoday.com%2F%2A'
+        '&matchType=domain&filter=statuscode%3A200'
+        '&showResumeKey=true&resolveRevisits=true',
+        [{'status_code': 200, 'text': bad_cdx_data}],
+    )
+    records = test_client.search('www.usatoday.com/*', match_type='domain', filter_field='statuscode:200')
 
     record_list = list(records)
     assert 5 == len(record_list)
@@ -283,22 +269,24 @@ def test_search_handles_bad_timestamp_cdx_records(test_client, requests_mock):
 
 
 def test_search_parses_all_fields(test_client, requests_mock):
-    cdx_data = ' '.join([
-        'com,cnn)/',
-        '20100215131836',
-        'http://www.cnn.com/',
-        'text/html',
-        '200',
-        'T6CDCO73TS77BY67HLKYFLHKT2APUM5Y',
-        '24186',
-        'extra',
-        'ignored',
-        'fields',
-    ])
-    requests_mock.get('https://web.archive.org/cdx/search/cdx'
-                      '?url=http%3A%2F%2Fcnn.com'
-                      '&showResumeKey=true&resolveRevisits=true',
-                      [{'status_code': 200, 'text': cdx_data}])
+    cdx_data = ' '.join(
+        [
+            'com,cnn)/',
+            '20100215131836',
+            'http://www.cnn.com/',
+            'text/html',
+            '200',
+            'T6CDCO73TS77BY67HLKYFLHKT2APUM5Y',
+            '24186',
+            'extra',
+            'ignored',
+            'fields',
+        ]
+    )
+    requests_mock.get(
+        'https://web.archive.org/cdx/search/cdx?url=http%3A%2F%2Fcnn.com&showResumeKey=true&resolveRevisits=true',
+        [{'status_code': 200, 'text': cdx_data}],
+    )
     record = next(test_client.search('http://cnn.com'))
 
     assert record.urlkey == 'com,cnn)/'
@@ -312,8 +300,7 @@ def test_search_parses_all_fields(test_client, requests_mock):
 
 @ia_vcr.use_cassette()
 def test_get_memento(test_client):
-    memento = test_client.get_memento('https://www.fws.gov/birds/',
-                                      timestamp=datetime(2017, 11, 24, 15, 13, 15))
+    memento = test_client.get_memento('https://www.fws.gov/birds/', timestamp=datetime(2017, 11, 24, 15, 13, 15))
     assert 'https://www.fws.gov/birds/' == memento.url
     assert datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc) == memento.timestamp
     assert 'id_' == memento.mode
@@ -321,55 +308,47 @@ def test_get_memento(test_client):
         'Content-Type': 'text/html',
         'Date': 'Fri, 24 Nov 2017 15:13:14 GMT',
         'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
-        'Transfer-Encoding': 'chunked'
+        'Transfer-Encoding': 'chunked',
     }
     assert memento.links == {
         'first memento': {
             'datetime': 'Wed, 23 Mar 2005 15:53:00 GMT',
             'rel': 'first memento',
-            'url': 'https://web.archive.org/web/20050323155300id_/http://www.fws.gov:80/birds'
+            'url': 'https://web.archive.org/web/20050323155300id_/http://www.fws.gov:80/birds',
         },
         'last memento': {
             'datetime': 'Sun, 19 Mar 2023 07:02:36 GMT',
             'rel': 'last memento',
-            'url': 'https://web.archive.org/web/20230319070236id_/http://fws.gov/birds/'
+            'url': 'https://web.archive.org/web/20230319070236id_/http://fws.gov/birds/',
         },
         'prev memento': {
             'datetime': 'Fri, 29 Sep 2017 00:27:12 GMT',
             'rel': 'prev memento',
-            'url': 'https://web.archive.org/web/20170929002712id_/https://www.fws.gov/birds/'
+            'url': 'https://web.archive.org/web/20170929002712id_/https://www.fws.gov/birds/',
         },
         'next memento': {
             'datetime': 'Thu, 28 Dec 2017 22:21:43 GMT',
             'rel': 'next memento',
-            'url': 'https://web.archive.org/web/20171228222143id_/https://www.fws.gov/birds/'
+            'url': 'https://web.archive.org/web/20171228222143id_/https://www.fws.gov/birds/',
         },
         'memento': {
             'datetime': 'Fri, 24 Nov 2017 15:13:15 GMT',
             'rel': 'memento',
-            'url': 'https://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/'
+            'url': 'https://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/',
         },
-        'original': {
-            'rel': 'original',
-            'url': 'https://www.fws.gov/birds/'
-        },
-        'timegate': {
-            'rel': 'timegate',
-            'url': 'https://web.archive.org/web/https://www.fws.gov/birds/'
-        },
+        'original': {'rel': 'original', 'url': 'https://www.fws.gov/birds/'},
+        'timegate': {'rel': 'timegate', 'url': 'https://web.archive.org/web/https://www.fws.gov/birds/'},
         'timemap': {
             'rel': 'timemap',
             'type': 'application/link-format',
-            'url': 'https://web.archive.org/web/timemap/link/https://www.fws.gov/birds/'
+            'url': 'https://web.archive.org/web/timemap/link/https://www.fws.gov/birds/',
         },
     }
 
 
 @ia_vcr.use_cassette()
 def test_get_memento_with_date_datetime(test_client):
-    memento = test_client.get_memento('https://www.fws.gov/birds/',
-                                      timestamp=date(2017, 11, 24),
-                                      exact=False)
+    memento = test_client.get_memento('https://www.fws.gov/birds/', timestamp=date(2017, 11, 24), exact=False)
     assert 'https://www.fws.gov/birds/' == memento.url
     assert datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc) == memento.timestamp
     assert 'id_' == memento.mode
@@ -377,8 +356,7 @@ def test_get_memento_with_date_datetime(test_client):
 
 @ia_vcr.use_cassette()
 def test_get_memento_with_string_datetime(test_client):
-    memento = test_client.get_memento('https://www.fws.gov/birds/',
-                                      timestamp='20171124151315')
+    memento = test_client.get_memento('https://www.fws.gov/birds/', timestamp='20171124151315')
     assert 'https://www.fws.gov/birds/' == memento.url
     assert datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc) == memento.timestamp
     assert 'id_' == memento.mode
@@ -386,9 +364,7 @@ def test_get_memento_with_string_datetime(test_client):
 
 @ia_vcr.use_cassette()
 def test_get_memento_with_inexact_string_datetime(test_client):
-    memento = test_client.get_memento('https://www.fws.gov/birds/',
-                                      timestamp='20171124151310',
-                                      exact=False)
+    memento = test_client.get_memento('https://www.fws.gov/birds/', timestamp='20171124151310', exact=False)
     assert 'https://www.fws.gov/birds/' == memento.url
     assert datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc) == memento.timestamp
     assert 'id_' == memento.mode
@@ -397,10 +373,8 @@ def test_get_memento_with_inexact_string_datetime(test_client):
 @ia_vcr.use_cassette()
 def test_get_memento_handles_non_utc_datetime(test_client):
     # Note the offset between requested_time and memento.timestamp.
-    requested_time = datetime(2017, 11, 24, 8, 13, 15,
-                              tzinfo=timezone(timedelta(hours=-7)))
-    memento = test_client.get_memento('https://www.fws.gov/birds/',
-                                      timestamp=requested_time)
+    requested_time = datetime(2017, 11, 24, 8, 13, 15, tzinfo=timezone(timedelta(hours=-7)))
+    memento = test_client.get_memento('https://www.fws.gov/birds/', timestamp=requested_time)
 
     assert 'https://www.fws.gov/birds/' == memento.url
     assert datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc) == memento.timestamp
@@ -410,8 +384,7 @@ def test_get_memento_handles_non_utc_datetime(test_client):
 @ia_vcr.use_cassette()
 def test_get_memento_with_invalid_datetime_type(test_client):
     with pytest.raises(TypeError):
-        test_client.get_memento('https://www.fws.gov/birds/',
-                                timestamp=True)
+        test_client.get_memento('https://www.fws.gov/birds/', timestamp=True)
 
 
 @ia_vcr.use_cassette()
@@ -422,8 +395,7 @@ def test_get_memento_with_requires_datetime_with_regular_url(test_client):
 
 @ia_vcr.use_cassette()
 def test_get_memento_with_archive_url(test_client):
-    memento = test_client.get_memento(
-        'https://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/')
+    memento = test_client.get_memento('https://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/')
 
     # Metadata About the Memento
     assert 'https://www.fws.gov/birds/' == memento.url
@@ -437,10 +409,12 @@ def test_get_memento_with_archive_url(test_client):
     assert 200 == memento.status_code
     assert memento.ok
     assert not memento.is_redirect
-    assert {'Content-Type': 'text/html',
-            'Date': 'Fri, 24 Nov 2017 15:13:14 GMT',
-            'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
-            'Transfer-Encoding': 'chunked'} == memento.headers
+    assert {
+        'Content-Type': 'text/html',
+        'Date': 'Fri, 24 Nov 2017 15:13:14 GMT',
+        'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
+        'Transfer-Encoding': 'chunked',
+    } == memento.headers
     assert 'ISO-8859-1' == memento.encoding
 
     content = get_file('fws-gov-birds.txt')
@@ -450,13 +424,15 @@ def test_get_memento_with_archive_url(test_client):
 
 @ia_vcr.use_cassette()
 def test_get_memento_with_cdx_record(test_client):
-    record = CdxRecord('xyz',
-                       datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc),
-                       'https://www.fws.gov/birds/',
-                       '-',
-                       200,
-                       'abc',
-                       100)
+    record = CdxRecord(
+        'xyz',
+        datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc),
+        'https://www.fws.gov/birds/',
+        '-',
+        200,
+        'abc',
+        100,
+    )
     memento = test_client.get_memento(record)
     assert 'https://www.fws.gov/birds/' == memento.url
     assert datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc) == memento.timestamp
@@ -465,33 +441,37 @@ def test_get_memento_with_cdx_record(test_client):
 
 @ia_vcr.use_cassette()
 def test_get_memento_with_mode(test_client):
-    memento = test_client.get_memento('https://www.fws.gov/birds/',
-                                      timestamp=datetime(2017, 11, 24, 15, 13, 15),
-                                      mode=Mode.view)
+    memento = test_client.get_memento(
+        'https://www.fws.gov/birds/', timestamp=datetime(2017, 11, 24, 15, 13, 15), mode=Mode.view
+    )
     assert '' == memento.mode
-    assert ('https://web.archive.org/web/20171124151315/https://www.fws.gov/birds/'
-            == memento.memento_url)
-    assert ('https://web.archive.org/web/20171124151315/https://www.fws.gov/birds/'
-            == memento.links['memento']['url'])
-    assert ('https://web.archive.org/web/20050323155300/http://www.fws.gov:80/birds'
-            == memento.links['first memento']['url'])
+    assert 'https://web.archive.org/web/20171124151315/https://www.fws.gov/birds/' == memento.memento_url
+    assert (
+        'https://web.archive.org/web/20171124151315/https://www.fws.gov/birds/' == memento.links['memento']['url']
+    )
+    assert (
+        'https://web.archive.org/web/20050323155300/http://www.fws.gov:80/birds'
+        == memento.links['first memento']['url']
+    )
 
-    memento = test_client.get_memento('https://www.fws.gov/birds/',
-                                      timestamp=datetime(2017, 11, 24, 15, 13, 15))
+    memento = test_client.get_memento('https://www.fws.gov/birds/', timestamp=datetime(2017, 11, 24, 15, 13, 15))
     assert 'id_' == memento.mode
-    assert ('https://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/'
-            == memento.memento_url)
-    assert ('https://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/'
-            == memento.links['memento']['url'])
-    assert ('https://web.archive.org/web/20050323155300id_/http://www.fws.gov:80/birds'
-            == memento.links['first memento']['url'])
+    assert 'https://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/' == memento.memento_url
+    assert (
+        'https://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/'
+        == memento.links['memento']['url']
+    )
+    assert (
+        'https://web.archive.org/web/20050323155300id_/http://www.fws.gov:80/birds'
+        == memento.links['first memento']['url']
+    )
 
 
 @ia_vcr.use_cassette()
 def test_get_memento_with_mode_string(test_client):
-    memento = test_client.get_memento('https://www.fws.gov/birds/',
-                                      timestamp=datetime(2017, 11, 24, 15, 13, 15),
-                                      mode='id_')
+    memento = test_client.get_memento(
+        'https://www.fws.gov/birds/', timestamp=datetime(2017, 11, 24, 15, 13, 15), mode='id_'
+    )
     assert 'id_' == memento.mode
     assert 'https://web.archive.org/web/20171124151315id_/https://www.fws.gov/birds/' == memento.memento_url
 
@@ -499,43 +479,41 @@ def test_get_memento_with_mode_string(test_client):
 @ia_vcr.use_cassette()
 def test_get_memento_with_mode_boolean_is_not_allowed(test_client):
     with pytest.raises(TypeError):
-        test_client.get_memento('https://www.fws.gov/birds/',
-                                timestamp=datetime(2017, 11, 24, 15, 13, 15),
-                                mode=True)
+        test_client.get_memento(
+            'https://www.fws.gov/birds/', timestamp=datetime(2017, 11, 24, 15, 13, 15), mode=True
+        )
 
 
 @ia_vcr.use_cassette()
 def test_get_memento_target_window(test_client):
-    memento = test_client.get_memento('https://www.fws.gov/birds/',
-                                      date(2017, 11, 1),
-                                      exact=False,
-                                      target_window=25 * 24 * 60 * 60)
+    memento = test_client.get_memento(
+        'https://www.fws.gov/birds/', date(2017, 11, 1), exact=False, target_window=25 * 24 * 60 * 60
+    )
     assert memento.timestamp == datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc)
 
 
 @ia_vcr.use_cassette('test_get_memento_target_window.yaml')
 def test_get_memento_timedelta_target_window(test_client):
-    memento = test_client.get_memento('https://www.fws.gov/birds/',
-                                      date(2017, 11, 1),
-                                      exact=False,
-                                      target_window=timedelta(days=25))
+    memento = test_client.get_memento(
+        'https://www.fws.gov/birds/', date(2017, 11, 1), exact=False, target_window=timedelta(days=25)
+    )
     assert memento.timestamp == datetime(2017, 11, 24, 15, 13, 15, tzinfo=timezone.utc)
 
 
 @ia_vcr.use_cassette()
 def test_get_memento_raises_when_memento_is_outside_target_window(test_client):
     with pytest.raises(MementoPlaybackError):
-        test_client.get_memento('https://www.fws.gov/birds/',
-                                date(2017, 11, 1),
-                                exact=False,
-                                target_window=24 * 60 * 60)
+        test_client.get_memento(
+            'https://www.fws.gov/birds/', date(2017, 11, 1), exact=False, target_window=24 * 60 * 60
+        )
 
 
 @ia_vcr.use_cassette()
 def test_get_memento_with_redirects(test_client):
     memento = test_client.get_memento(
-        'https://web.archive.org/web/20180808094144id_/https://www.epa.gov/ghgreporting/san5779-factsheet')
-    assert len(memento.history) == 1        # memento redirects
+        'https://web.archive.org/web/20180808094144id_/https://www.epa.gov/ghgreporting/san5779-factsheet'
+    )
+    assert len(memento.history) == 1  # memento redirects
     assert len(memento.debug_history) == 2  # actual HTTP redirects
 
 
@@ -548,8 +526,9 @@ def test_get_memento_with_path_based_redirects(test_client):
         Location: /web/20201027215555id_/https://www.whitehouse.gov/ostp/about/student/faqs
     This tests that we correctly handle the latter situation.
     """
-    memento = test_client.get_memento('https://www.whitehouse.gov/administration/eop/ostp/about/student/faqs',
-                                      datetime(2020, 10, 27, 21, 55, 55))
+    memento = test_client.get_memento(
+        'https://www.whitehouse.gov/administration/eop/ostp/about/student/faqs', datetime(2020, 10, 27, 21, 55, 55)
+    )
     assert len(memento.history) == 1
     assert memento.url == memento.history[0].headers['Location']
 
@@ -563,8 +542,9 @@ def test_get_memento_with_schemeless_redirects(test_client):
         Location: //web.archive.org/web/20201102232816id_/https://www.census.gov/geo/gssi/
     This tests that we correctly handle the latter situation.
     """
-    memento = test_client.get_memento('https://www.census.gov/geography/gss-initiative.html',
-                                      datetime(2020, 11, 2, 23, 28, 16))
+    memento = test_client.get_memento(
+        'https://www.census.gov/geography/gss-initiative.html', datetime(2020, 11, 2, 23, 28, 16)
+    )
     assert len(memento.history) == 1
     assert memento.url == memento.history[0].headers['Location']
 
@@ -572,9 +552,7 @@ def test_get_memento_with_schemeless_redirects(test_client):
 @ia_vcr.use_cassette()
 def test_get_memento_raises_for_mementos_that_redirect_in_a_loop(test_client):
     with pytest.raises(MementoPlaybackError):
-        test_client.get_memento(
-            'https://link.springer.com/article/10.1007/s00382-012-1331-2',
-            '20200925075402')
+        test_client.get_memento('https://link.springer.com/article/10.1007/s00382-012-1331-2', '20200925075402')
 
 
 @ia_vcr.use_cassette()
@@ -586,8 +564,9 @@ def test_get_memento_with_redirect_in_view_mode(test_client):
     memento = test_client.get_memento(
         'https://www.whitehouse.gov/administration/eop/ostp/about/student/faqs',
         timestamp='20201027215555',
-        mode=Mode.view)
-    assert len(memento.history) == 1        # memento redirects
+        mode=Mode.view,
+    )
+    assert len(memento.history) == 1  # memento redirects
     assert len(memento.debug_history) == 2  # actual HTTP redirects
 
 
@@ -606,15 +585,14 @@ def test_get_memento_raises_blocked_error(test_client):
 @ia_vcr.use_cassette()
 def test_get_memento_raises_no_memento_error(test_client):
     with pytest.raises(NoMementoError):
-        test_client.get_memento('https://this-is-not-real-url.whatever/',
-                                '20170929002712')
+        test_client.get_memento('https://this-is-not-real-url.whatever/', '20170929002712')
 
 
 @ia_vcr.use_cassette()
 def test_get_memento_works_on_archived_rate_limit_responses(test_client):
-    memento = test_client.get_memento('http://www.reddit.com/r/PokemonGiveaway',
-                                      timestamp=datetime(2015, 1, 29, 3, 49, 4),
-                                      exact=True)
+    memento = test_client.get_memento(
+        'http://www.reddit.com/r/PokemonGiveaway', timestamp=datetime(2015, 1, 29, 3, 49, 4), exact=True
+    )
     assert 'http://www.reddit.com/r/PokemonGiveaway' == memento.url
     assert 429 == memento.status_code
 
@@ -632,10 +610,10 @@ def test_get_memento_follows_historical_redirects(test_client):
     #     https://web.archive.org/web/20200201023757id_/https://www.epa.gov/sites/production/files/signpost/cc.html
     #       ...which is not a memento, and redirects to:
     #       https://web.archive.org/web/20200201024405id_/https://www.epa.gov/sites/production/files/signpost/cc.html
-    start_url = ('https://web.archive.org/web/20200201020357id_/'
-                 'http://epa.gov/climatechange')
-    target = ('https://web.archive.org/web/20200201024405id_/'
-              'https://www.epa.gov/sites/production/files/signpost/cc.html')
+    start_url = 'https://web.archive.org/web/20200201020357id_/http://epa.gov/climatechange'
+    target = (
+        'https://web.archive.org/web/20200201024405id_/https://www.epa.gov/sites/production/files/signpost/cc.html'
+    )
     memento = test_client.get_memento(start_url, exact=False)
     assert 'https://www.epa.gov/sites/production/files/signpost/cc.html' == memento.url
     assert target == memento.memento_url
@@ -657,10 +635,8 @@ def test_get_memento_follow_redirects_does_not_follow_historical_redirects(test_
     #     https://web.archive.org/web/20200201023757id_/https://www.epa.gov/sites/production/files/signpost/cc.html
     #       ...and then to:
     #       https://web.archive.org/web/20200201024405id_/https://www.epa.gov/sites/production/files/signpost/cc.html
-    start_url = ('https://web.archive.org/web/20200201020357id_/'
-                 'http://epa.gov/climatechange')
-    target = ('https://web.archive.org/web/20200201023757id_/'
-              'https://www.epa.gov/climatechange')
+    start_url = 'https://web.archive.org/web/20200201020357id_/http://epa.gov/climatechange'
+    target = 'https://web.archive.org/web/20200201023757id_/https://www.epa.gov/climatechange'
     memento = test_client.get_memento(start_url, exact=False, follow_redirects=False)
     assert 'https://www.epa.gov/climatechange' == memento.url
     assert target == memento.memento_url
@@ -673,8 +649,7 @@ def test_get_memento_follow_redirects_does_not_follow_historical_redirects(test_
 @ia_vcr.use_cassette()
 def test_get_memento_returns_memento_with_accurate_url(test_client):
     # This memento is actually captured from 'https://www.', not 'http://'.
-    memento = test_client.get_memento('http://fws.gov/',
-                                      timestamp='20171124143728')
+    memento = test_client.get_memento('http://fws.gov/', timestamp='20171124143728')
     assert memento.url == 'https://www.fws.gov/'
 
 
@@ -696,9 +671,14 @@ def return_timeout(self, *args, **kwargs) -> requests.Response:
 
 class TestWaybackSession:
     def test_request_retries(self, requests_mock):
-        requests_mock.get('http://test.com', [{'text': 'bad1', 'status_code': 503},
-                                              {'text': 'bad2', 'status_code': 503},
-                                              {'text': 'good', 'status_code': 200}])
+        requests_mock.get(
+            'http://test.com',
+            [
+                {'text': 'bad1', 'status_code': 503},
+                {'text': 'bad2', 'status_code': 503},
+                {'text': 'good', 'status_code': 200},
+            ],
+        )
         session = WaybackSession(retries=2, backoff=0.1)
         response = session.request('GET', 'http://test.com')
         assert response.ok
@@ -706,17 +686,23 @@ class TestWaybackSession:
         session.close()
 
     def test_stops_after_given_retries(self, requests_mock):
-        requests_mock.get('http://test.com', [{'text': 'bad1', 'status_code': 503},
-                                              {'text': 'bad2', 'status_code': 503},
-                                              {'text': 'good', 'status_code': 200}])
+        requests_mock.get(
+            'http://test.com',
+            [
+                {'text': 'bad1', 'status_code': 503},
+                {'text': 'bad2', 'status_code': 503},
+                {'text': 'good', 'status_code': 200},
+            ],
+        )
         session = WaybackSession(retries=1, backoff=0.1)
         response = session.request('GET', 'http://test.com')
         assert response.status_code == 503
         assert response.text == 'bad2'
 
     def test_only_retries_some_errors(self, requests_mock):
-        requests_mock.get('http://test.com', [{'text': 'bad1', 'status_code': 400},
-                                              {'text': 'good', 'status_code': 200}])
+        requests_mock.get(
+            'http://test.com', [{'text': 'bad1', 'status_code': 400}, {'text': 'good', 'status_code': 200}]
+        )
         session = WaybackSession(retries=1, backoff=0.1)
         response = session.request('GET', 'http://test.com')
         assert response.status_code == 400
@@ -809,7 +795,7 @@ class TestWaybackSession:
         # therefore the first run might fail.
         # Since another test might run before this one,
         # I have to wait one call before starting.
-        time.sleep(1/30)
+        time.sleep(1 / 30)
         with WaybackClient() as client:
             cdx = next(client.search('zew.de'))
         # First test that the default rate limits are correctly applied.
