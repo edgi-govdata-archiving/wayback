@@ -709,7 +709,7 @@ class WaybackClient(_utils.DepthCountedContext):
             warn(
                 'The `matchType` parameter for search() was renamed to '
                 '`match_type`. Support for the old name will be removed in '
-                'wayback v0.5.0; please update your code.',
+                'wayback v0.6.0; please update your code.',
                 DeprecationWarning,
                 stacklevel=2,
             )
@@ -718,7 +718,7 @@ class WaybackClient(_utils.DepthCountedContext):
             warn(
                 'The `fastLatest` parameter for search() was renamed to '
                 '`fast_latest`. Support for the old name will be removed in '
-                'wayback v0.5.0; please update your code.',
+                'wayback v0.6.0; please update your code.',
                 DeprecationWarning,
                 stacklevel=2,
             )
@@ -727,7 +727,7 @@ class WaybackClient(_utils.DepthCountedContext):
             warn(
                 'The `resolveRevisits` parameter for search() was renamed to '
                 '`resolve_revisits`. Support for the old name will be removed '
-                'in wayback v0.5.0; please update your code.',
+                'in wayback v0.6.0; please update your code.',
                 DeprecationWarning,
                 stacklevel=2,
             )
@@ -922,7 +922,7 @@ class WaybackClient(_utils.DepthCountedContext):
             warn(
                 'The `datetime` parameter for get_memento() was renamed to '
                 '`timestamp`. Support for the old name will be removed '
-                'in wayback v0.5.0; please update your code.',
+                'in wayback v0.6.0; please update your code.',
                 DeprecationWarning,
                 stacklevel=2,
             )
