@@ -2,15 +2,20 @@
 Release History
 ===============
 
-(In Development)
-----------------
+v0.5.0 (2026-05-22)
+-------------------
+
+The main focus of this release is continued refinement of rate limiting. You can now share or *not* share rate limits across sessions in a clearer way. Server-side rate limiting errors (if you set the rate limit too high in this package) are also now raised directly to your code instead of causing many-minute-long pauses.
+
+There are number of other useful improvements here, too! Read on for details.
+
 
 Breaking Changes
 ^^^^^^^^^^^^^^^^
 
 - Wayback now requires Python 3.8 or newer. Going forward, we intend to drop support for older Python releases once they hit end-of-life (i.e. they no longer receive any security updates or support from the Core Python team). These updates will always be noted as breaking changes.
 
-- Wayback will no longer automatically pause and retry when the server returns rate-limit errors. Instead, it will raise a :class:`wayback.exceptions.WaybackRetryError` exception (which includes information how long you should probably pause for in the ``time`` attribute).
+- Wayback will no longer automatically pause and retry when the server returns rate-limit errors. Instead, it will raise a :class:`wayback.exceptions.WaybackRetryError` exception (which includes how long you should probably pause for in the ``time`` attribute).
 
   The previous behavior helped solve some issues with the way rate limits were implemented on the client side that have since been fixed. It was also designed around users who had custom limits on Internet Archive servers, which is an unusual situation. The new approach is safer and can help prevent your IP address from getting blocked. If you need to retry after rate limit errors, make sure your code handles the exception and pauses all requests on all client instances for an appropriate amount of time.
 
@@ -31,9 +36,9 @@ Features
     session2 = WaybackSession(search_calls_per_second=0.5)
 
     # These sessions will be limited to 1 search request each second as a
-    # combined total. During a period where only one of these sessions is in
-    # use, it will make 1 request per second, but if both are actively in use,
-    # each will make 1 request every 2 seconds:
+    # combined total (what you usually want). During a period where only one of
+    # these sessions is in use, it will make 1 request per second, but if both
+    # are actively in use, each will make 1 request every 2 seconds:
     rate = RateLimit(per_second=1)
     session1 = WaybackSession(search_calls_per_second=rate)
     session2 = WaybackSession(search_calls_per_second=rate)
@@ -50,6 +55,18 @@ Features
   - ``status_code`` (now ``statuscode``).
 
 - You can now use a :class:`datetime.timedelta` instance for the ``target_window`` argument to :meth:`wayback.WaybackClient.get_memento` (an integer indicating a number of seconds still works, too). (:issue:`193`)
+
+  For example, to get the content of ``epa.gov`` from anytime within 5 days of January 1, 2008:
+
+  .. code-block:: python
+
+    client.get_memento(
+      'https://epa.gov/',
+      datetime(2008, 1, 1),
+      exact=False,
+      target_window=timedelta(days=5)
+    )
+    # <wayback.Memento url="http://www.epa.gov/" timestamp="2008-01-03T00:07:13+00:00">
 
 
 Fixes & Maintenance
@@ -68,6 +85,8 @@ Fixes & Maintenance
 
 New Contributors
 ^^^^^^^^^^^^^^^^
+
+A huge thanks to three new contributors in this release!
 
 - `Derzan Chiang <https://github.com/MiTo0o>`_
 - `Beckett Frey <https://github.com/BeckettFrey>`_
