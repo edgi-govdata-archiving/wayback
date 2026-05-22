@@ -8,6 +8,16 @@ about the mementos and/or the memento content itself.
 Tutorial
 ========
 
+.. Keep cached HTTP responses for this tutorial so we aren't constantly hitting
+.. real Wayback Machine APIs.
+.. ipython:: python
+   :suppress:
+
+   import vcr
+   __cassette = vcr.use_cassette(f'{__cassette_path}/tutorial.yaml')
+   __cassette.__enter__()
+
+
 What is the earliest memento of nasa.gov?
 -----------------------------------------
 
@@ -98,6 +108,13 @@ lowercase first.
    content.lower().count('mars')
 
 We picked up a couple additional occurrences that the original count missed.
+
+.. Close out cached HTTP response recording.
+.. ipython:: python
+   :suppress:
+
+   __cassette.__exit__()
+
 
 API Documentation
 =================
