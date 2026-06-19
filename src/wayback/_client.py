@@ -49,14 +49,6 @@ from .exceptions import (
 logger = logging.getLogger(__name__)
 
 CDX_SEARCH_URL = 'https://web.archive.org/cdx/search/cdx'
-# This /web/timemap URL has newer features, but has other bugs and doesn't
-# support some features, like resume keys (for paging). It ignores robots.txt,
-# while /cdx/search obeys robots.txt (for now). It also has different/extra
-# columns. See
-# https://github.com/internetarchive/wayback/blob/bd205b9b26664a6e2ea3c0c2a8948f0dc6ff4519/wayback-cdx-server/src/main/java/org/archive/cdxserver/format/CDX11Format.java#L13-L17  # noqa
-# NOTE: the `length` and `robotflags` fields appear to always be empty
-# TODO: support new/upcoming CDX API
-# CDX_SEARCH_URL = 'https://web.archive.org/web/timemap/cdx'
 
 REDUNDANT_HTTP_PORT = re.compile(r'^(http://[^:/]+):80(.*)$')
 REDUNDANT_HTTPS_PORT = re.compile(r'^(https://[^:/]+):443(.*)$')
