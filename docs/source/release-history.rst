@@ -2,6 +2,12 @@
 Release History
 ===============
 
+(In Development)
+----------------
+
+The ``timemap_calls_per_second`` parameter for :class:`WaybackSession` has been deprecated and will be removed in v0.6.0. The API it handled rate limiting for is now the same service and shares the same rate limiting as the one handled by ``search_calls_per_second``. You should now *only* use ``search_calls_per_second``.
+
+
 v0.5.0 (2026-05-22)
 -------------------
 
