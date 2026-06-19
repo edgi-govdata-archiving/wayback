@@ -49,14 +49,6 @@ from .exceptions import (
 logger = logging.getLogger(__name__)
 
 CDX_SEARCH_URL = 'https://web.archive.org/cdx/search/cdx'
-# This /web/timemap URL has newer features, but has other bugs and doesn't
-# support some features, like resume keys (for paging). It ignores robots.txt,
-# while /cdx/search obeys robots.txt (for now). It also has different/extra
-# columns. See
-# https://github.com/internetarchive/wayback/blob/bd205b9b26664a6e2ea3c0c2a8948f0dc6ff4519/wayback-cdx-server/src/main/java/org/archive/cdxserver/format/CDX11Format.java#L13-L17  # noqa
-# NOTE: the `length` and `robotflags` fields appear to always be empty
-# TODO: support new/upcoming CDX API
-# CDX_SEARCH_URL = 'https://web.archive.org/web/timemap/cdx'
 
 REDUNDANT_HTTP_PORT = re.compile(r'^(http://[^:/]+):80(.*)$')
 REDUNDANT_HTTPS_PORT = re.compile(r'^(https://[^:/]+):443(.*)$')
@@ -73,8 +65,7 @@ URL_ISH = re.compile(r'^[\w+\-]+://[^/?=&]+\.\w\w+(:\d+)?(/|$)')
 
 # Global default rate limits for various endpoints. Internet Archive folks have
 # asked us to set the defaults at 80% of the hard limits.
-DEFAULT_CDX_RATE_LIMIT = _utils.RateLimit(0.8 * 60 / 60)
-DEFAULT_TIMEMAP_RATE_LIMIT = _utils.RateLimit(0.8 * 100 / 60)
+DEFAULT_CDX_RATE_LIMIT = _utils.RateLimit(0.8 * 30 / 60)
 DEFAULT_MEMENTO_RATE_LIMIT = _utils.RateLimit(0.8 * 600 / 60)
 
 # If a rate limit response (i.e. a response with status == 429) does not
@@ -310,7 +301,7 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
     user_agent : str, optional
         A custom user-agent string to use in all requests. Defaults to:
         `wayback/{version} (+https://github.com/edgi-govdata-archiving/wayback)`
-    search_calls_per_second : wayback.RateLimit or int or float, default: 0.8
+    search_calls_per_second : wayback.RateLimit or int or float, default: 0.4
         The maximum number of calls per second made to the CDX search API.
         To disable the rate limit, set this to 0.
 
@@ -328,16 +319,10 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
         single :class:`wayback.RateLimit` instance and pass it to each
         ``WaybackSession`` instance. If you do not set a limit, the default
         limit is shared globally across all sessions.
-    timemap_calls_per_second : wayback.RateLimit or int or float, default: 1.33
-        The maximum number of calls per second made to the timemap API (the
-        Wayback Machine's new, beta CDX search is part of the timemap API).
-        To disable the rate limit, set this to 0.
-
-        To have multiple sessions share a rate limit (so requests made by one
-        session count towards the limit of the other session), use a
-        single :class:`wayback.RateLimit` instance and pass it to each
-        ``WaybackSession`` instance. If you do not set a limit, the default
-        limit is shared globally across all sessions.
+    timemap_calls_per_second : wayback.RateLimit or int or float, default: 0.4
+        **This parameter is deprecated.** The service it set a rate limit for
+        now shares its limits with the one covered by
+        ``search_calls_per_second``. Set that parameter instead.
     """
 
     # It seems Wayback sometimes produces 500 errors for transient issues, so
@@ -357,7 +342,7 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
         user_agent=None,
         search_calls_per_second=DEFAULT_CDX_RATE_LIMIT,
         memento_calls_per_second=DEFAULT_MEMENTO_RATE_LIMIT,
-        timemap_calls_per_second=DEFAULT_TIMEMAP_RATE_LIMIT,
+        timemap_calls_per_second=None,
     ):
         super().__init__()
         self.retries = retries
@@ -369,9 +354,21 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
             ),
             'Accept-Encoding': 'gzip, deflate',
         }
+        search_calls_per_second = _utils.RateLimit.make_limit(search_calls_per_second)
+        if timemap_calls_per_second is None:
+            timemap_calls_per_second = search_calls_per_second
+        else:
+            warn(
+                'The `timemap_calls_per_second` parameter of WaybackSession() '
+                'will be removed in wayback v0.6.0. The service it handled '
+                'now shares rate limiting with `search_calls_per_second`.',
+                DeprecationWarning,
+                stacklevel=2,
+            )
+
         self.rate_limts = {
-            '/web/timemap': _utils.RateLimit.make_limit(timemap_calls_per_second),
-            '/cdx': _utils.RateLimit.make_limit(search_calls_per_second),
+            '/web/timemap': timemap_calls_per_second,
+            '/cdx': search_calls_per_second,
             # The memento limit is actually a generic Wayback limit.
             '/': _utils.RateLimit.make_limit(memento_calls_per_second),
         }
