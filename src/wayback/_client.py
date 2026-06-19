@@ -607,27 +607,13 @@ class WaybackClient(_utils.DepthCountedContext):
 
             Negative values return the most recent N results.
 
-            Positive values are complicated! The search server will only scan so
-            much data on each query, and if it finds fewer than ``limit``
-            results before hitting its own internal limits, it will behave as if
-            if there are no more results, even though there may be.
-
-            Unfortunately, ideal values for ``limit`` aren't very predicatable
-            because the search server combines data from different sources, and
-            they do not all behave the same. Their parameters may also be
-            changed over time.
-
-            In general…
-
-            * The default value should work well in typical cases.
-            * For frequently captured URLs, you may want to set a higher value
-              (e.g. 12,000) for more efficient querying.
-            * For infrequently captured URLs, you may want to set a lower value
-              (e.g. 100 or even 10) to ensure that your query does not hit
-              internal limits before returning.
-            * For extremely infrequently captured URLs, you may simply want to
-              call ``search()`` multiple times with different, close together
-              ``from_date`` and ``to_date`` values.
+            When querying for infrequently captured URLs or using
+            ``filter_field`` values that skip a lot of results, it's possible to
+            encounter timeouts because of the amount of data that servers need
+            to load before reaching your ``limit``. If you are seeing frequent
+            timeout (504 status code) errors, consider setting a lower
+            ``limit``, or calling ``search`` multiple times with different,
+            closer-together ``from_date`` and ``to_date`` values.
 
         offset : int, optional
             Skip the first N results.
