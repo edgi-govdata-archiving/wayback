@@ -2,12 +2,14 @@
 Release History
 ===============
 
-(In Development)
-----------------
+v0.5.1 (2026-06-19)
+-------------------
 
-The ``timemap_calls_per_second`` parameter for :class:`wayback.WaybackSession` has been deprecated and will be removed in v0.6.0. The API it handled rate limiting for is now the same service and shares the same rate limiting as the one handled by ``search_calls_per_second``. You should now *only* use ``search_calls_per_second``.
+- The default rate limit for :meth:`wayback.WaybackClient.search` has been reduced to 24 requests/minute in order to match the actual hard limits now set on Wayback Machine servers. You can still customize rate limits by using a custom :class:`wayback.WaybackSession`. (:issue:`208`)
 
-The default value for ``search_calls_per_second`` has also been reduced to 0.4 in order to match the actual rate limits the Wayback Machine is currently enforcing.
+- The ``timemap_calls_per_second`` parameter for :class:`wayback.WaybackSession` has been deprecated and will be removed in v0.6.0. The API it handled rate limiting for is now the same service and shares the same rate limiting as the one handled by ``search_calls_per_second``. You should now *only* use ``search_calls_per_second``. (:issue:`208`)
+
+- We’ve simplified the docs for the ``limit`` parameter of :meth:`wayback.WaybackClient.search`, since some of the Wayback Machine bugs it described workarounds for have been fixed. 🎉 (:issue:`209`)
 
 
 v0.5.0 (2026-05-22)
