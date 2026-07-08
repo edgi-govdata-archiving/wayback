@@ -2,6 +2,12 @@
 Release History
 ===============
 
+In Development
+--------------
+
+- Transient server disconnections (e.g. ``ConnectionResetError``, ``RemoteDisconnected``) during a request are now retried with backoff like other retryable errors, instead of being raised immediately. Retryability of wrapped connection errors is determined by checking the underlying exception types rather than string matching, and giving up on a non-retryable exception is now logged.
+
+
 v0.5.1 (2026-06-19)
 -------------------
 

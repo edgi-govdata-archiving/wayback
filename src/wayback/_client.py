@@ -16,6 +16,7 @@ Other potentially useful links:
 from base64 import b32encode
 from datetime import date, timedelta
 import hashlib
+from http.client import RemoteDisconnected
 import logging
 import re
 import requests
@@ -276,6 +277,26 @@ else:
 #####################################################################
 
 
+def _iterate_wrapped_exceptions(error):
+    """
+    Iterate over an exception and every exception it wraps, whether wrapped
+    as an argument (how requests/urllib3 nest the original error) or via
+    ``__cause__``/``__context__`` chaining.
+    """
+    seen = set()
+    stack = [error]
+    while stack:
+        current = stack.pop()
+        if id(current) in seen:
+            continue
+        seen.add(id(current))
+        yield current
+        stack.extend(arg for arg in getattr(current, 'args', ()) if isinstance(arg, BaseException))
+        for linked in (current.__cause__, current.__context__):
+            if linked is not None:
+                stack.append(linked)
+
+
 class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
     """
     A custom session object that pools network connections and resources for
@@ -430,6 +451,7 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
                     retry_delay = self.get_retry_delay(retries, response)
                     logger.info('Caught exception during request, will retry: %s', error)
                 else:
+                    logger.info('Caught non-retryable exception during request: %s', error)
                     raise
 
             logger.debug('Will retry after sleeping for %s seconds...', retry_delay)
@@ -461,13 +483,19 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
             return True
         elif isinstance(error, ConnectionError):
             # ConnectionErrors from requests actually wrap a whole family of
-            # more detailed errors from urllib3, so we need to do some string
-            # checking to determine whether the error is retryable.
+            # more detailed errors from urllib3 (which in turn wrap the
+            # original OSError), so unwrap the chain and check the underlying
+            # types. `ConnectionResetError` and `RemoteDisconnected` show up
+            # when the server abruptly closes the connection (e.g. when
+            # Wayback sheds load); both are transient and worth retrying with
+            # backoff. Note `str(error)` is not a reliable signal here: for
+            # some argument shapes OSError formatting drops the wrapped
+            # exception's class name entirely.
+            for wrapped in _iterate_wrapped_exceptions(error):
+                if isinstance(wrapped, (ConnectionResetError, RemoteDisconnected)):
+                    return True
+
             text = str(error)
-            # NOTE: we have also seen this, which may warrant retrying:
-            # `requests.exceptions.ConnectionError: ('Connection aborted.',
-            # RemoteDisconnected('Remote end closed connection without
-            # response'))`
             if 'NewConnectionError' in text or 'Max retries' in text:
                 return True
 

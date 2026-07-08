@@ -1,7 +1,9 @@
 from datetime import date, datetime, timezone, timedelta
 from itertools import islice
+from http.client import RemoteDisconnected
 from pathlib import Path
 import time
+import urllib3
 import pytest
 import requests
 from unittest import mock
@@ -706,6 +708,50 @@ class TestWaybackSession:
         session = WaybackSession(retries=1, backoff=0.1)
         response = session.request('GET', 'http://test.com')
         assert response.status_code == 400
+
+    def test_retries_connection_reset(self, requests_mock):
+        reset_error = requests.exceptions.ConnectionError(
+            'Connection aborted.', ConnectionResetError(104, 'Connection reset by peer')
+        )
+        requests_mock.get('http://test.com', [{'exc': reset_error}, {'text': 'good', 'status_code': 200}])
+        session = WaybackSession(retries=1, backoff=0.1)
+        response = session.request('GET', 'http://test.com')
+        assert response.status_code == 200
+
+    def test_should_retry_error_on_transient_disconnects(self):
+        session = WaybackSession(retries=1, backoff=0.1)
+        # The shape urllib3 actually produces: the original OSError nested
+        # inside a ProtocolError inside requests's ConnectionError.
+        assert (
+            session.should_retry_error(
+                requests.exceptions.ConnectionError(
+                    urllib3.exceptions.ProtocolError(
+                        'Connection aborted.', ConnectionResetError(104, 'Connection reset by peer')
+                    )
+                )
+            )
+            is True
+        )
+        assert (
+            session.should_retry_error(
+                requests.exceptions.ConnectionError(
+                    'Connection aborted.', ConnectionResetError(104, 'Connection reset by peer')
+                )
+            )
+            is True
+        )
+        assert (
+            session.should_retry_error(
+                requests.exceptions.ConnectionError(
+                    'Connection aborted.', RemoteDisconnected('Remote end closed connection without response')
+                )
+            )
+            is True
+        )
+        assert (
+            session.should_retry_error(requests.exceptions.ConnectionError('something entirely unrecognized'))
+            is False
+        )
 
     def test_raises_rate_limit_error(self, requests_mock):
         requests_mock.get('http://test.com', [WAYBACK_RATE_LIMIT_ERROR])
