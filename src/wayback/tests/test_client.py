@@ -671,6 +671,33 @@ def return_timeout(self, *args, **kwargs) -> requests.Response:
     return res
 
 
+def chain_exceptions(*errors):
+    """
+    Link the given exceptions together via ``__context__`` the same way
+    requests and urllib3 do -- by raising each one while the previous one is
+    still being handled. Exceptions should be listed innermost first, and the
+    outermost one is returned.
+
+    Usage:
+    >>> chain_exceptions(ConnectionResetError(54, 'Connection reset by peer'),
+    >>>                  urllib3.exceptions.ProtocolError('Connection aborted.'),
+    >>>                  requests.exceptions.ConnectionError('Connection aborted.'))
+    """
+    result = None
+    for error in errors:
+        if result is not None:
+            try:
+                raise result
+            except BaseException:
+                try:
+                    raise error
+                except BaseException as chained:
+                    error = chained
+        result = error
+
+    return result
+
+
 class TestWaybackSession:
     def test_request_retries(self, requests_mock):
         requests_mock.get(
@@ -710,8 +737,10 @@ class TestWaybackSession:
         assert response.status_code == 400
 
     def test_retries_connection_reset(self, requests_mock):
-        reset_error = requests.exceptions.ConnectionError(
-            'Connection aborted.', ConnectionResetError(104, 'Connection reset by peer')
+        reset_error = chain_exceptions(
+            ConnectionResetError(54, 'Connection reset by peer'),
+            urllib3.exceptions.ProtocolError('Connection aborted.'),
+            requests.exceptions.ConnectionError('Connection aborted.'),
         )
         requests_mock.get('http://test.com', [{'exc': reset_error}, {'text': 'good', 'status_code': 200}])
         session = WaybackSession(retries=1, backoff=0.1)
@@ -720,30 +749,33 @@ class TestWaybackSession:
 
     def test_should_retry_error_on_transient_disconnects(self):
         session = WaybackSession(retries=1, backoff=0.1)
-        # The shape urllib3 actually produces: the original OSError nested
-        # inside a ProtocolError inside requests's ConnectionError.
         assert (
             session.should_retry_error(
-                requests.exceptions.ConnectionError(
-                    urllib3.exceptions.ProtocolError(
-                        'Connection aborted.', ConnectionResetError(104, 'Connection reset by peer')
-                    )
+                chain_exceptions(
+                    ConnectionResetError(54, 'Connection reset by peer'),
+                    urllib3.exceptions.ProtocolError('Connection aborted.'),
+                    requests.exceptions.ConnectionError('Connection aborted.'),
                 )
             )
             is True
         )
         assert (
             session.should_retry_error(
-                requests.exceptions.ConnectionError(
-                    'Connection aborted.', ConnectionResetError(104, 'Connection reset by peer')
+                chain_exceptions(
+                    RemoteDisconnected('Remote end closed connection without response'),
+                    urllib3.exceptions.ProtocolError('Connection aborted.'),
+                    requests.exceptions.ConnectionError('Connection aborted.'),
                 )
             )
             is True
         )
         assert (
             session.should_retry_error(
-                requests.exceptions.ConnectionError(
-                    'Connection aborted.', RemoteDisconnected('Remote end closed connection without response')
+                chain_exceptions(
+                    ConnectionRefusedError(61, 'Connection refused'),
+                    urllib3.exceptions.NewConnectionError(None, 'Failed to establish a new connection'),
+                    urllib3.exceptions.MaxRetryError(None, 'http://test.com'),
+                    requests.exceptions.ConnectionError('Max retries exceeded'),
                 )
             )
             is True

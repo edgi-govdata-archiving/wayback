@@ -5,7 +5,7 @@ Release History
 In Development
 --------------
 
-- Transient server disconnections (e.g. ``ConnectionResetError``, ``RemoteDisconnected``) during a request are now retried with backoff like other retryable errors, instead of being raised immediately. Retryability of wrapped connection errors is determined by checking the underlying exception types rather than string matching, and giving up on a non-retryable exception is now logged.
+- Transient server disconnections (e.g. ``ConnectionResetError``, ``http.client.RemoteDisconnected``) during a request are now retried with backoff like other retryable errors, instead of being raised immediately. Whether a connection error is retryable is now determined by checking the types of the exceptions it wraps rather than by string matching. (:issue:`216`)
 
 
 v0.5.1 (2026-06-19)
