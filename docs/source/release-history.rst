@@ -2,6 +2,12 @@
 Release History
 ===============
 
+In Development
+--------------
+
+- Transient server disconnections (e.g. ``ConnectionResetError``, ``http.client.RemoteDisconnected``) during a request are now retried with backoff like other retryable errors, instead of being raised immediately. Whether a connection error is retryable is now determined by checking the types of the exceptions it wraps rather than by string matching. (:issue:`216`)
+
+
 v0.5.1 (2026-06-19)
 -------------------
 
