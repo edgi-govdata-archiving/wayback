@@ -59,8 +59,9 @@ test = [
 "Homepage" = "https://github.com/edgi-govdata-archiving/wayback"
 "Documentation" = "https://wayback.readthedocs.io/en/stable/"
 "Changelog" = "https://wayback.readthedocs.io/en/stable/release-history.html"
-"Source code" = "https://github.com/edgi-govdata-archiving/wayback"
-"Issues" = "https://github.com/edgi-govdata-archiving/wayback/issues"
+"Source Code" = "https://github.com/edgi-govdata-archiving/wayback"
+"Issue Tracker" = "https://github.com/edgi-govdata-archiving/wayback/issues"
+"Funding" = "https://envirodatagov.org/donate/"
 
 [build-system]
 requires = ["hatchling ~=1.19", "hatch-vcs ~=0.4"]
