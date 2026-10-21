@@ -30,7 +30,7 @@ from requests.exceptions import (
 import time
 from urllib.parse import urljoin, urlparse
 from urllib3.connectionpool import HTTPConnectionPool
-from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, ReadTimeoutError
+from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NewConnectionError, ReadTimeoutError
 from warnings import warn
 from . import _utils, __version__
 from ._models import CdxRecord, Memento, Mode
@@ -461,15 +461,15 @@ class WaybackSession(_utils.DisableAfterCloseSession, requests.Session):
             return True
         elif isinstance(error, ConnectionError):
             # ConnectionErrors from requests actually wrap a whole family of
-            # more detailed errors from urllib3, so we need to do some string
-            # checking to determine whether the error is retryable.
-            text = str(error)
-            # NOTE: we have also seen this, which may warrant retrying:
-            # `requests.exceptions.ConnectionError: ('Connection aborted.',
-            # RemoteDisconnected('Remote end closed connection without
-            # response'))`
-            if 'NewConnectionError' in text or 'Max retries' in text:
-                return True
+            # more detailed errors from urllib3 (which in turn wrap the
+            # original OSError), so we need to look through the chain of
+            # wrapped exceptions to determine whether the error is retryable.
+            # `ConnectionResetError` covers the server abruptly closing the
+            # connection (e.g. when Wayback sheds load), including
+            # `http.client.RemoteDisconnected`, which subclasses it.
+            for wrapped in _utils.iterate_wrapped_exceptions(error):
+                if isinstance(wrapped, (ConnectionResetError, NewConnectionError)):
+                    return True
 
         return False
 
