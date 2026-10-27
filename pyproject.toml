@@ -6,7 +6,7 @@ description = "Python API to Internet Archive Wayback Machine"
 readme = "README.rst"
 maintainers = [
   { name = "Rob Brackett", email = "rob@robbrackett.com" },
-  { name="Environmental Data Governance Initiative", email="EnviroDGI@protonmail.com" },
+  { name="Environmental Data & Governance Initiative", email="info@envirodatagov.org" },
 ]
 # TODO: put contributors in `authors` field?
 #   authors = [ { name="XYZ" }, ... ]
