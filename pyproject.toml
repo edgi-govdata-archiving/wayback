@@ -52,7 +52,9 @@ test = [
     "coverage",
     "requests-mock",
     "pytest >=8.3.5",
-    "vcrpy",
+    # TODO: Upgrade VCR to v9+ when we drop urllib3 1.x  and Python 3.10
+    # support. See also Dependabot config.
+    "vcrpy >=6.0.2,<9.0.0",
 ]
 
 [project.urls]
