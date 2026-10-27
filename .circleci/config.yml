@@ -54,8 +54,8 @@ commands:
                   . ~/venv/bin/activate
                   pip install .[dev]
 
-      # Docs dependencies are only compatible on Python 3.10+, so only install
-      # them on demand.
+      # Docs dependencies are only compatible on some Python versions, so only
+      # install them on demand.
       - when:
           condition: << parameters.install-docs >>
           steps:
