@@ -216,6 +216,27 @@ def set_memento_url_mode(url, mode):
     return format_memento_url(captured_url, timestamp, mode)
 
 
+def iterate_wrapped_exceptions(error):
+    """
+    Iterate over an exception and each exception it wraps, i.e. the chain of
+    exceptions linked by ``__cause__`` (explicit chaining, as in
+    ``raise x from y``) or ``__context__`` (implicit chaining, when an
+    exception is raised while another is being handled).
+
+    Parameters
+    ----------
+    error : BaseException
+
+    Yields
+    ------
+    BaseException
+    """
+    current = error
+    while current is not None:
+        yield current
+        current = current.__cause__ or current.__context__
+
+
 class RateLimit:
     """
     ``RateLimit`` is a simple locking mechanism that can be used to enforce
