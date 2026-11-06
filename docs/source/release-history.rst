@@ -2,6 +2,12 @@
 Release History
 ===============
 
+In Development
+--------------
+
+- Added a “funding” link to the project’s PyPI listing. You can donate to EDGI’s work (including this project) at https://envirodatagov.org/donate/. (:issue:`222`)
+
+
 v0.5.1 (2026-06-19)
 -------------------
 
